@@ -82,8 +82,8 @@ CREATE TABLE IF NOT EXISTS `medecin` (
 --
 
 INSERT INTO `medecin` (`MATRICULE_MED`, `ID_SPEC`, `ID_ADMIN`, `NOM_MED`, `TEL`, `EMAIL`, `DISPONIBLE`, `VILLE`, `PASSWORD`) VALUES
-('bh150', 2, 1, 'Mohamed Elmehdi Choukri', '0614075409', 'medelmehdi.choukri@gmail.com', 1, NULL, '123456'),
-('bh151', 2, 1, 'Kamili Zakaria', '0666663614', 'Zakaria@gmail.com', 1, NULL, '123456');
+('bh150', 2, 1, 'Mohamed Elmehdi Choukri', '0614075409', 'medelmehdi.choukri@gmail.com', 1, 'Safi', '123456'),
+('bh151', 2, 1, 'Kamili Zakaria', '0666663614', 'Zakaria@gmail.com', 1, 'Safi', '123456');
 
 -- --------------------------------------------------------
 
