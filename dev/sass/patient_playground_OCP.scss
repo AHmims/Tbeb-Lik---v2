@@ -1,0 +1,283 @@
+@use 'colors';
+@use 'display';
+@use 'values';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
+@mixin pagePadding() {
+    padding-left: 200px;
+    padding-right: 200px;
+    box-sizing: border-box;
+
+    @media screen and (max-width:1200px) {
+        padding-left: 100px;
+        padding-right: 100px;
+    }
+
+    @media screen and (max-width:1000px) {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+}
+
+// 
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#content {
+    width: 100%;
+    height: 100%;
+    @include display.flex(column, space-between, unset);
+
+    // 
+    #navBar {
+        width: 100%;
+        height: 90px;
+        // 
+        box-sizing: border-box;
+        @include pagePadding;
+
+        // 
+        #navBarIn {
+            height: 100%;
+            @include display.flex(row, space-between, center);
+
+            // border-bottom: 2px solid colors.$accent;
+            #navBarNavText {
+                font-family: 'Roboto', sans-serif;
+                font-weight: 500;
+                text-transform: uppercase;
+                @include display.flex(row, unset, center);
+
+                &>*:not(:last-child) {
+                    margin-right: 20px;
+                }
+
+                #btnNotif {
+                    position: relative;
+                    @include display.flex(row, unset, center);
+
+                    img {
+                        cursor: pointer;
+                    }
+
+                }
+
+                #notifsContainer {
+                    width: 350px;
+                    // height: 200px;
+                    // background-color: red;
+                    position: absolute;
+                    top: 35px;
+                    left: -162px;
+                    // 
+                    @include display.flex(column, unset, center);
+                    display: none;
+
+                    .triang {
+                        flex: none;
+                        width: 0;
+                        height: 0;
+                        border-left: 20px solid transparent;
+                        border-right: 20px solid transparent;
+
+                        border-bottom: 20px solid colors.$white;
+                    }
+
+                    #notifBox {
+                        width: 100%;
+                        flex: 1;
+                        background-color: colors.$white;
+                        @include display.flex(column, unset, center);
+                        border-radius: 5px;
+                        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
+                        font-family: 'Gilroy';
+                        color: colors.$dark;
+                        text-transform: initial;
+
+                        #notifBoxHeader {
+                            width: 100%;
+                            height: 50px;
+                            @include display.flex(row, space-between, center);
+                            box-sizing: border-box;
+                            padding: 20px;
+                            border-bottom: 1px solid colors.$form-mid;
+                            font-weight: 700;
+                            font-size: 18px;
+
+                            div {
+                                width: 22px;
+                                height: 22px;
+                                @include display.flex(row, center, center);
+                                border: 2px solid colors.$accent;
+                                border-radius: 5px;
+                                font-size: 16px;
+                                color: colors.$accent;
+
+                            }
+                        }
+
+                        #notifBoxBody {
+                            width: 100%;
+                            height: fit-content;
+                            @include display.flex(column, unset, center);
+                            box-sizing: border-box;
+                            padding: 10px 0;
+
+                            &>*:not(:last-child) {
+                                margin-bottom: 10px;
+                            }
+
+                            .notification {
+                                position: relative;
+                                width: 100%;
+                                @include display.flex(row, unset, center);
+                                // overflow: hidden;
+                                height: 43px;
+                                box-sizing: border-box;
+                                padding: 0px 20px;
+                                // text-overflow: ellipsis;
+                                // white-space: nowrap;
+
+                                .iconBox {
+                                    flex: none;
+                                    width: 43px;
+                                    height: 43px;
+                                    background-color: colors.$form;
+                                    border-radius: 5px;
+                                    @include display.flex(row, center, center);
+                                    margin-right: 10px;
+                                }
+
+                                .notifText {
+                                    @include display.flex(column, unset, flex-start);
+
+                                    .notifTitle {
+                                        font-size: 14px;
+                                        font-weight: 500;
+                                        margin-bottom: 5px;
+                                    }
+
+                                    .notifiDesc {
+                                        font-size: 11px;
+                                        font-weight: 400;
+
+                                        .notifDate {
+                                            color: colors.$accent;
+                                        }
+                                    }
+                                }
+
+                                .notifClose {
+                                    position: absolute;
+                                    top: 0;
+                                    right: 0;
+                                    cursor: pointer;
+                                    margin-right: 20px;
+                                }
+
+                            }
+
+                            .notif-inactive {
+                                &::after {
+                                    content: '';
+                                    width: 100%;
+                                    height: 100%;
+                                    background-color: rgba(255, 255, 255, 0.7);
+                                    border-radius: 5px;
+                                    position: absolute;
+                                    left: 0;
+                                }
+
+                                .notifClose {
+                                    display: none;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .notifActive::after {
+                    content: '';
+                    width: 10px;
+                    height: 10px;
+                    border-radius: 99px;
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    background-color: colors.$red;
+                }
+
+
+                #btnLogin {
+                    // border-radius: values.$bRadius-3;
+                    // padding: 10px 15px;
+                    // background-color: colors.$accent;
+                    // color: colors.$white;
+                    @include display.flex(row, center, center);
+                    background: none;
+                    border: none;
+                    padding: 0;
+                    cursor: pointer;
+                    user-select: none;
+                    border: 2px solid colors.$accent;
+                    border-radius: 5px;
+                    // font-size: 18px;
+                    // text-transform: uppercase;
+                    // cursor: pointer;
+                    // font-family: 'Roboto', sans-serif;
+                    // font-weight: 500;
+
+                    img {
+                        // margin-right: 5px;
+                    }
+
+                    #navMenuIconCont {
+                        padding: 8px;
+                        background: colors.$accent;
+                        display: flex;
+                        // @include display.bRadiusRight(5px);
+                    }
+
+                    #navMenuTextCont {
+                        padding: 8px;
+                        // @include display.bRadiusLeft(5px);
+
+                        span {
+                            font-family: 'Roboto';
+                            color: colors.$dark;
+                        }
+                    }
+                }
+
+                #logout {
+                    font-family: 'Roboto', sans-serif;
+                    text-decoration: none;
+                    color: colors.$dark;
+                    @include display.flex(row, unset, center);
+
+                    img {
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+    }
+
+
+
+    #footer {
+        width: 100%;
+        height: 75px;
+        background-color: colors.$dark;
+        @include display.flex(column, center, center);
+        color: colors.$white;
+        font-size: 18px;
+        font-family: 'Gilroy', sans-serif;
+        font-weight: 400;
+    }
+}

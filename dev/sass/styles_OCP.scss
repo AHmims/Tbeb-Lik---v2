@@ -1,0 +1,929 @@
+@use 'colors';
+@use 'display';
+@use 'values';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital@0;1&display=swap');
+
+// 
+html,
+body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+// 
+#body {
+    @include display.flex(row, flex-start, flex-start);
+    background-color: colors.$white;
+}
+
+#navBar {
+    width: 80px;
+    height: 100%;
+    background-color: colors.$accent;
+    @include display.bRadiusRight(values.$bRadius);
+    box-sizing: border-box;
+    @include display.flex(column, space-between, center);
+    padding: 20px;
+    position: fixed;
+    z-index: 3;
+
+    .navCont {
+        display: grid;
+        grid-gap: 6.5px;
+
+        a:hover .navIconBox {
+            background-color: rgba(255, 255, 255, 0.2);
+
+        }
+
+        .navIconBox {
+            width: 40px;
+            height: 40px;
+            @include display.flex(column, center, center);
+            border-radius: values.$bRadius-2;
+        }
+    }
+}
+
+#content {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding-left: 80px;
+    @include display.flex(column, unset, unset);
+
+    // 
+    #header {
+        height: 75px;
+        box-sizing: border-box;
+        @include display.flex(row, flex-start, center);
+        padding: 0 40px;
+        background-color: colors.$white;
+        // @include display.boxShadow();
+    }
+
+    // 
+    #container {
+        position: relative;
+        flex: 1;
+        box-sizing: border-box;
+        padding: 40px;
+        background-color: colors.$form;
+        font-family: 'Gilroy';
+        letter-spacing: 0.6px;
+
+        // 
+        .bigBox {
+            width: 100%;
+            height: 100%;
+            background-color: colors.$white;
+            @include display.boxShadow();
+            border-radius: values.$bRadius;
+            box-sizing: border-box;
+            padding: 20px;
+            @include display.flex(column, flex-start, flex-start);
+        }
+
+        .fitBox {
+            width: 100%;
+            height: fit-content;
+            background-color: colors.$white;
+            @include display.boxShadow();
+            border-radius: values.$bRadius;
+            box-sizing: border-box;
+            padding: 20px;
+            @include display.flex(column, flex-start, flex-start);
+        }
+
+        .table {
+            padding: 0;
+        }
+
+        .tableHead {
+            flex: none;
+            width: 100%;
+            height: 62px;
+            box-sizing: border-box;
+            padding: 0 20px;
+            border-bottom: 1px solid colors.$form-mid;
+            @include display.flex(row, space-between, center);
+        }
+
+        .vertical {
+            @include display.flex(column, flex-start, flex-start);
+        }
+
+        .horizontal {
+            @include display.flex(row, flex-start, flex-start);
+        }
+
+        .txt-main {
+            color: colors.$dark;
+            text-transform: capitalize;
+            font-size: 20px;
+            font-family: "Gilroy";
+            font-weight: 700;
+        }
+
+        .txt-second {
+            color: colors.$form-dark;
+            text-transform: capitalize;
+            font-size: 16px;
+            font-family: "Gilroy";
+            font-weight: 500;
+        }
+
+        .btn-doc {
+            padding: 7.5px 15px;
+            background-color: colors.$accent;
+            text-transform: capitalize;
+            font-size: 20px;
+            font-family: "Gilroy";
+            font-weight: 700;
+            @include display.flex(row, center, center);
+            border-radius: values.$bRadius-2;
+            color: colors.$white;
+            border: none;
+            cursor: pointer;
+
+            img {
+                margin-right: 10px;
+            }
+        }
+
+        .btn-acc {
+            padding: 9px 10px;
+            background-color: colors.$accent;
+            text-transform: uppercase;
+            font-size: 12px;
+            font-family: "Gilroy";
+            font-weight: 700;
+            @include display.flex(row, center, center);
+            border-radius: values.$bRadius-2;
+            color: colors.$white;
+            border: none;
+            cursor: pointer;
+
+            img {
+                margin-right: 5px;
+            }
+        }
+
+        .btn-no {
+            padding: 9px 10px;
+            background-color: colors.$red;
+            text-transform: uppercase;
+            font-size: 12px;
+            font-family: "Gilroy";
+            font-weight: 700;
+            @include display.flex(row, center, center);
+            border-radius: values.$bRadius-2;
+            color: colors.$white;
+            border: none;
+            cursor: pointer;
+
+            img {
+                margin-right: 5px;
+            }
+        }
+
+        .btn-download {
+            padding: 5px 14px;
+            background-color: colors.$form;
+            text-transform: uppercase;
+            font-size: 12px;
+            font-family: "Gilroy";
+            font-weight: 700;
+            @include display.flex(row, center, center);
+            border-radius: values.$bRadius-2;
+            color: colors.$form-dark;
+            border: none;
+            cursor: pointer;
+
+            img {
+                margin-left: 18px;
+            }
+        }
+
+        .btn-send {
+            padding: 9px 10px;
+            background-color: colors.$accent;
+            text-transform: uppercase;
+            font-size: 18px;
+            font-family: "Gilroy";
+            font-weight: 700;
+            @include display.flex(row, center, center);
+            border-radius: values.$bRadius-3;
+            color: colors.$white;
+            border: none;
+            cursor: pointer;
+
+            img {
+                margin-left: 5px;
+            }
+        }
+
+        .btn-main {
+            padding: 16px 30px;
+            background-color: colors.$accent;
+            text-transform: uppercase;
+            font-size: 18px;
+            font-family: "Gilroy";
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: values.$bRadius-1;
+            color: colors.$white;
+            border: none;
+        }
+
+        // 
+        .box-notif {
+            box-sizing: border-box;
+            width: 368px;
+            padding: 15px;
+            height: fit-content;
+            // padding: 10px;
+            @include display.flex(column, unset, unset);
+            background-color: colors.$white;
+            @include display.boxShadow();
+            border-radius: values.$bRadius-1;
+            font-family: 'Gilroy';
+            font-weight: 500;
+            font-size: 16px;
+            color: colors.$dark;
+            letter-spacing: 0.6px;
+            overflow: hidden;
+
+            .box-notif-switch {
+                position: absolute;
+                top: 25px;
+                right: 15px;
+                cursor: pointer;
+            }
+
+            .box-notif-title {
+                font-weight: 700;
+                font-size: 22px;
+            }
+
+            .box-notif-date {
+                color: colors.$accent;
+                font-size: 18px;
+            }
+
+            .box-notif-matric {
+                // margin-top: 15px;
+                font-size: 20px;
+            }
+
+            .box-notif-subTitle {
+                font-size: 20px;
+                font-weight: 700;
+                // margin-top: 15px;
+                // margin-bottom: 5px;
+            }
+
+            .box-notif-desc {
+                box-sizing: border-box;
+                width: 100%;
+                padding: 5px;
+                font-size: 14px;
+                color: colors.$dark;
+                font-family: 'Roboto', sans-serif;
+                background-color: colors.$form;
+                border-radius: values.$bRadius-2;
+                word-break: break-word;
+            }
+
+            .box-notif-pj {
+                align-self: center;
+                text-decoration: underline;
+                font-size: 20px;
+                font-family: 'Gilroy', sans-serif;
+                font-weight: 700;
+                margin-left: 15px;
+            }
+
+
+        }
+
+        // 
+        .box-rndv {
+            box-sizing: border-box;
+            width: 530px;
+            padding: 15px;
+            // padding: 10px;
+            @include display.flex(column, unset, unset);
+            background-color: colors.$white;
+            @include display.boxShadow();
+            border-radius: values.$bRadius;
+            letter-spacing: 0.6px;
+
+            .box-rndv-date {
+                @include display.flex(row, flex-start, center);
+            }
+
+            .box-rndv-date-input {
+                height: 33px;
+                width: 375px;
+                margin: 10px 0;
+                padding: 0;
+                border: 1px solid colors.$form-dark;
+                border-radius: values.$bRadius-2;
+                color: colors.$form-dark;
+                background-color: colors.$form;
+                font-family: 'Roboto';
+                font-style: italic;
+                box-sizing: border-box;
+                padding: 0 10px;
+                font-size: 16px;
+            }
+
+            .box-rndv-note-input {
+                width: 100%;
+                margin: 10px 0;
+                background-color: colors.$form;
+                border-radius: values.$bRadius-2;
+                color: colors.$dark;
+                font-family: 'Roboto';
+                font-size: 16px;
+                min-height: 170px;
+                margin-bottom: 40px;
+                box-sizing: border-box;
+                padding: 5px 10px;
+
+                &:empty:before {
+                    content: attr(placeholder);
+                    color: colors.$form-dark;
+                    font-family: 'Roboto';
+                    font-style: italic;
+                }
+            }
+        }
+
+        .title-24 {
+            font-family: 'Gilroy';
+            font-size: 24px;
+            color: colors.$dark;
+            // text-transform: capitalize;
+            font-weight: 700;
+        }
+
+        .row-collection {
+            @include display.flex(row, unset, center);
+        }
+
+        .align-right {
+            // align-self: flex-end;
+            // justify-self: flex-end;
+            margin-left: auto;
+        }
+
+
+        .trans-flip {
+            transform: rotate(180deg);
+        }
+
+        .innerTable {
+            flex: 1;
+            max-height: -webkit-fill-available;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 15px 10px;
+            @include display.flex(column, flex-start, flex-start);
+            // flex-wrap: wrap;
+            overflow-y: auto;
+
+            .messageContainer {
+                width: 100%;
+                height: fit-content;
+                @include display.flex(row, unset, center);
+
+                span {
+                    padding: 10px;
+                    font-size: 20px;
+                    font-family: 'Roboto', sans-serif;
+                    border-radius: values.$bRadius-2;
+                    max-width: 350px;
+                }
+
+                &:not(:last-of-type) {
+                    margin-bottom: 10px;
+                }
+            }
+
+            .sentMessage {
+                flex-direction: row-reverse;
+
+                span {
+                    background-color: colors.$accent;
+                    color: colors.$white;
+                }
+            }
+
+            .receivedMessage {
+                span {
+                    background-color: colors.$form-mid;
+                    color: colors.$dark;
+                }
+            }
+
+        }
+
+        .bottomTable {
+            flex: none;
+            height: 70px;
+            width: 100%;
+            border-top: 1px solid colors.$form-mid;
+            box-sizing: border-box;
+            padding: 0 15px;
+            // 
+            @include display.flex(row, unset, center);
+
+            // 
+            .bottomTable-msgInput {
+                flex: 1;
+                padding: 9px;
+                border: none;
+                background: colors.$form;
+                border-radius: values.$bRadius-2;
+                font-size: 17px;
+                outline: none;
+                font-family: 'Roboto';
+                color: colors.$dark;
+
+                &:focus {
+                    border: 1px solid colors.$form-dark;
+                }
+
+                &::placeholder {
+                    font-style: italic;
+                    color: colors.$form-dark;
+                }
+            }
+
+            .bottomTable-msgSend {
+                margin-left: 26px;
+                cursor: pointer;
+            }
+
+        }
+
+        .patientRow {
+            @include display.flex(row, unset, center);
+            box-sizing: border-box;
+            width: 100%;
+            padding: 10px 15px;
+            border-radius: values.$bRadius-1;
+            background-color: colors.$white;
+            cursor: pointer;
+            overflow: hidden;
+
+            &>div {
+                margin-right: 70px;
+            }
+
+            &:hover {
+                background-color: colors.$form;
+            }
+
+            &:not(:last-of-type) {
+                margin-bottom: 8px;
+            }
+        }
+
+        .patientRow-active {
+            background-color: colors.$form;
+        }
+
+        // 
+        .patientInfos {
+            @include display.flex(column, flex-start, unset);
+            background-color: colors.$white;
+            @include display.boxShadow();
+            flex: none;
+            width: 415px;
+            height: fit-content;
+            box-sizing: border-box;
+            padding: 25px 30px;
+            // padding-left: 30px;
+            margin-left: 40px;
+            border-radius: values.$bRadius;
+            overflow: hidden;
+            letter-spacing: 0;
+
+            // 
+            .patientInfos-dataRow {
+                @include display.flex(row, unset, center);
+                width: 100%;
+                font-size: 18px;
+                margin-bottom: 10px;
+
+                &>*:last-child {
+                    margin-left: 16px;
+                    font-weight: 400;
+                    color: colors.$accent;
+                }
+
+                &>*:first-child {
+                    font-weight: 500;
+                    color: colors.$dark;
+                }
+            }
+
+            .patientInfos-dataCol {
+                @include display.flex(column, unset, unset);
+                width: 100%;
+                font-size: 18px;
+                margin-bottom: 10px;
+
+                span {
+                    font-weight: 500;
+                    color: colors.$dark;
+                }
+
+                div {
+                    width: 100%;
+                    height: 125px;
+                    max-height: 125px;
+                    overflow: hidden;
+                    // 
+                    background-color: colors.$form;
+                    border-radius: values.$bRadius-1;
+                    margin-top: 7.5px;
+                    box-sizing: border-box;
+                    padding: 10px;
+                    font-family: 'Roboto', sans-serif;
+                    font-weight: 400;
+
+                    &:empty:before {
+                        content: attr(placeholder);
+                        color: colors.$form-dark;
+                        font-family: 'Roboto';
+                        font-style: italic;
+                    }
+                }
+            }
+
+            .patientInfos-ordo {
+                @include display.flex(column, unset, unset);
+                width: 100%;
+                font-size: 18px;
+
+                &>span {
+                    font-weight: 500;
+                    color: colors.$dark;
+                    margin-bottom: 10px;
+                }
+
+                .patientInfos-ordo-info {
+                    @include display.flex(row, unset, center);
+                    margin-bottom: 3px;
+
+                    &>span:first-of-type {
+                        font-weight: 500;
+                        color: colors.$semi-dark;
+                    }
+
+                    &>span:last-of-type {
+                        font-weight: 400;
+                        color: colors.$dark;
+                        margin-left: 10px;
+                    }
+
+                    .patientInfos-ordo-info-icon {
+                        margin-left: 5px;
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+
+        // 
+        // 
+        // 
+        .ordoBoxBg {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            @include display.flex(column, center, center);
+            background: radial-gradient(rgba(0, 0, 0, 0.1), transparent);
+            backdrop-filter: blur(10px);
+
+            .ordoBox {
+                padding: 40px;
+                width: 600px;
+                height: fit-content;
+                @include display.flex(column, unset, unset);
+                background-color: colors.$white;
+                border-radius: values.$bRadius;
+
+                .ordoInputsCont {
+                    @include display.flex(column, unset, unset);
+
+                    input {
+                        border: none;
+                        background: none;
+                        background-color: colors.$form;
+                        border: 1px solid colors.$form-dark;
+                        font-family: 'Roboto';
+                        font-size: 16px;
+                        padding: 5px 10px;
+                        border-radius: values.$bRadius-2;
+
+                        &::placeholder {
+                            font-style: italic;
+                            color: colors.$form-dark;
+                        }
+                    }
+
+                    .ordoMedicamInput {
+                        width: 300px;
+                    }
+
+                    .ordoDosageInput {
+                        width: 100px;
+                        margin-left: 20px;
+                    }
+                }
+            }
+
+        }
+
+    }
+
+    // 
+    .title {
+        font-family: "Gilroy";
+        font-weight: 700;
+        font-size: 24px;
+        color: colors.$dark;
+    }
+}
+
+.radiusRight {
+    border-top-left-radius: 0 !important;
+    border-bottom-left-radius: 0 !important;
+}
+
+.radiusLeft {
+    border-top-right-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+}
+
+// 
+// 
+.font-s-12 {
+    font-size: 12px;
+}
+
+.font-s-14 {
+    font-size: 14px;
+}
+
+.font-s-16 {
+    font-size: 16px;
+}
+
+.font-s-18 {
+    font-size: 18px;
+}
+
+.font-s-20 {
+    font-size: 20px;
+}
+
+.font-s-22 {
+    font-size: 22px;
+}
+
+.font-s-24 {
+    font-size: 24px;
+}
+
+.font-s-26 {
+    font-size: 26px;
+}
+
+.font-s-28 {
+    font-size: 28px;
+}
+
+.font-s-30 {
+    font-size: 30px;
+}
+
+.font-s-32 {
+    font-size: 32px;
+}
+
+.font-s-34 {
+    font-size: 34px;
+}
+
+.font-s-36 {
+    font-size: 36px;
+}
+
+.font-s-38 {
+    font-size: 38px;
+}
+
+// 
+.font-w-b {
+    font-weight: 700;
+}
+
+.font-w-m {
+    font-weight: 500;
+}
+
+.font-w-n {
+    font-weight: 400;
+}
+
+// 
+.font-f-Gilroy {
+    font-family: 'Gilroy';
+}
+
+// 
+.txt-c-D {
+    color: colors.$dark;
+}
+
+.txt-c-A {
+    color: colors.$accent;
+}
+
+.txt-c-FD {
+    color: colors.$form-dark
+}
+
+.txt-c-SD {
+    color: colors.$semi-dark
+}
+
+// 
+// 
+.f-direction-row {
+    @include display.flex(row, unset, unset);
+}
+
+.f-direction-column {
+    @include display.flex(column, unset, unset);
+}
+
+// 
+.margin-b-26 {
+    margin-bottom: 26px;
+}
+
+.margin-b-24 {
+    margin-bottom: 24px;
+}
+
+.margin-b-22 {
+    margin-bottom: 22px;
+}
+
+.margin-b-20 {
+    margin-bottom: 20px;
+}
+
+.margin-b-18 {
+    margin-bottom: 18px;
+}
+
+.margin-b-10 {
+    margin-bottom: 10px;
+}
+
+.margin-b-0 {
+    margin-bottom: 0px !important;
+}
+
+// 
+.margin-r-5 {
+    margin-right: 5px;
+}
+
+// 
+.m-top-15 {
+    margin-top: 15px;
+}
+
+.m-top-20 {
+    margin-top: 20px;
+}
+
+// 
+// 
+.width-50 {
+    width: 50%;
+}
+
+.width-100 {
+    width: 100%;
+}
+
+// 
+// 
+.space-between-2_5px {
+    &>*:not(:last-child) {
+        margin-bottom: 2.5px;
+    }
+}
+
+.space-between-5px {
+    &>*:not(:last-child) {
+        margin-bottom: 5px;
+    }
+}
+
+.space-between-7_5px {
+    &>*:not(:last-child) {
+        margin-bottom: 7.5px;
+    }
+}
+
+.space-between-10px {
+    &>*:not(:last-child) {
+        margin-bottom: 10px;
+    }
+}
+
+.space-between-15px {
+    &>*:not(:last-child) {
+        margin-bottom: 15px;
+    }
+}
+
+// 
+// 
+.box-notif-datePickerBoxBg {
+    top: 0;
+    left: 0;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(5px);
+    @include display.flex(row, center, center);
+
+    .box-notif-datePickerBox {
+        background-color: colors.$white;
+        border-radius: 20px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        @include display.flex(column, flex-start, flex-start);
+
+        &>*:not(:last-child) {
+            margin-bottom: 20px;
+        }
+
+        // 
+        .box-notif-datePickerBoxTxt {
+            font-family: 'Gilroy', sans-serif;
+            font-size: 20px;
+            color: colors.$dark;
+            font-weight: 700;
+        }
+
+        // 
+        .box-notif-datePickerBtnBox {
+            width: 100%;
+            @include display.flex(row-reverse, flex-start, flex-end);
+
+            input {
+                font-size: 16px;
+                border: none;
+                background: none;
+                padding: 2px 5px;
+                border-radius: 5px;
+                font-family: 'Gilroy', sans-serif;
+                font-weight: 500;
+                cursor: pointer;
+            }
+
+            // 
+            .box-notif-datePickerBtn {
+                background-color: colors.$accent;
+                color: colors.$white;
+                text-transform: capitalize;
+                padding: 3px 6px;
+            }
+
+            .box-notif-datePickerBtnNo {
+                background: transparent;
+                border: 1px solid colors.$accent;
+                text-transform: capitalize;
+                color: colors.$accent;
+                margin-right: 5px;
+            }
+        }
+    }
+}

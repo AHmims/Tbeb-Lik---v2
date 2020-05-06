@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/mods/seeme.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../js/simplepeer.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"> -->
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css"> -->
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" /> -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script> -->
+    <title>PlayGround</title>
+</head>
+<style>
+</style>
+
+<body id="body">
+    <div class="medecin" id="navBar">
+    </div>
+    <div id="content">
+        <div id="header" class="border-b">
+            <span class="title">Contact</span>
+        </div>
+        <div id="container" class="padding-0">
+            <div class="roblox">
+                <div id="patientsList" class="">
+                    <!-- <div class="patientContact">
+                        <div class="patientContactAvatar">
+                            <div class="patientContactStatus statusOnline"></div>
+                        </div>
+                        <div class="patientContactInformations">
+                            <span class="patientContactName">
+                                Nom patiént
+                            </span>
+                            <span class="patientContactMatricule">
+                                matricule
+                            </span>
+                        </div>
+                    </div>
+                    <div class="patientContact patientSelected">
+                        <div class="patientContactAvatar">
+                            <div class="patientContactStatus statusOnline"></div>
+                        </div>
+                        <div class="patientContactInformations">
+                            <span class="patientContactName">
+                                Nom patiént
+                            </span>
+                            <span class="patientContactMatricule">
+                                matricule
+                            </span>
+                        </div>
+                    </div>
+                    <div class="patientContact">
+                        <div class="patientContactAvatar">
+                            <div class="patientContactStatus statusOffline"></div>
+                        </div>
+                        <div class="patientContactInformations">
+                            <span class="patientContactName">
+                                Nom patiént
+                            </span>
+                            <span class="patientContactMatricule">
+                                matricule
+                            </span>
+                        </div>
+                    </div> -->
+                </div>
+                <div id="chatSection">
+                    <div class="chatSectionMessages">
+                    </div>
+                    <!-- <div class="chatSectionControls"> -->
+                    <div class="bottomTable bottomTableMedecin" data-idInput='msgInput' data-idSend="msgSend"
+                        data-idVideo="msgVideo" data-idDoc="msgDoc">
+                        <div class="bottomTable-btnSubmit bottomTableBtn" id="patientSubmit">
+                            Submit
+                        </div>
+                    </div>
+                    <!--  -->
+                    <div class="submitPopupBg">
+                        <div class="submitPopup">
+                            <span class="submitPopupTitle">Remplir les champs nécessaires :</span>
+                            <div class="submitPopupBox">
+                                <div class="submitPopupInputCont">
+                                    <span class="submitPopupInputLabel">Mle :</span>
+                                    <input type="text" class="submitPopupInput" disabled>
+                                </div>
+                                <div class="submitPopupInputCont">
+                                    <span class="submitPopupInputLabel">Nom :</span>
+                                    <input type="text" class="submitPopupInput" disabled>
+                                </div>
+                                <div class="submitPopupInputCont">
+                                    <span class="submitPopupInputLabel">Prenom :</span>
+                                    <input type="text" class="submitPopupInput" disabled>
+                                </div>
+                                <div class="submitPopupInputCont">
+                                    <span class="submitPopupInputLabel">Direction :</span>
+                                    <input type="text" class="submitPopupInput" disabled>
+                                </div>
+                                <div class="submitPopupInputCont">
+                                    <span class="submitPopupInputLabel">Nbr de jour du RM :</span>
+                                    <input type="text" class="submitPopupInput">
+                                </div>
+                                <div class="submitPopupInputCont">
+                                    <span class="submitPopupInputLabel">Nbr de jour validée :</span>
+                                    <input type="text" class="submitPopupInput">
+                                </div>
+                                <div class="submitPopupInputCont">
+                                    <span class="submitPopupInputLabel">Visa de medecin :</span>
+                                    <input type="text" class="submitPopupInput">
+                                </div>
+                                <div class="submitPopupInputCont">
+                                    <span class="submitPopupInputLabel">Commentaire :</span>
+                                    <textarea rows="10" class="submitPopupInput"></textarea>
+                                </div>
+                            </div>
+                            <button id="popup-btnSubmit">
+                                Valider et Generer le rapport
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id="videoSection">
+                    <video id="remoteVideo" autoplay class="videoCorrection"></video>
+                    <div id="remoteVideoPoster">
+                        <div id="remoteVideoPosterImage">
+                        </div>
+                    </div>
+                    <div id="videoSectionBody">
+                        <div id="videoSectionHost">
+                            <video id="clientVideo" autoplay class="videoCorrection"></video>
+                            <div id="hostVideoPoster">
+                            </div>
+                        </div>
+                        <div id="videoChatControls">
+                            <div class="videoControlBtn">
+                                <img src="../icon/mic-on.svg" alt="mic-on">
+                            </div>
+                            <div class="videoControlBtn" id="videoControl-btnEnd">
+                                <img src="../icon/phone.svg" alt="hangup">
+                            </div>
+                            <div class="videoControlBtn">
+                                <img src="../icon/camera-on.svg" alt="camera-on">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.5.0.min.js"
+            integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+        <script src="../js/styles.js"></script>
+        <script src="../js/medecin_ops_OCP_1.js"></script>
+        <script src="../js/mods/socket_medecin.js"></script>
+        <script src="../js/mods/worker_medecin_contact.js"></script>
+</body>
+
+</html>

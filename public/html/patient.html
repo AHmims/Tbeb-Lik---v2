@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/socket.io/socket.io.js"></script>
+    <title>patient</title>
+</head>
+
+<body>
+    <span id="remote"></span>
+    <input type="button" value="Send Notification" id="btn-notif">
+    <input type="text" id="txt-field">
+    <input type="button" value="Send" id="btn-send">
+    <br>
+    <video autoplay controls="true" id="clientVideo"></video>
+    <video autoplay controls="false" id="remoteVideo"></video>
+    <!--  -->
+    <script src="js/patient_com.js"></script>
+    <script src="js/simplepeer.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,271 @@
+@use 'colors';
+@use 'display';
+@use 'values';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
+@mixin pagePadding() {
+    padding-left: 200px;
+    padding-right: 200px;
+    box-sizing: border-box;
+
+    @media screen and (max-width:1200px) {
+        padding-left: 100px;
+        padding-right: 100px;
+    }
+
+    @media screen and (max-width:1000px) {
+        padding-left: 25px;
+        padding-right: 25px;
+    }
+}
+
+// 
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#landing {
+    width: 100%;
+    height: 100%;
+    @include display.flex(column, unset, unset);
+}
+
+// 
+#navBar {
+    width: 100%;
+    height: 90px;
+    // 
+    box-sizing: border-box;
+    @include pagePadding;
+
+    // 
+    #navBarIn {
+        height: 100%;
+        @include display.flex(row, space-between, center);
+
+        // border-bottom: 2px solid colors.$accent;
+        #navBarNavText {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 500;
+            text-transform: uppercase;
+            @include display.flex(row, unset, center);
+
+            &>*:not(:last-child) {
+                margin-right: 20px;
+            }
+
+            a {
+                text-decoration: none;
+                color: colors.$dark;
+                font-size: 18px;
+                letter-spacing: 0.5px;
+            }
+
+            #btnLogin {
+                border-radius: values.$bRadius-3;
+                padding: 10px 15px;
+                background-color: colors.$accent;
+                color: colors.$white;
+                @include display.flex(row, center, center);
+                border: none;
+                font-size: 18px;
+                text-transform: uppercase;
+                cursor: pointer;
+                font-family: 'Roboto', sans-serif;
+                font-weight: 500;
+
+                img {
+                    margin-right: 5px;
+                }
+            }
+        }
+    }
+}
+
+// 
+#body {
+    width: 100%;
+    height: 100%;
+    @include pagePadding;
+    padding-top: 100px;
+    padding-bottom: 50px;
+    box-sizing: border-box;
+
+    #bodyContent {
+        @include display.flex(column, unset, center);
+        text-align: center;
+        font-family: 'Gilroy', sans-serif;
+        color: colors.$dark;
+        background-position: left bottom, right bottom;
+        background-repeat: no-repeat;
+        // background-image: url('../');
+
+        &>*:not(:last-child) {
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-weight: 700;
+            font-size: 96px;
+            white-space: pre-line;
+            margin: 0;
+            height: fit-content;
+            margin-top: -73px;
+            line-height: 1;
+        }
+
+        span {
+            max-width: 912px;
+            font-size: 30px;
+            font-weight: 400;
+        }
+
+        button {
+            font-size: 24px;
+            text-transform: uppercase;
+            color: colors.$white;
+            letter-spacing: 1px;
+            border: none;
+            background-color: colors.$accent;
+            border-radius: 40px;
+            padding: 30px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+    }
+
+    #scrollIcon {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        margin-bottom: 75px;
+        cursor: pointer;
+        animation: scrollMoves 750ms ease-in-out infinite alternate;
+
+        @keyframes scrollMoves {
+            0% {
+                margin-bottom: 75px;
+            }
+
+            100% {
+                margin-bottom: 65px;
+            }
+        }
+    }
+}
+
+// 
+#content {
+    width: 100%;
+    // height: 100vh;
+    // background-color: red;
+    padding: 50px 0px;
+    @include pagePadding;
+    @include display.flex(row, center, unset);
+
+    #imageVisualizer {
+        width: 700px;
+        height: 500px;
+        border: 4px solid colors.$dark;
+        border-radius: 15px;
+        background-position: top;
+        background-size: 175%;
+    }
+
+    // 
+    #contentNavigation {
+        width: 350px;
+        margin-left: 40px;
+        // height: 500px;
+        @include display.flex(column, flex-start, unset);
+
+        .navigationBox {
+            width: 100%;
+            height: fit-content;
+            flex: none;
+            // 
+            border-radius: 20px;
+            box-sizing: border-box;
+            padding: 20px;
+            @include display.flex(column, unset, unset);
+            font-family: 'Gilroy', sans-serif;
+            transition: 200ms all ease-in-out;
+            cursor: pointer;
+
+            &:not(:last-of-type) {
+                margin-bottom: 20px;
+            }
+
+            // 
+            .navigationBoxRow {
+                @include display.flex(row, flex-start, center);
+
+                img {
+                    margin-right: 20px;
+                }
+
+                .navigationBoxTitle {
+                    font-size: 20px;
+                    font-weight: 700;
+                    color: colors.$dark;
+                }
+            }
+
+            .navigationBoxDesc {
+                font-size: 18px;
+                color: colors.$form-dark;
+                font-weight: 500;
+            }
+
+            &:hover {
+                background-color: colors.$form;
+            }
+
+        }
+
+        .navigationBoxHighlited {
+            background-color: colors.$form;
+        }
+    }
+}
+
+// 
+#footing {
+    width: 100%;
+
+    #banner {
+        width: 100%;
+        height: 440px;
+        background-color: colors.$dark;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        @include display.flex(column, center, center);
+
+        // 
+        div {
+            width: fit-content;
+            height: fit-content;
+            @include display.flex(row, center, center);
+
+            img {
+                margin: 0 25px;
+            }
+        }
+    }
+
+    #footer {
+        width: 100%;
+        height: 75px;
+        background-color: colors.$dark;
+        @include display.flex(column, center, center);
+        color: colors.$white;
+        font-size: 18px;
+        font-family: 'Gilroy', sans-serif;
+        font-weight: 400;
+    }
+}

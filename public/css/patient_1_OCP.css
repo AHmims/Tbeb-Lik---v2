@@ -1,0 +1,1005 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
+
+@font-face {
+  font-family: "Gilroy";
+  src: url("../font/Gilroy-Bold.ttf");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Gilroy";
+  src: url("../font/Gilroy-Medium.ttf");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Gilroy";
+  src: url("../font/Gilroy-Regular.ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#content #navBar {
+  width: 100%;
+  height: 90px;
+  box-sizing: border-box;
+  padding-left: 200px;
+  padding-right: 200px;
+  box-sizing: border-box;
+}
+
+@media screen and (max-width: 1200px) {
+  #content #navBar {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  #content #navBar {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+}
+
+#content #navBar #navBarIn {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#content #navBar #navBarIn #navBarNavText {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: center;
+}
+
+#content #navBar #navBarIn #navBarNavText>*:not(:last-child) {
+  margin-right: 20px;
+}
+
+#content #navBar #navBarIn #navBarNavText #btnNotif {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: center;
+}
+
+#content #navBar #navBarIn #navBarNavText #btnNotif img {
+  cursor: pointer;
+}
+
+#content #navBar #navBarIn #navBarNavText #notifsContainer {
+  width: 350px;
+  position: absolute;
+  top: 35px;
+  left: -162px;
+  display: flex;
+  flex-direction: column;
+  justify-content: unset;
+  align-items: center;
+  display: none;
+}
+
+#content #navBar #navBarIn #navBarNavText #notifsContainer .triang {
+  flex: none;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-bottom: 20px solid #FFFFFF;
+}
+
+#content #navBar #navBarIn #navBarNavText #notifsContainer #notifBox {
+  width: 100%;
+  flex: 1;
+  background-color: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  justify-content: unset;
+  align-items: center;
+  border-radius: 5px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
+  font-family: "Gilroy";
+  color: #004348;
+  text-transform: initial;
+}
+
+#content #navBar #navBarIn #navBarNavText #notifsContainer #notifBox #notifBoxHeader {
+  width: 100%;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 20px;
+  border-bottom: 1px solid #E8EFF6;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+#content #navBar #navBarIn #navBarNavText #notifsContainer #notifBox #notifBoxHeader div {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid #1FDBAE;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #1FDBAE;
+}
+
+#content #navBar #navBarIn #navBarNavText #notifsContainer #notifBox #notifBoxBody {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: unset;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 10px 0;
+}
+
+#content #navBar #navBarIn #navBarNavText #notifsContainer #notifBox #notifBoxBody>*:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+#content #navBar #navBarIn #navBarNavText #notifsContainer #notifBox #notifBoxBody .notification {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: center;
+  height: 43px;
+  box-sizing: border-box;
+  padding: 0px 20px;
+  cursor: pointer;
+}
+
+#content #navBar #navBarIn #navBarNavText #notifsContainer #notifBox #notifBoxBody .notification .iconBox {
+  flex: none;
+  width: 43px;
+  height: 43px;
+  background-color: #F6F9FC;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+
+#content #navBar #navBarIn #navBarNavText #notifsContainer #notifBox #notifBoxBody .notification .notifText {
+  display: flex;
+  flex-direction: column;
+  justify-content: unset;
+  align-items: flex-start;
+}
+
+#content #navBar #navBarIn #navBarNavText #notifsContainer #notifBox #notifBoxBody .notification .notifText .notifTitle {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+#content #navBar #navBarIn #navBarNavText #notifsContainer #notifBox #notifBoxBody .notification .notifText .notifiDesc {
+  font-size: 11px;
+  font-weight: 400;
+}
+
+#content #navBar #navBarIn #navBarNavText #notifsContainer #notifBox #notifBoxBody .notification .notifText .notifiDesc .notifDate {
+  color: #1FDBAE;
+}
+
+#content #navBar #navBarIn #navBarNavText #notifsContainer #notifBox #notifBoxBody .notification .notifClose {
+  position: absolute;
+  top: 0;
+  right: 0;
+  cursor: pointer;
+  margin-right: 20px;
+}
+
+#content #navBar #navBarIn #navBarNavText #notifsContainer #notifBox #notifBoxBody .notif-inactive::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 5px;
+  position: absolute;
+  left: 0;
+}
+
+#content #navBar #navBarIn #navBarNavText #notifsContainer #notifBox #notifBoxBody .notif-inactive .notifClose {
+  display: none;
+}
+
+#content #navBar #navBarIn #navBarNavText .notifActive::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 99px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: #FC5E79;
+}
+
+#content #navBar #navBarIn #navBarNavText #btnLogin {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+  border: 2px solid #1FDBAE;
+  border-radius: 5px;
+}
+
+#content #navBar #navBarIn #navBarNavText #btnLogin #navMenuIconCont {
+  padding: 8px;
+  background: #1FDBAE;
+  display: flex;
+}
+
+#content #navBar #navBarIn #navBarNavText #btnLogin #navMenuTextCont {
+  padding: 8px;
+}
+
+#content #navBar #navBarIn #navBarNavText #btnLogin #navMenuTextCont span {
+  font-family: "Roboto";
+  color: #004348;
+}
+
+#content #navBar #navBarIn #navBarNavText #logout {
+  font-family: "Roboto", sans-serif;
+  text-decoration: none;
+  color: #004348;
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: center;
+}
+
+#content #navBar #navBarIn #navBarNavText #logout img {
+  margin-right: 5px;
+}
+
+#content #smallblox {
+  width: 1600px;
+  max-width: 1600px;
+  height: 850px;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: unset;
+}
+
+#content #smallblox #videoSection {
+  flex: 1;
+  height: 100%;
+  background-color: #004348;
+  position: relative;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+
+#content #smallblox #videoSection #videoSectionBody {
+  width: 100%;
+  height: 100%;
+  padding: 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoSectionHost {
+  position: absolute;
+  right: 30px;
+  width: 285px;
+  height: 220px;
+  background-color: #F6F9FC;
+  border-radius: 20px;
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoSectionHost #hostVideoPoster {
+  width: 100%;
+  height: 100%;
+  background-image: url("../icon/avatarVideoHost.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoChatControls {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoChatControls div {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoChatControls .videoControlBtn {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 999px;
+  transition: background-color 100ms ease-in-out;
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoChatControls .videoControlBtn img {
+  width: 25px;
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoChatControls .videoControlBtn:not(:last-of-type) {
+  margin-right: 15px;
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoChatControls .videoControlBtn:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoChatControls #videoControl-btnEnd {
+  background-color: #FC5E79;
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoChatControls #videoControl-btnEnd img {
+  transform: rotate(137deg);
+  margin-bottom: -4px;
+}
+
+#content #smallblox #videoSection .videoCorrection {
+  width: 100%;
+  height: 100%;
+  transform: scaleX(-1);
+  position: absolute;
+}
+
+#content #smallblox #videoSection #remoteVideoPoster {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#content #smallblox #videoSection #remoteVideoPoster #remoteVideoPosterImage {
+  width: 275px;
+  height: 275px;
+  background-image: url("../icon/avatarVideoRemote.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 9999px;
+}
+
+#content #smallblox #chatSection {
+  position: relative;
+  flex: none;
+  height: 100%;
+  width: 475px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border: 1px solid #E8EFF6;
+  border-left: none;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+#content #smallblox #chatSection .chatMedecinInfos {
+  width: 100%;
+  height: 66px;
+  flex: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0px 10px;
+  border-bottom: 1px solid #E8EFF6;
+}
+
+#content #smallblox #chatSection .chatMedecinInfos .medecinAvatar {
+  width: 41px;
+  height: 41px;
+  border-radius: 10px;
+  background-color: #E8EFF6;
+  background-position: center;
+  background-repeat: none;
+  background-image: url("../icon/avatarChat.svg");
+  background-repeat: no-repeat;
+}
+
+#content #smallblox #chatSection .chatMedecinInfos .medecinInformations {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  font-family: "Gilroy", sans-serif;
+  margin-left: 10px;
+}
+
+#content #smallblox #chatSection .chatMedecinInfos .medecinInformations .medecinContactName {
+  font-size: 20px;
+  font-weight: 700;
+  color: #004348;
+  text-transform: capitalize;
+}
+
+#content #smallblox #chatSection .chatMedecinInfos .medecinInformations .medecinContactSpacia {
+  color: #C5D7EA;
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+#content #smallblox #chatSection .chatSectionMessages {
+  flex: auto;
+  width: 100%;
+  height: 1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+#content #smallblox #chatSection .chatSectionMessages .messageContainer {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: center;
+}
+
+#content #smallblox #chatSection .chatSectionMessages .messageContainer span {
+  padding: 10px;
+  font-size: 20px;
+  font-family: "Roboto", sans-serif;
+  border-radius: 10px;
+  max-width: 350px;
+}
+
+#content #smallblox #chatSection .chatSectionMessages .messageContainer:not(:last-of-type) {
+  margin-bottom: 10px;
+}
+
+#content #smallblox #chatSection .chatSectionMessages .sentMessage {
+  flex-direction: row-reverse;
+}
+
+#content #smallblox #chatSection .chatSectionMessages .sentMessage span {
+  background-color: #1FDBAE;
+  color: #FFFFFF;
+}
+
+#content #smallblox #chatSection .chatSectionMessages .receivedMessage span {
+  background-color: #E8EFF6;
+  color: #004348;
+}
+
+#content #smallblox #chatSection .bottomTable {
+  flex: none;
+  height: 70px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: center;
+}
+
+#content #smallblox #chatSection .bottomTable .bottomTable-msgInput {
+  flex: 1;
+  padding: 9px;
+  border: none;
+  background: #F6F9FC;
+  border-radius: 10px;
+  font-size: 17px;
+  outline: none;
+  font-family: "Roboto";
+  color: #004348;
+}
+
+#content #smallblox #chatSection .bottomTable .bottomTable-msgInput:focus {
+  border: 1px solid #C5D7EA;
+}
+
+#content #smallblox #chatSection .bottomTable .bottomTable-msgInput::placeholder {
+  font-style: italic;
+  color: #C5D7EA;
+}
+
+#content #smallblox #chatSection .bottomTable .bottomTableBtn {
+  cursor: pointer;
+}
+
+#content #smallblox #chatSection .bottomTable .bottomTableBtn:not(:last-of-type) {
+  margin-right: 10px;
+}
+
+#content #smallblox #chatSection .bottomTable .bottomTable-btnVideo {
+  background-color: #1FDBAE;
+  padding: 7px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: white;
+}
+
+#content #smallblox #chatSection .bottomTable .bottomTable-btnVideo span {
+  margin-left: 5px;
+}
+
+#content #smallblox #chatSection .bottomTable .bottomTable-btnSubmit {
+  background-color: #1FDBAE;
+  padding: 7px;
+  border-radius: 10px;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+}
+
+#content #smallblox #chatSection .bottomTable> :nth-child(3) {
+  margin-left: 20px;
+}
+
+#content .formulaire {
+  display: flex;
+  width: 90%;
+  margin: auto;
+}
+
+#content #form_patient {
+  font-family: "Gilroy", sans-serif;
+  margin-left: 50px;
+  padding: 50px;
+  box-sizing: border-box;
+  width: 48%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+#content #form_patient div {
+  display: flex;
+  margin-top: 40px;
+  margin-right: 30px;
+  align-items: center;
+}
+
+#content #form_patient div div {
+  margin-top: 0px;
+  margin-right: 40px;
+}
+
+#content #form_patient div label {
+  font-size: 20px;
+  font-weight: bold;
+  width: max-content;
+  margin-right: 15px;
+}
+
+#content #form_patient input {
+  font-size: 20px;
+  background-color: #F6F9FF;
+  border-radius: 8px;
+  height: 40px;
+  width: 250px;
+  border-style: none;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+#content #form_patient textarea {
+  font-family: "Gilroy", sans-serif;
+  font-size: 20px;
+  background-color: #F6F9FF;
+  border-radius: 8px;
+  height: 60px;
+  width: 300px;
+  border-style: none;
+  padding: 4px;
+}
+
+#content #form_patient h2 {
+  margin-top: 60px;
+  margin-bottom: -10px;
+  font-size: 31px;
+  color: #004348;
+}
+
+#content #form_patient input[type=file] {
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 15px;
+  width: 290px;
+}
+
+#content #form_patient button {
+  background-color: #1FDBAE;
+  border-style: none;
+  width: 180px;
+  margin: auto;
+  height: 40px;
+  border-radius: 15px;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+  cursor: pointer;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+#content #form_patient button:hover {
+  background-color: #c9c9c9;
+  color: white;
+}
+
+#content .formulaire img {
+  width: 500px;
+  height: 500px;
+  margin: auto;
+}
+
+#content #footer {
+  width: 100%;
+  height: 75px;
+  background-color: #004348;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #FFFFFF;
+  font-size: 18px;
+  font-family: "Gilroy", sans-serif;
+  font-weight: 400;
+}
+
+/*# sourceMappingURL=patient_1_OCP.css.map */
+footer {
+  width: 100%;
+  margin-top: 50px;
+  font-family: 'Gilroy';
+}
+
+.part1 {
+  height: 440px;
+  width: 100%;
+  background-image: url('../img/docts.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.part1 .parags {
+  display: flex;
+  width: 80%;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  margin: auto;
+  justify-content: space-between;
+}
+
+.part1 .parags .parag1 {
+  width: 350px;
+
+}
+
+.part1 .parags .parag2 {
+  width: 350px;
+}
+
+.part1 .parags .parag3 {
+  width: 350px;
+  letter-spacing: 0.5px;
+}
+
+.part1 .parags h1 {
+  text-align: center;
+  color: white;
+}
+
+.part1 .parags h1:hover {
+  color: #1FDBAE;
+  cursor: pointer;
+}
+
+.part1 .parags hr {
+  width: 180px;
+  margin: auto;
+  height: 1.5px;
+  background-color: #1FDBAE;
+  border: none;
+  margin-bottom: 30px;
+  margin-top: -15px;
+}
+
+.part1 .parags p {
+  color: #DDDDDD;
+  font-size: 16px;
+  text-align: center;
+  line-height: 26px;
+}
+
+.part1 .parags .parag1 ul {
+  padding-left: 40px;
+  font-size: 16px;
+  color: rgb(172, 172, 172);
+  margin-top: -8px;
+}
+
+.part1 .parags .parag1 ul li {
+  margin-bottom: 2px;
+  letter-spacing: 2px;
+}
+
+.part1 .parags .parag2 div {
+  display: flex;
+  align-items: center;
+  width: 60%;
+  margin: auto;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: rgb(172, 172, 172);
+}
+
+.part1 .parags .parag2 div img {
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+
+.part2 {
+  padding: 6px;
+  text-align: center;
+  background: #004348;
+  line-height: 25px;
+  color: #fff;
+  font-family: 'Gilroy';
+  font-size: 15px;
+  letter-spacing: 2px;
+}
+
+.part2 span {
+  background-image: url('../img/vert.png');
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-animation: fire 2s linear infinite;
+  animation: fire 2s linear infinite;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+}
+
+@keyframes fire {
+  0% {
+    background-position: 0% -50%;
+  }
+
+  0% {
+    background-position: 100% -50%;
+  }
+}
+
+
+
+@media screen and (max-width: 1200px) {
+  .formulaire {
+    flex-direction: column;
+    width: 98%;
+    margin: auto;
+  }
+
+  #form_patient {
+    width: 90%;
+    margin: auto;
+    margin-left: 0px;
+    padding: 0px;
+  }
+
+  .formulaire img {
+    width: 450px;
+  }
+
+  #form_patient div {
+    width: 85%;
+    margin: auto;
+    display: flex;
+    margin-right: 0px;
+  }
+
+  #form_patient h2 {
+    text-align: center;
+  }
+
+  #form_patient div label {
+    font-size: 18px;
+    font-weight: bold;
+    width: max-content;
+    margin-right: 15px;
+    margin-bottom: 10px;
+  }
+
+  #form_patient div {
+    display: flex;
+    flex-direction: column;
+    margin-top: 40px;
+    margin-right: 30px;
+    align-items: flex-start;
+  }
+
+  #form_patient div div {
+    margin-left: -5px;
+    margin-top: 40px;
+    margin-right: 0px;
+    width: 100%;
+  }
+
+  #form_patient h2:first-of-type {
+    margin-bottom: -50px;
+  }
+
+  #form_patient div div input {
+    width: 100%;
+  }
+
+  #form_patient input {
+    width: 100%;
+  }
+
+  #form_patient textarea {
+    width: 100%;
+  }
+
+
+
+
+
+  .partContact {
+    width: 90%;
+    flex-direction: column;
+    margin-bottom: 500px;
+  }
+
+  .appel {
+    height: 400px;
+    width: 100%;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+
+  .Imgs div {
+    width: 450px;
+  }
+
+  .icons div {
+    height: 50px;
+    width: 50px;
+  }
+
+  .icons img {
+    height: 25px;
+    width: 15px;
+    margin-top: -20px;
+    margin-left: -8px;
+  }
+
+  #video {
+    height: 15px;
+    width: 23px;
+    margin-top: -80px;
+    margin-left: -10px;
+    margin-bottom: 3px;
+  }
+
+  .icons .divApp {
+    height: 55px;
+    width: 60px;
+  }
+
+  .icons #appel {
+    height: 40px;
+    width: 35px;
+    margin-top: -20px;
+    margin-left: -18px;
+  }
+
+  .popup {
+    width: 35%;
+  }
+
+  .popup img {
+    width: 130px;
+    height: 170px;
+    margin-top: -290px;
+    margin-right: 10px;
+  }
+
+  .message {
+    width: 100%;
+    margin: auto;
+  }
+
+
+
+  .part1 {
+    height: 100%;
+    width: 100%;
+    padding-bottom: 100px;
+  }
+
+  .part1 .parags {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding-top: 0px;
+    padding-bottom: 20px;
+  }
+
+  .part1 .parags div {
+    width: 100%;
+    margin: auto;
+    margin-bottom: -40px;
+  }
+}
+
+
+
+/*# sourceMappingURL=patient_1_OCP.css.map */

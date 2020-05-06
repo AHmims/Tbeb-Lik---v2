@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/patient_1_OCP.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="../js/simplepeer.min.js"></script>
+    <!-- <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script> -->
+    <title>Contact</title>
+</head>
+
+<body>
+    <div id="content">
+        <header id="navBar">
+            <div id="navBarIn">
+                <a href="#">
+                    <img src="../icon/logo_full.svg" alt="logo" id="navBarLogo">
+                </a>
+                <div id="navBarNavText">
+                    <a href="#" id="btnNotif" class="notifActive">
+                        <img src="../icon/bellDark.svg" alt="">
+                    </a>
+                    <a href="#" id="logout">
+                        <img src="../icon/logout.svg" alt="">
+                        Se déconnecter
+                    </a>
+                </div>
+            </div>
+        </header>
+        <div id="smallblox">
+            <div id="videoSection">
+                <video id="remoteVideo" autoplay class="videoCorrection"></video>
+                <div id="remoteVideoPoster">
+                    <div id="remoteVideoPosterImage">
+                    </div>
+                </div>
+                <div id="videoSectionBody">
+                    <div id="videoSectionHost">
+                        <video id="clientVideo" autoplay class="videoCorrection"></video>
+                        <div id="hostVideoPoster">
+                        </div>
+                    </div>
+                    <div id="videoChatControls">
+                        <div class="videoControlBtn">
+                            <img src="../icon/mic-on.svg" alt="mic-on">
+                        </div>
+                        <div class="videoControlBtn" id="videoControl-btnEnd">
+                            <img src="../icon/phone.svg" alt="hangup">
+                        </div>
+                        <div class="videoControlBtn">
+                            <img src="../icon/camera-on.svg" alt="camera-on">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="chatSection">
+                <div class="chatMedecinInfos">
+                    <div class="medecinAvatar">
+                    </div>
+                    <div class="medecinInformations">
+                        <span class="medecinContactName">
+                            Nom Médecin
+                        </span>
+                        <span class="medecinContactSpacia">
+                            Proféssion
+                        </span>
+                    </div>
+                </div>
+                <!--  -->
+                <div class="chatSectionMessages">
+                </div>
+                <!-- <div class="chatSectionControls"> -->
+                <div class="bottomTable bottomTableMedecin">
+                    <input type="text" class="bottomTable-msgInput" id="msgInput" placeholder="Votre message text..."
+                        style="margin: 0px 15px;">
+                    <img src="../icon/doc2.svg" class="bottomTable-btnDoc bottomTableBtn" id="msgDoc">
+                    <img src="../icon/send2.svg" class="bottomTable-msgSend bottomTableBtn" id="msgSend">
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="../js/mods/worker_patient_contact.js"></script>
+    <script src="../js/mods/socket_patient.js"></script>
+</body>
+
+</html>

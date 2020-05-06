@@ -1,0 +1,75 @@
+@use 'colors';
+@use 'display';
+@use 'values';
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap');
+
+// 
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+// 
+#content {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding-top: 96px;
+    user-select: none;
+    // 
+    @include display.flex(column, unset, center);
+
+    #form {
+        margin-top: 77px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 18px;
+        @include display.flex(column, unset, center);
+
+        h1 {
+            margin: 0;
+            color: colors.$accent-mint;
+            font-size: 28px;
+            font-weight: 700;
+            // text-align: center;
+            margin-bottom: 23px;
+        }
+
+        .inputCont {
+            @include display.flex(column, flex-start, unset);
+            margin-bottom: 20px;
+
+            span {
+                font-weight: 500;
+                color: colors.$dark;
+                margin-bottom: 10px;
+            }
+
+            input {
+                width: 368px;
+                height: 35px;
+                border: none;
+                background: colors.$form;
+                padding: 0;
+                padding-left: 5px;
+                border: 1px solid colors.$form-mid;
+                border-radius: 5px;
+                color: colors.$dark;
+            }
+        }
+
+        #btnLogin {
+            padding: 10px 40px;
+            background: colors.$accent;
+            color: colors.$white;
+            font-weight: 600;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    }
+}

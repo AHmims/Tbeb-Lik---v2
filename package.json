@@ -1,0 +1,27 @@
+{
+  "name": "tbeb-lik",
+  "version": "1.0.0",
+  "description": "Tbeb-Lik",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AHmims/Tbeb-Lik.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AHmims/Tbeb-Lik/issues"
+  },
+  "homepage": "https://github.com/AHmims/Tbeb-Lik#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "fs-extra": "^9.0.0",
+    "lodash": "^4.17.15",
+    "mysql2": "^2.1.0",
+    "socket.io": "^2.3.0"
+  }
+}

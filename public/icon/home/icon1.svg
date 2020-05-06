@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="48px" height="48px" viewBox="0 0 48 48" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 62 (91390) - https://sketch.com -->
+    <title>Agile Workflows</title>
+    <desc>Created with Sketch.</desc>
+    <g id="Agile-Workflows" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Group-9-Copy-2">
+            <rect id="Rectangle-Copy" x="0" y="0" width="48" height="48"></rect>
+            <g id="Group-3" transform="translate(4.864830, 3.688221)">
+                <g id="Group-20-Copy">
+                    <g id="Group-2" transform="translate(0.444444, 0.333333)">
+                        <path d="M-2.55795385e-14,20.5061035 C1.8056296,14.8205799 8.19355046,9.64634027 15.6314363,10.5691057 C23.567022,11.5536172 30.9565432,8.91919736 37.8,2.66584625" id="Path-14" stroke="#050038" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        <polyline id="Path-15" stroke="#050038" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" transform="translate(35.702366, 4.032999) rotate(20.000000) translate(-35.702366, -4.032999) " points="33.0254723 4.03299908 37.4645457 1.31118707 38.3792592 6.75481109"></polyline>
+                        <circle id="Oval-Copy-9" fill="#FFBFBF" cx="15.6314363" cy="10.5691057" r="3.72899729"></circle>
+                        <path d="M14.9116252,40.4248605 C9.56041612,38.8935133 3.96178149,30.9932522 3.6032302,30.564126 C2.49531373,29.2381346 3.0657707,27.8830029 4.39680178,27.8830029 C5.57132724,27.8830029 8.30371524,29.226605 12.5939658,31.9138092 C12.6311142,31.012719 12.0026712,19.3095226 12.5939658,14.6732172 C12.7060992,13.7939858 12.8643474,12.6537947 13.6674936,12.2460467 C14.5295408,11.8083954 15.7951635,12.5500446 16.1438387,14.4702888 C16.776309,17.9534652 17.891523,23.8133226 17.891523,24.2063739 C18.3084059,23.0840429 18.5601733,21.9498649 19.3339891,19.7914543 C20.1078049,16.9553106 22.5362182,16.1646218 22.9064768,19.965804 C22.9853933,20.7759839 23.1454022,22.4538621 23.3865034,24.9994386 C23.4391148,23.4894864 23.645515,21.9760551 24.0057037,20.4591446 C24.4179139,18.7231499 26.5681123,18.7990664 27.0900056,20.4591446 C27.7040481,22.4123377 29.4281265,31.4075954 27.9314606,35.8172212 C26.3224549,40.5578337 20.2628343,41.9562077 14.9116252,40.4248605 Z" id="Path-133-Copy-6" stroke="#050038" stroke-width="2" fill="#FFFFFF" fill-rule="nonzero" stroke-linecap="round" stroke-linejoin="round" transform="translate(15.771415, 26.571121) rotate(5.000000) translate(-15.771415, -26.571121) "></path>
+                    </g>
+                </g>
+                <g id="Group" transform="translate(0.865631, 4.089355)" stroke="#050038" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <line x1="3.12573826e-14" y1="9.66067504e-14" x2="4.69954276" y2="4.78637695" id="Path-13-Copy" transform="translate(2.349771, 2.393188) scale(-1, 1) translate(-2.349771, -2.393188) "></line>
+                    <line x1="1.02311656e-13" y1="9.66067504e-14" x2="4.69954276" y2="4.78637695" id="Path-13-Copy-2"></line>
+                </g>
+                <g id="Group-Copy" transform="translate(32.730273, 16.053060)" stroke="#050038" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <line x1="3.12573826e-14" y1="9.66067504e-14" x2="4.69954276" y2="4.78637695" id="Path-13-Copy" transform="translate(2.349771, 2.393188) scale(-1, 1) translate(-2.349771, -2.393188) "></line>
+                    <line x1="1.02311656e-13" y1="9.66067504e-14" x2="4.69954276" y2="4.78637695" id="Path-13-Copy-2"></line>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>
