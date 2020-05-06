@@ -48,6 +48,10 @@ __APP.get('/patient/contact', (req, res) => {
     res.sendFile(__PATH.join(__dirname, 'public', 'html', 'patientChat.html'));
 });
 // 
+__APP.post('/userTypeById', async (req, res) => {
+    let result = await _DB.getTypeById(req.body.matricule);
+    res.end(result);
+});
 // 
 // 
 //START SERVER
