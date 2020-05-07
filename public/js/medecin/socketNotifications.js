@@ -7,5 +7,6 @@ __GLOBAL_SOCKET.on('connect', () => {
 });
 // 
 __HUB_SOCKET.on('receivedNotification', data => {
-    console.log(data);
+    console.log('receivedNotification : notifData => ', data);
+    generateNotification([data]);
 });
