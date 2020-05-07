@@ -49,9 +49,16 @@ __APP.get('/patient/contact', (req, res) => {
 });
 // 
 __APP.post('/userTypeById', async (req, res) => {
-    console.log(req.body);
     let result = await _DB.getTypeById(req.body.matricule);
     res.end(result);
+});
+__APP.post('/listeConsultationFields', async (req, res) => {
+    let villes = await _DB.getVilles();
+    let proffesionns = await _DB.getDataAll("specialites", '');
+    res.end(JSON.stringify({
+        villes: villes,
+        proffess: proffesionns
+    }));
 });
 // 
 // 

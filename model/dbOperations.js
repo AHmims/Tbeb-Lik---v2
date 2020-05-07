@@ -60,6 +60,20 @@ async function getTypeById(id) {
         console.error('error :', err);
     }
 }
+// 
+async function getVilles() {
+    try {
+        let req = `SELECT distinct(VILLE) FROM medecin;`,
+            cnx = await db.connect(),
+            res = await cnx.query(req);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0] : [];
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// 
 //#endregion
 // 
 //#region HELPER FUNCTIONS
@@ -101,6 +115,7 @@ function removeLastChar(str) {
 module.exports = {
     insertData,
     getDataAll,
-    getTypeById
+    getTypeById,
+    getVilles
 }
 // 
