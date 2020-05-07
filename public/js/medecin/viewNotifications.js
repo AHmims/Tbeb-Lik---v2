@@ -23,6 +23,7 @@ function makeNotificationBox(data) {
     btn.setAttribute('data-notifId', data.index);
     btn.onclick = () => {
         console.log('clicked => ', btn.getAttribute('data-notifId'));
+        acceptNotification(btn.getAttribute('data-notifId'));
     }
     btnCol.appendChild(btn);
     btnRow.appendChild(btnCol);

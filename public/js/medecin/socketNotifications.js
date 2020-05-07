@@ -10,3 +10,9 @@ __HUB_SOCKET.on('receivedNotification', data => {
     console.log('receivedNotification : notifData => ', data);
     generateNotification([data]);
 });
+// 
+// 
+// FUNCTIONS CALLED FROM >VIEW
+function acceptNotification(nId) {
+    __GLOBAL_SOCKET.emit('acceptNotif', nId);
+}

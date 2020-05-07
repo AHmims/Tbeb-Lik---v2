@@ -218,6 +218,19 @@ async function getLastInsertedNotification(userId) {
     }
 }
 // 
+async function getRoomIdByNotifId(notifId) {
+    try {
+        let req = `SELECT p.ACCEPTE,r.ID_ROOM,r.MATRICULE_PAT FROM preConsultation AS p,room AS r WHERE p.MATRICULE_PAT = r.MATRICULE_PAT AND p.ID_PRECONS = ?`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [notifId]);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0][0] : null;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// 
 //#endregion
 // 
 //#region HELPER FUNCTIONS
@@ -266,8 +279,10 @@ module.exports = {
     getTypeById,
     getVilles,
     getOnlineMedecinsWithCityAndProffession,
+    checkExistence,
     consultationCheck,
     getPatientPreConsultationDataById,
-    getLastInsertedNotification
+    getLastInsertedNotification,
+    getRoomIdByNotifId
 }
 // 

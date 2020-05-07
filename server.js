@@ -115,6 +115,66 @@ __IO.on('connection', socket => {
             }
         }
     });
+    socket.on('acceptNotif', async (notifId) => {
+        console.log('------');
+        // TO STAY IN THE CLEAR HOW NOTIFICATIONS WORKS,
+        // A DOCOTR ACCEPTS THE NOTIFICATION WHICH RESULTS INSENDING
+        // A SOCKET TO ALL ASSOCIATED MEDECINS TO REMOVE THE NOTIF BOX
+        // FOR THEM. ALL GOOD RIGHT ?
+        // NO!! WHAT IF THEY HAVE SLOW INTERNET ?
+        // DOCTOR A WILL ACCEPT THE NOTIFICATION BUT DOCOTR B STILL HAVE IT DISPLAYED IN HIS UI
+        // BECAUSE SLOW INETNET REMEMEBER ?
+        // TO STAY SAFE, LETS DO A CHECK FOR THE NOTIFICATION AND SEE IF IT'S ACCEPTED OR NOT
+        // IF NOT PROCCED SAFELY
+        // IF IT WAS ACCEPTED RETURN AN ERROR TO THE SENDER INFORMING THEM 
+        // THAT THE NOTIFICATION WAS ACCEPTED
+        // 
+        let conultationCheck = await _DB.checkExistence({
+            table: 'consultation',
+            id: 'ID_PRECONS'
+        }, notifId, '');
+        // 
+        if (!conultationCheck) {
+            let medecin = await _DB.getAppUserCustomDataBySocket(["ID_USER"], socket.id);
+            if (medecin != null) {
+                console.log('acceptNotif() | medecin => ', medecin);
+                let room = await _DB.getRoomIdByNotifId(notifId);
+                if (room != null) {
+                    console.log('acceptNotif() | room => ', room);
+                    // 
+                    let patientUpdate = await _DB.customDataUpdate({
+                        MATRICULE_MED: medecin.ID_USER
+                    }, room.MATRICULE_PAT, {
+                        table: "appUser",
+                        id: "ID_USER"
+                    });
+                    console.log('acceptNotif() | patientUpdate => ', patientUpdate);
+                    // 
+                    let roomUpdate = await _DB.customDataUpdate({
+                        MATRICULE_MED: medecin.ID_USER
+                    }, room.ID_ROOM, {
+                        table: "room",
+                        id: "ID_ROOM"
+                    });
+                    console.log('acceptNotif() | roomUpdate => ', roomUpdate);
+                    // 
+                    let notificationUpdate = await _DB.customDataUpdate({
+                        ACCEPTE: true
+                    }, notifId, {
+                        table: "preConsultation",
+                        id: "ID_PRECONS"
+                    });
+                    console.log('acceptNotif() | notificationUpdate => ', notificationUpdate);
+                    // 
+                    let consultationInsert = await _DB.insertData(new _CLASSES.consultation(-1, new Date(Date.now()), medecin.ID_USER, '', notifId));
+                    console.log('acceptNotif() | consultationInsert => ', consultationInsert);
+                } else
+                    console.log('acceptNotif() | room not found');
+            } else
+                console.log('acceptNotif() | medecin not found');
+        } else
+            console.log('acceptNotif() | consultation deja accepté');
+    });
     socket.on('disconnect', async () => {
         console.log('--------');
         let appUserData = await _DB.getAppUserCustomDataBySocket(["ID_USER", "TYPE_USER", "MATRICULE_MED"], socket.id);
