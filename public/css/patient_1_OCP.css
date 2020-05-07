@@ -1,0 +1,802 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
+@font-face {
+  font-family: "Gilroy";
+  src: url("../../app/font/Gilroy-Bold.ttf");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("../../app/font/Gilroy-Medium.ttf");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("../../app/font/Gilroy-Regular.ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.row{
+
+  height: 50px;
+
+}
+.row2{
+  height: 100px;
+}
+
+#content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: unset;
+}
+#content #navBar {
+  width: 100%;
+  height: 90px;
+  box-sizing: border-box;
+  padding-left: 200px;
+  padding-right: 200px;
+  box-sizing: border-box;
+}
+@media screen and (max-width: 1200px) {
+  #content #navBar {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+}
+@media screen and (max-width: 1000px) {
+  #content #navBar {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+}
+#content #navBar #navBarIn {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#content #navBar #navBarIn #navBarNavText {
+  font-family: "Roboto", sans-serif;
+  font-weight: 500;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: center;
+}
+#content #navBar #navBarIn #navBarNavText > *:not(:last-child) {
+  margin-right: 20px;
+}
+#content #navBar #navBarIn #navBarNavText #btnNotif {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: center;
+}
+#content #navBar #navBarIn #navBarNavText .notifActive::after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 99px;
+  position: absolute;
+  right: 0;
+  top: 0;
+  background-color: #FC5E79;
+}
+#content #navBar #navBarIn #navBarNavText #btnLogin {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  user-select: none;
+  border: 2px solid #1FDBAE;
+  border-radius: 5px;
+}
+#content #navBar #navBarIn #navBarNavText #btnLogin #navMenuIconCont {
+  padding: 8px;
+  background: #1FDBAE;
+  display: flex;
+}
+#content #navBar #navBarIn #navBarNavText #btnLogin #navMenuTextCont {
+  padding: 8px;
+}
+#content #navBar #navBarIn #navBarNavText #btnLogin #navMenuTextCont span {
+  font-family: "Roboto";
+  color: #004348;
+}
+#content #navBar #navBarIn #navBarNavText #logout {
+  font-family: "Roboto", sans-serif;
+  text-decoration: none;
+  color: #004348;
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: center;
+}
+#content #navBar #navBarIn #navBarNavText #logout img {
+  margin-right: 5px;
+}
+#content #main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: unset;
+  align-items: center;
+}
+#content #main lottie-player {
+  width: 500px;
+  height: fit-content;
+}
+#content #main #form {
+  display: flex;
+  flex-direction: column;
+  justify-content: unset;
+  align-items: center;
+}
+#content #main #form h1 {
+  font-family: "Gilroy", sans-serif;
+  font-weight: 700;
+  color: #004348;
+  font-size: 36px;
+  margin: 0;
+  margin-bottom: 15px;
+}
+#content #main #form #formDropDown {
+  width: 550px;
+  border: 2px solid #C5D7EA;
+  display: flex;
+  flex-direction: column;
+  justify-content: unset;
+  align-items: unset;
+  font-family: "Roboto", sans-serif;
+  color: #004348;
+  border-radius: 10px;
+  overflow: hidden;
+  user-select: none;
+  cursor: pointer;
+}
+#content #main #form #formDropDown #formDropDownSelected {
+  font-size: 28px;
+  background-color: #FFFFFF;
+  color: #004348;
+}
+#content #main #form #formDropDown .formDropDownItem {
+  padding: 7.5px 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 26px;
+  color: #C5D7EA;
+  background-color: #F6F9FC;
+}
+#content #main #form #formDropDown .formDropDownItem:hover {
+  background-color: #FFFFFF;
+}
+#content #main #form #formDropDown #formDropDownExtension {
+  height: 0;
+}
+footer {
+  width: 100%;
+  height: 75px;
+  background-color: #004348;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #FFFFFF;
+  font-size: 18px;
+  font-family: "Gilroy", sans-serif;
+  font-weight: 400;
+  margin-top: 90px;
+}
+.formulaire{
+  display: flex;
+  width:90%;
+  margin:auto;
+}
+#form_patient{
+  font-family: "Gilroy", sans-serif;
+  margin-left: 50px;
+  padding: 50px;
+  box-sizing: border-box;
+  width:48%;
+  margin:auto;
+  display :flex;
+  flex-direction: column;
+}
+#form_patient div{
+  display:flex;
+  margin-top:40px;
+  margin-right: 30px;
+  align-items: center;
+}
+#form_patient div div{
+  margin-top:0px;
+  margin-right:40px;
+}
+#form_patient div label{
+  font-size: 20px;
+  font-weight: bold;
+  width: max-content;
+  margin-right: 15px;
+}
+#form_patient input{
+  font-size: 20px;
+  background-color: #F6F9FF;
+  border-radius: 8px;
+  height: 40px;
+  width:250px;
+  border-style: none;
+  padding:10px;
+  box-sizing: border-box;
+}
+#form_patient textarea{
+  font-family: "Gilroy", sans-serif;
+  font-size: 20px;
+  background-color: #F6F9FF;
+  border-radius: 8px;
+  height: 60px;
+  width:300px;
+  border-style: none;
+  padding:4px;
+}
+#form_patient h2{
+  margin-top: 60px;
+  margin-bottom: -10px;
+  font-size:31px;
+  color:#004348;
+}
+#form_patient input[type="file"]{
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 15px;
+  width:290px;
+}
+#form_patient button{
+  background-color:#1FDBAE;
+  border-style: none;
+  width:180px;
+  margin: auto;
+  height:40px;
+  border-radius: 15px;
+  color:white;
+  font-weight: bold;
+  font-size: 20px;
+  cursor: pointer;
+  margin-bottom: 40px;
+  text-align: center;
+}
+#form_patient button:hover{
+  background-color: rgb(201, 201, 201);
+  color: rgb(255, 255, 255);
+}
+
+.formulaire img{
+  width:500px;
+  height:500px;
+  margin: auto;
+}
+
+
+
+.partContact{
+width:80%;
+margin: auto;
+height: 700px;
+display: flex;
+margin-top: 60px;
+margin-bottom: 60px;
+}
+.appel{
+  height: 100%;
+  width:65%;
+  background-color: #004348;
+  border-bottom-left-radius: 15px;
+  border-top-left-radius: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.imUser{  
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  justify-content: center;
+}
+.imgUser{
+  height:200px;
+  width: 170px;
+  position: relative;
+	top:50%;
+	left:50%;
+	margin-top:-100px;	
+	margin-left:-95px;
+}
+.Imgs{
+  display: flex;
+  width: 100%;
+  height: 100px;
+}
+.Imgs div{
+  width: 33%;
+}
+.Imgs .icons{
+  display: flex;
+  justify-content: space-between;
+  height: 100px;
+  width: 30%;
+  margin: auto;
+  
+}
+.icons div{
+  height:60px;
+  width: 60px;
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 40px;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  cursor: pointer;
+}
+.icons div:hover{
+  background-color: rgba(255, 255, 255, 0.2);
+}
+.icons img{
+  height:35px;
+  width: 25px;
+  position: relative;
+  top:50%;
+  left:50%;
+  margin-top: -20px;
+  margin-left: -12px;
+}
+#video{
+  height:23px;
+  width: 33px;
+  margin-top: -30px;
+  margin-left: -14px;
+  margin-bottom: 3px;
+}
+.icons .divApp{
+  height:65px;
+  width: 80px;
+  background-color: rgb(255, 17, 57);
+  border-radius: 20px;
+  align-items: center;
+  justify-content: center;
+  justify-items: center;
+  cursor: pointer;
+  margin-top: -5px;
+}
+.icons #appel{
+  height:60px;
+  width: 65px;
+  margin-top: -28px;
+  margin-left: -30px;
+}
+.popup{
+  height: 100px;
+  justify-content: right;
+  width: 25%;
+}
+.popup img{
+  width: 230px;
+  height: 170px;
+  float: right;
+  border-radius: 10px;
+  margin-top:-90px;
+  margin-right: 10px;
+}
+
+.message{
+  font-family: "Gilroy", sans-serif;
+  height: 100%;
+  width: 35%;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #c4c4c4;
+  box-sizing: border-box;
+}
+.medInfos{
+  display: flex;
+  height: 70px;
+  border-bottom: 1px solid #c4c4c4;
+  padding-left: 10px;
+}
+.medInfos img{
+  margin:4px;
+}
+.infos{
+  display: flex;
+  flex-direction: column;
+  margin:9px;
+}
+.infos span:first-of-type{
+  font-weight: bold;
+  font-size: 20px;
+  margin-bottom: 5px;
+}
+.msgs{
+ height: 570px;
+ overflow-y: scroll;
+ scroll-behavior: auto;
+}
+.msgs p {
+  background-color: #F6F9FC;
+  height:fit-content;
+  border-radius: 10px;
+  padding:10px;
+  font-size: 18px;
+  width: fit-content;
+  margin-left: 5px;
+  margin-right: 5px;
+  clear: right;
+  max-width: 55%;
+  word-wrap: break-word;
+  margin-bottom: -15px;
+}
+.msgs .msgUser{
+  background-color:#1FDBAE;
+  float: right;
+  color:white;
+  margin-bottom: 1px;
+ 
+}
+.writeMsg{
+  display: flex;
+  width: 98%;
+  margin: auto;
+  margin-top:5px;
+  
+}
+#write{
+  width: 320px;
+  background-color: #F6F9FC;
+  color: rgb(129, 129, 129);
+  height: 45px;
+  border-radius: 23px;
+  font-size: 18px;
+  border-style: none;
+  padding:10px;
+  box-sizing: border-box;
+}
+.writeMsg button{
+  background-color: white;
+  border-style: none;
+  cursor: pointer;
+}
+footer{
+  margin-top:116px;
+  font-family: 'Gilroy';
+}
+
+.part1{
+  height:440px;
+  width: 100%;
+  background-image: url('../img/docts.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.part1 .parags{
+  display: flex;
+  width:80%;
+  padding-top: 100px;
+  padding-bottom: 100px;
+  margin:auto;
+  justify-content: space-between;
+}
+.part1 .parags .parag1{
+  width:350px;
+  
+}
+.part1 .parags .parag2{
+  width:350px;
+}
+
+.part1 .parags .parag3{
+  width:350px;
+  letter-spacing: 0.5px;
+}
+.part1 .parags h1{
+  text-align: center;
+  color: white;
+}
+
+.part1 .parags h1:hover{
+  color:#1FDBAE ;
+  cursor: pointer;
+}
+
+.part1 .parags hr{
+  width: 180px;
+  margin:auto;
+  height: 1.5px;
+  background-color: #1FDBAE;
+  border: none;
+  margin-bottom:30px;
+  margin-top:-15px;
+}
+
+.part1 .parags p{
+  color:#DDDDDD;
+  font-size: 16px;
+  text-align: center;
+  line-height: 26px;
+}
+
+.part1 .parags .parag1 ul{
+  padding-left: 40px;
+  font-size: 16px;
+  color:rgb(172, 172, 172);
+  margin-top: -8px;
+}
+
+.part1 .parags .parag1 ul li{
+  margin-bottom: 2px;
+  letter-spacing: 2px;
+}
+
+.part1 .parags .parag2 div{
+  display: flex;
+  align-items: center;
+  width: 60%;
+  margin: auto;
+  margin-bottom: 10px;
+  font-size: 16px;
+  color:rgb(172, 172, 172);
+}
+.part1 .parags .parag2 div img{
+  margin-right: 10px;
+  cursor: pointer;
+}
+
+
+  .part2{
+    padding: 6px;
+    text-align: center;
+    background: #004348;
+    line-height: 25px;
+    color: #fff;
+    font-family: 'Gilroy';
+    font-size: 15px;
+    letter-spacing: 2px;
+  }
+  
+  .part2 span{  
+  background-image: url('../img/vert.png');
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-animation: fire 2s linear infinite;
+  animation: fire 2s linear infinite;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  }
+  @keyframes fire{
+    0%{background-position: 0% -50%;}
+    0%{background-position: 100% -50%;}
+  }
+  
+
+
+@media screen and (max-width: 1200px) {
+  .formulaire{
+    flex-direction: column;
+    width: 98%;
+    margin: auto;
+  }
+  #content #main #form h1 {
+    font-family: "Gilroy", sans-serif;
+    font-weight: 700;
+    color: #004348;
+    font-size: 25px;
+    margin: 0;
+    margin-bottom: 15px;
+  }
+  #form_patient{
+    width: 90%;
+    margin: auto;
+    margin-left: 0px;
+  padding: 0px;
+  }
+  .formulaire img{
+    width:450px;
+  }
+  #form_patient div{
+    width:85%;
+    margin: auto;
+    display:flex;
+    margin-right: 0px;
+  }
+  #form_patient h2{
+    text-align: center;
+  }
+  #form_patient div label{
+    font-size: 18px;
+    font-weight: bold;
+    width: max-content;
+    margin-right: 15px;
+    margin-bottom: 10px;
+  }
+  #form_patient div{
+    display:flex;
+    flex-direction: column;
+    margin-top:40px;
+    margin-right: 30px;
+    align-items: flex-start;
+  }
+  #form_patient div div{
+    margin-left:-5px;
+    margin-top:40px;
+    margin-right: 0px;
+    width:100%;
+  }
+  #form_patient h2:first-of-type{
+    margin-bottom:-50px;
+  }
+  #form_patient div div input{
+    width:100%;
+  }
+  #form_patient input{
+    width:100%;
+  }
+  #form_patient textarea{
+    width:100%;
+  }
+
+
+  
+
+
+  
+.partContact{
+  width:90%;
+  flex-direction: column;
+  margin-bottom: 500px;
+  }
+  .appel{
+    height: 400px;
+    width:100%;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
+  .Imgs div{
+    width: 450px;
+  }
+  .icons div{
+    height:50px;
+    width: 50px;
+  }
+  .icons img{
+    height:25px;
+    width: 15px;
+    margin-top: -20px;
+    margin-left: -8px;
+  }
+  #video{
+    height:15px;
+    width: 23px;
+    margin-top: -80px;
+    margin-left: -10px;
+    margin-bottom: 3px;
+  }
+  .icons .divApp{
+    height:55px;
+    width: 60px;
+  }
+  .icons #appel{
+    height:40px;
+    width: 35px;
+    margin-top: -20px;
+    margin-left: -18px;
+  }
+  .popup{
+    width: 35%;
+  }
+  .popup img{
+    width: 130px;
+    height: 170px;
+    margin-top:-290px;
+    margin-right: 10px;
+  }
+  .message{
+    width: 100%;
+    margin: auto;
+  }
+
+
+  
+  .part1{
+    height:100%;
+    width: 100%;
+    padding-bottom: 100px;
+  }
+  .part1 .parags{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding-top: 0px;
+    padding-bottom: 20px;
+  }
+  .part1 .parags div{
+    width: 100%;
+    margin: auto;
+    margin-bottom:-40px;
+  }
+}
+
+/*select*/
+.container{
+  max-width: 1000px;
+  margin:0 auto;
+}
+.select-box{
+  width: 300px;
+  position: relative;
+}
+.select-box select{
+  height: 42px;
+  padding: 10px 15px;
+  line-height: 22px;
+  font-size: 16px;
+  width: 100%;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  /* -webkit-appearance:none;
+  appearance: none;*/
+  appearance: none;
+  outline: none; 
+}
+.select-box:after{
+  content: "";
+  position: absolute;
+  right: 8px;
+  top:50%;
+  margin-top: -4px;
+  margin-top: 8px solid #1FDBAE;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  outline: none;
+  pointer-events: none;
+}
+.select-box select:focus{
+  border: 2px solid #1FDBAE;
+}
+
+/*btn*/
+#btnLogin {
+  padding: 10px 40px;
+  background: #1FDBAE;
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  margin-top: 70px;
+  outline: none;
+}

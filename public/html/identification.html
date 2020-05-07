@@ -4,11 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Identification</title>
+    <link rel="stylesheet" href="../css/login_OCP.css">
+    <title>PlayGround</title>
 </head>
 
 <body>
-    <h1 style="text-align: center;">Login page</h1>
+    <div id="content">
+        <img src="../img/Logo_vertical.svg" alt="logo">
+        <form method="post"  > 
+            <div id="form">
+                <h1>Identification</h1>
+                <div class="inputCont">
+                    <span>Matricule :</span>
+                    <input type="text" name="matricule">
+                </div>
+                <div class="inputCont">
+                    <span>Mot de passe :</span>
+                    <input type="password" name="mdp">
+                </div>
+                <button  type="submit" name="login" id="btnLogin">Login</button>
+            </div>
+        </form >
+    </div >
+    <div style="height:100px"></div>
+    <script src="../js/login_ocp.js"></script>
 </body>
 
 </html>

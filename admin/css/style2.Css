@@ -1,0 +1,67 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
+@font-face {
+  font-family: "Gilroy";
+  src: url("../app/font/Gilroy-Bold.ttf");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("../../app/font/Gilroy-Medium.ttf");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("../../app/font/Gilroy-Regular.ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+*{
+    box-sizing: border-box;
+   
+   
+
+}
+.admin{
+  margin-top: 62px;
+}
+.help-inline{
+  color: red;;
+}
+form{
+  margin-left: 50px;
+}
+#formulaire{
+    margin-bottom: 40px;
+}
+#footer{
+    width: 100%;
+    height: 75px;
+    background-color: #004348;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #FFFFFF;
+    font-size: 18px;
+    font-family: "Gilroy", sans-serif;
+    font-weight: 400;
+    margin-top: 38px;
+}
+.LOGO{
+    display: block;
+    margin: auto;
+}
+input,select{
+  width: 90%;
+    height: 35px;
+    border: none;
+    background: #F6F9FC;
+    padding: 0;
+    padding-left: 5px;
+    border: 1px solid #E8EFF6;
+    border-radius: 5px;
+    color: #004348;
+    display: block;
+}
