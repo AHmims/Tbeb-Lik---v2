@@ -11,16 +11,26 @@ $(document).ready(async () => {
         matricule: sessionStorage.getItem('matricule') || null
     }).promise();
     // 
-    activeNotifs = JSON.parse(activeNotifs);
-    activeNotifs.forEach(notif => {
-        generateSemiNotifBox(notif);
-    });
+    generateActiveNotification(JSON.parse(activeNotifs));
     // generateNotification(response);
 });
 // 
 function generateNotification(array) {
     array.forEach(notification => {
         makeNotificationBox(notification);
+    });
+}
+// 
+function generateActiveNotification(activeNotifs) {
+    let activeNotifications = document.getElementsByClassName('activeNotificationBox');
+    activeNotifs.forEach(notif => {
+        let exists = false;
+        for (let i = 0; i < activeNotifications.length; i++) {
+            if (activeNotifications[i].getAttribute('data-notifId') == notif.index)
+                exists = true;
+        }
+        if (!exists)
+            generateSemiNotifBox(notif);
     });
 }
 // 

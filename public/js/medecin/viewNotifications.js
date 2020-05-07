@@ -45,6 +45,7 @@ function makeNotificationBox(data) {
 }
 //
 // var data = {
+//     ID_PRECONS : "",
 //     nom: "",
 //     DATE_CREATION: "",
 //     DATE_CONSULTATION: "",
@@ -54,7 +55,7 @@ function generateSemiNotifBox(data) {
     let table = document.createElement('table');
     table.setAttribute('border', 1);
     table.setAttribute('class', 'activeNotificationBox');
-    table.setAttribute('data-notifId', data.index);
+    table.setAttribute('data-notifId', data.ID_PRECONS);
     Object.keys(data).forEach(key => {
         let row = document.createElement('tr');
         let colKey = document.createElement('td');

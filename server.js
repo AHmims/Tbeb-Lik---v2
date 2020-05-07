@@ -171,6 +171,8 @@ __IO.on('connection', socket => {
                     // 
                     let consultationInsert = await _DB.insertData(new _CLASSES.consultation(-1, new Date(Date.now()), medecin.ID_USER, '', notifId));
                     console.log('acceptNotif() | consultationInsert => ', consultationInsert);
+                    // SEND DATA TO MEDECIN
+                    __IO.to(socket.id).emit('activeNotification', await acceptedMedecinNotifications(medecin.ID_USER));
                 } else
                     console.log('acceptNotif() | room not found');
             } else
@@ -248,6 +250,9 @@ async function getNotificationsForMedecin(medecinId) {
     return fullNotifications;
 }
 // 
+async function acceptedMedecinNotifications(medecinId) {
+    return await _DB.getAcceptedMedecinNotificationsInfos(medecinId);
+}
 // 
 // 
 // 
@@ -300,7 +305,7 @@ __APP.post('/getMedecinActiveNotifs', async (req, res) => {
     console.log('******');
     let retData = [];
     if (req.body.matricule != null)
-        retData = await _DB.getAcceptedMedecinNotificationsInfos(req.body.matricule);
+        retData = await acceptedMedecinNotifications(req.body.matricule);
     res.end(JSON.stringify(retData));
 });
 // __APP.post('/')
