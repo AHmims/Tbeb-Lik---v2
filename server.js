@@ -25,6 +25,7 @@ __APP.use(__EXPRESS.static(__PATH.join(__dirname, 'public')));
 // 
 __IO.on('connection', socket => {
     socket.on('newUser', async (matricule) => {
+        console.log('--------');
         let type = await _DB.getTypeById(matricule);
         console.log('newUser() | type => ', type);
         if (type != null) {
@@ -51,8 +52,28 @@ __IO.on('connection', socket => {
         }
     });
     socket.on('sendNotif', async data => {});
-    socket.on('disconnect', () => {
-        // console.log('Socket off');
+    socket.on('disconnect', async () => {
+        console.log('--------');
+        let appUserData = await _DB.getAppUserCustomDataBySocket(["ID_USER", "TYPE_USER", "MATRICULE_MED"], socket.id);
+        console.log('disconnect() | appUserData => ', appUserData);
+        if (appUserData != null) {
+            // IF A USER DISCONNECTS SET THEIR STATUS TO OFFLINE
+            let updatingResult = await _DB.customDataUpdate({
+                ONLINE: false
+            }, appUserData.ID_USER, {
+                table: "appUser",
+                id: "ID_USER"
+            });
+            // 
+            console.log('disconnect() | updatingResult => ', updatingResult);
+            // WHEN A PATIENT DISCONNECTS SEND A REQUEST TO REFRESH THE CORRESPONDING
+            // MEDECIN PATIENTS LIST 
+            // if (retData.userType == 'Patient') {
+            // getPatientList(retData.linkedMedecinMatricule, retData.userId);
+            // } else
+            // removeMeFromEveryInstanceSoThatThingsWontBreakLater(retData.userId);
+            // 
+        }
     });
     // 
 });

@@ -47,6 +47,43 @@ async function getAppUserDataById(id) {
         console.error('error :', err);
     }
 }
+// GET WANTED DATA FROM appUser : keys = ["key1","key2"]
+async function getAppUserCustomData(keys, id) {
+    let slctdKeys = '';
+    keys.forEach(key => {
+        slctdKeys += `appUser.${key},`;
+    });
+    slctdKeys = removeLastChar(slctdKeys);
+
+    try {
+        let req = `SELECT ${slctdKeys} FROM appUser where ID_USER = ? LIMIT 1`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [id]);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0][0] : null;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+async function getAppUserCustomDataBySocket(keys, socketId) {
+    let slctdKeys = '';
+    keys.forEach(key => {
+        slctdKeys += `appUser.${key},`;
+    });
+    slctdKeys = removeLastChar(slctdKeys);
+
+    try {
+        let req = `SELECT ${slctdKeys} FROM appUser where appUser.SOCKET = ? LIMIT 1`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [socketId]);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0][0] : null;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
 // EXAMPLE OF KEY {online : false,socket : 'ssss'} | params = {table : "ss",id : "userId"}
 async function customDataUpdate(keyANDvalue, id, params) {
     keyANDvalue = getObjectKeysWithValues(keyANDvalue);
@@ -152,6 +189,8 @@ module.exports = {
     insertData,
     getDataAll,
     getAppUserDataById,
+    getAppUserCustomData,
+    getAppUserCustomDataBySocket,
     customDataUpdate,
     getTypeById,
     getVilles
