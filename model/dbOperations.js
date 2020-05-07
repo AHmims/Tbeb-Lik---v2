@@ -230,7 +230,19 @@ async function getRoomIdByNotifId(notifId) {
         console.error('error :', err);
     }
 }
-// 
+//
+async function notificationsByMedecin(medecinId) {
+    try {
+        let req = `select ID_PRECONS,MATRICULE_PAT from preConsultation where ACCEPTE = false and ID_PRECONS in (select ID_PRECONS from medecinInbox where MATRICULE_MED = ?)`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [medecinId]);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0] : null;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
 //#endregion
 // 
 //#region HELPER FUNCTIONS
@@ -283,6 +295,7 @@ module.exports = {
     consultationCheck,
     getPatientPreConsultationDataById,
     getLastInsertedNotification,
-    getRoomIdByNotifId
+    getRoomIdByNotifId,
+    notificationsByMedecin
 }
 // 

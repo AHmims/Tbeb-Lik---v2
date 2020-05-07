@@ -28,30 +28,33 @@ const __HUB = __IO.of('/medecinHub');
 __IO.on('connection', socket => {
     socket.on('newUser', async (matricule) => {
         console.log('--------');
-        let type = await _DB.getTypeById(matricule);
-        console.log('newUser() | type => ', type);
-        if (type != null) {
-            let existingUser = await _DB.getAppUserDataById(matricule);
-            console.log('newUser() | existingUser => ', existingUser)
-            // 
-            if (existingUser != null) {
-                let updatingResult = await _DB.customDataUpdate({
-                    SOCKET: socket.id,
-                    ONLINE: true
-                }, existingUser.ID_USER, {
-                    table: "appUser",
-                    id: "ID_USER"
-                });
+        if (matricule != null) {
+            let type = await _DB.getTypeById(matricule);
+            console.log('newUser() | type => ', type);
+            if (type != null) {
+                let existingUser = await _DB.getAppUserDataById(matricule);
+                console.log('newUser() | existingUser => ', existingUser)
                 // 
-                console.log('newUser() | updatingResult => ', updatingResult);
-                // 
-            } else {
-                let userInstance = makeUserInstance(matricule, type, socket.id);
-                console.log('newUser() | userInstance => ', userInstance);
-                let insertResult = await _DB.insertData(userInstance);
-                console.log('newUser() | insertResult => ', insertResult);
+                if (existingUser != null) {
+                    let updatingResult = await _DB.customDataUpdate({
+                        SOCKET: socket.id,
+                        ONLINE: true
+                    }, existingUser.ID_USER, {
+                        table: "appUser",
+                        id: "ID_USER"
+                    });
+                    // 
+                    console.log('newUser() | updatingResult => ', updatingResult);
+                    // 
+                } else {
+                    let userInstance = makeUserInstance(matricule, type, socket.id);
+                    console.log('newUser() | userInstance => ', userInstance);
+                    let insertResult = await _DB.insertData(userInstance);
+                    console.log('newUser() | insertResult => ', insertResult);
+                }
             }
-        }
+        } else
+            console.log('newUser() | matricule == null');
     });
     socket.on('sendNotif', async data => {
         console.log('------');
@@ -227,7 +230,19 @@ async function getNotificationFullData(userId) {
         }
     }
 }
-
+// 
+async function getNotificationsForMedecin(medecinId) {
+    let notifications = await _DB.notificationsByMedecin(medecinId);
+    let fullNotifications = [];
+    if (notifications != null) {
+        for (let i = 0; i < notifications.length; i++) {
+            fullNotifications.push(await getNotificationFullData(notifications[i].MATRICULE_PAT));
+        }
+    } else
+        console.log('getNotificationsForMedecin() | no notifications were found !');
+    // 
+    return fullNotifications;
+}
 // 
 // 
 // 
@@ -264,6 +279,10 @@ __APP.post('/listeConsultationFields', async (req, res) => {
         villes: villes,
         proffess: proffesionns
     }));
+});
+__APP.post('/getNotifications', async (req, res) => {
+    let result = await getNotificationsForMedecin(req.body.matricule);
+    res.end(JSON.stringify(result));
 });
 // __APP.post('/')
 // 
