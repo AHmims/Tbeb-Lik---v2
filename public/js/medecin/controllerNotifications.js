@@ -26,7 +26,7 @@ function generateActiveNotification(activeNotifs) {
     activeNotifs.forEach(notif => {
         let exists = false;
         for (let i = 0; i < activeNotifications.length; i++) {
-            if (activeNotifications[i].getAttribute('data-notifId') == notif.index)
+            if (activeNotifications[i].getAttribute('data-notifId') == notif.ID_PRECONS)
                 exists = true;
         }
         if (!exists)
