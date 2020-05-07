@@ -180,6 +180,16 @@ CREATE TABLE IF NOT EXISTS `consultation` (
 	KEY `FK_CONTIENT3` (`ID_PRECONS`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+drop trigger if exists autoConsultationDate;
+DELIMITER //
+CREATE TRIGGER autoConsultationDate
+BEFORE INSERT
+ON `consultation` FOR EACH ROW
+BEGIN
+    SET NEW.DATE_CONSULTATION = now();
+END;//
+DELIMITER ;
+
 -- -----------------------------------
 
 DROP TABLE IF EXISTS `room`;
