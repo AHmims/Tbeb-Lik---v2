@@ -143,7 +143,11 @@ __IO.on('connection', socket => {
                 console.log('acceptNotif() | medecin => ', medecin);
                 let room = await _DB.getRoomIdByNotifId(notifId);
                 if (room != null) {
+                    // 
                     console.log('acceptNotif() | room => ', room);
+                    // REMOVE ME FROM ROOMS
+                    let roomUnlinkMedecin = await unlinkMedecinFromRooms(medecin.ID_USER);
+                    console.log('unlinkMedecinFromRooms() | roomUpdate => ', roomUnlinkMedecin);
                     // 
                     let patientUpdate = await _DB.customDataUpdate({
                         MATRICULE_MED: medecin.ID_USER
@@ -252,6 +256,16 @@ async function getNotificationsForMedecin(medecinId) {
 // 
 async function acceptedMedecinNotifications(medecinId) {
     return await _DB.getAcceptedMedecinNotificationsInfos(medecinId);
+}
+// 
+async function unlinkMedecinFromRooms(medecinId) {
+    console.log('------');
+    return await _DB.customDataUpdate({
+        MATRICULE_MED: null
+    }, medecinId, {
+        table: "room",
+        id: "MATRICULE_MED"
+    });
 }
 // 
 // 
