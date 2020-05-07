@@ -1,6 +1,6 @@
 document.getElementById('btnLogin').addEventListener('click', async () => {
     let response = await $.post('userTypeById', {
-        matricule: document.getElementById('inputMatricule').value
+        matricule: document.getElementById('inputMatricule').value || null
     }).promise();
     // 
     if (response == 'null')

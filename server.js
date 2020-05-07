@@ -269,7 +269,9 @@ __APP.get('/patient/contact', (req, res) => {
 });
 // 
 __APP.post('/userTypeById', async (req, res) => {
-    let result = await _DB.getTypeById(req.body.matricule);
+    let result = 'null';
+    if (req.body.matricule != null)
+        result = await _DB.getTypeById(req.body.matricule);
     res.end(result);
 });
 __APP.post('/listeConsultationFields', async (req, res) => {
@@ -281,7 +283,9 @@ __APP.post('/listeConsultationFields', async (req, res) => {
     }));
 });
 __APP.post('/getNotifications', async (req, res) => {
-    let result = await getNotificationsForMedecin(req.body.matricule);
+    let result = [];
+    if (req.body.matricule != null)
+        result = await getNotificationsForMedecin(req.body.matricule);
     res.end(JSON.stringify(result));
 });
 // __APP.post('/')

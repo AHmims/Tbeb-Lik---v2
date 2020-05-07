@@ -1,6 +1,6 @@
 $(document).ready(async () => {
     let response = await $.post('/getNotifications', {
-        matricule: sessionStorage.getItem('matricule')
+        matricule: sessionStorage.getItem('matricule') || null
     }).promise();
     // 
     response = JSON.parse(response);
