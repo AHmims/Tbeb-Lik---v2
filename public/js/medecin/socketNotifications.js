@@ -6,13 +6,19 @@ __GLOBAL_SOCKET.on('connect', () => {
     __GLOBAL_SOCKET.emit('newUser', sessionStorage.getItem('matricule'));
 });
 // 
+// 
 __HUB_SOCKET.on('receivedNotification', data => {
     console.log('receivedNotification : notifData => ', data);
     generateNotification([data]);
 });
+__HUB_SOCKET.on('removeNotificationBox', nId => {
+    console.log('removeNotificationBox : notifId => ', nId);
+    removeNotification(nId);
+});
 // 
 // 
-// FUNCTIONS CALLED FROM >VIEW
+// FUNCTIONS CALLED FROM >VIEW 
 function acceptNotification(nId) {
     __GLOBAL_SOCKET.emit('acceptNotif', nId);
+    __HUB_SOCKET.emit('acceptNotif', nId);
 }

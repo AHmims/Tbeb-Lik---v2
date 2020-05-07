@@ -1,6 +1,19 @@
+// var data = {
+//     name: "",
+//     date: "",
+//     matricule: "",
+//     age: "",
+//     numeroTel: "",
+//     motif: "",
+//     atcds: "",
+//     nbJourApporte: "",
+//     files: ["nomfichier.ext", "nomfichier.ext"]
+// }
 function makeNotificationBox(data) {
     let table = document.createElement('table');
     table.setAttribute('border', 1);
+    table.setAttribute('class', 'notificationBox');
+    table.setAttribute('data-notifId', data.index);
     Object.keys(data).forEach(key => {
         let row = document.createElement('tr');
         let colKey = document.createElement('td');
@@ -20,14 +33,40 @@ function makeNotificationBox(data) {
     btnCol.style.textAlign = "right";
     // 
     btn.innerText = "Accepter";
-    btn.setAttribute('data-notifId', data.index);
     btn.onclick = () => {
-        console.log('clicked => ', btn.getAttribute('data-notifId'));
-        acceptNotification(btn.getAttribute('data-notifId'));
+        console.log('clicked => ', table.getAttribute('data-notifId'));
+        acceptNotification(table.getAttribute('data-notifId'));
     }
     btnCol.appendChild(btn);
     btnRow.appendChild(btnCol);
     table.appendChild(btnRow);
     // 
     document.getElementById('notificationsContainer').appendChild(table);
+}
+//
+// var data = {
+//     nom: "",
+//     DATE_CREATION: "",
+//     DATE_CONSULTATION: "",
+//     JOUR_REPOS: ""
+// } 
+function generateSemiNotifBox(data) {
+    let table = document.createElement('table');
+    table.setAttribute('border', 1);
+    table.setAttribute('class', 'activeNotificationBox');
+    table.setAttribute('data-notifId', data.index);
+    Object.keys(data).forEach(key => {
+        let row = document.createElement('tr');
+        let colKey = document.createElement('td');
+        colKey.innerText = key;
+        let colValue = document.createElement('td');
+        colValue.innerText = data[key];
+        // 
+        row.appendChild(colKey);
+        row.appendChild(colValue);
+        // 
+        table.appendChild(row);
+    });
+    // 
+    document.getElementById('activeNotifications').appendChild(table);
 }

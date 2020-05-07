@@ -200,6 +200,10 @@ __IO.on('connection', socket => {
 __HUB.on('connection', socket => {
     console.log('------');
     console.log('Hub/connection doctorConnected => ', socket.id);
+    // 
+    socket.on('acceptNotif', (nId) => {
+        __HUB.emit('removeNotificationBox', nId);
+    });
     // socket.on('updateNotif', (notifId) => {
     //     __HUB.emit('notifAccepted', notifId);
     // });
@@ -246,6 +250,7 @@ async function getNotificationsForMedecin(medecinId) {
 // 
 // 
 // 
+// 
 // ROUTES
 __APP.get('/', (req, res) => {
     res.sendFile(__PATH.join(__dirname, 'public', 'html', 'index.html'));
@@ -275,11 +280,14 @@ __APP.post('/userTypeById', async (req, res) => {
     res.end(result);
 });
 __APP.post('/listeConsultationFields', async (req, res) => {
+    console.log('******');
     let villes = await _DB.getVilles();
-    let proffesionns = await _DB.getDataAll("specialites", '');
+    console.log('/listeConsultationFields | villes => ', villes);
+    let proffess = await _DB.getDataAll("specialites", '');
+    console.log('/listeConsultationFields | proffess => ', proffess);
     res.end(JSON.stringify({
         villes: villes,
-        proffess: proffesionns
+        proffess: proffess
     }));
 });
 __APP.post('/getNotifications', async (req, res) => {
@@ -287,6 +295,13 @@ __APP.post('/getNotifications', async (req, res) => {
     if (req.body.matricule != null)
         result = await getNotificationsForMedecin(req.body.matricule);
     res.end(JSON.stringify(result));
+});
+__APP.post('/getMedecinActiveNotifs', async (req, res) => {
+    console.log('******');
+    let retData = [];
+    if (req.body.matricule != null)
+        retData = await _DB.getAcceptedMedecinNotificationsInfos(req.body.matricule);
+    res.end(JSON.stringify(retData));
 });
 // __APP.post('/')
 // 

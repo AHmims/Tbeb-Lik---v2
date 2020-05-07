@@ -1,6 +1,7 @@
 $(document).ready(async () => {
     let response = await $.post('/listeConsultationFields', {}).promise();
     response = JSON.parse(response);
+    console.log('/listeConsultationFields | response => ', response);
     response.villes.forEach(element => {
         let slctOption = document.createElement('option');
         slctOption.setAttribute('value', element.VILLE);

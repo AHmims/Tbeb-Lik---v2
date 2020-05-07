@@ -205,9 +205,9 @@ async function getPatientPreConsultationDataById(userId) {
     }
 }
 // 
-async function getLastInsertedNotification(userId) {
+async function getLastInsertedNotification(userId, accepted = false) {
     try {
-        let req = `SELECT * FROM preConsultation WHERE ACCEPTE = FALSE AND  MATRICULE_PAT = ? ORDER BY DATE_CREATION DESC LIMIT 1`,
+        let req = `SELECT * FROM preConsultation WHERE ACCEPTE = ${accepted} AND  MATRICULE_PAT = ? ORDER BY DATE_CREATION DESC LIMIT 1`,
             cnx = await db.connect(),
             res = await cnx.query(req, [userId]);
         cnx.release();
@@ -239,6 +239,20 @@ async function notificationsByMedecin(medecinId) {
         cnx.release();
         // 
         return res[0].length > 0 ? res[0] : null;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// 
+async function getAcceptedMedecinNotificationsInfos(medecinId) {
+    console.log(medecinId);
+    try {
+        let req = `select concat(pt.NOM_PAT,' ',pt.PRENOM_PAT) as nom,p.DATE_CREATION,c.DATE_CONSULTATION,c.JOUR_REPOS from patient as pt,preConsultation as p,consultation as c where p.ID_PRECONS = c.ID_PRECONS and c.MATRICULE_MED = ? and p.ACCEPTE = true and pt.MATRICULE_PAT = p.MATRICULE_PAT`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [medecinId]);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0] : [];
     } catch (err) {
         console.error('error :', err);
     }
@@ -296,6 +310,7 @@ module.exports = {
     getPatientPreConsultationDataById,
     getLastInsertedNotification,
     getRoomIdByNotifId,
-    notificationsByMedecin
+    notificationsByMedecin,
+    getAcceptedMedecinNotificationsInfos
 }
 // 
