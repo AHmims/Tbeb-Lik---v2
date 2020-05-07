@@ -60,7 +60,7 @@ class room {
 }
 // 
 class appUser {
-    constructor(ID_USER, TYPE_USER, SOCKET, ONLINE, MATRICULE_MED, ID_ROOM) {
+    constructor(ID_USER, TYPE_USER, SOCKET, ONLINE, MATRICULE_MED = null, ID_ROOM = null) {
         this.ID_USER = ID_USER;
         this.TYPE_USER = TYPE_USER;
         this.SOCKET = SOCKET;

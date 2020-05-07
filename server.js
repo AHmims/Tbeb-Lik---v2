@@ -23,7 +23,46 @@ __APP.use(__EXPRESS.json());
 __APP.use(__EXPRESS.static(__PATH.join(__dirname, 'public')));
 //TRAITMENT
 // 
-
+__IO.on('connection', socket => {
+    socket.on('newUser', async (matricule) => {
+        let type = await _DB.getTypeById(matricule);
+        console.log('newUser() | type => ', type);
+        if (type != null) {
+            let existingUser = await _DB.getAppUserDataById(matricule);
+            console.log('newUser() | existingUser => ', existingUser)
+            // 
+            if (existingUser != null) {
+                let updatingResult = await _DB.customDataUpdate({
+                    SOCKET: socket.id,
+                    ONLINE: true
+                }, existingUser.ID_USER, {
+                    table: "appUser",
+                    id: "ID_USER"
+                });
+                // 
+                console.log('newUser() | updatingResult => ', updatingResult);
+                // 
+            } else {
+                let userInstance = makeUserInstance(matricule, type, socket.id);
+                console.log('newUser() | userInstance => ', userInstance);
+                let insertResult = await _DB.insertData(userInstance);
+                console.log('newUser() | insertResult => ', insertResult);
+            }
+        }
+    });
+    socket.on('sendNotif', async data => {});
+    socket.on('disconnect', () => {
+        // console.log('Socket off');
+    });
+    // 
+});
+// 
+// 
+function makeUserInstance(id, type, socketId) {
+    return new _CLASSES.appUser(id, type, socketId, true);
+}
+// 
+// 
 // 
 // ROUTES
 __APP.get('/', (req, res) => {
@@ -59,6 +98,7 @@ __APP.post('/listeConsultationFields', async (req, res) => {
         proffess: proffesionns
     }));
 });
+// __APP.post('/')
 // 
 // 
 //START SERVER

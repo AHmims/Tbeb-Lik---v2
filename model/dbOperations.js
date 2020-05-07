@@ -34,7 +34,43 @@ async function getDataAll(className, constraint = '') {
         console.error('error :', err);
     }
 }
-// 
+// GET appUSER data by id
+async function getAppUserDataById(id) {
+    try {
+        let req = `SELECT * FROM appUser where ID_USER = ? LIMIT 1`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [id]);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0][0] : null;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// EXAMPLE OF KEY {online : false,socket : 'ssss'} | params = {table : "ss",id : "userId"}
+async function customDataUpdate(keyANDvalue, id, params) {
+    keyANDvalue = getObjectKeysWithValues(keyANDvalue);
+    let strSection = '';
+    keyANDvalue[0].forEach(key => {
+        strSection += `${key} = ?,`
+    });
+    strSection = removeLastChar(strSection);
+    keyANDvalue[1].push(id);
+    // 
+    // console.log(`UPDATE ${params.table} SET ${strSection} WHERE ${params.id} = ?`);
+    // console.log(keyANDvalue[1]);
+    // 
+    try {
+        let req = `UPDATE ${params.table} SET ${strSection} WHERE ${params.id} = ?`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, keyANDvalue[1]);
+        cnx.release();
+        // 
+        return res[0].affectedRows;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
 // 
 // 
 async function getTypeById(id) {
@@ -115,6 +151,8 @@ function removeLastChar(str) {
 module.exports = {
     insertData,
     getDataAll,
+    getAppUserDataById,
+    customDataUpdate,
     getTypeById,
     getVilles
 }

@@ -16,4 +16,11 @@ $(document).ready(async () => {
         // 
         document.getElementById('profsOptions').appendChild(slctOption);
     });
+    // 
+    document.getElementById('btnEnvoyer').addEventListener('click', async () => {
+        let ville = document.getElementById('cityOptions').options[document.getElementById('cityOptions').selectedIndex].value;
+        let proffes = document.getElementById('profsOptions').options[document.getElementById('profsOptions').selectedIndex].value;
+        // 
+        // let response = await $.post('')
+    });
 });
