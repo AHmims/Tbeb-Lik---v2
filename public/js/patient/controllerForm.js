@@ -21,6 +21,7 @@ $(document).ready(async () => {
         let ville = document.getElementById('cityOptions').options[document.getElementById('cityOptions').selectedIndex].value;
         let proffes = document.getElementById('profsOptions').options[document.getElementById('profsOptions').selectedIndex].value;
         // 
+        sendNotification(ville, proffes);
         // let response = await $.post('')
     });
 });

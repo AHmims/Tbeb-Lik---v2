@@ -21,8 +21,10 @@ __APP.use(__EXPRESS.urlencoded({
 }));
 __APP.use(__EXPRESS.json());
 __APP.use(__EXPRESS.static(__PATH.join(__dirname, 'public')));
-//TRAITMENT
 // 
+// NOTIICATION SYSTEM
+const __HUB = __IO.of('/medecinHub');
+//TRAITMENT
 __IO.on('connection', socket => {
     socket.on('newUser', async (matricule) => {
         console.log('--------');
@@ -51,7 +53,9 @@ __IO.on('connection', socket => {
             }
         }
     });
-    socket.on('sendNotif', async data => {});
+    socket.on('sendNotif', async data => {
+
+    });
     socket.on('disconnect', async () => {
         console.log('--------');
         let appUserData = await _DB.getAppUserCustomDataBySocket(["ID_USER", "TYPE_USER", "MATRICULE_MED"], socket.id);
@@ -66,16 +70,17 @@ __IO.on('connection', socket => {
             });
             // 
             console.log('disconnect() | updatingResult => ', updatingResult);
-            // WHEN A PATIENT DISCONNECTS SEND A REQUEST TO REFRESH THE CORRESPONDING
-            // MEDECIN PATIENTS LIST 
-            // if (retData.userType == 'Patient') {
-            // getPatientList(retData.linkedMedecinMatricule, retData.userId);
-            // } else
-            // removeMeFromEveryInstanceSoThatThingsWontBreakLater(retData.userId);
-            // 
         }
     });
-    // 
+    //  
+});
+// 
+__HUB.on('connection', socket => {
+    console.log('------');
+    console.log('Hub/connection doctorConnected => ', socket.id);
+    // socket.on('updateNotif', (notifId) => {
+    //     __HUB.emit('notifAccepted', notifId);
+    // });
 });
 // 
 // 
