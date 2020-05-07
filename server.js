@@ -22,8 +22,10 @@ __APP.use(__EXPRESS.urlencoded({
 __APP.use(__EXPRESS.json());
 __APP.use(__EXPRESS.static(__PATH.join(__dirname, 'public')));
 // 
-// NOTIICATION SYSTEM
+// NOTIICATIONS SYSTEM NAMESPACE
 const __HUB = __IO.of('/medecinHub');
+// CHAT NAMESPACE
+const __CHAT = __IO.of('/chat');
 //TRAITMENT
 __IO.on('connection', socket => {
     socket.on('newUser', async (matricule) => {
@@ -221,9 +223,12 @@ __HUB.on('connection', socket => {
     socket.on('acceptNotif', (nId) => {
         __HUB.emit('removeNotificationBox', nId);
     });
-    // socket.on('updateNotif', (notifId) => {
-    //     __HUB.emit('notifAccepted', notifId);
-    // });
+});
+// 
+__CHAT.on('connection', socket => {
+    console.log('------');
+    console.log('Chat/connection userConnected => ', socket.id);
+    // 
 });
 // 
 // 

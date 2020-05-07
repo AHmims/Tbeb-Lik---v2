@@ -4,11 +4,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/socket.io/socket.io.js"></script>
     <title>Contacter</title>
+    <style>
+        #msgsCont {
+            margin-top: 100px;
+            width: 400px;
+            height: 300px;
+            border: 1px solid black;
+            overflow-y: auto;
+            margin: 0 auto;
+            padding: 5px;
+        }
+
+        .msgTxt {
+            width: 100%;
+        }
+
+        .msgHost {
+            text-align: right;
+        }
+
+        .msgRemote {
+            text-align: left;
+        }
+    </style>
 </head>
 
-<body>
-    <h1 style="text-align: center;">Page dyal chat de patient</h1>
+<body style="text-align: center;">
+    <h1>Page dyal chat de patient</h1>
+    <h3>Boite des messages</h3>
+    <div id="msgsCont">
+        <h4 class="msgTxt msgHost">i sent this</h4>
+        <h4 class="msgTxt msgRemote">Received this</h4>
+    </div>
+    <script src="../js/patient/socketChat.js"></script>
+    <script src="../js/patient/controllerChat.js"></script>
+    <script src="../js/patient/viewChat.js"></script>
 </body>
 
 </html>
