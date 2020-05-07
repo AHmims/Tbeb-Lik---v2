@@ -5,3 +5,7 @@ __GLOBAL_SOCKET.on('connect', () => {
     console.log('Socket Connected ! userId => ', sessionStorage.getItem('matricule'));
     __GLOBAL_SOCKET.emit('newUser', sessionStorage.getItem('matricule'));
 });
+// 
+__HUB_SOCKET.on('receivedNotification', data => {
+    console.log(data);
+});

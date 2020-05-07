@@ -109,7 +109,6 @@ async function customDataUpdate(keyANDvalue, id, params) {
     }
 }
 // 
-// 
 async function getTypeById(id) {
     let type = 'null';
     try {
@@ -142,6 +141,19 @@ async function getVilles() {
         cnx.release();
         // 
         return res[0].length > 0 ? res[0] : [];
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// 
+async function getOnlineMedecinsWithCityAndProffession(ville, idSpec) {
+    try {
+        let req = `select m.MATRICULE_MED,a.SOCKET FROM medecin as m,appUser as a where m.VILLE = ? and m.ID_SPEC = ? and m.MATRICULE_MED = a.ID_USER and a.TYPE_USER = 'Medecin' and ONLINE  = true`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [ville, idSpec]);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0] : null;
     } catch (err) {
         console.error('error :', err);
     }
@@ -193,6 +205,7 @@ module.exports = {
     getAppUserCustomDataBySocket,
     customDataUpdate,
     getTypeById,
-    getVilles
+    getVilles,
+    getOnlineMedecinsWithCityAndProffession
 }
 // 

@@ -54,7 +54,36 @@ __IO.on('connection', socket => {
         }
     });
     socket.on('sendNotif', async data => {
-
+        console.log('------');
+        console.log('sendNotif() | receivedData => ', data);
+        // 
+        let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession(data.ville, data.proffession);
+        console.log('sendNotif() | listMedecins => ', listMedecins);
+        if (listMedecins != null) {
+            const MAX_NB = listMedecins.length >= 3 ? 3 : listMedecins.length;
+            console.log('sendNotif() | MAX_NB => ', MAX_NB);
+            let randomIndexes = [];
+            while (randomIndexes.length < MAX_NB) {
+                var index = Math.floor(Math.random() * listMedecins.length);
+                if (randomIndexes.indexOf(index) == -1) randomIndexes.push(index);
+            }
+            // 
+            console.log('sendNotif() | randomIndexes => ', randomIndexes);
+            //SEND FEEDBACK TO THE SENDER
+            __IO.to(socket.id).emit('queryResult', randomIndexes.length);
+            // ARRAY OF MAX 3, OF DOCTORS ID
+            let tableauDesMedecins = [];
+            randomIndexes.forEach(index => {
+                tableauDesMedecins.push(listMedecins[index].MATRICULE_MED);
+                __HUB.to(`/medecinHub#${listMedecins[index].SOCKET}`).emit('receivedNotification', data);
+            });
+            console.log('sendNotif() | tableauDesMedecins => ', tableauDesMedecins);
+            // 
+        } else {
+            //SEND FEEDBACK TO THE SENDER
+            __IO.to(socket.id).emit('queryResult', null);
+            console.log('sendNotif() | listMedecins : no person found with the given values');
+        }
     });
     socket.on('disconnect', async () => {
         console.log('--------');
