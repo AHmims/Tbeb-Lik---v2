@@ -38,14 +38,14 @@ async function getDataAll(className, constraint = '') {
 // 
 // 
 async function getTypeById(id) {
-    let type = null;
+    let type = 'null';
     try {
         let req = `SELECT count(*) as nb FROM patient where MATRICULE_PAT = ?`,
             cnx = await db.connect(),
             res = await cnx.query(req, [id]);
         // 
-        type = res[0][0].nb > 0 ? "Patient" : null;
-        if (type == null) {
+        type = res[0][0].nb > 0 ? "Patient" : 'null';
+        if (type == 'null') {
             req = `SELECT count(*) as nb FROM medecin where MATRICULE_MED = ?`;
             cnx = await db.connect();
             res = await cnx.query(req, [id]);

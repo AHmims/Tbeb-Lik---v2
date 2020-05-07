@@ -49,6 +49,7 @@ __APP.get('/patient/contact', (req, res) => {
 });
 // 
 __APP.post('/userTypeById', async (req, res) => {
+    console.log(req.body);
     let result = await _DB.getTypeById(req.body.matricule);
     res.end(result);
 });
