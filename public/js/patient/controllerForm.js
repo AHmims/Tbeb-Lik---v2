@@ -23,7 +23,6 @@ $(document).ready(async () => {
         let proffes = document.getElementById('profsOptions').options[document.getElementById('profsOptions').selectedIndex].value;
         // 
         sendNotification(ville, proffes);
-        // let response = await $.post('')
     });
     // 
     // CHECK IF THE PATIENT HAVE ANY ONGOING NOTIFICATIONS
