@@ -257,6 +257,20 @@ async function getAcceptedMedecinNotificationsInfos(medecinId) {
         console.error('error :', err);
     }
 }
+// 
+async function checkPatientActiveNotifsExistance(patientId) {
+    try {
+        let req = `select count(c.ID_PRECONS) as nb from consultation as c,preConsultation as p where p.ID_PRECONS = c.ID_PRECONS and p.MATRICULE_PAT = ? and p.ACCEPTE = true and c.JOUR_REPOS = -1`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [patientId]);
+        cnx.release();
+        // 
+        return res[0][0].nb > 0 ? true : false;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// 
 //#endregion
 // 
 //#region HELPER FUNCTIONS
@@ -311,6 +325,7 @@ module.exports = {
     getLastInsertedNotification,
     getRoomIdByNotifId,
     notificationsByMedecin,
-    getAcceptedMedecinNotificationsInfos
+    getAcceptedMedecinNotificationsInfos,
+    checkPatientActiveNotifsExistance
 }
 // 

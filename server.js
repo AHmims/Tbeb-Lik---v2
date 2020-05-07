@@ -46,11 +46,20 @@ __IO.on('connection', socket => {
                     // 
                     console.log('newUser() | updatingResult => ', updatingResult);
                     // 
+                    if (type == 'Patient')
+                        socket.join(existingUser.ID_ROOM);
                 } else {
                     let userInstance = makeUserInstance(matricule, type, socket.id);
                     console.log('newUser() | userInstance => ', userInstance);
                     let insertResult = await _DB.insertData(userInstance);
                     console.log('newUser() | insertResult => ', insertResult);
+                    // GET THE ROOM ID FROM THE INSERTED USER
+                    //IF IT WAS A PATIENT
+                    if (type == 'Patient') {
+                        let insertedPatient = await _DB.getDataAll('appUser', `where ID_USER = '${matricule}'`);
+                        if (insertedPatient.length > 0)
+                            socket.join(insertedPatient[0].ID_ROOM);
+                    }
                 }
             }
         } else
@@ -175,8 +184,10 @@ __IO.on('connection', socket => {
                     // 
                     let consultationInsert = await _DB.insertData(new _CLASSES.consultation(-1, new Date(Date.now()), medecin.ID_USER, '', notifId));
                     console.log('acceptNotif() | consultationInsert => ', consultationInsert);
-                    // SEND DATA TO MEDECIN
+                    // SEND A SOCKET BACK TO THE SENDER
                     __IO.to(socket.id).emit('activeNotification', await acceptedMedecinNotifications(medecin.ID_USER));
+                    // SEND A PING TO THE PATIENT INFORMING THEM ABOUT THE ACCEPTANCE OF THE NOTIFICATION
+                    socket.to(room.ID_ROOM).emit('notificationAccepted');
                 } else
                     console.log('acceptNotif() | room not found');
             } else
@@ -321,6 +332,13 @@ __APP.post('/getMedecinActiveNotifs', async (req, res) => {
     if (req.body.matricule != null)
         retData = await acceptedMedecinNotifications(req.body.matricule);
     res.end(JSON.stringify(retData));
+});
+__APP.post('/getAccessNotif', async (req, res) => {
+    console.log('******');
+    let retData = false;
+    if (req.body.matricule != null)
+        retData = await _DB.checkPatientActiveNotifsExistance(req.body.matricule);
+    res.end(retData.toString());
 });
 // __APP.post('/')
 // 

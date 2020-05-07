@@ -13,11 +13,14 @@ __GLOBAL_SOCKET.on('queryResult', data => {
             alert('Vous avez deja un demande en cours');
             break;
         case 2:
-            alert(`Demende envoyer à ${data.data} Medecin(s)`);
+            alert(`demande envoyer à ${data.data} Medecin(s)`);
             break;
         default:
             console.warn(`Unknown status code !`);
     }
+});
+__GLOBAL_SOCKET.on('notificationAccepted', () => {
+    addNotification();
 });
 // FUNCTIONS
 //#region 

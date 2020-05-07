@@ -25,4 +25,15 @@ $(document).ready(async () => {
         sendNotification(ville, proffes);
         // let response = await $.post('')
     });
+    // 
+    // CHECK IF THE PATIENT HAVE ANY ONGOING NOTIFICATIONS
+    // IF YES ADD A BTN FOR HIM TO GO TO THE CONTACT PAGE
+    let exists = await $.post('/listeConsultationFields', {}).promise();
+    if (exists)
+        addNotification();
 });
+// 
+function addNotification() {
+    // MAYBE SOME SALT AND FLAVORS HERE
+    document.body.appendChild(createNotification());
+}
