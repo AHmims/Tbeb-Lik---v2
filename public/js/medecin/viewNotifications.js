@@ -20,8 +20,9 @@ function makeNotificationBox(data) {
     btnCol.style.textAlign = "right";
     // 
     btn.innerText = "Accepter";
+    btn.setAttribute('data-notifId', data.index);
     btn.onclick = () => {
-        console.log('clicked');
+        console.log('clicked => ', btn.getAttribute('data-notifId'));
     }
     btnCol.appendChild(btn);
     btnRow.appendChild(btnCol);

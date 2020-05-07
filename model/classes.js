@@ -95,6 +95,13 @@ class specialites {
     }
 }
 // 
+class medecinInbox {
+    constructor(ID_PRECONS, MATRICULE_MED) {
+        this.ID_PRECONS = ID_PRECONS;
+        this.MATRICULE_MED = MATRICULE_MED;
+    }
+}
+// 
 module.exports = {
     medecin,
     patient,
@@ -103,5 +110,6 @@ module.exports = {
     room,
     appUser,
     message,
-    specialites
+    specialites,
+    medecinInbox
 }

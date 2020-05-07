@@ -86,6 +86,8 @@ __IO.on('connection', socket => {
                     let notifData = await getNotificationFullData(appUserData.ID_USER);
                     randomIndexes.forEach(async index => {
                         tableauDesMedecins.push(listMedecins[index].MATRICULE_MED);
+                        let inboxInsertResult = await _DB.insertData(new _CLASSES.medecinInbox(notifData.index, listMedecins[index].MATRICULE_MED));
+                        console.log('sendNotif() | inboxInsertResult => ', inboxInsertResult);
                         __HUB.to(`/medecinHub#${listMedecins[index].SOCKET}`).emit('receivedNotification', notifData);
                     });
                     console.log('sendNotif() | tableauDesMedecins => ', tableauDesMedecins);
