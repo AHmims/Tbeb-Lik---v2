@@ -1,5 +1,4 @@
 //PACKAGES DECLARATION
-var _ = require('lodash');
 const __FS = require('fs');
 const __EXPRESS = require('express');
 const __APP = __EXPRESS();
