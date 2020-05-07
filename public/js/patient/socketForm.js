@@ -5,10 +5,19 @@ __GLOBAL_SOCKET.on('connect', () => {
     __GLOBAL_SOCKET.emit('newUser', sessionStorage.getItem('matricule'));
 });
 __GLOBAL_SOCKET.on('queryResult', data => {
-    if (data != null) {
-        alert(`Demende envoyer à ${data} Medecin(s)`);
-    } else
-        alert(`Aucune medecin disponible à ete trouver !`);
+    switch (data.status) {
+        case 0:
+            alert(`Aucune medecin disponible à ete trouver !`);
+            break;
+        case 1:
+            alert('Vous avez deja un demande en cours');
+            break;
+        case 2:
+            alert(`Demende envoyer à ${data.data} Medecin(s)`);
+            break;
+        default:
+            console.warn(`Unknown status code !`);
+    }
 });
 // FUNCTIONS
 //#region 

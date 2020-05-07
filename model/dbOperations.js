@@ -158,6 +158,65 @@ async function getOnlineMedecinsWithCityAndProffession(ville, idSpec) {
         console.error('error :', err);
     }
 }
+// params = {table : "tableName",id : "idKey"}
+async function checkExistence(params, id, constraint = '') {
+    try {
+        let req = `SELECT COUNT(${params.id}) AS nb FROM ${params.table} WHERE ${params.id} = ? ${constraint}`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [id]);
+        cnx.release();
+        // 
+        return res[0][0].nb > 0 ? true : false;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// 
+async function consultationCheck(userId) {
+    let table1Check = await checkExistence({
+        table: "preConsultation",
+        id: "MATRICULE_PAT"
+    }, userId, 'AND ACCEPTE = false');
+    // 
+    if (!table1Check) {
+        try {
+            let req = `select count(*) as nb from consultation where JOUR_REPOS <= -1 AND ID_PRECONS in (select ID_PRECONS from preConsultation where MATRICULE_PAT = ?)`,
+                cnx = await db.connect(),
+                res = await cnx.query(req, [userId]);
+            cnx.release();
+            // 
+            return res[0][0].nb > 0 ? true : false;
+        } catch (err) {
+            console.error('error :', err);
+        }
+    } else return true;
+}
+// 
+async function getPatientPreConsultationDataById(userId) {
+    try {
+        let req = `SELECT concat(NOM_PAT,' ',PRENOM_PAT) AS nom,TIMESTAMPDIFF(YEAR, DATE_NAISSENCE, CURDATE()) AS age,TEL AS tel FROM patient WHERE MATRICULE_PAT = ?`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [userId]);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0][0] : null;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// 
+async function getLastInsertedNotification(userId) {
+    try {
+        let req = `SELECT * FROM preConsultation WHERE ACCEPTE = FALSE AND  MATRICULE_PAT = ? ORDER BY DATE_CREATION DESC LIMIT 1`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [userId]);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0][0] : null;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
 // 
 //#endregion
 // 
@@ -206,6 +265,9 @@ module.exports = {
     customDataUpdate,
     getTypeById,
     getVilles,
-    getOnlineMedecinsWithCityAndProffession
+    getOnlineMedecinsWithCityAndProffession,
+    consultationCheck,
+    getPatientPreConsultationDataById,
+    getLastInsertedNotification
 }
 // 

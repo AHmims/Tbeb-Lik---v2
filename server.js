@@ -56,33 +56,61 @@ __IO.on('connection', socket => {
     socket.on('sendNotif', async data => {
         console.log('------');
         console.log('sendNotif() | receivedData => ', data);
-        // 
-        let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession(data.ville, data.proffession);
-        console.log('sendNotif() | listMedecins => ', listMedecins);
-        if (listMedecins != null) {
-            const MAX_NB = listMedecins.length >= 3 ? 3 : listMedecins.length;
-            console.log('sendNotif() | MAX_NB => ', MAX_NB);
-            let randomIndexes = [];
-            while (randomIndexes.length < MAX_NB) {
-                var index = Math.floor(Math.random() * listMedecins.length);
-                if (randomIndexes.indexOf(index) == -1) randomIndexes.push(index);
+        // GET USERID FROM SOCKET
+        let appUserData = await _DB.getAppUserCustomDataBySocket(["ID_USER"], socket.id);
+        console.log('sendNotif() | appUserData => ', appUserData);
+        if (appUserData != null) {
+            // CHECK IF THE PATIENT GOT ANY ONGOING DEMANDES
+            let exists = await _DB.consultationCheck(appUserData.ID_USER);
+            console.log('sendNotif() | exists => ', exists);
+            if (!exists) {
+                // GET ONLINE DOCTORS FROM THE GIVEN CITY AND PROFESSIONS
+                let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession(data.ville, data.proffession);
+                console.log('sendNotif() | listMedecins => ', listMedecins);
+                if (listMedecins != null) {
+                    // INSERT DATA INTO TABLE PRECONSULTATION
+                    let insertRes = await _DB.insertData(new _CLASSES.preConsultation(null, null, '', '', -1, false, appUserData.ID_USER));
+                    console.log('sendNotif() | insertData(preConsultation) => ', insertRes);
+                    // SELECTION DES MEDECINS ET  L'ENVOI DES NOTIFICATIONS
+                    const MAX_NB = listMedecins.length >= 3 ? 3 : listMedecins.length;
+                    console.log('sendNotif() | MAX_NB => ', MAX_NB);
+                    let randomIndexes = [];
+                    while (randomIndexes.length < MAX_NB) {
+                        var index = Math.floor(Math.random() * listMedecins.length);
+                        if (randomIndexes.indexOf(index) == -1) randomIndexes.push(index);
+                    }
+                    // 
+                    console.log('sendNotif() | randomIndexes => ', randomIndexes);
+                    // ARRAY OF MAX 3, OF DOCTORS ID
+                    let tableauDesMedecins = [];
+                    let notifData = await getNotificationFullData(appUserData.ID_USER);
+                    randomIndexes.forEach(async index => {
+                        tableauDesMedecins.push(listMedecins[index].MATRICULE_MED);
+                        __HUB.to(`/medecinHub#${listMedecins[index].SOCKET}`).emit('receivedNotification', notifData);
+                    });
+                    console.log('sendNotif() | tableauDesMedecins => ', tableauDesMedecins);
+                    //SEND FEEDBACK TO THE SENDER
+                    __IO.to(socket.id).emit('queryResult', {
+                        status: 2,
+                        data: randomIndexes.length
+                    });
+                    // 
+                } else {
+                    //SEND FEEDBACK TO THE SENDER
+                    __IO.to(socket.id).emit('queryResult', {
+                        status: 0,
+                        data: null
+                    });
+                    console.log('sendNotif() | listMedecins : no person found with the given values');
+                }
+            } else {
+                // YOU ALREADY HAVE AN ONGOING DEMANDE YOU CAN'T SEND ANYMORE SHIT
+                console.log('sendNotif() | exists : User have ongoing notification');
+                __IO.to(socket.id).emit('queryResult', {
+                    status: 1,
+                    data: null
+                });
             }
-            // 
-            console.log('sendNotif() | randomIndexes => ', randomIndexes);
-            //SEND FEEDBACK TO THE SENDER
-            __IO.to(socket.id).emit('queryResult', randomIndexes.length);
-            // ARRAY OF MAX 3, OF DOCTORS ID
-            let tableauDesMedecins = [];
-            randomIndexes.forEach(index => {
-                tableauDesMedecins.push(listMedecins[index].MATRICULE_MED);
-                __HUB.to(`/medecinHub#${listMedecins[index].SOCKET}`).emit('receivedNotification', data);
-            });
-            console.log('sendNotif() | tableauDesMedecins => ', tableauDesMedecins);
-            // 
-        } else {
-            //SEND FEEDBACK TO THE SENDER
-            __IO.to(socket.id).emit('queryResult', null);
-            console.log('sendNotif() | listMedecins : no person found with the given values');
         }
     });
     socket.on('disconnect', async () => {
@@ -116,6 +144,28 @@ __HUB.on('connection', socket => {
 function makeUserInstance(id, type, socketId) {
     return new _CLASSES.appUser(id, type, socketId, true);
 }
+// 
+async function getNotificationFullData(userId) {
+    let patientData = await _DB.getPatientPreConsultationDataById(userId);
+    if (patientData != null) {
+        let insertedNotificationData = await _DB.getLastInsertedNotification(userId);
+        if (insertedNotificationData != null) {
+            return {
+                index: insertedNotificationData.ID_PRECONS,
+                name: patientData.nom,
+                date: insertedNotificationData.DATE_CREATION,
+                matricule: userId,
+                age: patientData.age,
+                numeroTel: patientData.tel,
+                motif: insertedNotificationData.MOTIF,
+                atcds: insertedNotificationData.ATCD,
+                nbJourApporte: insertedNotificationData.NB_JOUR_A,
+                files: ["null"]
+            }
+        }
+    }
+}
+
 // 
 // 
 // 
