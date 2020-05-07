@@ -243,3 +243,13 @@ CREATE TABLE IF NOT EXISTS `specialites` (
 INSERT INTO `specialites` (`ID_SPEC`, `NOM_SPEC`) VALUES
 (1, 'Medecine génerale'),
 (2, 'Cardiologie');
+
+-- ----------------
+
+DROP TABLE IF EXISTS `medecinInbox`;
+CREATE TABLE IF NOT EXISTS `medecinInbox` (
+	`ID_PRECONS` char(250) not null,
+	`MATRICULE_MED` char(250) NOT NULL,
+	KEY `FK_LINK1` (`ID_PRECONS`),
+    KEY `FK_LINK2` (`MATRICULE_MED`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
