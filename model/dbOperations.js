@@ -29,6 +29,8 @@ async function getDataAll(className, constraint = '') {
             res = await cnx.query(req);
         cnx.release();
         // 
+        console.log(`SELECT * FROM ${className} ${constraint}`);
+        console.log(res[0]);
         return res[0];
     } catch (err) {
         console.error('error :', err);
@@ -37,15 +39,12 @@ async function getDataAll(className, constraint = '') {
 // GET appUSER data by id
 async function getAppUserDataById(id) {
     try {
-        let req = `SELECT * FROM appUser where userId = ? LIMIT 1`,
+        let req = `SELECT * FROM appUser where ID_USER = ? LIMIT 1`,
             cnx = await db.connect(),
             res = await cnx.query(req, [id]);
         cnx.release();
         // 
-        if (res[0].length > 0)
-            return res[0][0];
-        else if (res[0].length == 0)
-            return null;
+        return res[0].length > 0 ? res[0][0] : null;
     } catch (err) {
         console.error('error :', err);
     }
@@ -59,30 +58,16 @@ async function getAppUserCustomData(keys, id) {
     slctdKeys = removeLastChar(slctdKeys);
 
     try {
-        let req = `SELECT ${slctdKeys} FROM appUser where userId = ? LIMIT 1`,
+        let req = `SELECT ${slctdKeys} FROM appUser where ID_USER = ? LIMIT 1`,
             cnx = await db.connect(),
             res = await cnx.query(req, [id]);
         cnx.release();
         // 
-        return res[0][0];
+        return res[0].length > 0 ? res[0][0] : null;
     } catch (err) {
         console.error('error :', err);
     }
 }
-// GET USERS BY MEDECIN ID
-async function getAppUserPatientsByMedecinId(id) {
-    try {
-        let req = `SELECT a.*,p.NOM_PAT,p.Prenom_PAT FROM appUser AS a,patients AS p WHERE a.linkedMedecinMatricule = ? AND a.userId = p.MATRICULE_PAT`,
-            cnx = await db.connect(),
-            res = await cnx.query(req, [id]);
-        cnx.release();
-        // 
-        return res[0];
-    } catch (err) {
-        console.error('error :', err);
-    }
-}
-// 
 async function getAppUserCustomDataBySocket(keys, socketId) {
     let slctdKeys = '';
     keys.forEach(key => {
@@ -91,28 +76,12 @@ async function getAppUserCustomDataBySocket(keys, socketId) {
     slctdKeys = removeLastChar(slctdKeys);
 
     try {
-        let req = `SELECT ${slctdKeys} FROM appUser where appUser.socket = ? LIMIT 1`,
+        let req = `SELECT ${slctdKeys} FROM appUser where appUser.SOCKET = ? LIMIT 1`,
             cnx = await db.connect(),
             res = await cnx.query(req, [socketId]);
         cnx.release();
         // 
-        if (res[0].length > 0)
-            return res[0][0];
-        else if (res[0].length == 0)
-            return null;
-    } catch (err) {
-        console.error('error :', err);
-    }
-}
-// GET NOTIFICATION ID BY PATIENT ID
-async function getNotificationDataByPatientId(id, accepted) {
-    try {
-        let req = `SELECT * FROM preconsultation WHERE MATRICULE_PAT = ? AND accepted = ?`,
-            cnx = await db.connect(),
-            res = await cnx.query(req, [id, accepted]);
-        cnx.release();
-        // 
-        return res[0];
+        return res[0].length > 0 ? res[0][0] : null;
     } catch (err) {
         console.error('error :', err);
     }
@@ -142,65 +111,51 @@ async function customDataUpdate(keyANDvalue, id, params) {
     }
 }
 // 
-async function getRoomId(key, id) {
+async function getTypeById(id) {
+    let type = 'null';
     try {
-        let req = `SELECT roomId FROM room WHERE ${key} = ?`,
+        let req = `SELECT count(*) as nb FROM patient where MATRICULE_PAT = ?`,
             cnx = await db.connect(),
             res = await cnx.query(req, [id]);
+        // 
+        type = res[0][0].nb > 0 ? "Patient" : 'null';
+        if (type == 'null') {
+            req = `SELECT count(*) as nb FROM medecin where MATRICULE_MED = ?`;
+            cnx = await db.connect();
+            res = await cnx.query(req, [id]);
+            // 
+            if (res[0][0].nb > 0)
+                type = "Medecin";
+        }
         cnx.release();
         // 
-        if (res[0].length > 0)
-            return res[0][0];
-        else if (res[0].length == 0)
-            return null;
+        return type;
     } catch (err) {
         console.error('error :', err);
     }
 }
 // 
-async function getRoomIdByNotifId(notifId) {
+async function getVilles() {
     try {
-        let req = `SELECT p.accepted,r.roomId FROM preConsultation AS p,room AS r WHERE p.MATRICULE_PAT = r.userPatientMatricule AND p.idPreCons = ?`,
+        let req = `SELECT distinct(VILLE) FROM medecin;`,
             cnx = await db.connect(),
-            res = await cnx.query(req, [notifId]);
+            res = await cnx.query(req);
         cnx.release();
         // 
-        if (res[0].length > 0)
-            return res[0][0];
-        else if (res[0].length == 0)
-            return null;
+        return res[0].length > 0 ? res[0] : [];
     } catch (err) {
         console.error('error :', err);
     }
 }
 // 
-async function getRoomIdBySocketId(socketId) {
+async function getOnlineMedecinsWithCityAndProffession(ville, idSpec) {
     try {
-        let req = `SELECT r.roomId FROM room AS r,appUser as a WHERE (r.userPatientMatricule = a.userId OR r.userMedecinMatricule = a.userId) AND a.socket = ?`,
+        let req = `select m.MATRICULE_MED,a.SOCKET FROM medecin as m,appUser as a where m.VILLE = ? and m.ID_SPEC = ? and m.MATRICULE_MED = a.ID_USER and a.TYPE_USER = 'Medecin' and ONLINE  = true`,
             cnx = await db.connect(),
-            res = await cnx.query(req, [socketId]);
+            res = await cnx.query(req, [ville, idSpec]);
         cnx.release();
         // 
-        if (res[0].length > 0)
-            return res[0][0];
-        else if (res[0].length == 0)
-            return null;
-    } catch (err) {
-        console.error('error :', err);
-    }
-}
-// 
-async function getRoomDataById(roomId) {
-    try {
-        let req = `SELECT * FROM room WHERE roomId = ?`,
-            cnx = await db.connect(),
-            res = await cnx.query(req, [roomId]);
-        cnx.release();
-        // 
-        if (res[0].length > 0)
-            return res[0][0];
-        else if (res[0].length == 0)
-            return null;
+        return res[0].length > 0 ? res[0] : null;
     } catch (err) {
         console.error('error :', err);
     }
@@ -219,44 +174,15 @@ async function checkExistence(params, id, constraint = '') {
     }
 }
 // 
-async function getPatientPreConsultationDataById(userId) {
-    try {
-        let req = `SELECT concat(NOM_PAT,' ',Prenom_PAT) AS nom,TIMESTAMPDIFF(YEAR, Date_Naissence, CURDATE()) AS age,Tel AS tel FROM patients WHERE MATRICULE_PAT = ?`,
-            cnx = await db.connect(),
-            res = await cnx.query(req, [userId]);
-        cnx.release();
-        // 
-        if (res[0].length > 0)
-            return res[0][0];
-        else if (res[0].length == 0)
-            return null;
-    } catch (err) {
-        console.error('error :', err);
-    }
-}
-// 
-async function getLastInsertedNotification(userId) {
-    try {
-        let req = `SELECT * FROM preConsultation WHERE accepted = FALSE AND  MATRICULE_PAT = ? ORDER BY dateCreation DESC LIMIT 1`,
-            cnx = await db.connect(),
-            res = await cnx.query(req, [userId]);
-        cnx.release();
-        // 
-        return res[0].length > 0 ? res[0][0] : null;
-    } catch (err) {
-        console.error('error :', err);
-    }
-}
-// 
 async function consultationCheck(userId) {
     let table1Check = await checkExistence({
         table: "preConsultation",
         id: "MATRICULE_PAT"
-    }, userId, 'AND accepted = false');
+    }, userId, 'AND ACCEPTE = false');
     // 
     if (!table1Check) {
         try {
-            let req = `select count(*) as nb from consultation where JOUR_REPOS <= -1 AND idPreCons in (select idPreCons from preConsultation where MATRICULE_PAT = ?)`,
+            let req = `select count(*) as nb from consultation where JOUR_REPOS <= -1 AND ID_PRECONS in (select ID_PRECONS from preConsultation where MATRICULE_PAT = ?)`,
                 cnx = await db.connect(),
                 res = await cnx.query(req, [userId]);
             cnx.release();
@@ -268,11 +194,11 @@ async function consultationCheck(userId) {
     } else return true;
 }
 // 
-async function getPatientDoculentDataFromMedecinId(medecinId) {
+async function getPatientPreConsultationDataById(userId) {
     try {
-        let req = `select MATRICULE_PAT as mle,NOM_PAT as nom,Prenom_PAT as prenom,Direction as direction from patients where MATRICULE_PAT in (select userPatientMatricule from room where userMedecinMatricule = ?)`,
+        let req = `SELECT concat(NOM_PAT,' ',PRENOM_PAT) AS nom,TIMESTAMPDIFF(YEAR, DATE_NAISSENCE, CURDATE()) AS age,TEL AS tel FROM patient WHERE MATRICULE_PAT = ?`,
             cnx = await db.connect(),
-            res = await cnx.query(req, [medecinId]);
+            res = await cnx.query(req, [userId]);
         cnx.release();
         // 
         return res[0].length > 0 ? res[0][0] : null;
@@ -281,75 +207,85 @@ async function getPatientDoculentDataFromMedecinId(medecinId) {
     }
 }
 // 
-async function getChatPatients(medecinId, constraint) {
-    // console.log(medecinId);
+async function getLastInsertedNotification(userId, accepted = false) {
     try {
-        let req = `SELECT a.userId,a.online,CONCAT(p.NOM_PAT,' ',p.Prenom_PAT) as nom,n.idPreCons FROM appUser AS a,patients AS p,preConsultation AS n WHERE a.linkedMedecinMatricule = ? AND a.userId = p.MATRICULE_PAT AND a.userId = n.MATRICULE_PAT ${constraint}`,
+        let req = `SELECT * FROM preConsultation WHERE ACCEPTE = ${accepted} AND  MATRICULE_PAT = ? ORDER BY DATE_CREATION DESC LIMIT 1`,
             cnx = await db.connect(),
-            res = await cnx.query(req, [medecinId]);
+            res = await cnx.query(req, [userId]);
         cnx.release();
         // 
-        // console.log(res[0]);
-        return res[0];
+        return res[0].length > 0 ? res[0][0] : null;
     } catch (err) {
         console.error('error :', err);
     }
 }
 // 
-async function getAllPatientNotification(id) {
+async function getRoomIdByNotifId(notifId) {
     try {
-        let req = `SELECT c.JOUR_REPOS,c.DATE_CONSULTATION,p.idPreCons FROM preConsultation as p,consultation as c WHERE p.idPreCons = c.idPreCons AND p.accepted = true AND p.MATRICULE_PAT = ?`,
-            cnx = await db.connect(),
-            res = await cnx.query(req, [id]);
-        cnx.release();
-        // 
-        return res[0];
-    } catch (err) {
-        console.error('error :', err);
-    }
-}
-// 
-async function getNotificationdata(notifId) {
-    try {
-        let req = `select p.accepted,c.DATE_CONSULTATION,c.JOUR_REPOS from preConsultation as p,consultation as c where p.idPreCons = ? and p.idPreCons = c.idPreCons`,
+        let req = `SELECT p.ACCEPTE,r.ID_ROOM,r.MATRICULE_PAT FROM preConsultation AS p,room AS r WHERE p.MATRICULE_PAT = r.MATRICULE_PAT AND p.ID_PRECONS = ?`,
             cnx = await db.connect(),
             res = await cnx.query(req, [notifId]);
         cnx.release();
         // 
-        // console.log(req);
-        // console.log(res[0]);
         return res[0].length > 0 ? res[0][0] : null;
     } catch (err) {
         console.error('error :', err);
     }
-
 }
 //
-async function selectFirstConsultationForChat(medecinId) {
+async function notificationsByMedecin(medecinId) {
     try {
-        let req = `select c.idPreCons,p.MATRICULE_PAT from consultation as c,preconsultation as p where c.idPreCons = p.idPreCons and Matricule_Med = ? order by JOUR_REPOS asc, DATE_CONSULTATION asc limit 1`,
+        let req = `select ID_PRECONS,MATRICULE_PAT from preConsultation where ACCEPTE = false and ID_PRECONS in (select ID_PRECONS from medecinInbox where MATRICULE_MED = ?)`,
             cnx = await db.connect(),
             res = await cnx.query(req, [medecinId]);
         cnx.release();
         // 
-        return res[0].length > 0 ? res[0][0] : null;
+        return res[0].length > 0 ? res[0] : null;
     } catch (err) {
         console.error('error :', err);
     }
 }
 // 
-async function getPatientDataById(id) {
+async function getAcceptedMedecinNotificationsInfos(medecinId) {
+    console.log(medecinId);
     try {
-        let req = `SELECT * FROM patients where MATRICULE_PAT = ?`,
+        let req = `select p.ID_PRECONS,concat(pt.NOM_PAT,' ',pt.PRENOM_PAT) as nom,p.DATE_CREATION,c.DATE_CONSULTATION,c.JOUR_REPOS,p.MATRICULE_PAT,au.ID_ROOM from patient as pt,preConsultation as p,consultation as c,appUser as au where p.ID_PRECONS = c.ID_PRECONS and c.MATRICULE_MED = ? and p.ACCEPTE = true and pt.MATRICULE_PAT = p.MATRICULE_PAT and au.ID_USER = p.MATRICULE_PAT`,
             cnx = await db.connect(),
-            res = await cnx.query(req, [id]);
+            res = await cnx.query(req, [medecinId]);
         cnx.release();
         // 
-        return res[0].length > 0 ? res[0][0] : null;
+        return res[0].length > 0 ? res[0] : [];
     } catch (err) {
         console.error('error :', err);
     }
 }
+// 
+async function checkPatientActiveNotifsExistance(patientId) {
+    try {
+        let req = `select count(c.ID_PRECONS) as nb from consultation as c,preConsultation as p where p.ID_PRECONS = c.ID_PRECONS and p.MATRICULE_PAT = ? and p.ACCEPTE = true and c.JOUR_REPOS = -1`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [patientId]);
+        cnx.release();
+        // 
+        return res[0][0].nb > 0 ? true : false;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// 
+async function getRoomIdBySocketId(socketId) {
+    try {
+        let req = `SELECT r.ID_ROOM FROM room AS r,appUser as a WHERE (r.MATRICULE_PAT = a.ID_USER OR r.MATRICULE_MED = a.ID_USER) AND a.SOCKET = ?`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [socketId]);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0][0].ID_ROOM : null;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// 
 //#endregion
 // 
 //#region HELPER FUNCTIONS
@@ -393,23 +329,19 @@ module.exports = {
     getDataAll,
     getAppUserDataById,
     getAppUserCustomData,
-    getAppUserPatientsByMedecinId,
     getAppUserCustomDataBySocket,
-    getNotificationDataByPatientId,
     customDataUpdate,
-    getRoomId,
-    getRoomIdByNotifId,
-    getRoomIdBySocketId,
-    getRoomDataById,
+    getTypeById,
+    getVilles,
+    getOnlineMedecinsWithCityAndProffession,
     checkExistence,
+    consultationCheck,
     getPatientPreConsultationDataById,
     getLastInsertedNotification,
-    consultationCheck,
-    getPatientDoculentDataFromMedecinId,
-    getChatPatients,
-    getAllPatientNotification,
-    getNotificationdata,
-    selectFirstConsultationForChat,
-    getPatientDataById
+    getRoomIdByNotifId,
+    notificationsByMedecin,
+    getAcceptedMedecinNotificationsInfos,
+    checkPatientActiveNotifsExistance,
+    getRoomIdBySocketId
 }
 // 

@@ -82,8 +82,8 @@ CREATE TABLE IF NOT EXISTS `medecin` (
 --
 
 INSERT INTO `medecin` (`MATRICULE_MED`, `ID_SPEC`, `ID_ADMIN`, `NOM_MED`, `TEL`, `EMAIL`, `DISPONIBLE`, `VILLE`, `PASSWORD`) VALUES
-('bh150', 2, 1, 'Mohamed Elmehdi Choukri', '0614075409', 'medelmehdi.choukri@gmail.com', 1, NULL, '123456'),
-('bh151', 2, 1, 'Kamili Zakaria', '0666663614', 'Zakaria@gmail.com', 1, NULL, '123456');
+('bh150', 2, 1, 'Mohamed Elmehdi Choukri', '0614075409', 'medelmehdi.choukri@gmail.com', 1, 'Safi', '123456'),
+('bh151', 2, 1, 'Kamili Zakaria', '0666663614', 'Zakaria@gmail.com', 1, 'Safi', '123456');
 
 -- --------------------------------------------------------
 
@@ -180,6 +180,16 @@ CREATE TABLE IF NOT EXISTS `consultation` (
 	KEY `FK_CONTIENT3` (`ID_PRECONS`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
+drop trigger if exists autoConsultationDate;
+DELIMITER //
+CREATE TRIGGER autoConsultationDate
+BEFORE INSERT
+ON `consultation` FOR EACH ROW
+BEGIN
+    SET NEW.DATE_CONSULTATION = now();
+END;//
+DELIMITER ;
+
 -- -----------------------------------
 
 DROP TABLE IF EXISTS `room`;
@@ -243,3 +253,13 @@ CREATE TABLE IF NOT EXISTS `specialites` (
 INSERT INTO `specialites` (`ID_SPEC`, `NOM_SPEC`) VALUES
 (1, 'Medecine génerale'),
 (2, 'Cardiologie');
+
+-- ----------------
+
+DROP TABLE IF EXISTS `medecinInbox`;
+CREATE TABLE IF NOT EXISTS `medecinInbox` (
+	`ID_PRECONS` char(250) not null,
+	`MATRICULE_MED` char(250) NOT NULL,
+	KEY `FK_LINK1` (`ID_PRECONS`),
+    KEY `FK_LINK2` (`MATRICULE_MED`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
