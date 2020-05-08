@@ -2,9 +2,9 @@ const __GLOBAL_SOCKET = io();
 let __PEER;
 // 
 // 
-__GLOBAL_SOCKET.on('connect', () => {
+__GLOBAL_SOCKET.on('connect', async () => {
     console.log('Socket Connected ! userId => ', sessionStorage.getItem('matricule') || null);
-    __GLOBAL_SOCKET.emit('newUser', sessionStorage.getItem('matricule'));
+    await __GLOBAL_SOCKET.emit('newUser', sessionStorage.getItem('matricule'));
     joinRoom();
 });
 // 
@@ -13,13 +13,13 @@ __GLOBAL_SOCKET.on('receiveMsg', msg => {
 });
 // 
 // 
-function joinRoom() {
+async function joinRoom() {
     const _URL_PARAMS = new URLSearchParams(window.location.search);
-    __GLOBAL_SOCKET.emit('joinChat', sessionStorage.getItem('matricule'), _URL_PARAMS.get('room'), _URL_PARAMS.get('patient'));
+    await __GLOBAL_SOCKET.emit('joinChat', sessionStorage.getItem('matricule'), _URL_PARAMS.get('room'), _URL_PARAMS.get('patient'));
 }
 // 
-function sendMsg(content) {
-    __GLOBAL_SOCKET.emit('sendMsg', content);
+async function sendMsg(content) {
+    await __GLOBAL_SOCKET.emit('sendMsg', content);
 }
 // 
 let ready = false;
@@ -41,9 +41,9 @@ async function streaminit() {
     });
     console.log('streaminit() | peer => ', __PEER);
     // 
-    __PEER.on('signal', function (data) {
+    __PEER.on('signal', async function (data) {
         if (!ready) {
-            __GLOBAL_SOCKET.emit('liveStreamLink', data);
+            await __GLOBAL_SOCKET.emit('liveStreamLink', data);
             console.log('streaminit() / signal() | ready | data => ', data);
         } else console.log('streaminit() / signal() | notReady | data => ', data);
     });
