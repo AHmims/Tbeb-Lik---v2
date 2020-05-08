@@ -189,144 +189,14 @@ body {
   justify-content: center;
   align-items: unset;
 }
-
 @media screen and (max-width: 1200px) {
   #content {
     padding-left: 100px;
     padding-right: 100px;
     margin-top: 130px;
   }
-  #content #imageVisualizer {
-    width: 700px;
-    height: 361px !important;
-    border: 4px solid #004348;
-    border-radius: 15px;
-    background-position: top;
-    background-size: 175%;
-    margin-top: 38px;
-  }
 }
-
-#content #imageVisualizer {
-  width: 700px;
-  height: 294px;
-  border: 4px solid #004348;
-  border-radius: 15px;
-  background-position: top;
-  background-size: 175%;
-}
-#content #contentNavigation {
-  width: 100%;
-  margin-left: 40px;
-   margin-top: 25px;
-  display: flex;
-  flex-direction: column ;
-  justify-content: flex-start;
-  align-items: unset;
-}
-#content #contentNavigation .navigationBox {
-  width: 100%;
-  height: fit-content;
-  flex: none;
-  border-radius: 20px;
-  box-sizing: border-box;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: unset;
-  align-items: unset;
-  font-family: "Gilroy", sans-serif;
-  transition: 200ms all ease-in-out;
-  cursor: pointer;
-}
-#content #imageVisualizer {
-  width: 1072px;
-  height: 500px;
-  border: 4px solid #004348;
-  border-radius: 15px;
-  background-position: top;
-  background-size: 175%;
-}
-#content #contentNavigation .navigationBox:not(:last-of-type) {
-  margin-bottom: 20px;
-}
-#content #contentNavigation .navigationBox .navigationBoxRow {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  
-}
-#content #contentNavigation .navigationBox .navigationBoxRow img {
-  margin-right: 20px;
-  
-}
-#content #contentNavigation .navigationBox .navigationBoxRow .navigationBoxTitle {
-  font-size: 20px;
-  font-weight: 700;
-  color: #004348;
-}
-#content #contentNavigation .navigationBox .navigationBoxDesc {
-  font-size: 18px;
-  color: #C5D7EA;
-  font-weight: 500;
-}
-#content #contentNavigation .navigationBox:hover {
-  background-color: #F6F9FC;
-}
-#content #contentNavigation .navigationBoxHighlited {
-  background-color: #F6F9FC;
-}
-
-#footing {
-  width: 100%;
-}
-#footing #banner {
-  width: 100%;
-  height: 200px;
-  background-color: #004348;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-#footing #banner div {
-  width: fit-content;
-  height: fit-content;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
- 
-#footing #footer {
-  width: 100%;
-  height: 75px;
-  background-color: #004348;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  color: #FFFFFF;
-  font-size: 18px;
-  font-family: "Gilroy", sans-serif;
-  font-weight: 400;
-}
-@media screen and (max-width: 768px) {
-#content #imageVisualizer {
-  width: 600px;
-  height: 291px !important;
-  border: 4px solid #004348;
-  border-radius: 15px;
-  background-position: top;
-  background-size: 175%;
-}
-}
-/*# sourceMappingURL=home_OCP.css.map */
-@media screen and (max-width: 760px) {
+@media screen and (max-width: 750px) {
   #content {
     padding-left: 25px;
     padding-right: 25px;
@@ -349,7 +219,7 @@ body {
   letter-spacing: 0.5px;
 }
   #body #bodyContent button {
-    font-size: 20px;
+    font-size: 14px;
     text-transform: uppercase;
     color: #FFFFFF;
     letter-spacing: 1px;
@@ -384,7 +254,7 @@ body {
   font-weight: 400;
 }
 #content #contentNavigation {
-  width: auto;
+  width: 350px;
   margin-left: 40px;
   display: flex;
   flex-direction: column;
@@ -393,8 +263,8 @@ body {
   margin-top: 26px;
 }
 #content #imageVisualizer {
-  width: auto !important;
-  height: 270px !important;
+  width: 295px !important;
+  height: 291px !important;
   border: 4px solid #004348;
   border-radius: 15px;
   background-position: top;
@@ -406,7 +276,6 @@ body {
   margin: auto;
   /* width: 65%; */
   display: block;
-  margin-top: 25px;
 }
 #footing #banner div {
   width: fit-content;
@@ -416,15 +285,105 @@ body {
   justify-content: center;
   align-items: center;
 }
-#img1
-{
-  width:125px;
-  height:75px;
 }
-#imgOcp
-{
-  width:75px;
-  height:75px;
+#content #imageVisualizer {
+  width: 700px;
+  height: 500px;
+  border: 4px solid #004348;
+  border-radius: 15px;
+  background-position: top;
+  background-size: 175%;
+}
+#content #contentNavigation {
+  width: 274px;
+  margin-left: 40px;
+  display: flex;
+  flex-direction: column ;
+  justify-content: flex-start;
+  align-items: unset;
+}
+#content #contentNavigation .navigationBox {
+  width: 100%;
+  height: fit-content;
+  flex: none;
+  border-radius: 20px;
+  box-sizing: border-box;
+  /* padding: 20px; */
+  display: flex;
+  flex-direction: column;
+  justify-content: unset;
+  align-items: unset;
+  font-family: "Gilroy", sans-serif;
+  transition: 200ms all ease-in-out;
+  cursor: pointer;
+}
+#content #contentNavigation .navigationBox:not(:last-of-type) {
+  margin-bottom: 20px;
+}
+#content #contentNavigation .navigationBox .navigationBoxRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+#content #contentNavigation .navigationBox .navigationBoxRow img {
+  margin-right: 20px;
+}
+#content #contentNavigation .navigationBox .navigationBoxRow .navigationBoxTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: #004348;
+}
+#content #contentNavigation .navigationBox .navigationBoxDesc {
+  font-size: 18px;
+  color: #C5D7EA;
+  font-weight: 500;
+}
+#content #contentNavigation .navigationBox:hover {
+  background-color: #F6F9FC;
+}
+#content #contentNavigation .navigationBoxHighlited {
+  background-color: #F6F9FC;
 }
 
+#footing {
+  width: 100%;
 }
+#footing #banner {
+  width: 100%;
+  height: 440px;
+  background-color: #004348;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+#footing #banner div {
+  width: fit-content;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+#footing #banner div img {
+  margin: 0 25px;
+}
+#footing #footer {
+  width: 100%;
+  height: 75px;
+  background-color: #004348;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #FFFFFF;
+  font-size: 18px;
+  font-family: "Gilroy", sans-serif;
+  font-weight: 400;
+}
+
+/*# sourceMappingURL=home_OCP.css.map */

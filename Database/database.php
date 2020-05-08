@@ -21,7 +21,7 @@ try{
     die($e->getMessage);
 }
 
-              return self::$connection;
+    return self::$connection;
 
 }
 
