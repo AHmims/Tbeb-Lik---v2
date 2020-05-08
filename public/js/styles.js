@@ -174,7 +174,7 @@ function makeLogo() {
 // 
 function makeExit() {
     var link = document.createElement('a');
-    link.setAttribute('href', '#');
+    link.setAttribute('href', '/../../Connexion/Logout.php');
     var icon = document.createElement('img');
     icon.setAttribute('src', '../icon/exit.svg');
     // 

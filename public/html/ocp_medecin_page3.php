@@ -157,7 +157,7 @@ if (isset($_GET['file_id2'])) {
                 // Connexion à la base de données
                 try
                 {
-                    $bdd = new PDO('mysql:host=localhost;dbname=tbeb-lik;charset=utf8', 'root', '');
+                    $bdd = new PDO('mysql:host=localhost;dbname=tbeblikdb;charset=utf8', 'root', '');
                 }
                 catch(Exception $e)
                 {
