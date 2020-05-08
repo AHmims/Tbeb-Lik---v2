@@ -4,7 +4,7 @@
   "description": "Tbeb-Lik",
   "main": "index.js",
   "scripts": {
-    "start": "node serverHttp.js"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
