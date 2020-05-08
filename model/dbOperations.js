@@ -29,6 +29,8 @@ async function getDataAll(className, constraint = '') {
             res = await cnx.query(req);
         cnx.release();
         // 
+        console.log(`SELECT * FROM ${className} ${constraint}`);
+        console.log(res[0]);
         return res[0];
     } catch (err) {
         console.error('error :', err);

@@ -389,6 +389,20 @@ __APP.post('/getAccessNotif', async (req, res) => {
         retData = await _DB.checkPatientActiveNotifsExistance(req.body.matricule);
     res.end(retData.toString());
 });
+__APP.post('/getMesssages', async (req, res) => {
+    console.log('******');
+    let retData = [];
+    if (req.body.matricule != null) {
+        let room = await _DB.getDataAll('room', `where MATRICULE_PAT = '${req.body.matricule}' or MATRICULE_MED = '${req.body.matricule}'`);
+        if (room.length > 0) {
+            let msgs = await _DB.getDataAll('message', `where ID_ROOM = '${room[0].ID_ROOM}'`);
+            if (msgs.length > 0)
+                retData = msgs;
+            else console.log('/getMesssages | msgs = no messages !');
+        } else console.log('/getMesssages | room not found');
+    } else console.log('/getMesssages | matricule = null');
+    res.end(JSON.stringify(retData));
+});
 // __APP.post('/')
 // 
 // 
