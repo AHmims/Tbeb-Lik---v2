@@ -189,11 +189,21 @@ body {
   justify-content: center;
   align-items: unset;
 }
+
 @media screen and (max-width: 1200px) {
   #content {
     padding-left: 100px;
     padding-right: 100px;
     margin-top: 130px;
+  }
+  #content #imageVisualizer {
+    width: 700px;
+    height: 361px !important;
+    border: 4px solid #004348;
+    border-radius: 15px;
+    background-position: top;
+    background-size: 175%;
+    margin-top: 38px;
   }
 }
 
@@ -217,9 +227,9 @@ body {
   width: 100%;
   height: fit-content;
   flex: none;
-  /* border-radius: 20px; */
+  border-radius: 20px;
   box-sizing: border-box;
-  /* padding: 20px; */
+  padding: 20px;
   display: flex;
   flex-direction: column;
   justify-content: unset;
@@ -227,6 +237,14 @@ body {
   font-family: "Gilroy", sans-serif;
   transition: 200ms all ease-in-out;
   cursor: pointer;
+}
+#content #imageVisualizer {
+  width: 1072px;
+  height: 500px;
+  border: 4px solid #004348;
+  border-radius: 15px;
+  background-position: top;
+  background-size: 175%;
 }
 #content #contentNavigation .navigationBox:not(:last-of-type) {
   margin-bottom: 20px;
@@ -296,9 +314,18 @@ body {
   font-family: "Gilroy", sans-serif;
   font-weight: 400;
 }
-
+@media screen and (max-width: 768px) {
+#content #imageVisualizer {
+  width: 600px;
+  height: 291px !important;
+  border: 4px solid #004348;
+  border-radius: 15px;
+  background-position: top;
+  background-size: 175%;
+}
+}
 /*# sourceMappingURL=home_OCP.css.map */
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 760px) {
   #content {
     padding-left: 25px;
     padding-right: 25px;
@@ -321,7 +348,7 @@ body {
   letter-spacing: 0.5px;
 }
   #body #bodyContent button {
-    font-size: 14px;
+    font-size: 20px;
     text-transform: uppercase;
     color: #FFFFFF;
     letter-spacing: 1px;
