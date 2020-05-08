@@ -218,6 +218,49 @@ __IO.on('connection', socket => {
         }
     });
     // 
+    // 
+    socket.on('joinChat', async (medecinId, room, patientId) => {
+        console.log('#-#-#-#');
+        let roomUnlinkMedecin = await unlinkMedecinFromRooms(medecinId);
+        console.log('joinChat() | roomUnlinkMedecin => ', roomUnlinkMedecin);
+        let patientUpdate = await _DB.customDataUpdate({
+            MATRICULE_MED: medecinId
+        }, patientId, {
+            table: "room",
+            id: "MATRICULE_PAT"
+        });
+        console.log('unlinkMedecinFromRooms() | patientUpdate => ', patientUpdate);
+        // 
+        // socket.leaveAll();
+        socket.join(room);
+    });
+    // 
+    socket.on('sendMsg', async msg => {
+        let room = await _DB.getRoomIdBySocketId(socket.client.id);
+        if (room != null) {
+            // socket.leaveAll();
+            // socket.join(room);
+            // 
+            console.log('sendMsg() | room => ', room);
+            msg = await getMsgAdditionalData(msg, 'Text', room);
+            console.log('sendMsg() | msg => ', msg);
+            socket.to(room).emit('receiveMsg', msg); //MESSAGE RECEIVED BY EVERYONE EXCEPT SENDER
+            //__CHAT.to(room).emit('receiveMsg', msg); // MESSAGE RECEIVED BY EVERYONE INCLUDIG SENDER
+        } else console.log('sendMsg() | room not found');
+    });
+    // 
+    async function getMsgAdditionalData(msgTxt, type, room = null) {
+        let msgObject = new _CLASSES.message(null, msgTxt, room, new Date(Date.now()), type, null);
+        // 
+        let retData = await _DB.getAppUserCustomDataBySocket(["ID_USER"], socket.client.id);
+        if (retData != null) {
+            console.log('getMsgAdditionalData() | retData => ', retData);
+            msgObject.MATRICULE_EMETTEUR = retData.ID_USER;
+        } else
+            console.log('getMsgAdditionalData() | retData = null ');
+        // 
+        return msgObject;
+    }
 });
 // 
 __HUB.on('connection', socket => {
@@ -244,49 +287,7 @@ __CHAT.on('connection', socket => {
         console.log('huhuhuhuhuhuhuhuhu ROOM => ');
         console.log(room);
     });
-    // 
-    socket.on('joinChat', async (medecinId, room, patientId) => {
-        console.log('#-#-#-#');
-        let roomUnlinkMedecin = await unlinkMedecinFromRooms(medecinId);
-        console.log('joinChat() | roomUnlinkMedecin => ', roomUnlinkMedecin);
-        let patientUpdate = await _DB.customDataUpdate({
-            MATRICULE_MED: medecinId
-        }, patientId, {
-            table: "room",
-            id: "MATRICULE_PAT"
-        });
-        console.log('unlinkMedecinFromRooms() | patientUpdate => ', patientUpdate);
-        // 
-        // socket.leaveAll();
-        socket.join(room);
-    });
-    // 
-    socket.on('sendMsg', async msg => {
-        let room = await _DB.getRoomIdBySocketId(socket.client.id);
-        if (room != null) {
-            socket.leaveAll();
-            socket.join(room);
-            // 
-            console.log('sendMsg() | room => ', room);
-            msg = await getMsgAdditionalData(msg, 'Text', room);
-            console.log('sendMsg() | msg => ', msg);
-            socket.to(room).emit('receiveMsg', msg); //MESSAGE RECEIVED BY EVERYONE EXCEPT SENDER
-            //__CHAT.to(room).emit('receiveMsg', msg); // MESSAGE RECEIVED BY EVERYONE INCLUDIG SENDER
-        } else console.log('sendMsg() | room not found');
-    });
-    // 
-    async function getMsgAdditionalData(msgTxt, type, room = null) {
-        let msgObject = new _CLASSES.message(null, msgTxt, room, new Date(Date.now()), type, null);
-        // 
-        let retData = await _DB.getAppUserCustomDataBySocket(["ID_USER"], socket.client.id);
-        if (retData != null) {
-            console.log('getMsgAdditionalData() | retData => ', retData);
-            msgObject.MATRICULE_EMETTEUR = retData.ID_USER;
-        } else
-            console.log('getMsgAdditionalData() | retData = null ');
-        // 
-        return msgObject;
-    }
+
 });
 // 
 // 
