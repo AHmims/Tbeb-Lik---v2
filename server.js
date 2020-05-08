@@ -234,7 +234,7 @@ __IO.on('connection', socket => {
     });
     // 
     socket.on('sendMsg', async msg => {
-        let room = await _DB.getRoomIdBySocketId(socket.client.id);
+        let room = await getRoomIdFromSocket();
         if (room != null) {
             // socket.leaveAll();
             // socket.join(room);
@@ -261,6 +261,31 @@ __IO.on('connection', socket => {
             console.log('getMsgAdditionalData() | retData = null ');
         // 
         return msgObject;
+    }
+    // 
+    // 
+    // VIDEO
+    socket.on('liveStreamInitFail', async () => {
+        let roomId = await getRoomIdFromSocket();
+        console.log('liveStreamInitFail() | roomId => ', roomId);
+        socket.to(roomId).emit('patientLinkFailed');
+    });
+    // 
+    socket.on('liveStreamLink', async (data) => {
+        let roomId = await getRoomIdFromSocket();
+        console.log('liveStreamLink() | roomId => ', roomId);
+        socket.to(roomId).emit('liveStreamDataFlux', data);
+    });
+    // 
+    socket.on('endCall', async () => {
+        let roomId = await getRoomIdFromSocket();
+        console.log('endCall() | roomId => ', roomId);
+        socket.to(roomId).emit('liveStreamTerminated');
+    });
+    // 
+    async function getRoomIdFromSocket() {
+        let dbResult = await _DB.getRoomIdBySocketId(socket.id);
+        return dbResult != null ? dbResult : null;
     }
 });
 // 
