@@ -1,5 +1,4 @@
 const __GLOBAL_SOCKET = io();
-// const __CHAT = io('/chat');
 // 
 // 
 __GLOBAL_SOCKET.on('connect', () => {

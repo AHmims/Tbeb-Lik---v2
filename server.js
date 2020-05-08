@@ -24,8 +24,6 @@ __APP.use(__EXPRESS.static(__PATH.join(__dirname, 'public')));
 // 
 // NOTIICATIONS SYSTEM NAMESPACE
 const __HUB = __IO.of('/medecinHub');
-// CHAT NAMESPACE
-const __CHAT = __IO.of('/chat');
 //TRAITMENT
 __IO.on('connection', socket => {
     socket.on('newUser', async (matricule) => {
@@ -246,6 +244,9 @@ __IO.on('connection', socket => {
             console.log('sendMsg() | msg => ', msg);
             socket.to(room).emit('receiveMsg', msg); //MESSAGE RECEIVED BY EVERYONE EXCEPT SENDER
             //__CHAT.to(room).emit('receiveMsg', msg); // MESSAGE RECEIVED BY EVERYONE INCLUDIG SENDER
+            // SAVE MSG IN DB
+            let insertResult = await _DB.insertData(msg);
+            console.log('sendMsg() | insertResult => ', insertResult);
         } else console.log('sendMsg() | room not found');
     });
     // 
@@ -272,23 +273,6 @@ __HUB.on('connection', socket => {
     });
 });
 // 
-__CHAT.on('connection', socket => {
-    console.log('------');
-    console.log('Chat/connection userConnected => ', socket.id);
-    // WHY ON EARTH AM I USING THIS ?
-    // APPERANTLY
-    //JOINING A ROOM FROM ANOTHER NAMESPACE THE TRYING TO ACCES IT FROM ANOTHER ONE
-    // DOESN'T WORK, SOOOOOOOOO
-    //JOIN THE ROOM WITH THE CUURENT NAMESPACE
-    socket.on('patientJoinRoom', async (patientId) => {
-        let room = await _DB.getDataAll('appUser', `where ID_USER = '${patientId}'`);
-        socket.leaveAll();
-        socket.join(room.ID_ROOM);
-        console.log('huhuhuhuhuhuhuhuhu ROOM => ');
-        console.log(room);
-    });
-
-});
 // 
 // 
 function makeUserInstance(id, type, socketId) {
