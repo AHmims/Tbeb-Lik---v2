@@ -58,7 +58,7 @@ function generateSemiNotifBox(data) {
     table.setAttribute('border', 1);
     table.setAttribute('class', 'activeNotificationBox');
     table.setAttribute('data-notifId', data.ID_PRECONS);
-    table.setAttribute('data-patientId', data.MATRICULE_PAT);
+    // table.setAttribute('data-patientId', data.MATRICULE_PAT);
     Object.keys(data).forEach(key => {
         let row = document.createElement('tr');
         let colKey = document.createElement('td');
@@ -78,7 +78,7 @@ function generateSemiNotifBox(data) {
     btnCol.style.textAlign = "right";
     // 
     btn.innerText = "Contacter";
-    btn.setAttribute('href', `/medecin/contact?room=${table.getAttribute('data-notifId')}&patient=${table.getAttribute('data-patientId')}`);
+    btn.setAttribute('href', `/medecin/contact?room=${data.ID_ROOM}&patient=${data.MATRICULE_PAT}`);
     btnCol.appendChild(btn);
     btnRow.appendChild(btnCol);
     table.appendChild(btnRow);

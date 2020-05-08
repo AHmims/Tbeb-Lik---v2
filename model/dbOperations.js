@@ -271,6 +271,19 @@ async function checkPatientActiveNotifsExistance(patientId) {
     }
 }
 // 
+async function getRoomIdBySocketId(socketId) {
+    try {
+        let req = `SELECT r.ID_ROOM FROM room AS r,appUser as a WHERE (r.MATRICULE_PAT = a.ID_USER OR r.MATRICULE_MED = a.ID_USER) AND a.SOCKET = ?`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [socketId]);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0][0].ID_ROOM : null;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// 
 //#endregion
 // 
 //#region HELPER FUNCTIONS
@@ -326,6 +339,7 @@ module.exports = {
     getRoomIdByNotifId,
     notificationsByMedecin,
     getAcceptedMedecinNotificationsInfos,
-    checkPatientActiveNotifsExistance
+    checkPatientActiveNotifsExistance,
+    getRoomIdBySocketId
 }
 // 

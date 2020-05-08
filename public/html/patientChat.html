@@ -28,6 +28,17 @@
         .msgRemote {
             text-align: left;
         }
+
+        /*  */
+        #chatControlsBox {
+            width: 410px;
+            display: flex;
+            margin: 0 auto;
+        }
+
+        #chatInput {
+            flex: 1;
+        }
     </style>
 </head>
 
@@ -35,8 +46,14 @@
     <h1>Page dyal chat de patient</h1>
     <h3>Boite des messages</h3>
     <div id="msgsCont">
-        <h4 class="msgTxt msgHost">i sent this</h4>
-        <h4 class="msgTxt msgRemote">Received this</h4>
+        <!-- <h4 class="msgTxt msgHost">i sent this</h4> -->
+        <!-- <h4 class="msgTxt msgRemote">Received this</h4> -->
+    </div>
+    <div id="chatControlsBox">
+        <input type="text" id="chatInput">
+        <button id="chatSendBtn">
+            Envoyer
+        </button>
     </div>
     <script src="../js/patient/socketChat.js"></script>
     <script src="../js/patient/controllerChat.js"></script>

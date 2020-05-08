@@ -48,8 +48,10 @@ __IO.on('connection', socket => {
                     // 
                     console.log('newUser() | updatingResult => ', updatingResult);
                     // 
-                    if (type == 'Patient')
+                    if (type == 'Patient') {
                         socket.join(existingUser.ID_ROOM);
+                        console.log('§§§§§§§§§§§§PATIENT ROOMID =>', existingUser.ID_ROOM);
+                    }
                 } else {
                     let userInstance = makeUserInstance(matricule, type, socket.id);
                     console.log('newUser() | userInstance => ', userInstance);
@@ -59,8 +61,10 @@ __IO.on('connection', socket => {
                     //IF IT WAS A PATIENT
                     if (type == 'Patient') {
                         let insertedPatient = await _DB.getDataAll('appUser', `where ID_USER = '${matricule}'`);
-                        if (insertedPatient.length > 0)
+                        if (insertedPatient.length > 0) {
                             socket.join(insertedPatient[0].ID_ROOM);
+                            console.log('§§§§§§§§§§§§PATIENT ROOMID =>', insertedPatient[0].ID_ROOM);
+                        }
                     }
                 }
             }
@@ -213,7 +217,7 @@ __IO.on('connection', socket => {
             console.log('disconnect() | updatingResult => ', updatingResult);
         }
     });
-    //  
+    // 
 });
 // 
 __HUB.on('connection', socket => {
@@ -228,6 +232,18 @@ __HUB.on('connection', socket => {
 __CHAT.on('connection', socket => {
     console.log('------');
     console.log('Chat/connection userConnected => ', socket.id);
+    // WHY ON EARTH AM I USING THIS ?
+    // APPERANTLY
+    //JOINING A ROOM FROM ANOTHER NAMESPACE THE TRYING TO ACCES IT FROM ANOTHER ONE
+    // DOESN'T WORK, SOOOOOOOOO
+    //JOIN THE ROOM WITH THE CUURENT NAMESPACE
+    socket.on('patientJoinRoom', async (patientId) => {
+        let room = await _DB.getDataAll('appUser', `where ID_USER = '${patientId}'`);
+        socket.leaveAll();
+        socket.join(room.ID_ROOM);
+        console.log('huhuhuhuhuhuhuhuhu ROOM => ');
+        console.log(room);
+    });
     // 
     socket.on('joinChat', async (medecinId, room, patientId) => {
         console.log('#-#-#-#');
@@ -241,8 +257,36 @@ __CHAT.on('connection', socket => {
         });
         console.log('unlinkMedecinFromRooms() | patientUpdate => ', patientUpdate);
         // 
+        // socket.leaveAll();
         socket.join(room);
     });
+    // 
+    socket.on('sendMsg', async msg => {
+        let room = await _DB.getRoomIdBySocketId(socket.client.id);
+        if (room != null) {
+            socket.leaveAll();
+            socket.join(room);
+            // 
+            console.log('sendMsg() | room => ', room);
+            msg = await getMsgAdditionalData(msg, 'Text', room);
+            console.log('sendMsg() | msg => ', msg);
+            socket.to(room).emit('receiveMsg', msg); //MESSAGE RECEIVED BY EVERYONE EXCEPT SENDER
+            //__CHAT.to(room).emit('receiveMsg', msg); // MESSAGE RECEIVED BY EVERYONE INCLUDIG SENDER
+        } else console.log('sendMsg() | room not found');
+    });
+    // 
+    async function getMsgAdditionalData(msgTxt, type, room = null) {
+        let msgObject = new _CLASSES.message(null, msgTxt, room, new Date(Date.now()), type, null);
+        // 
+        let retData = await _DB.getAppUserCustomDataBySocket(["ID_USER"], socket.client.id);
+        if (retData != null) {
+            console.log('getMsgAdditionalData() | retData => ', retData);
+            msgObject.MATRICULE_EMETTEUR = retData.ID_USER;
+        } else
+            console.log('getMsgAdditionalData() | retData = null ');
+        // 
+        return msgObject;
+    }
 });
 // 
 // 
