@@ -208,6 +208,7 @@ body {
 #content #contentNavigation {
   width: 100%;
   margin-left: 40px;
+   margin-top: 25px;
   display: flex;
   flex-direction: column ;
   justify-content: flex-start;
