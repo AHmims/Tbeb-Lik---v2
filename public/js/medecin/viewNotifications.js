@@ -49,13 +49,16 @@ function makeNotificationBox(data) {
 //     nom: "",
 //     DATE_CREATION: "",
 //     DATE_CONSULTATION: "",
-//     JOUR_REPOS: ""
+//     JOUR_REPOS: "",
+//     MATRICULE_PAT : "",
+//     ID_ROOM : ""
 // } 
 function generateSemiNotifBox(data) {
     let table = document.createElement('table');
     table.setAttribute('border', 1);
     table.setAttribute('class', 'activeNotificationBox');
     table.setAttribute('data-notifId', data.ID_PRECONS);
+    table.setAttribute('data-patientId', data.MATRICULE_PAT);
     Object.keys(data).forEach(key => {
         let row = document.createElement('tr');
         let colKey = document.createElement('td');
@@ -68,6 +71,18 @@ function generateSemiNotifBox(data) {
         // 
         table.appendChild(row);
     });
+    let btnRow = document.createElement('tr'),
+        btnCol = document.createElement('td'),
+        btn = document.createElement('a');
+    btnCol.setAttribute('colspan', 2);
+    btnCol.style.textAlign = "right";
+    // 
+    btn.innerText = "Contacter";
+    btn.setAttribute('href', `/medecin/contact?room=${table.getAttribute('data-notifId')}&patient=${table.getAttribute('data-patientId')}`);
+    btnCol.appendChild(btn);
+    btnRow.appendChild(btnCol);
+    table.appendChild(btnRow);
+
     // 
     document.getElementById('activeNotifications').appendChild(table);
 }

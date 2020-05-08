@@ -247,7 +247,7 @@ async function notificationsByMedecin(medecinId) {
 async function getAcceptedMedecinNotificationsInfos(medecinId) {
     console.log(medecinId);
     try {
-        let req = `select p.ID_PRECONS,concat(pt.NOM_PAT,' ',pt.PRENOM_PAT) as nom,p.DATE_CREATION,c.DATE_CONSULTATION,c.JOUR_REPOS from patient as pt,preConsultation as p,consultation as c where p.ID_PRECONS = c.ID_PRECONS and c.MATRICULE_MED = ? and p.ACCEPTE = true and pt.MATRICULE_PAT = p.MATRICULE_PAT`,
+        let req = `select p.ID_PRECONS,concat(pt.NOM_PAT,' ',pt.PRENOM_PAT) as nom,p.DATE_CREATION,c.DATE_CONSULTATION,c.JOUR_REPOS,p.MATRICULE_PAT,au.ID_ROOM from patient as pt,preConsultation as p,consultation as c,appUser as au where p.ID_PRECONS = c.ID_PRECONS and c.MATRICULE_MED = ? and p.ACCEPTE = true and pt.MATRICULE_PAT = p.MATRICULE_PAT and au.ID_USER = p.MATRICULE_PAT`,
             cnx = await db.connect(),
             res = await cnx.query(req, [medecinId]);
         cnx.release();

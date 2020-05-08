@@ -20,6 +20,7 @@ __GLOBAL_SOCKET.on('queryResult', data => {
     }
 });
 __GLOBAL_SOCKET.on('notificationAccepted', () => {
+    console.log('braah');
     addNotification();
 });
 // FUNCTIONS

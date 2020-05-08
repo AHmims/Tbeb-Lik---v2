@@ -158,7 +158,7 @@ __IO.on('connection', socket => {
                     console.log('acceptNotif() | room => ', room);
                     // REMOVE ME FROM ROOMS
                     let roomUnlinkMedecin = await unlinkMedecinFromRooms(medecin.ID_USER);
-                    console.log('unlinkMedecinFromRooms() | roomUpdate => ', roomUnlinkMedecin);
+                    console.log('unlinkMedecinFromRooms() | roomUnlinkMedecin => ', roomUnlinkMedecin);
                     // 
                     let patientUpdate = await _DB.customDataUpdate({
                         MATRICULE_MED: medecin.ID_USER
@@ -229,6 +229,20 @@ __CHAT.on('connection', socket => {
     console.log('------');
     console.log('Chat/connection userConnected => ', socket.id);
     // 
+    socket.on('joinChat', async (medecinId, room, patientId) => {
+        console.log('#-#-#-#');
+        let roomUnlinkMedecin = await unlinkMedecinFromRooms(medecinId);
+        console.log('joinChat() | roomUnlinkMedecin => ', roomUnlinkMedecin);
+        let patientUpdate = await _DB.customDataUpdate({
+            MATRICULE_MED: medecinId
+        }, patientId, {
+            table: "room",
+            id: "MATRICULE_PAT"
+        });
+        console.log('unlinkMedecinFromRooms() | patientUpdate => ', patientUpdate);
+        // 
+        socket.join(room);
+    });
 });
 // 
 // 
@@ -299,6 +313,7 @@ __APP.get('/medecin/notifications', (req, res) => {
     res.sendFile(__PATH.join(__dirname, 'public', 'html', 'medecinNotifications.html'));
 });
 __APP.get('/medecin/contact', (req, res) => {
+    // console.log(req.query.room);
     res.sendFile(__PATH.join(__dirname, 'public', 'html', 'medecinChat.html'));
 });
 __APP.get('/patient/form', (req, res) => {

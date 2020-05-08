@@ -27,8 +27,12 @@ $(document).ready(async () => {
     // 
     // CHECK IF THE PATIENT HAVE ANY ONGOING NOTIFICATIONS
     // IF YES ADD A BTN FOR HIM TO GO TO THE CONTACT PAGE
-    let exists = await $.post('/listeConsultationFields', {}).promise();
-    if (exists)
+    let exists = await $.post('/getAccessNotif', {
+        matricule: sessionStorage.getItem('matricule') || null
+    }).promise();
+    // exists = Boolean(exists);
+    console.log('/getAccessNotif | exists => ', exists);
+    if (exists != 'false')
         addNotification();
 });
 // 
