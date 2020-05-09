@@ -1065,6 +1065,7 @@ footer {
   border-top-left-radius: 20px;
   border-bottom-left-radius: 20px;
   overflow: hidden;
+  display: none;
 }
 
 #content #smallblox #videoSection #videoSectionBody {
@@ -1176,15 +1177,17 @@ footer {
   position: relative;
   flex: none;
   height: 100%;
-  width: 475px;
+  /* width: 475px; */
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   border: 1px solid #E8EFF6;
-  border-left: none;
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
+  /* border-left: none; */
+  border-radius: 20px;
+  /* border-top-right-radius: 20px; */
+  /* border-bottom-right-radius: 20px; */
 }
 
 #content #smallblox #chatSection .chatMedecinInfos {
@@ -1397,7 +1400,8 @@ footer {
     border-left: 1px solid #E8EFF6 !important;
     border-top-right-radius: 0 !important;
     border-bottom-left-radius: 20px;
-    height: 500px !important;
+    /* height: 500px !important; */
+    height: 80vh !important;
   }
 
 }
