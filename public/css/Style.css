@@ -1,0 +1,533 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital@0;1&display=swap");
+@font-face {
+  font-family: "Gilroy";
+  src: url("../../app/font/Gilroy-Bold.ttf");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("../../app/font/Gilroy-Medium.ttf");
+  font-weight: medium;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("../../app/font/Gilroy-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+
+* {
+  font-family: "Gilroy";
+  margin: 0;
+  padding: 0;
+
+}
+
+header {
+  width: 90%;
+  margin: auto;
+  margin-top: 10px;
+}
+
+header .part1 {
+  float: left;
+  color: #1FDBAE;
+  font-weight: 600;
+  font-size: 26px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  justify-items: center;
+}
+
+header .part2 {
+  float: right;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 13px;
+}
+
+header .part2 .btnIdentifier {
+  margin-left: 10px;
+  background-color: #1FDBAE;
+  color: white;
+  cursor: pointer;
+  height: 35px;
+  width: 130px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+}
+
+header .part2 .btnIdentifier:hover {
+  background-color: rgba(117, 117, 117, 0.8);
+}
+
+header .part2 .btnIdentifier img {
+  margin-right: 12px;
+}
+
+header .part2 a {
+  text-decoration: none;
+  color: #004348;
+}
+
+.espace {
+  height: 80px;
+  background-color: white;
+}
+
+.desc {
+  width: 100%;
+}
+
+.desc div {
+  text-align: center;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  justify-items: center;
+}
+
+.desc div .p1 {
+  -webkit-animation-name: captionText;
+          animation-name: captionText;
+  -webkit-animation-duration: 2s;
+          animation-duration: 2s;
+  width: 500px;
+  color: #004348;
+  font-weight: bold;
+  font-size: 55px;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+}
+
+.desc div .p2 {
+  width: 500px;
+  margin: auto;
+  color: #004348;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.desc div .btnConsulter {
+  background-color: #1FDBAE;
+  color: white;
+  cursor: pointer;
+  height: 35px;
+  width: 130px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  height: 50px;
+  width: 150px;
+  font-size: 20px;
+  border-radius: 20px;
+}
+
+.desc div .btnConsulter:hover {
+  background-color: rgba(117, 117, 117, 0.8);
+}
+
+@-webkit-keyframes captionText {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(-100px);
+            transform: translateX(-100px);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translateX(0px);
+            transform: translateX(0px);
+  }
+}
+
+@keyframes captionText {
+  0% {
+    opacity: 0;
+    -webkit-transform: translateX(-100px);
+            transform: translateX(-100px);
+  }
+  100% {
+    opacity: 1;
+    -webkit-transform: translateX(0px);
+            transform: translateX(0px);
+  }
+}
+
+#inscription {
+  display: none;
+  position: absolute;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+#inscription #f1 {
+  width: 30%;
+  margin: auto;
+  margin-top: 60px;
+  background-color: white;
+  border-radius: 20px;
+  padding: 30px;
+}
+
+#inscription #f1 p {
+  text-align: center;
+  font-weight: bold;
+  font-size: 35px;
+  letter-spacing: 1px;
+}
+
+#inscription #f1 hr {
+  width: 160px;
+  margin: auto;
+  background-color: #1FDBAE;
+  height: 3px;
+  border: none;
+  margin-top: 5px;
+  margin-bottom: 40px;
+}
+
+#inscription #f1 div {
+  width: 400px;
+  margin: auto;
+  margin-top: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  font-size: 20px;
+}
+
+#inscription #f1 div input {
+  font-size: 17px;
+  padding-left: 6px;
+  height: 35px;
+  border: none;
+  border-radius: 8px;
+  background-color: #E8EFF6;
+}
+
+#inscription #f1 .BtnInscription {
+  width: 400px;
+  margin: auto;
+  margin-top: 30px;
+}
+
+#inscription #f1 .BtnInscription input {
+  background-color: #1FDBAE;
+  color: white;
+  cursor: pointer;
+  height: 35px;
+  width: 130px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  border-radius: 20px;
+  width: 100%;
+  height: 40px;
+  font-size: 20px;
+  text-align: center;
+}
+
+#inscription #f1 .BtnInscription input:hover {
+  background-color: rgba(117, 117, 117, 0.8);
+}
+
+#inscription #f1 div p {
+  margin-top: 20px;
+  width: 100%;
+  font-weight: 1;
+  font-size: 14px;
+  text-align: center;
+}
+
+#connexion {
+  display: none;
+  position: absolute;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+#connexion #f2 {
+  width: 28%;
+  margin: auto;
+  margin-top: 100px;
+  background-color: white;
+  border-radius: 20px;
+  padding: 30px;
+}
+
+#connexion #f2 .imageLog {
+  height: 100px;
+  width: 100px;
+  text-align: center;
+  margin-top: -100px;
+  margin-bottom: 10px;
+}
+
+#connexion #f2 p {
+  text-align: center;
+  font-weight: bold;
+  font-size: 35px;
+  letter-spacing: 1px;
+}
+
+#connexion #f2 .lien {
+  text-align: center;
+  margin-top: 40px;
+}
+
+#connexion #f2 .lien a {
+  color: blue;
+  font-weight: normal;
+  font-size: 15px;
+  letter-spacing: 0px;
+}
+
+#connexion #f2 hr {
+  width: 160px;
+  margin: auto;
+  background-color: #1FDBAE;
+  height: 3px;
+  border: none;
+  margin-top: 5px;
+  margin-bottom: 40px;
+}
+
+#connexion #f2 div {
+  width: 380px;
+  margin: auto;
+  margin-top: 10px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  font-size: 22px;
+  color: #C0C0C0;
+}
+
+#connexion #f2 div input {
+  font-size: 17px;
+  height: 35px;
+  border: none;
+  border-bottom: 1px solid #C0C0C0;
+  margin-top: 40px;
+}
+
+#connexion #f2 div #emailLog {
+  margin-top: 20px;
+}
+
+#connexion #f2 .show {
+  margin-top: 20px;
+  margin-left: 20px;
+  height: 15px;
+  width: 15px;
+}
+
+#connexion #f2 .BtnConnexion {
+  width: 400px;
+  margin: auto;
+}
+
+#connexion #f2 .BtnConnexion input {
+  background-color: #1FDBAE;
+  color: white;
+  cursor: pointer;
+  height: 35px;
+  width: 130px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  border-radius: 20px;
+  width: 80%;
+  margin: auto;
+  height: 40px;
+  font-size: 20px;
+  margin-top: 40px;
+}
+
+#connexion #f2 .BtnConnexion input:hover {
+  background-color: rgba(117, 117, 117, 0.8);
+}
+
+.formulaire {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  justify-items: center;
+  width: 80%;
+  margin: auto;
+}
+
+.formulaire p {
+  text-align: center;
+  color: #004348;
+  font-weight: bold;
+  font-size: 35px;
+}
+
+.formulaire form {
+  width: 100%;
+  height: 550px;
+  background-color: #F6F9FC;
+  border-radius: 10px;
+}
+
+.formulaire form .ligne {
+  padding-top: 30px;
+  width: 90%;
+  margin: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.formulaire form .ligne div {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+          justify-content: space-between;
+}
+/* alert */
+.alert{
+  background-color: red;
+    padding: 22px;
+    color: white;
+}
+
+.formulaire form .ligne div label {
+  font-size: 20px;
+  font-weight: bold;
+  color: #004348;
+}
+
+.formulaire form .ligne div input, .formulaire form .ligne div select {
+  font-size: 20px;
+  width: 430px;
+  height: 35px;
+  border: none;
+  border-radius: 8px;
+  background-color: #E8EFF6;
+  margin-top: 13px;
+}
+
+.formulaire form .ligne2 {
+  width: 90%;
+  margin: auto;
+  padding-top: 30px;
+}
+
+.formulaire form .ligne2 div {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.formulaire form .ligne2 div label {
+  font-size: 20px;
+  font-weight: bold;
+  color: #004348;
+}
+
+.formulaire form .ligne2 div #message {
+  font-size: 20px;
+  width: 100%;
+  height: 150px;
+  border: none;
+  border-radius: 8px;
+  background-color: #E8EFF6;
+  margin-top: 13px;
+}
+
+.formulaire form .ligne2 .btnEnvoyer {
+  margin-top: 30px;
+  float: right;
+  background-color: #1FDBAE;
+  color: white;
+  cursor: pointer;
+  height: 35px;
+  width: 130px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  background-color: #C5D7EA;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
+}
+
+.formulaire form .ligne2 .btnEnvoyer:hover {
+  background-color: rgba(117, 117, 117, 0.8);
+}
+
+@media only screen and (max-width: 1200px) {
+  header {
+    width: 98%;
+  }
+  header .part1 {
+    font-size: 20px;
+  }
+  .desc div .p1, .desc div .p2 {
+    width: 450px;
+  }
+  .formulaire form {
+    height: 750px;
+  }
+  .formulaire form .ligne {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  .formulaire form .ligne div input, .formulaire form .ligne div select {
+    width: 350px;
+    margin-bottom: 20px;
+  }
+}
+/*# sourceMappingURL=Style.css.map */
