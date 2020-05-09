@@ -17,7 +17,7 @@ $(document).ready(async () => {
 
     });
     // 
-    document.getElementById('chatVideoEndBtn').addEventListener('click', () => {
+    document.getElementById('videoControl-btnEnd').addEventListener('click', () => {
         endCall();
     });
     // 

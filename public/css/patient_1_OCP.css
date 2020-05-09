@@ -1036,3 +1036,389 @@ footer {
   margin-top: 70px;
   outline: none;
 }
+
+/* 
+ */
+#content #smallblox {
+  width: 1600px;
+  max-width: 1600px;
+  height: 850px;
+  margin: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: unset;
+}
+
+#content #smallblox #videoSection {
+  flex: 1;
+  height: 100%;
+  background-color: #004348;
+  position: relative;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  overflow: hidden;
+}
+
+#content #smallblox #videoSection #videoSectionBody {
+  width: 100%;
+  height: 100%;
+  padding: 30px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  position: relative;
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoSectionHost {
+  position: absolute;
+  right: 30px;
+  width: 285px;
+  height: 220px;
+  background-color: #F6F9FC;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoSectionHost #hostVideoPoster {
+  width: 100%;
+  height: 100%;
+  background-image: url("../icon/avatarVideoHost.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoChatControls {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoChatControls div {
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoChatControls .videoControlBtn {
+  width: 60px;
+  height: 60px;
+  background-color: rgba(0, 0, 0, 0.15);
+  border-radius: 999px;
+  transition: background-color 100ms ease-in-out;
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoChatControls .videoControlBtn img {
+  width: 25px;
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoChatControls .videoControlBtn:not(:last-of-type) {
+  margin-right: 15px;
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoChatControls .videoControlBtn:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoChatControls #videoControl-btnEnd {
+  background-color: #FC5E79;
+}
+
+#content #smallblox #videoSection #videoSectionBody #videoChatControls #videoControl-btnEnd img {
+  transform: rotate(137deg);
+  margin-bottom: -4px;
+}
+
+#content #smallblox #videoSection .videoCorrection {
+  width: 100%;
+  height: 100%;
+  transform: scaleX(-1);
+  position: absolute;
+}
+
+#content #smallblox #videoSection #remoteVideoPoster {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#content #smallblox #videoSection #remoteVideoPoster #remoteVideoPosterImage {
+  width: 275px;
+  height: 275px;
+  background-image: url("../icon/avatarVideoRemote.svg");
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 9999px;
+}
+
+#content #smallblox #chatSection {
+  position: relative;
+  flex: none;
+  height: 100%;
+  width: 475px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  border: 1px solid #E8EFF6;
+  border-left: none;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+
+#content #smallblox #chatSection .chatMedecinInfos {
+  width: 100%;
+  height: 66px;
+  flex: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0px 10px;
+  border-bottom: 1px solid #E8EFF6;
+}
+
+#content #smallblox #chatSection .chatMedecinInfos .medecinAvatar {
+  width: 41px;
+  height: 41px;
+  border-radius: 10px;
+  background-color: #E8EFF6;
+  background-position: center;
+  background-repeat: none;
+  background-image: url("../icon/avatarChat.svg");
+  background-repeat: no-repeat;
+}
+
+#content #smallblox #chatSection .chatMedecinInfos .medecinInformations {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  font-family: "Gilroy", sans-serif;
+  margin-left: 10px;
+}
+
+#content #smallblox #chatSection .chatMedecinInfos .medecinInformations .medecinContactName {
+  font-size: 20px;
+  font-weight: 700;
+  color: #004348;
+  text-transform: capitalize;
+}
+
+#content #smallblox #chatSection .chatMedecinInfos .medecinInformations .medecinContactSpacia {
+  color: #C5D7EA;
+  font-size: 18px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+#content #smallblox #chatSection .chatSectionMessages {
+  flex: auto;
+  width: 100%;
+  height: 1px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  box-sizing: border-box;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+#content #smallblox #chatSection .chatSectionMessages .messageContainer {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: center;
+}
+
+#content #smallblox #chatSection .chatSectionMessages .messageContainer span {
+  padding: 10px;
+  font-size: 20px;
+  font-family: "Roboto", sans-serif;
+  border-radius: 10px;
+  max-width: 350px;
+}
+
+#content #smallblox #chatSection .chatSectionMessages .messageContainer:not(:last-of-type) {
+  margin-bottom: 10px;
+}
+
+#content #smallblox #chatSection .chatSectionMessages .sentMessage {
+  flex-direction: row-reverse;
+}
+
+#content #smallblox #chatSection .chatSectionMessages .sentMessage span {
+  background-color: #1FDBAE;
+  color: #FFFFFF;
+}
+
+#content #smallblox #chatSection .chatSectionMessages .receivedMessage span {
+  background-color: #E8EFF6;
+  color: #004348;
+}
+
+#content #smallblox #chatSection .bottomTable {
+  flex: none;
+  height: 70px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 0 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: center;
+}
+
+#content #smallblox #chatSection .bottomTable .bottomTable-msgInput {
+  flex: 1;
+  padding: 9px;
+  border: none;
+  background: #F6F9FC;
+  border-radius: 10px;
+  font-size: 17px;
+  outline: none;
+  font-family: "Roboto";
+  color: #004348;
+}
+
+#content #smallblox #chatSection .bottomTable .bottomTable-msgInput:focus {
+  border: 1px solid #C5D7EA;
+}
+
+#content #smallblox #chatSection .bottomTable .bottomTable-msgInput::placeholder {
+  font-style: italic;
+  color: #C5D7EA;
+}
+
+#content #smallblox #chatSection .bottomTable .bottomTableBtn {
+  cursor: pointer;
+}
+
+#content #smallblox #chatSection .bottomTable .bottomTableBtn:not(:last-of-type) {
+  margin-right: 10px;
+}
+
+#content #smallblox #chatSection .bottomTable .bottomTable-btnVideo {
+  background-color: #1FDBAE;
+  padding: 7px;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: white;
+}
+
+#content #smallblox #chatSection .bottomTable .bottomTable-btnVideo span {
+  margin-left: 5px;
+}
+
+#content #smallblox #chatSection .bottomTable .bottomTable-btnSubmit {
+  background-color: #1FDBAE;
+  padding: 7px;
+  border-radius: 10px;
+  font-weight: 700;
+  color: white;
+  text-transform: uppercase;
+}
+
+#content #smallblox #chatSection .bottomTable> :nth-child(3) {
+  margin-left: 20px;
+}
+
+/*  */
+@media screen and (max-width: 1600px) {
+  #smallblox {
+    width: 1400px !important;
+  }
+}
+
+@media screen and (max-width: 1400px) {
+  #smallblox {
+    width: 1200px !important;
+  }
+
+  #videoSectionBody {
+    align-items: flex-start !important;
+  }
+}
+
+@media screen and (max-width: 1200px) {
+  #smallblox {
+    flex-direction: column !important;
+    height: fit-content !important;
+    box-sizing: border-box;
+    padding: 50px;
+    width: 100% !important;
+  }
+
+  #videoSection {
+    border-top-right-radius: 20px;
+    height: 500px !important;
+    border-bottom-left-radius: 0 !important;
+  }
+
+  #videoSectionHost {
+    width: 200px !important;
+    height: 150px !important;
+  }
+
+  #hostVideoPoster {
+    background-size: 25% !important;
+  }
+
+  #chatSection {
+    width: unset !important;
+    border-left: 1px solid #E8EFF6 !important;
+    border-top-right-radius: 0 !important;
+    border-bottom-left-radius: 20px;
+    height: 500px !important;
+  }
+
+}
+
+/*  */
+@media screen and (max-width: 750px) {
+  #smallblox {
+    padding: 0 !important;
+  }
+
+  #btnNotif {
+    display: none !important;
+  }
+
+  #videoSection {
+    /* display: none; */
+    border-radius: 0 !important;
+    height: 90vh !important;
+  }
+
+  #chatSection {
+    border: none !important;
+    border-radius: 0px !important;
+    /* height: 90vh !important; */
+    height: 500px;
+    border-top: 1px solid #e8eff6 !important;
+  }
+
+  #videoSectionHost {
+    width: 125px !important;
+    height: 125px !important;
+    border-radius: 69696969px !important;
+  }
+}
