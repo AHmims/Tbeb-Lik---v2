@@ -1,22 +1,26 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
+
 @font-face {
   font-family: "Gilroy";
-  src: url("../../app/font/Gilroy-Bold.ttf");
+  src: url("../font/Gilroy-Bold.ttf");
   font-weight: 700;
   font-style: normal;
 }
+
 @font-face {
   font-family: "Gilroy";
-  src: url("../../app/font/Gilroy-Medium.ttf");
+  src: url("../font/Gilroy-Medium.ttf");
   font-weight: 500;
   font-style: normal;
 }
+
 @font-face {
   font-family: "Gilroy";
-  src: url("../../app/font/Gilroy-Regular.ttf");
+  src: url("../font/Gilroy-Regular.ttf");
   font-weight: 400;
   font-style: normal;
 }
+
 html,
 body {
   width: 100%;
@@ -25,12 +29,13 @@ body {
   padding: 0;
 }
 
-.row{
+.row {
 
   height: 50px;
 
 }
-.row2{
+
+.row2 {
   height: 100px;
 }
 
@@ -42,6 +47,7 @@ body {
   justify-content: space-between;
   align-items: unset;
 }
+
 #content #navBar {
   width: 100%;
   height: 90px;
@@ -50,18 +56,21 @@ body {
   padding-right: 200px;
   box-sizing: border-box;
 }
+
 @media screen and (max-width: 1200px) {
   #content #navBar {
     padding-left: 100px;
     padding-right: 100px;
   }
 }
+
 @media screen and (max-width: 1000px) {
   #content #navBar {
     padding-left: 25px;
     padding-right: 25px;
   }
 }
+
 #content #navBar #navBarIn {
   height: 100%;
   display: flex;
@@ -69,6 +78,7 @@ body {
   justify-content: space-between;
   align-items: center;
 }
+
 #content #navBar #navBarIn #navBarNavText {
   font-family: "Roboto", sans-serif;
   font-weight: 500;
@@ -78,9 +88,11 @@ body {
   justify-content: unset;
   align-items: center;
 }
-#content #navBar #navBarIn #navBarNavText > *:not(:last-child) {
+
+#content #navBar #navBarIn #navBarNavText>*:not(:last-child) {
   margin-right: 20px;
 }
+
 #content #navBar #navBarIn #navBarNavText #btnNotif {
   position: relative;
   display: flex;
@@ -88,6 +100,7 @@ body {
   justify-content: unset;
   align-items: center;
 }
+
 #content #navBar #navBarIn #navBarNavText .notifActive::after {
   content: "";
   width: 10px;
@@ -98,7 +111,8 @@ body {
   top: 0;
   background-color: #FC5E79;
 }
-#content #navBar #navBarIn #navBarNavText #btnEnvoyer{
+
+#content #navBar #navBarIn #navBarNavText #btnEnvoyer {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -111,18 +125,22 @@ body {
   border: 2px solid #1FDBAE;
   border-radius: 5px;
 }
+
 #content #navBar #navBarIn #navBarNavText #btnEnvoyer #navMenuIconCont {
   padding: 8px;
   background: #1FDBAE;
   display: flex;
 }
+
 #content #navBar #navBarIn #navBarNavText #btnEnvoyer #navMenuTextCont {
   padding: 8px;
 }
+
 #content #navBar #navBarIn #navBarNavText #btnEnvoyer #navMenuTextCont span {
   font-family: "Roboto";
   color: #004348;
 }
+
 #content #navBar #navBarIn #navBarNavText #logout {
   font-family: "Roboto", sans-serif;
   text-decoration: none;
@@ -132,26 +150,31 @@ body {
   justify-content: unset;
   align-items: center;
 }
+
 #content #navBar #navBarIn #navBarNavText #logout img {
   margin-right: 5px;
 }
+
 #content #main {
-  flex: 1;
+  /* flex: 1; */
   display: flex;
   flex-direction: column;
   justify-content: unset;
   align-items: center;
 }
+
 #content #main lottie-player {
   width: 500px;
   height: fit-content;
 }
+
 #content #main #form {
   display: flex;
   flex-direction: column;
   justify-content: unset;
   align-items: center;
 }
+
 #content #main #form h1 {
   font-family: "Gilroy", sans-serif;
   font-weight: 700;
@@ -160,6 +183,7 @@ body {
   margin: 0;
   margin-bottom: 15px;
 }
+
 #content #main #form #formDropDown {
   width: 550px;
   border: 2px solid #C5D7EA;
@@ -174,11 +198,13 @@ body {
   user-select: none;
   cursor: pointer;
 }
+
 #content #main #form #formDropDown #formDropDownSelected {
   font-size: 28px;
   background-color: #FFFFFF;
   color: #004348;
 }
+
 #content #main #form #formDropDown .formDropDownItem {
   padding: 7.5px 15px;
   display: flex;
@@ -189,15 +215,18 @@ body {
   color: #C5D7EA;
   background-color: #F6F9FC;
 }
+
 #content #main #form #formDropDown .formDropDownItem:hover {
   background-color: #FFFFFF;
 }
+
 #content #main #form #formDropDown #formDropDownExtension {
   height: 0;
 }
+
 footer {
   width: 100%;
-  height: 75px;
+  /* height: 75px; */
   background-color: #004348;
   display: flex;
   flex-direction: column;
@@ -209,108 +238,120 @@ footer {
   font-weight: 400;
   margin-top: 90px;
 }
-.formulaire{
+
+.formulaire {
   display: flex;
-  width:90%;
-  margin:auto;
+  width: 90%;
+  margin: auto;
 }
-#form_patient{
+
+#form_patient {
   font-family: "Gilroy", sans-serif;
   margin-left: 50px;
   padding: 50px;
   box-sizing: border-box;
-  width:48%;
-  margin:auto;
-  display :flex;
+  width: 48%;
+  margin: auto;
+  display: flex;
   flex-direction: column;
 }
-#form_patient div{
-  display:flex;
-  margin-top:40px;
+
+#form_patient div {
+  display: flex;
+  margin-top: 40px;
   margin-right: 30px;
   align-items: center;
 }
-#form_patient div div{
-  margin-top:0px;
-  margin-right:40px;
+
+#form_patient div div {
+  margin-top: 0px;
+  margin-right: 40px;
 }
-#form_patient div label{
+
+#form_patient div label {
   font-size: 20px;
   font-weight: bold;
   width: max-content;
   margin-right: 15px;
 }
-#form_patient input{
+
+#form_patient input {
   font-size: 20px;
   background-color: #F6F9FF;
   border-radius: 8px;
   height: 40px;
-  width:250px;
+  width: 250px;
   border-style: none;
-  padding:10px;
+  padding: 10px;
   box-sizing: border-box;
 }
-#form_patient textarea{
+
+#form_patient textarea {
   font-family: "Gilroy", sans-serif;
   font-size: 20px;
   background-color: #F6F9FF;
   border-radius: 8px;
   height: 60px;
-  width:300px;
+  width: 300px;
   border-style: none;
-  padding:4px;
+  padding: 4px;
 }
-#form_patient h2{
+
+#form_patient h2 {
   margin-top: 60px;
   margin-bottom: -10px;
-  font-size:31px;
-  color:#004348;
+  font-size: 31px;
+  color: #004348;
 }
-#form_patient input[type="file"]{
+
+#form_patient input[type="file"] {
   display: inline-block;
   padding: 6px 12px;
   cursor: pointer;
   font-size: 15px;
-  width:290px;
+  width: 290px;
 }
-#form_patient button{
-  background-color:#1FDBAE;
+
+#form_patient button {
+  background-color: #1FDBAE;
   border-style: none;
-  width:180px;
+  width: 180px;
   margin: auto;
-  height:40px;
+  height: 40px;
   border-radius: 15px;
-  color:white;
+  color: white;
   font-weight: bold;
   font-size: 20px;
   cursor: pointer;
   margin-bottom: 40px;
   text-align: center;
 }
-#form_patient button:hover{
+
+#form_patient button:hover {
   background-color: rgb(201, 201, 201);
   color: rgb(255, 255, 255);
 }
 
-.formulaire img{
-  width:500px;
-  height:500px;
+.formulaire img {
+  width: 500px;
+  height: 500px;
   margin: auto;
 }
 
 
 
-.partContact{
-width:80%;
-margin: auto;
-height: 700px;
-display: flex;
-margin-top: 60px;
-margin-bottom: 60px;
+.partContact {
+  width: 80%;
+  margin: auto;
+  height: 700px;
+  display: flex;
+  margin-top: 60px;
+  margin-bottom: 60px;
 }
-.appel{
+
+.appel {
   height: 100%;
-  width:65%;
+  width: 65%;
   background-color: #004348;
   border-bottom-left-radius: 15px;
   border-top-left-radius: 15px;
@@ -318,69 +359,78 @@ margin-bottom: 60px;
   flex-direction: column;
 }
 
-.imUser{  
+.imUser {
   width: 100%;
   height: 100%;
   align-items: center;
   justify-content: center;
   justify-content: center;
 }
-.imgUser{
-  height:200px;
+
+.imgUser {
+  height: 200px;
   width: 170px;
   position: relative;
-	top:50%;
-	left:50%;
-	margin-top:-100px;	
-	margin-left:-95px;
+  top: 50%;
+  left: 50%;
+  margin-top: -100px;
+  margin-left: -95px;
 }
-.Imgs{
+
+.Imgs {
   display: flex;
   width: 100%;
   height: 100px;
 }
-.Imgs div{
+
+.Imgs div {
   width: 33%;
 }
-.Imgs .icons{
+
+.Imgs .icons {
   display: flex;
   justify-content: space-between;
   height: 100px;
   width: 30%;
   margin: auto;
-  
+
 }
-.icons div{
-  height:60px;
+
+.icons div {
+  height: 60px;
   width: 60px;
-  background-color: rgba(0,0,0,0.2);
+  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 40px;
   align-items: center;
   justify-content: center;
   justify-items: center;
   cursor: pointer;
 }
-.icons div:hover{
+
+.icons div:hover {
   background-color: rgba(255, 255, 255, 0.2);
 }
-.icons img{
-  height:35px;
+
+.icons img {
+  height: 35px;
   width: 25px;
   position: relative;
-  top:50%;
-  left:50%;
+  top: 50%;
+  left: 50%;
   margin-top: -20px;
   margin-left: -12px;
 }
-#video{
-  height:23px;
+
+#video {
+  height: 23px;
   width: 33px;
   margin-top: -30px;
   margin-left: -14px;
   margin-bottom: 3px;
 }
-.icons .divApp{
-  height:65px;
+
+.icons .divApp {
+  height: 65px;
   width: 80px;
   background-color: rgb(255, 17, 57);
   border-radius: 20px;
@@ -390,27 +440,30 @@ margin-bottom: 60px;
   cursor: pointer;
   margin-top: -5px;
 }
-.icons #appel{
-  height:60px;
+
+.icons #appel {
+  height: 60px;
   width: 65px;
   margin-top: -28px;
   margin-left: -30px;
 }
-.popup{
+
+.popup {
   height: 100px;
   justify-content: right;
   width: 25%;
 }
-.popup img{
+
+.popup img {
   width: 230px;
   height: 170px;
   float: right;
   border-radius: 10px;
-  margin-top:-90px;
+  margin-top: -90px;
   margin-right: 10px;
 }
 
-.message{
+.message {
   font-family: "Gilroy", sans-serif;
   height: 100%;
   width: 35%;
@@ -418,35 +471,41 @@ margin-bottom: 60px;
   border: 1px solid #c4c4c4;
   box-sizing: border-box;
 }
-.medInfos{
+
+.medInfos {
   display: flex;
   height: 70px;
   border-bottom: 1px solid #c4c4c4;
   padding-left: 10px;
 }
-.medInfos img{
-  margin:4px;
+
+.medInfos img {
+  margin: 4px;
 }
-.infos{
+
+.infos {
   display: flex;
   flex-direction: column;
-  margin:9px;
+  margin: 9px;
 }
-.infos span:first-of-type{
+
+.infos span:first-of-type {
   font-weight: bold;
   font-size: 20px;
   margin-bottom: 5px;
 }
-.msgs{
- height: 570px;
- overflow-y: scroll;
- scroll-behavior: auto;
+
+.msgs {
+  height: 570px;
+  overflow-y: scroll;
+  scroll-behavior: auto;
 }
+
 .msgs p {
   background-color: #F6F9FC;
-  height:fit-content;
+  height: fit-content;
   border-radius: 10px;
-  padding:10px;
+  padding: 10px;
   font-size: 18px;
   width: fit-content;
   margin-left: 5px;
@@ -456,21 +515,24 @@ margin-bottom: 60px;
   word-wrap: break-word;
   margin-bottom: -15px;
 }
-.msgs .msgUser{
-  background-color:#1FDBAE;
+
+.msgs .msgUser {
+  background-color: #1FDBAE;
   float: right;
-  color:white;
+  color: white;
   margin-bottom: 1px;
- 
+
 }
-.writeMsg{
+
+.writeMsg {
   display: flex;
   width: 98%;
   margin: auto;
-  margin-top:5px;
-  
+  margin-top: 5px;
+
 }
-#write{
+
+#write {
   width: 320px;
   background-color: #F6F9FC;
   color: rgb(129, 129, 129);
@@ -478,113 +540,124 @@ margin-bottom: 60px;
   border-radius: 23px;
   font-size: 18px;
   border-style: none;
-  padding:10px;
+  padding: 10px;
   box-sizing: border-box;
 }
-.writeMsg button{
+
+.writeMsg button {
   background-color: white;
   border-style: none;
   cursor: pointer;
 }
-footer{
-  margin-top:116px;
+
+footer {
+  margin-top: 116px;
   font-family: 'Gilroy';
 }
 
-.part1{
-  height:440px;
+.part1 {
+  /* height: 440px; */
+  padding: 50px 0;
+  /* height: fit-content !important; */
   width: 100%;
   background-image: url('../img/docts.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
-.part1 .parags{
+
+.part1 .parags {
   display: flex;
-  width:80%;
-  padding-top: 100px;
-  padding-bottom: 100px;
-  margin:auto;
+  width: 80%;
+  /* padding-top: 100px; */
+  /* padding-bottom: 100px; */
+  margin: auto;
   justify-content: space-between;
 }
-.part1 .parags .parag1{
-  width:350px;
-  
-}
-.part1 .parags .parag2{
-  width:350px;
+
+.part1 .parags .parag1 {
+  width: 350px;
+
 }
 
-.part1 .parags .parag3{
-  width:350px;
+.part1 .parags .parag2 {
+  width: 350px;
+}
+
+.part1 .parags .parag3 {
+  width: 350px;
   letter-spacing: 0.5px;
 }
-.part1 .parags h1{
+
+.part1 .parags h1 {
   text-align: center;
   color: white;
 }
 
-.part1 .parags h1:hover{
-  color:#1FDBAE ;
+.part1 .parags h1:hover {
+  color: #1FDBAE;
   cursor: pointer;
 }
 
-.part1 .parags hr{
+.part1 .parags hr {
   width: 180px;
-  margin:auto;
+  margin: auto;
   height: 1.5px;
   background-color: #1FDBAE;
   border: none;
-  margin-bottom:30px;
-  margin-top:-15px;
+  margin-bottom: 30px;
+  margin-top: -15px;
 }
 
-.part1 .parags p{
-  color:#DDDDDD;
+.part1 .parags p {
+  color: #DDDDDD;
   font-size: 16px;
   text-align: center;
   line-height: 26px;
 }
 
-.part1 .parags .parag1 ul{
+.part1 .parags .parag1 ul {
   padding-left: 40px;
   font-size: 16px;
-  color:rgb(172, 172, 172);
+  color: rgb(172, 172, 172);
   margin-top: -8px;
 }
 
-.part1 .parags .parag1 ul li{
+.part1 .parags .parag1 ul li {
   margin-bottom: 2px;
   letter-spacing: 2px;
 }
 
-.part1 .parags .parag2 div{
+.part1 .parags .parag2 div {
   display: flex;
   align-items: center;
   width: 60%;
   margin: auto;
   margin-bottom: 10px;
   font-size: 16px;
-  color:rgb(172, 172, 172);
+  color: rgb(172, 172, 172);
 }
-.part1 .parags .parag2 div img{
+
+.part1 .parags .parag2 div img {
   margin-right: 10px;
   cursor: pointer;
 }
 
 
-  .part2{
-    padding: 6px;
-    text-align: center;
-    background: #004348;
-    line-height: 25px;
-    color: #fff;
-    font-family: 'Gilroy';
-    font-size: 15px;
-    letter-spacing: 2px;
-  }
-  
-  .part2 span{  
+.part2 {
+  padding: 6px;
+  text-align: center;
+  background: #004348;
+  line-height: 25px;
+  color: #fff;
+  font-family: 'Gilroy';
+  font-size: 15px;
+  letter-spacing: 2px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.part2 span {
   background-image: url('../img/vert.png');
   -webkit-background-clip: text;
   background-clip: text;
@@ -593,20 +666,27 @@ footer{
   animation: fire 2s linear infinite;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+}
+
+@keyframes fire {
+  0% {
+    background-position: 0% -50%;
   }
-  @keyframes fire{
-    0%{background-position: 0% -50%;}
-    0%{background-position: 100% -50%;}
+
+  0% {
+    background-position: 100% -50%;
   }
-  
+}
+
 
 
 @media screen and (max-width: 1200px) {
-  .formulaire{
+  .formulaire {
     flex-direction: column;
     width: 98%;
     margin: auto;
   }
+
   #content #main #form h1 {
     font-family: "Gilroy", sans-serif;
     font-weight: 700;
@@ -615,150 +695,177 @@ footer{
     margin: 0;
     margin-bottom: 15px;
   }
-  #form_patient{
+
+  #form_patient {
     width: 90%;
     margin: auto;
     margin-left: 0px;
-  padding: 0px;
+    padding: 0px;
   }
-  .formulaire img{
-    width:450px;
+
+  .formulaire img {
+    width: 450px;
   }
-  #form_patient div{
-    width:85%;
+
+  #form_patient div {
+    width: 85%;
     margin: auto;
-    display:flex;
+    display: flex;
     margin-right: 0px;
   }
-  #form_patient h2{
+
+  #form_patient h2 {
     text-align: center;
   }
-  #form_patient div label{
+
+  #form_patient div label {
     font-size: 18px;
     font-weight: bold;
     width: max-content;
     margin-right: 15px;
     margin-bottom: 10px;
   }
-  #form_patient div{
-    display:flex;
+
+  #form_patient div {
+    display: flex;
     flex-direction: column;
-    margin-top:40px;
+    margin-top: 40px;
     margin-right: 30px;
     align-items: flex-start;
   }
-  #form_patient div div{
-    margin-left:-5px;
-    margin-top:40px;
+
+  #form_patient div div {
+    margin-left: -5px;
+    margin-top: 40px;
     margin-right: 0px;
-    width:100%;
+    width: 100%;
   }
-  #form_patient h2:first-of-type{
-    margin-bottom:-50px;
+
+  #form_patient h2:first-of-type {
+    margin-bottom: -50px;
   }
-  #form_patient div div input{
-    width:100%;
+
+  #form_patient div div input {
+    width: 100%;
   }
-  #form_patient input{
-    width:100%;
+
+  #form_patient input {
+    width: 100%;
   }
-  #form_patient textarea{
-    width:100%;
+
+  #form_patient textarea {
+    width: 100%;
   }
 
 
-  
 
 
-  
-.partContact{
-  width:90%;
-  flex-direction: column;
-  margin-bottom: 500px;
+
+
+  .partContact {
+    width: 90%;
+    flex-direction: column;
+    margin-bottom: 500px;
   }
-  .appel{
+
+  .appel {
     height: 400px;
-    width:100%;
+    width: 100%;
     border-top-right-radius: 15px;
     border-top-left-radius: 15px;
     border-bottom-left-radius: 0px;
     border-bottom-right-radius: 0px;
   }
-  .Imgs div{
+
+  .Imgs div {
     width: 450px;
   }
-  .icons div{
-    height:50px;
+
+  .icons div {
+    height: 50px;
     width: 50px;
   }
-  .icons img{
-    height:25px;
+
+  .icons img {
+    height: 25px;
     width: 15px;
     margin-top: -20px;
     margin-left: -8px;
   }
-  #video{
-    height:15px;
+
+  #video {
+    height: 15px;
     width: 23px;
     margin-top: -80px;
     margin-left: -10px;
     margin-bottom: 3px;
   }
-  .icons .divApp{
-    height:55px;
+
+  .icons .divApp {
+    height: 55px;
     width: 60px;
   }
-  .icons #appel{
-    height:40px;
+
+  .icons #appel {
+    height: 40px;
     width: 35px;
     margin-top: -20px;
     margin-left: -18px;
   }
-  .popup{
+
+  .popup {
     width: 35%;
   }
-  .popup img{
+
+  .popup img {
     width: 130px;
     height: 170px;
-    margin-top:-290px;
+    margin-top: -290px;
     margin-right: 10px;
   }
-  .message{
+
+  .message {
     width: 100%;
     margin: auto;
   }
 
 
-  
-  .part1{
-    height:100%;
+
+  .part1 {
+    height: fit-content;
+    padding: 50px 0;
+    /* height: 100%; */
     width: 100%;
-    padding-bottom: 100px;
+    /* padding-bottom: 100px; */
   }
-  .part1 .parags{
+
+  .part1 .parags {
     display: flex;
     flex-direction: column;
     height: 100%;
     padding-top: 0px;
     padding-bottom: 20px;
   }
-  .part1 .parags div{
+
+  .part1 .parags div {
     width: 100%;
     margin: auto;
-    margin-bottom:-40px;
+    /* margin-bottom: -40px; */
   }
 }
 
 /*select*/
-.container{
+.container {
   max-width: 1000px;
-  margin:0 auto;
+  margin: 0 auto;
 }
-.select-box{
+
+.select-box {
   width: 300px;
   position: relative;
 }
-.select-box select{
+
+.select-box select {
   height: 42px;
   padding: 10px 15px;
   line-height: 22px;
@@ -769,13 +876,14 @@ footer{
   /* -webkit-appearance:none;
   appearance: none;*/
   appearance: none;
-  outline: none; 
+  outline: none;
 }
-.select-box:after{
+
+.select-box:after {
   content: "";
   position: absolute;
   right: 8px;
-  top:50%;
+  top: 50%;
   margin-top: -4px;
   margin-top: 8px solid #1FDBAE;
   border-left: 6px solid transparent;
@@ -783,7 +891,8 @@ footer{
   outline: none;
   pointer-events: none;
 }
-.select-box select:focus{
+
+.select-box select:focus {
   border: 2px solid #1FDBAE;
 }
 
