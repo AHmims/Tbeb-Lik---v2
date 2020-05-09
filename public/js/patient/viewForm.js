@@ -9,7 +9,7 @@ function createNotification() {
 function addNotification() {
     // console.log(state);
     let cont = document.createElement('div');
-    cont.setAttribute('id', nId);
+    // cont.setAttribute('id', nId);
     let contClass = 'notification';
     if (!state != true)
         contClass += ' notif-inactive';
