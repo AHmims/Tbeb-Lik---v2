@@ -1,158 +1,186 @@
-window.onload = () => {
-    if (dgid('navBar')) {
-        var navBar = dgid('navBar');
-        navBar.appendChild(makeLogo());
-        navBar.appendChild(makeNavigation(navBar.classList[0]));
-        navBar.appendChild(makeExit());
-    }
-    if (dgclass('btn-doc').length > 0) {
-        var btns = dgclass('btn-doc');
-        for (let i = 0; i < btns.length; i++) {
-            btns[i].addEventListener('click', () => {
-                makeOrdonanceForm("dd", "ddd");
-            });
-            // 
-            var str = btns[i].innerText;
-            btns[i].innerHTML = "";
-            // 
-            btns[i].innerHTML = `<img src="../icon/doc.svg"/> ${str}`;
-        }
-    }
-    if (dgclass('btn-acc').length > 0) {
-        var btns = dgclass('btn-acc');
-        for (let i = 0; i < btns.length; i++) {
-            var str = btns[i].innerText;
-            btns[i].innerHTML = "";
-            // 
-            btns[i].innerHTML = `<img src="../icon/check.svg"/> ${str}`;
-        }
-    }
-    if (dgclass('btn-no').length > 0) {
-        var btns = dgclass('btn-no');
-        for (let i = 0; i < btns.length; i++) {
-            var str = btns[i].innerText;
-            btns[i].innerHTML = "";
-            // 
-            btns[i].innerHTML = `<img src="../icon/cross.svg"/> ${str}`;
-        }
-    }
-    if (dgclass('btn-download').length > 0) {
-        var btns = dgclass('btn-download');
-        for (let i = 0; i < btns.length; i++) {
-            var str = btns[i].innerText;
-            btns[i].innerHTML = "";
-            // 
-            btns[i].innerHTML = `${str} <img src="../icon/download.svg"/>`;
-        }
-    }
-    if (dgclass('btn-send').length > 0) {
-        var btns = dgclass('btn-send');
-        for (let i = 0; i < btns.length; i++) {
-            var str = btns[i].innerText;
-            btns[i].innerHTML = "";
-            // 
-            btns[i].innerHTML = `${str} <img src="../icon/send1.svg"/>`;
-        }
-    }
-    if (dgclass('box-notif').length > 0) {
-        var boxes = dgclass('box-notif');
-        for (let i = 0; i < boxes.length; i++) {
-            var icon = document.createElement('img');
-            icon.setAttribute('class', 'box-notif-switch');
-            icon.setAttribute('src', '../icon/switch.svg');
-            // 
-            icon.addEventListener('click', () => {
-                var icons = dgclass('box-notif-switch');
-                var extension = dgclass('box-notif-ext');
-                var state = extension[i].style.display;
-                // 
-                if (state == "flex")
-                    icons[i].classList.remove("trans-flip");
-                else
-                    icons[i].classList.add("trans-flip");
-                // 
-                extension[i].style.display = state == "flex" ? "none" : "flex";
-            });
-            // 
-            boxes[i].appendChild(icon);
-        }
-    }
-    if (dgclass('box-rndv-date').length > 0) {
-        var txt = dgclass('box-rndv-date');
-        for (let i = 0; i < txt.length; i++) {
-            var string = txt[i].innerText;
-            txt[i].innerHTML = `<img src="../icon/calendar2.svg" class="box-rndv-date-icon"> <span>${string}</span>`;
-        }
-    }
-    if (dgclass('box-rndv-note').length > 0) {
-        var txt = dgclass('box-rndv-note');
-        for (let i = 0; i < txt.length; i++) {
-            var string = txt[i].innerText;
-            txt[i].innerHTML = `<img src="../icon/pen.svg" class="box-rndv-note-icon"> <span>${string}</span>`;
-        }
-    }
-    if (dgclass('patientRow').length > 0) {
-        var rows = dgclass('patientRow');
-        for (let i = 0; i < rows.length; i++) {
-            var icon = document.createElement('img');
-            icon.setAttribute('src', '../icon/dots.svg');
-            icon.setAttribute('class', 'align-right');
-            rows[i].appendChild(icon);
-            // 
-            rows[i].addEventListener('click', () => {
-                for (let j = 0; j < rows.length; j++) {
-                    if (i != j)
-                        rows[j].setAttribute('class', 'patientRow');
-                    else
-                        rows[j].setAttribute('class', 'patientRow patientRow-active');
-                }
-            });
-            // 
-        }
-    }
-    if (dgclass('patientInfos-ordo-info').length > 0) {
-        var cont = dgclass('patientInfos-ordo-info');
-        for (let i = 0; i < cont.length; i++) {
-            var icon = document.createElement('img');
-            icon.setAttribute('class', 'patientInfos-ordo-info-icon');
-            icon.setAttribute('src', '../icon/hint.svg');
-            // 
-            cont[i].appendChild(icon);
-        }
-    }
-    if (dgclass('bottomTable').length > 0) {
-        var bottom = dgclass('bottomTable');
-        for (var i = 0; i < bottom.length; i++) {
-            var input = document.createElement('input');
-            var iconSend = document.createElement('img');
-            // 
-            input.setAttribute('type', "text");
-            input.setAttribute('class', 'bottomTable-msgInput');
-            input.setAttribute('id', bottom[i].getAttribute('data-idInput'));
-            input.setAttribute('placeholder', "Votre message text...");
-            iconSend.setAttribute('src', '../icon/send2.svg');
-            iconSend.setAttribute('class', 'bottomTable-msgSend');
-            iconSend.setAttribute('id', bottom[i].getAttribute('data-idSend'));
-            // 
-            bottom[i].appendChild(input);
-            bottom[i].appendChild(iconSend);
-        }
-    }
-    // 
-    // 
-    flatpickr('.box-rndv-date-input', {
-        "disable": [
-            (date) => {
-                return (date.getDay() === 0 || date.getDay() === 6);
-            }
-        ],
-        "locale": {
-            "firstDayOfWeek": 1
-        }
-    });
-    // 
-    // console.log('%c ', 'font-size:400px; background:url(https://pics.me.me/codeit-google-until-youfinda-stackoverflow-answerwith-code-to-copy-paste-34126823.png) no-repeat;');
+// window.onload = () => {
+if (dgid('navBar')) {
+    var navBar = dgid('navBar');
+    navBar.appendChild(makeLogo());
+    navBar.appendChild(makeNavigation(navBar.classList[0]));
+    navBar.appendChild(makeExit());
 }
+if (dgclass('btn-doc').length > 0) {
+    var btns = dgclass('btn-doc');
+    for (let i = 0; i < btns.length; i++) {
+        btns[i].addEventListener('click', () => {
+            makeOrdonanceForm("dd", "ddd");
+        });
+        // 
+        var str = btns[i].innerText;
+        btns[i].innerHTML = "";
+        // 
+        btns[i].innerHTML = `<img src="../icon/doc.svg"/> ${str}`;
+    }
+}
+if (dgclass('btn-acc').length > 0) {
+    var btns = dgclass('btn-acc');
+    for (let i = 0; i < btns.length; i++) {
+        var str = btns[i].innerText;
+        btns[i].innerHTML = "";
+        // 
+        btns[i].innerHTML = `<img src="../icon/check.svg"/> ${str}`;
+    }
+}
+if (dgclass('btn-no').length > 0) {
+    var btns = dgclass('btn-no');
+    for (let i = 0; i < btns.length; i++) {
+        var str = btns[i].innerText;
+        btns[i].innerHTML = "";
+        // 
+        btns[i].innerHTML = `<img src="../icon/cross.svg"/> ${str}`;
+    }
+}
+if (dgclass('btn-download').length > 0) {
+    var btns = dgclass('btn-download');
+    for (let i = 0; i < btns.length; i++) {
+        var str = btns[i].innerText;
+        btns[i].innerHTML = "";
+        // 
+        btns[i].innerHTML = `${str} <img src="../icon/download.svg"/>`;
+    }
+}
+if (dgclass('btn-send').length > 0) {
+    var btns = dgclass('btn-send');
+    for (let i = 0; i < btns.length; i++) {
+        var str = btns[i].innerText;
+        btns[i].innerHTML = "";
+        // 
+        btns[i].innerHTML = `${str} <img src="../icon/send1.svg"/>`;
+    }
+}
+if (dgclass('box-notif').length > 0) {
+    var boxes = dgclass('box-notif');
+    for (let i = 0; i < boxes.length; i++) {
+        var icon = document.createElement('img');
+        icon.setAttribute('class', 'box-notif-switch');
+        icon.setAttribute('src', '../icon/switch.svg');
+        // 
+        icon.addEventListener('click', () => {
+            var icons = dgclass('box-notif-switch');
+            var extension = dgclass('box-notif-ext');
+            var state = extension[i].style.display;
+            // 
+            if (state == "flex")
+                icons[i].classList.remove("trans-flip");
+            else
+                icons[i].classList.add("trans-flip");
+            // 
+            extension[i].style.display = state == "flex" ? "none" : "flex";
+        });
+        // 
+        boxes[i].appendChild(icon);
+    }
+}
+if (dgclass('box-rndv-date').length > 0) {
+    var txt = dgclass('box-rndv-date');
+    for (let i = 0; i < txt.length; i++) {
+        var string = txt[i].innerText;
+        txt[i].innerHTML = `<img src="../icon/calendar2.svg" class="box-rndv-date-icon"> <span>${string}</span>`;
+    }
+}
+if (dgclass('box-rndv-note').length > 0) {
+    var txt = dgclass('box-rndv-note');
+    for (let i = 0; i < txt.length; i++) {
+        var string = txt[i].innerText;
+        txt[i].innerHTML = `<img src="../icon/pen.svg" class="box-rndv-note-icon"> <span>${string}</span>`;
+    }
+}
+if (dgclass('patientRow').length > 0) {
+    var rows = dgclass('patientRow');
+    for (let i = 0; i < rows.length; i++) {
+        var icon = document.createElement('img');
+        icon.setAttribute('src', '../icon/dots.svg');
+        icon.setAttribute('class', 'align-right');
+        rows[i].appendChild(icon);
+        // 
+        rows[i].addEventListener('click', () => {
+            for (let j = 0; j < rows.length; j++) {
+                if (i != j)
+                    rows[j].setAttribute('class', 'patientRow');
+                else
+                    rows[j].setAttribute('class', 'patientRow patientRow-active');
+            }
+        });
+        // 
+    }
+}
+if (dgclass('patientInfos-ordo-info').length > 0) {
+    var cont = dgclass('patientInfos-ordo-info');
+    for (let i = 0; i < cont.length; i++) {
+        var icon = document.createElement('img');
+        icon.setAttribute('class', 'patientInfos-ordo-info-icon');
+        icon.setAttribute('src', '../icon/hint.svg');
+        // 
+        cont[i].appendChild(icon);
+    }
+}
+if (dgclass('bottomTable').length > 0) {
+    var bottom = dgclass('bottomTable');
+    for (var i = 0; i < bottom.length; i++) {
+        var input = document.createElement('input');
+        var iconSend = document.createElement('img');
+        // 
+        input.setAttribute('type', "text");
+        input.setAttribute('class', 'bottomTable-msgInput');
+        input.setAttribute('id', bottom[i].getAttribute('data-idInput'));
+        input.setAttribute('placeholder', "Votre message text...");
+        iconSend.setAttribute('src', '../icon/send2.svg');
+        iconSend.setAttribute('class', 'bottomTable-msgSend bottomTableBtn');
+        iconSend.setAttribute('id', bottom[i].getAttribute('data-idSend'));
+        // 
+        bottom[i].appendChild(input);
+        bottom[i].appendChild(iconSend);
+    }
+}
+// 
+if (dgclass('bottomTableMedecin').length > 0) {
+    var bottom = dgclass('bottomTable');
+    for (var i = 0; i < bottom.length; i++) {
+        var iconDoc = document.createElement('img');
+        var btnVideo = document.createElement('div');
+        var btnVideoTxt = document.createElement('span');
+        var btnVideoIcon = document.createElement('img');
+        // 
+        iconDoc.setAttribute('src', '../icon/doc2.svg');
+        iconDoc.setAttribute('class', 'bottomTable-btnDoc bottomTableBtn');
+        iconDoc.setAttribute('id', bottom[i].getAttribute('data-idDoc'));
+        // 
+        btnVideoTxt.innerText = 'appeler';
+        btnVideoIcon.setAttribute('src', '../icon/phone.svg');
+        btnVideo.setAttribute('id', bottom[i].getAttribute('data-idVideo'));
+        btnVideo.setAttribute('class', 'bottomTable-btnVideo bottomTableBtn');
+        // 
+        btnVideo.appendChild(btnVideoIcon);
+        btnVideo.appendChild(btnVideoTxt);
+        // bottom[i].appendChild(iconDoc);
+        bottom[i].insertBefore(btnVideo, document.getElementById('msgInput'));
+        bottom[i].insertBefore(iconDoc, document.getElementById('msgSend'));
+        // bottom[i].appendChild(iconSend);
+        document.getElementById('msgInput').style = "margin: 0 15px;";
+    }
+
+}
+// 
+// 
+// flatpickr('.box-rndv-date-input', {
+//     "disable": [
+//         (date) => {
+//             return (date.getDay() === 0 || date.getDay() === 6);
+//         }
+//     ],
+//     "locale": {
+//         "firstDayOfWeek": 1
+//     }
+// });
+// 
+// console.log('%c ', 'font-size:400px; background:url(https://pics.me.me/codeit-google-until-youfinda-stackoverflow-answerwith-code-to-copy-paste-34126823.png) no-repeat;');
+// }
 // 
 function dgid(id) {
     return document.getElementById(id);

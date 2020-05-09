@@ -6,9 +6,9 @@ $(document).ready(async () => {
     msgs = JSON.parse(msgs);
     // 
     for (let i = 0; i < msgs.length; i++) {
-        let type = 'msgRemote';
+        let type = 'receivedMessage';
         if (msgs[i].MATRICULE_EMETTEUR == sessionStorage.getItem('matricule'))
-            type = 'msgHost';
+            type = 'sentMessage';
         // 
         createMsgBox(msgs[i], type);
     }
@@ -25,17 +25,19 @@ $(document).ready(async () => {
             TYPE: 'Text',
             ID_PIECEJOINTES: null
         }
-        createMsgBox(msg, 'msgHost');
+        createMsgBox(msg, 'sentMessage');
         // 
         document.getElementById('chatInput').value = "";
 
     });
     // 
     document.getElementById('chatVideoBtn').addEventListener('click', async () => {
+        document.getElementById('videoSection').style.display = "flex";
         await streaminit();
     });
     // 
-    document.getElementById('chatVideoEndBtn').addEventListener('click', () => {
+    document.getElementById('videoControl-btnEnd').addEventListener('click', () => {
+        document.getElementById('videoSection').style.display = "none";
         endCall();
     });
     // 
@@ -48,5 +50,5 @@ $(document).ready(async () => {
 });
 // 
 function displayReceivedMsg(msg) {
-    createMsgBox(msg, 'msgRemote');
+    createMsgBox(msg, 'receivedMessage');
 }
