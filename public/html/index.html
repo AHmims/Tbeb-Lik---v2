@@ -4,13 +4,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HomePage</title>
+    <link rel="stylesheet" href="../css/home_OCP.css">
+    <title>PlayGround</title>
 </head>
 
-<body style="text-align: center;">
-    <h1>Home page</h1>
-    <!--  -->
-    <a href="/login">Button Login</a>
+<body>
+    <div id="landing">
+        <header id="navBar">
+            <div id="navBarIn">
+                <a href="#">
+                    <img src="../icon/logo_full.svg" alt="logo" id="navBarLogo">
+                </a>
+                <div id="navBarNavText">
+                    <button id="btnLogin">
+                        <a href="/login">
+                        <img src="../icon/lock.svg" alt="lockicon">
+                         S’identifier
+                         </a>
+                    </button>
+                </div>
+            </div>
+        </header>
+        <div id="body">
+            <div id="bodyContent"
+                style="background-image: url('../img/banner-left.svg'),url('../img/banner-right.svg');">
+                <h1>
+                    La consultation
+                    En tout temps.
+                    En tout lieu.
+                </h1>
+                <span>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Tempus mi
+                    tristique auctor nibh. Ultrices sed neque, turpis id mi, luctus.
+                </span>
+                <button>
+                    Consulter
+                </button>
+            </div>
+            <a href="#content" id="scrollIcon">
+                <img src="../icon/line.svg" alt="scroll">
+            </a>
+        </div>
+    </div>
+    <div id="content">
+        <div id="imageVisualizer" style="background-image: url('app/img/Login_interface.svg');">
+        </div>
+        <!--  -->
+        <div id="contentNavigation">
+            <div class="navigationBox navigationBoxHighlited">
+                <div class="navigationBoxRow">
+                    <img src="../icon/home/icon1.svg" alt="" class="navigationBoxImage">
+                    <span class="navigationBoxTitle">Part Title</span>
+                </div>
+                <span class="navigationBoxDesc">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit,
+                    sint?</span>
+            </div>
+            <div class="navigationBox">
+                <div class="navigationBoxRow">
+                    <img src="../icon/home/icon1.svg" alt="" class="navigationBoxImage">
+                    <span class="navigationBoxTitle">Part Title</span>
+                </div>
+                <span class="navigationBoxDesc">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit,
+                    sint?</span>
+            </div>
+            <div class="navigationBox">
+                <div class="navigationBoxRow">
+                    <img src="../icon/home/icon1.svg" alt="" class="navigationBoxImage">
+                    <span class="navigationBoxTitle">Part Title</span>
+                </div>
+                <span class="navigationBoxDesc">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sit,
+                    sint?</span>
+            </div>
+        </div>
+    </div>
+    <div id="footing">
+        <div id="banner" style="background-image: url('../img/waves.svg');">
+            <div>
+                <img src="../img/youcode.png" id="img1" alt="youcode">
+                <img src="../img/ocp.png" alt="ocp">
+            </div>
+        </div>
+        <div id="footer">
+            <span>@Copyright 2020. All right reserved.</span>
+        </div>
+    </div>
+    <script src="../js/home_ocp.js"></script>
 </body>
 
 </html>

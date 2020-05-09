@@ -1,0 +1,839 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital@0;1&display=swap");
+@font-face {
+  font-family: "Gilroy";
+  src: url("../../app/font/Gilroy-Bold.ttf");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("../../app/font/Gilroy-Medium.ttf");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Gilroy";
+  src: url("../../app/font/Gilroy-Regular.ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+#body {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  background-color: #FFFFFF;
+}
+
+#navBar {
+  width: 80px;
+  height: 100%;
+  background-color: #1FDBAE;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  position: fixed;
+  z-index: 3;
+}
+#navBar .navCont {
+  display: grid;
+  grid-gap: 6.5px;
+}
+#navBar .navCont a:hover .navIconBox {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+#navBar .navCont .navIconBox {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+#content {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding-left: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: unset;
+  align-items: unset;
+}
+#content #header {
+  height: 75px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0 40px;
+  background-color: #FFFFFF;
+}
+#content #container {
+  position: relative;
+  flex: 1;
+  box-sizing: border-box;
+  padding: 40px;
+  background-color: #F6F9FC;
+  font-family: "Gilroy";
+  letter-spacing: 0.6px;
+}
+#content #container .bigBox {
+  width: 100%;
+  height: 100%;
+  background-color: #FFFFFF;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.025);
+  border-radius: 20px;
+  box-sizing: border-box;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+#content #container .fitBox {
+  width: 100%;
+  height: fit-content;
+  background-color: #FFFFFF;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.025);
+  border-radius: 20px;
+  box-sizing: border-box;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+#content #container .table {
+  padding: 0;
+}
+#content #container .tableHead {
+  flex: none;
+  width: 100%;
+  height: 62px;
+  box-sizing: border-box;
+  padding: 0 20px;
+  border-bottom: 1px solid #E8EFF6;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+#content #container .vertical {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+#content #container .horizontal {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+#content #container .txt-main {
+  color: #004348;
+  text-transform: capitalize;
+  font-size: 20px;
+  font-family: "Gilroy";
+  font-weight: 700;
+}
+#content #container .txt-second {
+  color: #C5D7EA;
+  text-transform: capitalize;
+  font-size: 16px;
+  font-family: "Gilroy";
+  font-weight: 500;
+}
+#content #container .btn-doc {
+  padding: 7.5px 15px;
+  background-color: #1FDBAE;
+  text-transform: capitalize;
+  font-size: 20px;
+  font-family: "Gilroy";
+  font-weight: 700;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+}
+#content #container .btn-doc img {
+  margin-right: 10px;
+}
+#content #container .btn-acc {
+  padding: 9px 10px;
+  background-color: #1FDBAE;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-family: "Gilroy";
+  font-weight: 700;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+}
+#content #container .btn-acc img {
+  margin-right: 5px;
+}
+#content #container .btn-no {
+  padding: 9px 10px;
+  background-color: #FC5E79;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-family: "Gilroy";
+  font-weight: 700;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+}
+#content #container .btn-no img {
+  margin-right: 5px;
+}
+#content #container .btn-download {
+  padding: 5px 14px;
+  background-color: #F6F9FC;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-family: "Gilroy";
+  font-weight: 700;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  color: #C5D7EA;
+  border: none;
+  cursor: pointer;
+}
+#content #container .btn-download img {
+  margin-left: 18px;
+}
+#content #container .btn-send {
+  padding: 9px 10px;
+  background-color: #1FDBAE;
+  text-transform: uppercase;
+  font-size: 18px;
+  font-family: "Gilroy";
+  font-weight: 700;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+}
+#content #container .btn-send img {
+  margin-left: 5px;
+}
+#content #container .btn-main {
+  padding: 16px 30px;
+  background-color: #1FDBAE;
+  text-transform: uppercase;
+  font-size: 18px;
+  font-family: "Gilroy";
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 15px;
+  color: #FFFFFF;
+  border: none;
+}
+#content #container .box-notif {
+  box-sizing: border-box;
+  width: 368px;
+  padding: 15px;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: unset;
+  align-items: unset;
+  background-color: #FFFFFF;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.025);
+  border-radius: 15px;
+  font-family: "Gilroy";
+  font-weight: 500;
+  font-size: 16px;
+  color: #004348;
+  letter-spacing: 0.6px;
+  overflow: hidden;
+}
+#content #container .box-notif .box-notif-switch {
+  position: absolute;
+  top: 25px;
+  right: 15px;
+  cursor: pointer;
+}
+#content #container .box-notif .box-notif-title {
+  font-weight: 700;
+  font-size: 22px;
+}
+#content #container .box-notif .box-notif-date {
+  color: #1FDBAE;
+  font-size: 18px;
+}
+#content #container .box-notif .box-notif-matric {
+  font-size: 20px;
+}
+#content #container .box-notif .box-notif-subTitle {
+  font-size: 20px;
+  font-weight: 700;
+}
+#content #container .box-notif .box-notif-desc {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 5px;
+  font-size: 14px;
+  color: #004348;
+  font-family: "Roboto", sans-serif;
+  background-color: #F6F9FC;
+  border-radius: 10px;
+  word-break: break-word;
+}
+#content #container .box-notif .box-notif-pj {
+  align-self: center;
+  text-decoration: underline;
+  font-size: 20px;
+  font-family: "Gilroy", sans-serif;
+  font-weight: 700;
+  margin-left: 15px;
+}
+#content #container .box-rndv {
+  box-sizing: border-box;
+  width: 530px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: unset;
+  align-items: unset;
+  background-color: #FFFFFF;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.025);
+  border-radius: 20px;
+  letter-spacing: 0.6px;
+}
+#content #container .box-rndv .box-rndv-date {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+#content #container .box-rndv .box-rndv-date-input {
+  height: 33px;
+  width: 375px;
+  margin: 10px 0;
+  padding: 0;
+  border: 1px solid #C5D7EA;
+  border-radius: 10px;
+  color: #C5D7EA;
+  background-color: #F6F9FC;
+  font-family: "Roboto";
+  font-style: italic;
+  box-sizing: border-box;
+  padding: 0 10px;
+  font-size: 16px;
+}
+#content #container .box-rndv .box-rndv-note-input {
+  width: 100%;
+  margin: 10px 0;
+  background-color: #F6F9FC;
+  border-radius: 10px;
+  color: #004348;
+  font-family: "Roboto";
+  font-size: 16px;
+  min-height: 170px;
+  margin-bottom: 40px;
+  box-sizing: border-box;
+  padding: 5px 10px;
+}
+#content #container .box-rndv .box-rndv-note-input:empty:before {
+  content: attr(placeholder);
+  color: #C5D7EA;
+  font-family: "Roboto";
+  font-style: italic;
+}
+#content #container .title-24 {
+  font-family: "Gilroy";
+  font-size: 24px;
+  color: #004348;
+  font-weight: 700;
+}
+#content #container .row-collection {
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: center;
+}
+#content #container .align-right {
+  margin-left: auto;
+}
+#content #container .trans-flip {
+  transform: rotate(180deg);
+}
+#content #container .innerTable {
+  flex: 1;
+  max-height: -webkit-fill-available;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  overflow-y: auto;
+}
+#content #container .innerTable .messageContainer {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: center;
+}
+#content #container .innerTable .messageContainer span {
+  padding: 10px;
+  font-size: 20px;
+  font-family: "Roboto", sans-serif;
+  border-radius: 10px;
+  max-width: 350px;
+}
+#content #container .innerTable .messageContainer:not(:last-of-type) {
+  margin-bottom: 10px;
+}
+#content #container .innerTable .sentMessage {
+  flex-direction: row-reverse;
+}
+#content #container .innerTable .sentMessage span {
+  background-color: #1FDBAE;
+  color: #FFFFFF;
+}
+#content #container .innerTable .receivedMessage span {
+  background-color: #E8EFF6;
+  color: #004348;
+}
+#content #container .bottomTable {
+  flex: none;
+  height: 70px;
+  width: 100%;
+  border-top: 1px solid #E8EFF6;
+  box-sizing: border-box;
+  padding: 0 15px;
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: center;
+}
+#content #container .bottomTable .bottomTable-msgInput {
+  flex: 1;
+  padding: 9px;
+  border: none;
+  background: #F6F9FC;
+  border-radius: 10px;
+  font-size: 17px;
+  outline: none;
+  font-family: "Roboto";
+  color: #004348;
+}
+#content #container .bottomTable .bottomTable-msgInput:focus {
+  border: 1px solid #C5D7EA;
+}
+#content #container .bottomTable .bottomTable-msgInput::placeholder {
+  font-style: italic;
+  color: #C5D7EA;
+}
+#content #container .bottomTable .bottomTable-msgSend {
+  margin-left: 26px;
+  cursor: pointer;
+}
+#content #container .patientRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 15px;
+  border-radius: 15px;
+  background-color: #FFFFFF;
+  cursor: pointer;
+  overflow: hidden;
+}
+#content #container .patientRow > div {
+  margin-right: 70px;
+}
+#content #container .patientRow:hover {
+  background-color: #F6F9FC;
+}
+#content #container .patientRow:not(:last-of-type) {
+  margin-bottom: 8px;
+}
+#content #container .patientRow-active {
+  background-color: #F6F9FC;
+}
+#content #container .patientInfos {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: unset;
+  background-color: #FFFFFF;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.025);
+  flex: none;
+  width: 415px;
+  height: fit-content;
+  box-sizing: border-box;
+  padding: 25px 30px;
+  margin-left: 40px;
+  border-radius: 20px;
+  overflow: hidden;
+  letter-spacing: 0;
+}
+#content #container .patientInfos .patientInfos-dataRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: center;
+  width: 100%;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+#content #container .patientInfos .patientInfos-dataRow > *:last-child {
+  margin-left: 16px;
+  font-weight: 400;
+  color: #1FDBAE;
+}
+#content #container .patientInfos .patientInfos-dataRow > *:first-child {
+  font-weight: 500;
+  color: #004348;
+}
+#content #container .patientInfos .patientInfos-dataCol {
+  display: flex;
+  flex-direction: column;
+  justify-content: unset;
+  align-items: unset;
+  width: 100%;
+  font-size: 18px;
+  margin-bottom: 10px;
+}
+#content #container .patientInfos .patientInfos-dataCol span {
+  font-weight: 500;
+  color: #004348;
+}
+#content #container .patientInfos .patientInfos-dataCol div {
+  width: 100%;
+  height: 125px;
+  max-height: 125px;
+  overflow: hidden;
+  background-color: #F6F9FC;
+  border-radius: 15px;
+  margin-top: 7.5px;
+  box-sizing: border-box;
+  padding: 10px;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+}
+#content #container .patientInfos .patientInfos-dataCol div:empty:before {
+  content: attr(placeholder);
+  color: #C5D7EA;
+  font-family: "Roboto";
+  font-style: italic;
+}
+#content #container .patientInfos .patientInfos-ordo {
+  display: flex;
+  flex-direction: column;
+  justify-content: unset;
+  align-items: unset;
+  width: 100%;
+  font-size: 18px;
+}
+#content #container .patientInfos .patientInfos-ordo > span {
+  font-weight: 500;
+  color: #004348;
+  margin-bottom: 10px;
+}
+#content #container .patientInfos .patientInfos-ordo .patientInfos-ordo-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: center;
+  margin-bottom: 3px;
+}
+#content #container .patientInfos .patientInfos-ordo .patientInfos-ordo-info > span:first-of-type {
+  font-weight: 500;
+  color: #6B7D8E;
+}
+#content #container .patientInfos .patientInfos-ordo .patientInfos-ordo-info > span:last-of-type {
+  font-weight: 400;
+  color: #004348;
+  margin-left: 10px;
+}
+#content #container .patientInfos .patientInfos-ordo .patientInfos-ordo-info .patientInfos-ordo-info-icon {
+  margin-left: 5px;
+  cursor: pointer;
+}
+#content #container .ordoBoxBg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(rgba(0, 0, 0, 0.1), transparent);
+  backdrop-filter: blur(10px);
+}
+#content #container .ordoBoxBg .ordoBox {
+  padding: 40px;
+  width: 600px;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: unset;
+  align-items: unset;
+  background-color: #FFFFFF;
+  border-radius: 20px;
+}
+#content #container .ordoBoxBg .ordoBox .ordoInputsCont {
+  display: flex;
+  flex-direction: column;
+  justify-content: unset;
+  align-items: unset;
+}
+#content #container .ordoBoxBg .ordoBox .ordoInputsCont input {
+  border: none;
+  background: none;
+  background-color: #F6F9FC;
+  border: 1px solid #C5D7EA;
+  font-family: "Roboto";
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 10px;
+}
+#content #container .ordoBoxBg .ordoBox .ordoInputsCont input::placeholder {
+  font-style: italic;
+  color: #C5D7EA;
+}
+#content #container .ordoBoxBg .ordoBox .ordoInputsCont .ordoMedicamInput {
+  width: 300px;
+}
+#content #container .ordoBoxBg .ordoBox .ordoInputsCont .ordoDosageInput {
+  width: 100px;
+  margin-left: 20px;
+}
+#content .title {
+  font-family: "Gilroy";
+  font-weight: 700;
+  font-size: 24px;
+  color: #004348;
+}
+
+.radiusRight {
+  border-top-left-radius: 0 !important;
+  border-bottom-left-radius: 0 !important;
+}
+
+.radiusLeft {
+  border-top-right-radius: 0 !important;
+  border-bottom-right-radius: 0 !important;
+}
+
+.font-s-12 {
+  font-size: 12px;
+}
+
+.font-s-14 {
+  font-size: 14px;
+}
+
+.font-s-16 {
+  font-size: 16px;
+}
+
+.font-s-18 {
+  font-size: 18px;
+}
+
+.font-s-20 {
+  font-size: 20px;
+}
+
+.font-s-22 {
+  font-size: 22px;
+}
+
+.font-s-24 {
+  font-size: 24px;
+}
+
+.font-s-26 {
+  font-size: 26px;
+}
+
+.font-s-28 {
+  font-size: 28px;
+}
+
+.font-s-30 {
+  font-size: 30px;
+}
+
+.font-s-32 {
+  font-size: 32px;
+}
+
+.font-s-34 {
+  font-size: 34px;
+}
+
+.font-s-36 {
+  font-size: 36px;
+}
+
+.font-s-38 {
+  font-size: 38px;
+}
+
+.font-w-b {
+  font-weight: 700;
+}
+
+.font-w-m {
+  font-weight: 500;
+}
+
+.font-w-n {
+  font-weight: 400;
+}
+
+.font-f-Gilroy {
+  font-family: "Gilroy";
+}
+
+.txt-c-D {
+  color: #004348;
+}
+
+.txt-c-A {
+  color: #1FDBAE;
+}
+
+.txt-c-FD {
+  color: #C5D7EA;
+}
+
+.txt-c-SD {
+  color: #6B7D8E;
+}
+
+.f-direction-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: unset;
+  align-items: unset;
+}
+
+.f-direction-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: unset;
+  align-items: unset;
+}
+
+.margin-b-26 {
+  margin-bottom: 26px;
+}
+
+.margin-b-24 {
+  margin-bottom: 24px;
+}
+
+.margin-b-22 {
+  margin-bottom: 22px;
+}
+
+.margin-b-20 {
+  margin-bottom: 20px;
+}
+
+.margin-b-18 {
+  margin-bottom: 18px;
+}
+
+.margin-b-10 {
+  margin-bottom: 10px;
+}
+
+.margin-b-0 {
+  margin-bottom: 0px !important;
+}
+
+.margin-r-5 {
+  margin-right: 5px;
+}
+
+.m-top-15 {
+  margin-top: 15px;
+}
+
+.m-top-20 {
+  margin-top: 20px;
+}
+
+.width-50 {
+  width: 50%;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+.space-between-2_5px > *:not(:last-child) {
+  margin-bottom: 2.5px;
+}
+
+.space-between-5px > *:not(:last-child) {
+  margin-bottom: 5px;
+}
+
+.space-between-7_5px > *:not(:last-child) {
+  margin-bottom: 7.5px;
+}
+
+.space-between-10px > *:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.space-between-15px > *:not(:last-child) {
+  margin-bottom: 15px;
+}
+
+/*# sourceMappingURL=styles_OCP.css.map */
