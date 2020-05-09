@@ -20,8 +20,8 @@ __GLOBAL_SOCKET.on('queryResult', data => {
     }
 });
 __GLOBAL_SOCKET.on('notificationAccepted', () => {
-    console.log('braah');
-    addNotification();
+    // addNotification();
+    window.location.assign('/patient/contact');
 });
 // FUNCTIONS
 //#region 

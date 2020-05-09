@@ -1,9 +1,13 @@
 $(document).ready(async () => {
+    await joinRoom();
     let msgs = await $.post('/getMesssages', {
         matricule: sessionStorage.getItem('matricule')
     }).promise();
     // 
+    console.log(sessionStorage.getItem('matricule'));
+    // 
     msgs = JSON.parse(msgs);
+    console.log(msg);
     // 
     for (let i = 0; i < msgs.length; i++) {
         let type = 'receivedMessage';
