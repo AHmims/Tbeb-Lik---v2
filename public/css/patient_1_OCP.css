@@ -1439,4 +1439,11 @@ footer {
   .logOffText {
     display: none;
   }
+
+  #notifsContainer {
+    right: -65px !important;
+    /* left: 0; */
+    width: 100vw !important;
+    left: unset !important;
+  }
 }
