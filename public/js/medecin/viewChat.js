@@ -1,7 +1,9 @@
 function createMsgBox(msg, type) {
-    var txt = document.createElement('h4');
-    txt.setAttribute('class', `msgTxt ${type}`);
-    txt.innerText = msg.CONTENU;
+    var container = document.createElement('div');
+    container.setAttribute('class', `messageContainer ${type}`);
+    var txt = document.createElement('span');
+    txt.innerText = msg.contenu;
     // 
-    document.getElementById('msgsCont').appendChild(txt);
+    container.appendChild(txt);
+    document.getElementById('msgsCont').appendChild(container);
 }
