@@ -27,7 +27,6 @@ body {
 
 #landing {
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   justify-content: unset;
@@ -75,8 +74,8 @@ body {
 }
 #navBar #navBarIn #navBarNavText a {
   text-decoration: none;
-  color: #004348;
-  font-size: 18px;
+  color: #FFFFFF;
+    font-size: 18px;
   letter-spacing: 0.5px;
 }
 #navBar #navBarIn #navBarNavText #btnLogin {
@@ -137,7 +136,7 @@ body {
 }
 #body #bodyContent h1 {
   font-weight: 700;
-  font-size: 96px;
+  font-size: 75px;
   white-space: pre-line;
   margin: 0;
   height: fit-content;
@@ -146,20 +145,21 @@ body {
 }
 #body #bodyContent span {
   max-width: 912px;
-  font-size: 30px;
+  font-size: 25px;
   font-weight: 400;
 }
 #body #bodyContent button {
-  font-size: 24px;
+  font-size: 17px;
   text-transform: uppercase;
   color: #FFFFFF;
   letter-spacing: 1px;
   border: none;
   background-color: #1FDBAE;
   border-radius: 40px;
-  padding: 30px;
+  padding: 20px;
   font-weight: 700;
   cursor: pointer;
+  outline: none;
 }
 #body #scrollIcon {
   position: absolute;
@@ -208,27 +208,30 @@ body {
   }
   #navBar #navBarIn #navBarNavText #btnLogin {
     border-radius: 5px;
-    padding: 3px 15px;
+    padding: 8% 15px;
     font-size: 3px;
     
 }
 #navBar #navBarIn #navBarNavText a {
   text-decoration: none;
-  color: #004348;
+  color: #FFFFFF;
   font-size: 13px;
   letter-spacing: 0.5px;
 }
   #body #bodyContent button {
-    font-size: 14px;
+    font-size: 11px;
     text-transform: uppercase;
     color: #FFFFFF;
     letter-spacing: 1px;
     border: none;
     background-color: #1FDBAE;
     border-radius: 40px;
-    padding: 30px;
+    padding: 22px;
     font-weight: 700;
     cursor: pointer;
+}
+.bgb{
+  width: 80% !important;
 }
   #navBar #navBarIn #navBarNavText {
     font-family: "Roboto", sans-serif;
@@ -241,7 +244,7 @@ body {
 }
 #body #bodyContent h1 {
   font-weight: 700;
-  font-size: 53px;
+  font-size: 38px;
   white-space: pre-line;
   margin: 0;
   height: fit-content;
@@ -250,7 +253,7 @@ body {
 }
 #body #bodyContent span {
   max-width: 912px;
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 400;
 }
 #content #contentNavigation {
@@ -349,9 +352,21 @@ body {
 #footing {
   width: 100%;
 }
+#img1{
+  width: 270px;
+}
+#img2{
+  width: 100px;
+}
+.bgb{
+  display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
 #footing #banner {
   width: 100%;
-  height: 440px;
+  height: 237px;
   background-color: #004348;
   background-position: center;
   background-repeat: no-repeat;
