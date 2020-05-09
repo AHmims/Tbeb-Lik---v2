@@ -14,6 +14,8 @@ let stream = null;
 __GLOBAL_SOCKET.on('liveStreamDataFlux', async (offer) => {
     // let status = ;
     if (confirm('Votre medecin est entrain de vous appelle.')) {
+        showVideoBox();
+        // 
         stream = await navigator.mediaDevices.getUserMedia({
             video: true,
             audio: true
@@ -63,6 +65,8 @@ __GLOBAL_SOCKET.on('liveStreamTerminated', () => {
         });
         // 
         controllPosters("flex");
+        // 
+        hideVideoBox();
         // document.getElementById('remoteVideoPoster').style.display = "flex";
         // document.getElementById('hostVideoPoster').style.display = "flex";
     }
@@ -87,6 +91,8 @@ function endCall() {
         __GLOBAL_SOCKET.emit('endCall');
         // 
         controllPosters("flex");
+        // 
+        hideVideoBox();
         // document.getElementById('remoteVideoPoster').style.display = "flex";
     }
 }
@@ -98,4 +104,15 @@ function micControll() {
 
 function camControll() {
     stream.getVideoTracks()[0].enabled = !stream.getVideoTracks()[0].enabled;
+}
+// 
+// 
+function showVideoBox() {
+    document.getElementById('videoSection').style.display = "flex";
+    document.getElementById('chatSection').style.height = "500px";
+}
+
+function hideVideoBox() {
+    document.getElementById('videoSection').style.display = "none";
+    document.getElementById('chatSection').style.height = "90 vh";
 }

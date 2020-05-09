@@ -1413,7 +1413,7 @@ footer {
   }
 
   #videoSection {
-    /* display: none; */
+    display: none;
     border-radius: 0 !important;
     height: 90vh !important;
   }
@@ -1421,8 +1421,8 @@ footer {
   #chatSection {
     border: none !important;
     border-radius: 0px !important;
-    /* height: 90vh !important; */
-    height: 500px;
+    height: 90vh !important;
+    /* height: 500px; */
     border-top: 1px solid #e8eff6 !important;
   }
 
