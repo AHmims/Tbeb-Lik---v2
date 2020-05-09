@@ -5,7 +5,7 @@ let __PEER;
 __GLOBAL_SOCKET.on('connect', async () => {
     console.log('Socket Connected ! userId => ', sessionStorage.getItem('matricule') || null);
     await __GLOBAL_SOCKET.emit('newUser', sessionStorage.getItem('matricule'));
-    joinRoom();
+    await joinRoom();
 });
 // 
 __GLOBAL_SOCKET.on('receiveMsg', msg => {
@@ -23,10 +23,11 @@ async function sendMsg(content) {
 }
 // 
 let ready = false;
+let stream = null;
 async function streaminit() {
     ready = false;
     // 
-    const stream = await navigator.mediaDevices.getUserMedia({
+    stream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true
     });
@@ -73,7 +74,11 @@ function endCall() {
         document.getElementById('clientVideo').srcObject = null;
         document.getElementById('remoteVideo').srcObject = null;
         // 
+        stream.getTracks().forEach(function (track) {
+            track.stop();
+        });
+        // 
+        __GLOBAL_SOCKET.emit('endCall');
         // document.getElementById('remoteVideoPoster').style.display = "flex";
     }
-    __GLOBAL_SOCKET.emit('endCall');
 }

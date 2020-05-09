@@ -10,10 +10,11 @@ __GLOBAL_SOCKET.on('receiveMsg', msg => {
 });
 // 
 // 
+let stream = null;
 __GLOBAL_SOCKET.on('liveStreamDataFlux', async (offer) => {
     // let status = ;
     if (confirm('Votre medecin est entrain de vous appelle.')) {
-        const stream = await navigator.mediaDevices.getUserMedia({
+        stream = await navigator.mediaDevices.getUserMedia({
             video: true,
             audio: true
         });
@@ -53,6 +54,9 @@ __GLOBAL_SOCKET.on('liveStreamTerminated', () => {
         document.getElementById('clientVideo').srcObject = null;
         document.getElementById('remoteVideo').srcObject = null;
         // 
+        stream.getTracks().forEach(function (track) {
+            track.stop();
+        });
         // document.getElementById('remoteVideoPoster').style.display = "flex";
     }
 });

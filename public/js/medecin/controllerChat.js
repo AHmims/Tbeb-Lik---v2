@@ -34,6 +34,10 @@ $(document).ready(async () => {
     document.getElementById('chatVideoBtn').addEventListener('click', async () => {
         await streaminit();
     });
+    // 
+    document.getElementById('chatVideoEndBtn').addEventListener('click', () => {
+        endCall();
+    });
 });
 // 
 function displayReceivedMsg(msg) {
