@@ -1,25 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="/socket.io/socket.io.js"></script>
-    <title>Demmendes de consultations</title>
+    <title>Document</title>
 </head>
+<style>
+/* Profile Content */
+.profile-content {
+  padding: 20px;
+  background: #fff;
+  height:fit-content;
+}
+.box-notif
+{
+    height:100%!important;
+    
+}
+#nbr_jr_input
+{
+    margin-left: 15px;
+    margin-top: 27px;
+    width:35px;
+    height:20px;
+}
+ .box-notif--patientInfos
+ {
+     border: 0.5px solid #5b9bd1;
+     /* border-radius: 4%; */
+     width:fit-content;
+     padding: 15px;
+ }
+ .box-notif--patientInfos h1,h2,h3,h5
+ {
+   
+    
+    font-family: "Gilroy";
+    color: #004348;
+    letter-spacing: 0.6px;
+ }
 
-<body style="text-align: center;">
-    <h1>Page li fiha les notifications</h1>
-    <h4>Preconsultations active</h4>
-    <div id="activeNotifications"></div>
+ .box-notif--patientInfos h1
+ {  font-weight: 700;
+     font-size: 22px;
+ }
+ .box-notif--patientInfos h2
+ {  font-weight: 700;
+     font-size: 20px;
+ }
+ .box-notif--patientInfos_date
+ {
+    color:  #5b9bd1;
+    font-size: 18px!important;
+    font-weight: 700!important;
+ }
+ .box-notif--patientInfos h3,h5
+ {   font-weight: 500;
+     font-size: 16px;
+ }
+ .box-notif--patientInfos input,textarea
+ {
+     border: none;
+     /* border-radius: 8px; */
+ }
+ .BTN-consultation
+ {
+     width:100%;
+     display: flex;
+     justify-content: space-around;
+     margin-top: 25px;
+ }
+ .BTN-consultation button
+ {
+     width:50%;
+     margin: auto;
+     height:40px;
+     color:white;
+ 
+ }
+ .btn-modifier
+ {
+     
+     background-color: #5b9bd1 ;
+     border-color:  #5b9bd1 ;
+ }
+ .btn-rejeter
+ {
+     background-color: #d9534f;
+     border-color:  #d9534f;
+     
+ }
+ .modal
+ {
+     margin-top: 250px!important;
+ }
+ 
+
+</style>
+
+<body>
+    <div class="col-md-9">
+        <h4>Preconsultations active</h4>
+        <div class="profile-content">
+            <div id="content">
+                <div id="activeNotifications" class="Notif_Box">
+                    <div class="box-notif--patientInfos">
+                        <h1>Nom/Prenom Patient</h1>
+                        <h3>En attente...</h3> 
+                        <h3 class="box-notif--patientInfos_date">2020-05-16</h3>
+                        <h3>BH82982</h3>
+                        <h5>64</h5>
+                        <input type="text" class="patient_input" disabled value="0614075409">
+                        
+                      <div class="BTN-consultation">
+                        <button class="btn-modifier"><i class="far fa-edit"></i> Accepter</button> 
+                      </div>
+                    
+                    </div>
+    
+                </div>
+                
+                
+            </div>
+        </div>
+    </div>
     <h4>Incoming notifications</h4>
     <div id="notificationsContainer">
     </div>
+     
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"
-        integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
-    <script src="../js/medecin/socketNotifications.js"></script>
-    <script src="../js/medecin/controllerNotifications.js"></script>
-    <script src="../js/medecin/viewNotifications.js"></script>
+    integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script src="../js/medecin/socketNotifications.js"></script>
+<script src="../js/medecin/controllerNotifications.js"></script>
+<script src="../js/medecin/viewNotifications.js"></script>
+    
 </body>
-
 </html>
+
