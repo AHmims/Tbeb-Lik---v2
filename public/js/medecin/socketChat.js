@@ -66,6 +66,20 @@ __GLOBAL_SOCKET.on('patientLinkFailed', () => {
     __PEER.destroy();
     document.getElementById('clientVideo').srcObject = null;
 });
+// 
+__GLOBAL_SOCKET.on('liveStreamTerminated', () => {
+    if (__PEER != null) {
+        __PEER = null;
+        document.getElementById('clientVideo').srcObject = null;
+        document.getElementById('remoteVideo').srcObject = null;
+        // 
+        stream.getTracks().forEach(function (track) {
+            track.stop();
+        });
+        // document.getElementById('remoteVideoPoster').style.display = "flex";
+    }
+});
+
 
 // 
 function endCall() {
