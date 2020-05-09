@@ -418,6 +418,7 @@ video {
   height: 180px;
   width: 180px;
   border-radius: 696969px;
+  overflow: hidden;
 }
 
 #content #container .roblox #videoSection #videoSectionBody #videoSectionHost #hostVideoPoster {
@@ -427,6 +428,7 @@ video {
   background-position: center;
   background-repeat: no-repeat;
   background-color: #F6F9FC;
+
 }
 
 #content #container .roblox #videoSection #videoSectionBody #videoChatControls {
