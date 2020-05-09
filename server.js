@@ -197,8 +197,8 @@ __IO.on('connection', socket => {
     });
     socket.on('disconnect', async () => {
         console.log('--------');
-        let socketId = socket.id;
-        let appUserData = await _DB.getAppUserCustomDataBySocket(["ID_USER", "TYPE_USER", "MATRICULE_MED"], socketId);
+        // let socketId = socket.id;
+        let appUserData = await _DB.getAppUserCustomDataBySocket(["ID_USER", "TYPE_USER", "MATRICULE_MED"], socket.id);
         console.log('disconnect() | appUserData => ', appUserData);
         if (appUserData != null) {
             // IF A USER DISCONNECTS SET THEIR STATUS TO OFFLINE
