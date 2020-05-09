@@ -434,6 +434,14 @@ __APP.post('/getMesssages', async (req, res) => {
     } else console.log('/getMesssages | matricule = null');
     res.end(JSON.stringify(retData));
 });
+// 
+__APP.post('/getNotYetAcceptedRequest', async (req, res) => {
+    console.log('******');
+    let retData = false;
+    if (req.body.matricule != null)
+        retData = await _DB.getNotacceptedYetNotifs(req.body.matricule);
+    res.end(retData.toString());
+});
 // __APP.post('/')
 // 
 // 

@@ -43,8 +43,21 @@ $(document).ready(async () => {
     }).promise();
     // exists = Boolean(exists);
     console.log('/getAccessNotif | exists => ', exists);
-    if (exists != 'false')
+    if (exists != 'false') {
         addNotification();
+        // waiting();
+    }
+    // 
+    // 
+    let notAcceptedRequests = await $.post('/getNotYetAcceptedRequest', {
+        matricule: sessionStorage.getItem('matricule') || null
+    }).promise();
+    // 
+    if (notAcceptedRequests != 'false') {
+        waiting();
+    }
+
+
 });
 // 
 var state = false,

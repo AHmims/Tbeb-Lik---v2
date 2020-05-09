@@ -30,5 +30,7 @@ function sendNotification(ville, proffession) {
         ville,
         proffession
     });
+    // 
+    waiting();
 }
 //#endregion

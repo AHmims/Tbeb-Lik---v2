@@ -45,3 +45,25 @@ function addNotification() {
     if (!state)
         document.getElementById('btnNotif').setAttribute('class', 'notifActive');
 }
+// 
+function waiting() {
+    let contBg = document.createElement('div');
+    let cont = document.createElement('div');
+    let img = document.createElement('img');
+    let span = document.createElement('span');
+    // 
+    contBg.setAttribute('class', 'bgWaiting');
+    contBg.setAttribute('id', 'waitingConsultation');
+    cont.setAttribute('class', 'bgWaitingInner');
+    img.setAttribute('class', 'waitingImg');
+    span.setAttribute('class', 'waitingText');
+    // 
+    img.setAttribute('src', '../img/searching.gif');
+    span.innerText = "Attendre qu'un médecin accepte votre demande";
+    // 
+    cont.appendChild(img);
+    cont.appendChild(span);
+    contBg.appendChild(cont);
+    // 
+    document.body.appendChild(contBg);
+}
