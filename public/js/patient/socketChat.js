@@ -67,6 +67,22 @@ function sendMsg(content) {
     __GLOBAL_SOCKET.emit('sendMsg', content);
 }
 // 
+function endCall() {
+    if (__PEER != null) {
+        __PEER = null;
+        document.getElementById('clientVideo').srcObject = null;
+        document.getElementById('remoteVideo').srcObject = null;
+        // 
+        stream.getTracks().forEach(function (track) {
+            track.stop();
+        });
+        // 
+        __GLOBAL_SOCKET.emit('endCall');
+        // document.getElementById('remoteVideoPoster').style.display = "flex";
+    }
+}
+
+// 
 function micControll() {
     stream.getAudioTracks()[0].enabled = !stream.getAudioTracks()[0].enabled;
 }
