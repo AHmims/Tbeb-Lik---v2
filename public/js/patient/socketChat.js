@@ -14,6 +14,7 @@ let stream = null;
 __GLOBAL_SOCKET.on('liveStreamDataFlux', async (offer) => {
     // let status = ;
     if (confirm('Votre medecin est entrain de vous appelle.')) {
+        videoChatIconsControlls();
         showVideoBox();
         // 
         stream = await navigator.mediaDevices.getUserMedia({

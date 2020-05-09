@@ -41,6 +41,7 @@ $(document).ready(async () => {
     // 
     document.getElementById('chatVideoBtn').addEventListener('click', async () => {
         document.getElementById('videoSection').style.display = "flex";
+        videoChatIconsControlls();
         await streaminit();
     });
     // 

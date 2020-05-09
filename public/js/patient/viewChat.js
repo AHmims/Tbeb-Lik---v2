@@ -22,3 +22,9 @@ function switchIconCam(state) {
     document.getElementById('chatCamBtn').children[+(state)].style.display = "block";
     document.getElementById('chatCamBtn').children[+(!(+(state)))].style.display = "none";
 } // 
+function videoChatIconsControlls() {
+    document.getElementById('chatCamBtn').children[0].style.display = "block";
+    document.getElementById('chatCamBtn').children[1].style.display = "none";
+    document.getElementById('chatMicBtn').children[0].style.display = "block";
+    document.getElementById('chatMicBtn').children[1].style.display = "none";
+}
