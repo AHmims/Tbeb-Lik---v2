@@ -99,13 +99,24 @@ function endCall() {
 
 // 
 function micControll() {
+    switchIconMic(stream.getAudioTracks()[0].enabled);
     stream.getAudioTracks()[0].enabled = !stream.getAudioTracks()[0].enabled;
 }
 
 function camControll() {
+    switchIconCam(stream.getVideoTracks()[0].enabled);
     stream.getVideoTracks()[0].enabled = !stream.getVideoTracks()[0].enabled;
 }
 // 
+function switchIconMic(state) {
+    let icons = ["mic-on", "mic-off"];
+    document.getElementById('chatMicBtn').children[0].setAttribute('src', `../icon/${icons[+state]}.svg`);
+}
+
+function switchIconCam(state) {
+    let icons = ["camera-on", "camera-off"];
+    document.getElementById('chatCamBtn').children[0].setAttribute('src', `../icon/${icons[+state]}.svg`);
+} // 
 // 
 function showVideoBox() {
     document.getElementById('videoSection').style.display = "flex";
