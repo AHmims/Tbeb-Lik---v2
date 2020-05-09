@@ -15,10 +15,10 @@ function controllPosters(style) {
 // 
 function switchIconMic(state) {
     document.getElementById('chatMicBtn').children[+(state)].style.display = "block";
-    document.getElementById('chatMicBtn').children[+(!(+(false)))].style.display = "none";
+    document.getElementById('chatMicBtn').children[+(!(+(state)))].style.display = "none";
 }
 
 function switchIconCam(state) {
-    document.getElementById('videoControlBtn').children[+(state)].style.display = "block";
-    document.getElementById('videoControlBtn').children[+(!(+(false)))].style.display = "none";
+    document.getElementById('chatCamBtn').children[+(state)].style.display = "block";
+    document.getElementById('chatCamBtn').children[+(!(+(state)))].style.display = "none";
 } // 
