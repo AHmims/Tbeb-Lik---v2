@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/OCP_PATIENT_ATTENTE.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <!-- <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script> -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <title>Formulaire</title>
+</head>
+
+<body>
+    <div id="content">
+        <header id="navBar">
+            <div id="navBarIn">
+                <a href="#">
+                    <img src="../icon/logo_full.svg" alt="logo" id="navBarLogo">
+                </a>
+                <div id="navBarNavText">
+                    <a id="btnNotif">
+                        <img src="../icon/bellDark.svg" alt="">
+                        <div id="notifsContainer">
+                            <!-- <div class="triang"></div> -->
+                            <div id="notifBox">
+                                <div id="notifBoxHeader">
+                                    <span>Boite de notifications</span>
+                                    <div>
+                                        <span id="notificationsCounter"></span>
+                                    </div>
+                                </div>
+                                <div id="notifBoxBody">
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                   
+                    <a href="../../Connexion/Logout.php" id="logout">
+                        <img src="../icon/logout.svg" alt="">
+                         <span id="DCtext">Se déconnecter</span>
+                    </a>
+                </div>
+            </div>
+            <script src="https://code.jquery.com/jquery-3.5.0.min.js"
+            integrity="sha256-xNzN2a4ltkB44Mc/Jz3pT4iU1cmeR0FkXs4pru/JxaQ=" crossorigin="anonymous"></script>
+            <script src="../js/mods/worker_patient_form.js"></script>
+            <script src="../js/mods/socket_patient.js"></script>
+        </header>
+        
+        
+        <img src="../img/v.svg" alt="doctor" height="400px" width="300px">
+        <div class="loading animated fadeIn"> 
+            Votre demande est prise en charge ! Veuillez patientez s'il vous plaît
+            <div class="bg"> </div>
+        </div>
+        <br><br><br><br>
+              
+        <h3 style="color:#004348;text-align: center;"> Liste des médecins connectés </h3><br>
+        <div class="partMedecin">
+              <table class="table table-hover" >
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Nom</th>
+                    <th scope="col">Spécialité</th>
+                    <th scope="col">Ville</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>
+                  <tr>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                  </tr>
+                  <tr>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                  </tr>
+                  <tr>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                  </tr>
+                  <tr>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                  </tr>
+                  <tr>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                  </tr>
+                </tbody>
+              </table>
+        </div>
+        
+        <br><br>
+        <h3 style="text-align: center;color:#004348"> Des moyens de prévention contre le coronavirus </h3>
+        <br><br>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                     <img src="../img/bb.svg" class="rounded float-right" alt="..."> 
+                     <h5 style="text-align: center; width: 400px; margin: auto;margin-bottom:100px;color:#004348">Maintenir une distance d’au moins 1 mètre avec les autres personnes, en particulier si elles toussent, éternuent ou ont de la fièvre.</h5>
+                </div>
+                <div class="col-md-4 ml-auto"> 
+                    <img src="../img/ff.svg" class="rounded float-left" alt="...">
+                    <h5 style="text-align: center; width: 400px; margin: auto;margin-bottom:100px;color:#004348"> Appliquer le masque pour éviter d'attraper ou diffuser la maladie (toux, éternuements).</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col align-self-center">
+                    <img src="../img/jj.svg" class="rounded mx-auto d-block" alt="...">
+                    <h5 style="text-align: center; width: 400px; margin: auto;margin-bottom:100px;color:#004348">Se laver fréquemment les mains avec une solution hydroalcoolique ou à l’eau et au savon.</h5>
+                  </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                     <img src="../img/l.svg" class="rounded float-right" alt="..."> 
+                     <h5 style="text-align: center; width: 400px; margin: auto;margin-bottom:100px;color:#004348">Eviter les lieux très fréquentés et les rassemblements.</h5>
+                </div>
+                <div class="col-md-4 ml-auto"> 
+                    <img src="../img/h.svg" class="rounded float-left" alt="...">
+                    <h5 style="text-align: center; width: 400px; margin: auto;margin-bottom:100px;color:#004348">Conservez le rythme que vous avez dans les locaux et gardez vos repères pour recréer une ambiance de travail.</h5>
+                </div>
+            </div>
+        </div>
+
+        <footer style="margin-top: 100px;">
+            <div class="part1">
+                <div class="parags">
+                    <div class="parag1">
+                        <h1> A propos de nous </h1>
+                        <hr>
+                        <p>
+                            Equipe de 4 apprenants de YouCode-Safi.
+                            <ul>
+                                <li> Sanaa Saadoune </li>
+                                <li> Mehdi Choukri </li>
+                                <li> Zakaria Kamili</li>
+                                <li> Ali Hmims </li>
+                            </ul>
+                        </p>
+                    </div>
+                    <div class="parag2">
+                        <h1> Contactez-nous </h1>
+                        <hr>
+                        <div> <img src="../img/mail.png" alt="socialmedia" height="40px" width="40px"> Tbeb-Lik@gmail.com</div>
+                        <div> <img src="../img/fb.png" alt="socialmedia"  height="40px" width="40px"> /Tbeb-Lik </div>
+                        <div> <img src="../img/twitter.png" alt="socialmedia"  height="40px" width="40px"> @TbebLik </div>                    
+                    </div>
+                    <div class="parag3">
+                        <h1> Comment ça marche? </h1>
+                        <hr>
+                        <p>
+                            Tbeb-Lik est une plateforme de consultation en ligne qui assure la relation patient-médecin sans avoir à se déplacer.
+                            <br><a href="" style="color:blue">Cliquez-ici</a> pour plus d'infos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="part2">
+                <div>Powered By YouCode-Safi.</div>
+                <span>Copyright © 2020. All rights reserved.</span>
+            </div>
+        </footer>
+      </div>
+    </body>
+</html>
