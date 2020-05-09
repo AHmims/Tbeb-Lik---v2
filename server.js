@@ -2,11 +2,7 @@
 const __FS = require('fs');
 const __EXPRESS = require('express');
 const __APP = __EXPRESS();
-const __SERVER = require('https').createServer({
-    key: __FS.readFileSync('./key.pem'),
-    cert: __FS.readFileSync('./cert.pem'),
-    passphrase: 'tbeblik'
-}, __APP);
+const __SERVER = require('http').createServer(__APP);
 const __IO = require('socket.io')(__SERVER);
 const __PATH = require('path');
 //IMPORTED MODULES
