@@ -53,6 +53,15 @@
         #videoSectionCont video {
             object-fit: scale-down;
         }
+
+        /*  */
+        .controlsCont {
+            display: flex;
+        }
+
+        .controlsCont button {
+            flex: auto;
+        }
     </style>
 </head>
 
@@ -68,9 +77,23 @@
         <button id="chatSendBtn">
             Envoyer
         </button>
+        <div class="controlsCont">
+            <button id="chatVideoBtn">
+                Video
+            </button>
+            <button id="chatVideoEndBtn">
+                Stop video
+            </button>
+            <button id="chatMicBtn">
+                Mic on/ff
+            </button>
+            <button id="chatCamBtn">
+                Camera on/off
+            </button>
+        </div>
     </div>
     <div id="videoSectionCont">
-        <video id="clientVideo" autoplay></video>
+        <video id="clientVideo" autoplay muted></video>
         <video id="remoteVideo" autoplay></video>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"

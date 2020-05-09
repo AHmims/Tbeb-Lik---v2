@@ -38,6 +38,13 @@ $(document).ready(async () => {
     document.getElementById('chatVideoEndBtn').addEventListener('click', () => {
         endCall();
     });
+    // 
+    document.getElementById('chatMicBtn').addEventListener('click', () => {
+        micControll();
+    });
+    document.getElementById('chatCamBtn').addEventListener('click', () => {
+        camControll();
+    });
 });
 // 
 function displayReceivedMsg(msg) {

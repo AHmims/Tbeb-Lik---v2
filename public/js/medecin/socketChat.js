@@ -82,3 +82,11 @@ function endCall() {
         // document.getElementById('remoteVideoPoster').style.display = "flex";
     }
 }
+// 
+function micControll() {
+    stream.getAudioTracks()[0].enabled = !stream.getAudioTracks()[0].enabled;
+}
+
+function camControll() {
+    stream.getVideoTracks()[0].enabled = !stream.getVideoTracks()[0].enabled;
+}

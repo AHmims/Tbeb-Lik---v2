@@ -17,6 +17,13 @@ $(document).ready(async () => {
 
     });
     // 
+    document.getElementById('chatMicBtn').addEventListener('click', () => {
+        micControll();
+    });
+    document.getElementById('chatCamBtn').addEventListener('click', () => {
+        camControll();
+    });
+    // 
     let msgs = await $.post('/getMesssages', {
         matricule: sessionStorage.getItem('matricule')
     }).promise();

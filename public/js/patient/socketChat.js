@@ -66,3 +66,11 @@ __GLOBAL_SOCKET.on('liveStreamTerminated', () => {
 function sendMsg(content) {
     __GLOBAL_SOCKET.emit('sendMsg', content);
 }
+// 
+function micControll() {
+    stream.getAudioTracks()[0].enabled = !stream.getAudioTracks()[0].enabled;
+}
+
+function camControll() {
+    stream.getVideoTracks()[0].enabled = !stream.getVideoTracks()[0].enabled;
+}
