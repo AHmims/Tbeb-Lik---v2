@@ -1124,7 +1124,8 @@ footer {
 }
 
 #content #smallblox #videoSection #videoSectionBody #videoChatControls .videoControlBtn img {
-  width: 25px;
+  /* width: 25px;:*/
+  height: 25px;
 }
 
 #content #smallblox #videoSection #videoSectionBody #videoChatControls .videoControlBtn:not(:last-of-type) {

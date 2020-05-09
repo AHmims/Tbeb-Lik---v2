@@ -453,7 +453,8 @@ video {
 }
 
 #content #container .roblox #videoSection #videoSectionBody #videoChatControls .videoControlBtn img {
-  width: 25px;
+  /* width: 25px; */
+  height: 25px;
 }
 
 #content #container .roblox #videoSection #videoSectionBody #videoChatControls .videoControlBtn:not(:last-of-type) {
