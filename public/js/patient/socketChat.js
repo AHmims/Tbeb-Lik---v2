@@ -109,7 +109,7 @@ function camControll() {
 // 
 function showVideoBox() {
     document.getElementById('videoSection').style.display = "flex";
-    document.getElementById('chatSection').style.height = "500px";
+    document.getElementById('chatSection').style.height = "500px !important";
 }
 
 function hideVideoBox() {
