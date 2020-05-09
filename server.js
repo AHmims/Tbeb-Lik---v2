@@ -209,15 +209,10 @@ __IO.on('connection', socket => {
                 id: "ID_USER"
             });
             // 
-            if (appUserData.TYPE_USER == "Medecin") {
-                let updatingRoomData = await _DB.customDataUpdate({
-                    MATRICULE_MED: null
-                }, appUserData.ID_USER, {
-                    table: "room",
-                    id: "MATRICULE_MED"
-                });
-                console.log(`disconnect() | updatingRoomData => `, updatingRoomData);
-            }
+            // if (appUserData.TYPE_USER == "Medecin") {
+            // unlinkMedecinFromRooms()
+            // console.log(`disconnect() | updatingRoomData => `, updatingRoomData);
+            // }
             // 
             console.log('disconnect() | updatingResult => ', updatingResult);
         }

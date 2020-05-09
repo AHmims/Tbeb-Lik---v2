@@ -7,7 +7,7 @@ $(document).ready(async () => {
     console.log(sessionStorage.getItem('matricule'));
     // 
     msgs = JSON.parse(msgs);
-    console.log(msg);
+    console.log(msgs);
     // 
     for (let i = 0; i < msgs.length; i++) {
         let type = 'receivedMessage';
