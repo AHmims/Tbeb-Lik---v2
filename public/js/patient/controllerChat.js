@@ -30,7 +30,7 @@ $(document).ready(async () => {
     // 
     let msgs = await $.post('/getMesssages', {
         matricule: sessionStorage.getItem('matricule'),
-        room: null
+        room: ''
     }).promise();
     // 
     msgs = JSON.parse(msgs);
