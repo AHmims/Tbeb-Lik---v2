@@ -710,16 +710,16 @@ footer {
 }
 
 .part1 .parags .parag1 {
-  width: 350px;
+  /* width: 350px; */
 
 }
 
 .part1 .parags .parag2 {
-  width: 350px;
+  /* width: 350px; */
 }
 
 .part1 .parags .parag3 {
-  width: 350px;
+  /* width: 350px; */
   letter-spacing: 0.5px;
 }
 
@@ -1430,5 +1430,13 @@ footer {
     width: 125px !important;
     height: 125px !important;
     border-radius: 69696969px !important;
+  }
+}
+
+/* 
+ */
+@media screen and (max-width: 750px) {
+  .logOffText {
+    display: none;
   }
 }
