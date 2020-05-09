@@ -29,7 +29,8 @@ $(document).ready(async () => {
     });
     // 
     let msgs = await $.post('/getMesssages', {
-        matricule: sessionStorage.getItem('matricule')
+        matricule: sessionStorage.getItem('matricule'),
+        room: null
     }).promise();
     // 
     msgs = JSON.parse(msgs);

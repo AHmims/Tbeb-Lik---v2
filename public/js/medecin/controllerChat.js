@@ -1,7 +1,11 @@
 $(document).ready(async () => {
+    const _URL_PARAMS = new URLSearchParams(window.location.search);
+    const roomMedcin = _URL_PARAMS.get('room');
+    // 
     await joinRoom();
     let msgs = await $.post('/getMesssages', {
-        matricule: sessionStorage.getItem('matricule')
+        matricule: sessionStorage.getItem('matricule'),
+        room: roomMedcin
     }).promise();
     // 
     console.log(sessionStorage.getItem('matricule'));

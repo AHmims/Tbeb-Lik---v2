@@ -421,6 +421,8 @@ __APP.post('/getMesssages', async (req, res) => {
     let retData = [];
     if (req.body.matricule != null) {
         let room = await _DB.getDataAll('room', `where MATRICULE_PAT = '${req.body.matricule}' or MATRICULE_MED = '${req.body.matricule}'`);
+        if (req.body.room != null)
+            room = req.body.room;
         if (room.length > 0) {
             let msgs = await _DB.getDataAll('message', `where ID_ROOM = '${room[0].ID_ROOM}' order by DATE_ENVOI asc`);
             if (msgs.length > 0)
