@@ -31,6 +31,10 @@ __GLOBAL_SOCKET.on('liveStreamDataFlux', async (offer) => {
         __PEER.on('stream', function (stream) {
             console.log('liveStreamDataFlux() / stream() | stream => ', stream);
             document.getElementById('remoteVideo').srcObject = stream;
+            // 
+            controllPosters("none");
+            // document.getElementById('remoteVideoPoster').style.display = "none";
+            // document.getElementById('hostVideoPoster').style.display = "none";
             // document.getElementById('remoteVideoPoster').style.display = "none";
             // console.log('Stream()');
         });
@@ -57,7 +61,10 @@ __GLOBAL_SOCKET.on('liveStreamTerminated', () => {
         stream.getTracks().forEach(function (track) {
             track.stop();
         });
+        // 
+        controllPosters("flex");
         // document.getElementById('remoteVideoPoster').style.display = "flex";
+        // document.getElementById('hostVideoPoster').style.display = "flex";
     }
 });
 
@@ -78,6 +85,8 @@ function endCall() {
         });
         // 
         __GLOBAL_SOCKET.emit('endCall');
+        // 
+        controllPosters("flex");
         // document.getElementById('remoteVideoPoster').style.display = "flex";
     }
 }

@@ -7,3 +7,8 @@ function createMsgBox(msg, type) {
     container.appendChild(txt);
     document.getElementById('msgsCont').appendChild(container);
 }
+// 
+function controllPosters(style) {
+    document.getElementById('remoteVideoPoster').style.display = style;
+    document.getElementById('hostVideoPoster').style.display = style;
+}
