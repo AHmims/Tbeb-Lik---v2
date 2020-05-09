@@ -88,12 +88,18 @@ body {
 }
 #id_content--img
 {
-  width:70%;
+  width:45%;
+  height:45%;
   margin: auto;
 }
 .whiteSpace
 {
   height:100px;
+}
+.whiteSpace_2
+{
+  height:25px;
+
 }
 @media screen and (max-width:1000px){
   #id_content #id_form .inputCont input {

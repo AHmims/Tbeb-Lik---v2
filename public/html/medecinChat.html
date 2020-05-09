@@ -4,13 +4,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" />
     <script src="/socket.io/socket.io.js"></script>
     <script src="../js/simplepeer.min.js"></script>
     <title>Messagerie</title>
     <style>
+        .left_side_chat
+        {
+            width:100%;
+            height:600px;
+            border: 1px solid silver;
+        }
+        .chat_container
+        {
+            display: flex;
+            width: 100%;
+
+        }
+        .left_tool
+        {
+            display: flex;
+             
+        }
+        .header_top
+        {
+            font-family: "Gilroy";
+            font-weight: 700;
+            font-size: 24px;
+            color: #004348;
+        }
+        .left_tool button
+        {
+            background-color: #1FDBAE;
+            padding: 7px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: white;
+            border:none;
+        }
+        .mid_tool
+        {
+            width:80%;
+           
+        }
+        .right_tool
+        {
+            
+        }
+        .right_side_chat
+        {
+            width:50%;
+        }
+
+        .last_barre_chat
+        {
+            flex: none;
+            height: 70px;
+            width: 100%;
+            box-sizing: border-box;
+            padding: 0 30px;
+            display: flex;
+            flex-direction: row;
+            /* justify-content:space-evenly; */
+            align-items: center;
+        }
+        .chatInputText
+        {
+            flex: 1;
+            padding: 9px;
+            border: none;
+             background: #F6F9FC;  
+            /* background-color: gray; */
+            border-radius: 10px;
+            font-size: 17px;
+            outline: none;
+            font-family: "Roboto";
+            color: #004348;
+            width:95%;
+            margin: auto;
+             
+        }
+
+
         #msgsCont {
             margin-top: 100px;
-            width: 400px;
+            width: 100%;
             height: 300px;
             border: 1px solid black;
             overflow-y: auto;
@@ -18,91 +100,219 @@
             padding: 5px;
             box-sizing: border-box;
         }
-
-        .msgTxt {
-            width: 100%;
+        .right_tool button
+        {
+            border:none;
+            background-color: white;
+            color: #1FDBAE;
+            font-size: 20px;
+            
         }
-
-        .msgHost {
-            text-align: right;
+        .ChatSectionMsg
+        {
+        flex: auto;
+        max-width: 50%;
+        height: 90%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        box-sizing: border-box;
+        padding: 10px;
+        overflow-y: auto;
         }
-
-        .msgRemote {
-            text-align: left;
+        .call_span
+        {
+            margin-left:5px;
         }
-
-        /*  */
-        #chatControlsBox {
-            width: 400px;
-            display: flex;
-            margin: 0 auto;
+        .whiteSpace
+        {
+            height:100px;
         }
+        /*old partie*/
+     
+    .bottomTable
+    {
+        width:95%!important;
+    }
+    .bigBoxPhoneCall
+    {
+        width:100%;
+        height:603px;
+        background-color: rgb(0, 67, 72);
+        display: none;
+    }
+    #container
+    {
+        display: flex;
+    }
+    .video_call_main 
+    {
+         width:50%;
+         height:70%;
+          
+    }
+    .video_call_main i
+    {
+          font-size: 150px;
+          font-weight: 200;
+         color:white;
+          margin-left:70%; 
+          margin-top: 50%;
+        
+    }
+    .video_call_tool
+    {
+        display: flex;
+        margin-right: auto;
+        margin-left: auto;
+        margin-top: 65px;
+        width:2%;
+    }
+    .video_call_tool i
+    {
+         
+        color:white;
+        margin-left: 8px;
+        margin-right: 15px;
+        margin-top: 8px;
+        
 
-        #chatInput {
-            flex: 1;
-        }
+    }
+    .video_call_tool i:hover
+    {
+        cursor: pointer;
+ 
+    }
+    .video_call_tool div 
+    {
+        width:35px;
+        height: 35px;
+        border-radius: 50%;
+        background-color: rgb(25, 86, 90);
+        margin-left: 10px;
+    
 
-        /*  */
-        .videoSectionCont {
-            width: 400px;
-            margin: 0 auto;
-            margin-top: 50px;
-            display: flex;
-            flex-direction: column;
-        }
+    }
+    .c_chatSendBTN
+    {
+        color:#1FDBAE!important;
+    }
+    .hangout
+    {
+        width:45px!important;
+        height: 45px!important;
+        background-color: rgb(251, 94, 121)!important;
+        border-radius: 40%!important;
+    }
+    .hangout i 
+    {
+        margin-top: 15px;
+        margin-left: 15px;
 
-        .videoSectionCont video {
-            object-fit: scale-down;
-        }
-
-        /*  */
-        .controlsCont {
-            display: flex;
-        }
-
-        .controlsCont button {
-            flex: auto;
-        }
+    }
+    .fa-microphone
+    {
+        margin-left: 12px!important;
+    }
+    .video_call_sec
+    {
+        display: flex;
+    }
+    .video_call_called
+    {
+        height:140px;
+        width:160px;
+        background-color: white;
+        border-radius: 10%;
+        margin-right: 20px;
+        margin-top: -15px;
+    }
+ 
     </style>
 </head>
 
-<body style="text-align: center;">
-    <h1>Page de chat de medecin</h1>
-    <h3>Boite des messages</h3>
-    <div id="msgsCont">
-        <!-- <h4 class="msgTxt msgHost">i sent this</h4> -->
-        <!-- <h4 class="msgTxt msgRemote">Received this</h4> -->
-    </div>
-    <div id="chatControlsBox">
-        <input type="text" id="chatInput">
-        <button id="chatSendBtn">
-            Envoyer
-        </button>
-    </div>
-    <div class="videoSectionCont">
-        <div class="controlsCont">
-            <button id="chatVideoBtn">
-                Video
-            </button>
-            <button id="chatVideoEndBtn">
-                Stop video
-            </button>
-            <button id="chatMicBtn">
-                Mic on/ff
-            </button>
-            <button id="chatCamBtn">
-                Camera on/off
-            </button>
+<body >
+ 
+    <h1 class="header_top">Contact</h1>
+ 
+    <div class="chat_container">
+        <div class="left_side_chat">
+            <div class="ChatSectionMsg">
+
+            </div>
+            <div class="last_barre_chat">
+                <div class="left_tool">
+                    <button>Submit</button>
+                    <button class="call_click" id="chatVideoBtn"><i class="fas fa-phone-alt"></i> <span class="call_span">Appeler</span>   </button>
+        
+                </div>
+                <div class="mid_tool">
+                    <input type="text" class="chatInputText"  placeholder="Votre message text ..." id="chatInput">
+                </div>
+                <div class="right_tool">
+                    <button id="chatSendBtn" class="c_chatSendBTN">  <i class="fas fa-paper-plane"></i></button>
+        
+                </div>
+            </div>
+
         </div>
-        <video id="clientVideo" autoplay muted></video>
-        <video id="remoteVideo" autoplay></video>
-    </div>
+    
+            <div class="bigBoxPhoneCall">
+                <div class="video_call_main">
+                    
+                    <i class="far fa-user"></i>
+                    <video id="clientVideo" autoplay muted></video>
+                </div>
+              <div class="video_call_sec">
+                
+                <div class="video_call_tool"> <div id="chatMicBtn"><i class="fas fa-microphone"></i></div> <div class="hangout" id="chatVideoEndBtn"><i class="fas fa-phone"></i></div> <div id="chatCamBtn" ><i class="fas fa-video"></i></div></div>
+                <div class="video_call_called">
+                    <video id="remoteVideo" autoplay></video>
+                </div>
+                
+              </div>
+            
+            
+            </div>
+
+        
+        
+        
+        
+
+   </div>
+ 
+   
+   <div class="whiteSpace">
+
+   </div>
     <!--  -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"
         integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
     <script src="../js/medecin/socketChat.js"></script>
     <script src="../js/medecin/controllerChat.js"></script>
     <script src="../js/medecin/viewChat.js"></script>
+    <script>
+        var btn_video = document.getElementsByClassName('call_click');
+        var send_btn = document.getElementsByClassName('c_chatSendBTN');
+        btn_video[0].addEventListener('click',()=>{
+            var video_call = document.getElementsByClassName('bigBoxPhoneCall');
+ 
+            video_call[0].style.display="block";
+            
+        })
+        var btn_video = document.getElementsByClassName('hangout');
+
+        btn_video[0].addEventListener('click',()=>{
+            var video_call = document.getElementsByClassName('bigBoxPhoneCall');
+         
+            video_call[0].style.display="none";
+            
+             
+             
+})
+    </script>
 </body>
 
 </html>
