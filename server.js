@@ -266,6 +266,34 @@ __IO.on('connection', socket => {
         return msgObject;
     }
     // 
+    socket.on('cancelRequest', async (patientId) => {
+        let nId = null;
+        console.log('cancelRequest() | patientId => ', patientId);
+        if (patientId != null) {
+            nId = await _DB.getLastInsertedNotification(patientId);
+            console.log('cancelRequest() | nId => ', nId);
+            if (nId != null) {
+                nId = nId.ID_PRECONS;
+                let deleteFromPreConsultation = await _DB.customDataDelete({
+                    table: "preConsultation",
+                    id: "ID_PRECONS"
+                }, nId);
+                console.log(`cancelRequest() | deleteFromPreConsultation => `, deleteFromPreConsultation);
+                // 
+                let deleteFromMedecinInbox = await _DB.customDataDelete({
+                    table: "medecinInbox",
+                    id: "ID_PRECONS"
+                }, nId);
+                console.log(`cancelRequest() | deleteFromMedecinInbox => `, deleteFromMedecinInbox);
+                // 
+                __HUB.emit('removeNotificationBox', nId);
+                // SEND BACK TOTHE SANEDER
+                socket.emit('cancelRequestSuccess');
+            }
+        }
+
+    });
+    // 
     // 
     // VIDEO
     socket.on('liveStreamInitFail', async () => {

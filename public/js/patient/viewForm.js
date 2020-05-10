@@ -61,8 +61,16 @@ function waiting() {
     img.setAttribute('src', '../img/searching.gif');
     span.innerText = "Veuillez patienter, un médecin est entrain de recevoir votre demande";
     // 
+    let btn = document.createElement('button');
+    btn.setAttribute('class', 'waitingCancel');
+    btn.innerText = "Annuler";
+    btn.addEventListener('click', () => {
+        canceRequest();
+    });
+    // 
     cont.appendChild(img);
     cont.appendChild(span);
+    cont.appendChild(btn);
     contBg.appendChild(cont);
     // 
     document.body.appendChild(contBg);

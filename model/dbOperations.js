@@ -312,6 +312,20 @@ async function getNotifIdByRoomId(roomId, medecinId) {
     }
 }
 // 
+// EXAMPLE OF params = {table : "ss",id : "userId"}
+async function customDataDelete(params, id) {
+    try {
+        let req = `DELETE FROM ${params.table} WHERE ${params.id} = ?`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [id]);
+        cnx.release();
+        // 
+        return res[0].affectedRows;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// 
 //#endregion
 // 
 //#region HELPER FUNCTIONS
@@ -370,6 +384,7 @@ module.exports = {
     checkPatientActiveNotifsExistance,
     getRoomIdBySocketId,
     getNotacceptedYetNotifs,
-    getNotifIdByRoomId
+    getNotifIdByRoomId,
+    customDataDelete
 }
 // 

@@ -24,6 +24,12 @@ __GLOBAL_SOCKET.on('notificationAccepted', () => {
     // addNotification();
     window.location.assign('/patient/contact');
 });
+// 
+__GLOBAL_SOCKET.on('cancelRequestSuccess', () => {
+    if (document.getElementById('waitingConsultation')) {
+        document.getElementById('waitingConsultation').remove();
+    }
+});
 // FUNCTIONS
 //#region 
 function sendNotification(ville, proffession) {
@@ -32,5 +38,9 @@ function sendNotification(ville, proffession) {
         proffession
     });
     // 
+}
+
+function canceRequest() {
+    __GLOBAL_SOCKET.emit('cancelRequest', localStorage.getItem('matricule') || null);
 }
 //#endregion

@@ -18,6 +18,9 @@ __HUB_SOCKET.on('removeNotificationBox', nId => {
     console.log('removeNotificationBox : notifId => ', nId);
     removeNotification(nId);
 });
+__HUB_SOCKET.on('tist', () => {
+    console.log("c'est maaaagic");
+});
 // 
 // 
 // FUNCTIONS CALLED FROM >VIEW 

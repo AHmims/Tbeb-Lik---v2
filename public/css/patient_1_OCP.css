@@ -1495,3 +1495,24 @@ footer {
 #logout {
   cursor: pointer;
 }
+
+/*  */
+.waitingCancel {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: none;
+  border: 3px solid #ff4b4b;
+  color: #ff4b4b;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  font-family: 'Roboto';
+  letter-spacing: 1px;
+  transition: background-color 200ms ease-in-out;
+  outline: none;
+}
+
+.waitingCancel:hover {
+  background-color: #ff4b4b;
+  color: white;
+}
