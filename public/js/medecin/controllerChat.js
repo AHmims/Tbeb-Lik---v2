@@ -2,6 +2,8 @@ $(document).ready(async () => {
     const _URL_PARAMS = new URLSearchParams(window.location.search);
     const roomMedcin = _URL_PARAMS.get('room');
     // 
+    document.getElementById('navChatUrl').setAttribute('href', window.location.href);
+    // 
     await joinRoom();
     let msgs = await $.post('/getMesssages', {
         matricule: localStorage.getItem('matricule'),
@@ -23,20 +25,11 @@ $(document).ready(async () => {
     // 
     // SEND MSG BTN
     document.getElementById('chatSendBtn').addEventListener('click', () => {
-        sendMsg(document.getElementById('chatInput').value);
-        // 
-        let msg = {
-            MATRICULE_EMETTEUR: localStorage.getItem('user_M'),
-            CONTENU: document.getElementById('chatInput').value,
-            ID_ROOM: null,
-            DATE_ENVOI: new Date(Date.now()),
-            TYPE: 'Text',
-            ID_PIECEJOINTES: null
-        }
-        createMsgBox(msg, 'sentMessage');
-        // 
-        document.getElementById('chatInput').value = "";
-
+        sendMsgFunc();
+    });
+    document.getElementById('chatInput').addEventListener('keyup', (e) => {
+        if (e.keyCode == 13)
+            sendMsgFunc();
     });
     // 
     document.getElementById('patientSubmit').addEventListener('click', async () => {
@@ -78,4 +71,21 @@ $(document).ready(async () => {
 // 
 function displayReceivedMsg(msg) {
     createMsgBox(msg, 'receivedMessage');
+}
+// 
+function sendMsgFunc() {
+    sendMsg(document.getElementById('chatInput').value);
+    // 
+    let msg = {
+        MATRICULE_EMETTEUR: localStorage.getItem('user_M'),
+        CONTENU: document.getElementById('chatInput').value,
+        ID_ROOM: null,
+        DATE_ENVOI: new Date(Date.now()),
+        TYPE: 'Text',
+        ID_PIECEJOINTES: null
+    }
+    createMsgBox(msg, 'sentMessage');
+    // 
+    document.getElementById('chatInput').value = "";
+
 }

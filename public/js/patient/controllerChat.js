@@ -1,20 +1,11 @@
 $(document).ready(async () => {
     // SEND MSG BTN
     document.getElementById('chatSendBtn').addEventListener('click', () => {
-        sendMsg(document.getElementById('chatInput').value);
-        // 
-        let msg = {
-            MATRICULE_EMETTEUR: localStorage.getItem('user_M'),
-            CONTENU: document.getElementById('chatInput').value,
-            ID_ROOM: null,
-            DATE_ENVOI: new Date(Date.now()),
-            TYPE: 'Text',
-            ID_PIECEJOINTES: null
-        }
-        createMsgBox(msg, 'sentMessage');
-        // 
-        document.getElementById('chatInput').value = "";
-
+        sendMsgFunc();
+    });
+    document.getElementById('chatInput').addEventListener('keyup', (e) => {
+        if (e.keyCode == 13)
+            sendMsgFunc();
     });
     // 
     document.getElementById('videoControl-btnEnd').addEventListener('click', () => {
@@ -73,4 +64,21 @@ function hideVideoSection() {
         // console.log('in');
         document.getElementById('chatSection').style = "height : initial";
     }
+}
+// 
+// 
+function sendMsgFunc() {
+    sendMsg(document.getElementById('chatInput').value);
+    // 
+    let msg = {
+        MATRICULE_EMETTEUR: localStorage.getItem('user_M'),
+        CONTENU: document.getElementById('chatInput').value,
+        ID_ROOM: null,
+        DATE_ENVOI: new Date(Date.now()),
+        TYPE: 'Text',
+        ID_PIECEJOINTES: null
+    }
+    createMsgBox(msg, 'sentMessage');
+    // 
+    document.getElementById('chatInput').value = "";
 }
