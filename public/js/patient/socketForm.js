@@ -14,6 +14,7 @@ __GLOBAL_SOCKET.on('queryResult', data => {
             break;
         case 2:
             alert(`demande envoyer à ${data.data} Medecin(s)`);
+            waiting();
             break;
         default:
             console.warn(`Unknown status code !`);
@@ -31,6 +32,5 @@ function sendNotification(ville, proffession) {
         proffession
     });
     // 
-    waiting();
 }
 //#endregion

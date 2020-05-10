@@ -59,7 +59,7 @@ function waiting() {
     span.setAttribute('class', 'waitingText');
     // 
     img.setAttribute('src', '../img/searching.gif');
-    span.innerText = "Veuillez patienter un médecin est entrain de recevoir votre demande";
+    span.innerText = "Veuillez patienter, un médecin est entrain de recevoir votre demande";
     // 
     cont.appendChild(img);
     cont.appendChild(span);

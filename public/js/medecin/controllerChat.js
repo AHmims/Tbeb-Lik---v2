@@ -50,10 +50,10 @@ $(document).ready(async () => {
         if (finaleResult == 'False')
             alert('ERROR!');
         else {
-            alert('La consultation est terminée, vous serez redirigé dans 5 secondes');
+            alert('La consultation est terminée, vous serez redirigé dans 3 secondes');
             setTimeout(() => {
-                window.location.href('/medecin/notifications');
-            }, 5000);
+                window.location.assign('/medecin/notifications');
+            }, 3000);
         }
     });
     // 
