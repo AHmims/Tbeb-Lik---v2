@@ -443,6 +443,25 @@ __APP.post('/getNotYetAcceptedRequest', async (req, res) => {
         retData = await _DB.getNotacceptedYetNotifs(req.body.matricule);
     res.end(retData.toString());
 });
+// 
+__APP.post('/finalizeConsultation', async (req, res) => {
+    let status = false;
+    let notifId = await _DB.getNotifIdByRoomId(req.body.room, req.body.matricule);
+    console.log(`finalizeConsultation() | notifId => `, notifId);
+    if (notifId != null) {
+        let consultationFinished = await _DB.customDataUpdate({
+            JOUR_REPOS: 1
+        }, notifId, {
+            table: "consultation",
+            id: "ID_PRECONS"
+        });
+        console.log('finalizeConsultation() | consultationFinished => ', consultationFinished);
+        // 
+        status = Boolean(consultationFinished);
+    }
+    // 
+    res.end(status.toString());
+});
 // __APP.post('/')
 // 
 // 

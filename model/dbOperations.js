@@ -299,6 +299,19 @@ async function getNotacceptedYetNotifs(patientId) {
     }
 }
 // 
+async function getNotifIdByRoomId(roomId, medecinId) {
+    try {
+        let req = `SELECT p.ID_PRECONS FROM preConsultation AS p,room AS r WHERE p.MATRICULE_PAT = r.MATRICULE_PAT AND r.ID_ROOM = ? AND r.MATRICULE_MED = ?`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [roomId, medecinId]);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0][0].ID_PRECONS : null;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// 
 //#endregion
 // 
 //#region HELPER FUNCTIONS
@@ -356,6 +369,7 @@ module.exports = {
     getAcceptedMedecinNotificationsInfos,
     checkPatientActiveNotifsExistance,
     getRoomIdBySocketId,
-    getNotacceptedYetNotifs
+    getNotacceptedYetNotifs,
+    getNotifIdByRoomId
 }
 // 

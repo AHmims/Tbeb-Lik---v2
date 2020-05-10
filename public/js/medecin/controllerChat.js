@@ -39,6 +39,24 @@ $(document).ready(async () => {
 
     });
     // 
+    document.getElementById('patientSubmit').addEventListener('click', async () => {
+        let finaleResult = await $.post('/finalizeConsultation', {
+            matricule: sessionStorage.getItem('matricule'),
+            room: roomMedcin
+        }).promise();
+        // 
+        console.log(`patientSubmit() | finaleResult => `, finaleResult);
+        // 
+        if (finaleResult == 'False')
+            alert('ERROR!');
+        else {
+            alert('La consultation est terminée, vous serez redirigé dans 5 secondes');
+            setTimeout(() => {
+                window.location.href('/medecin/notifications');
+            }, 5000);
+        }
+    });
+    // 
     document.getElementById('chatVideoBtn').addEventListener('click', async () => {
         document.getElementById('videoSection').style.display = "flex";
         videoChatIconsControlls();
