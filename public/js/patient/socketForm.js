@@ -13,8 +13,8 @@ __GLOBAL_SOCKET.on('queryResult', data => {
             alert('Vous avez deja un demande en cours');
             break;
         case 2:
-            alert(`demande envoyer à ${data.data} Medecin(s)`);
             waiting();
+            alert(`demande envoyer à ${data.data} Medecin(s)`);
             break;
         default:
             console.warn(`Unknown status code !`);
