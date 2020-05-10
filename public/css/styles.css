@@ -1304,3 +1304,6 @@ video {
 }
 
 /*# sourceMappingURL=styles.css.map */
+#logout {
+  cursor: pointer;
+}
