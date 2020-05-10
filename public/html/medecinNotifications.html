@@ -5,14 +5,90 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="/socket.io/socket.io.js"></script>
-    <title>Demmendes de consultations</title>
+    <link rel="stylesheet" href="../css/styles_OCP.css">
+    <script src="../js/styles_OCP.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <title>Demandes de consultations</title>
 </head>
 
-<body style="text-align: center;">
-    <h1>Page li fiha les notifications</h1>
-    <h4>Preconsultations active</h4>
+<body id="body" style="text-align: center;">
+    <div class="medecin" id="navBar">
+        <a href="/">
+            <img src="../img/Logo.svg">
+        </a>
+        <div class="navCont">
+            <a href="/medecin/notifications">
+                <div class="navIconBox"><img src="../icon/bell.svg"></div>
+            </a>
+            <a href="/medecin/contact">
+                <div class="navIconBox"><img src="../icon/chat.svg"></div>
+            </a>
+            <!-- <a href="#">
+                <div class="navIconBox"><img src="../icon/note.svg"></div>
+            </a> -->
+        </div>
+        <a href="#"><img src="../icon/exit.svg"></a>
+    </div>
+    <div id="content">
+        <div id="header">
+            <span class="title">Notifications de consultations</span>
+        </div>
+        <div id="container" class="f-direction-row">
+            <div class="box-notif space-between-15px">
+                <div class="space-between-2_5px vertical">
+                    <span class="box-notif-title">Nom/Prenom Patient</span>
+                    <span class="box-notif-date">20-02-2020</span>
+                </div>
+                <div class="vertical">
+                    <span class="box-notif-matric">Matricule</span>
+                    <span class="box-notif-age">Age</span>
+                    <span class="box-notif-tel">Numero de téléphone</span>
+                </div>
+                <div class="vertical space-between-5px">
+                    <span class="box-notif-subTitle">Motif</span>
+                    <div class="box-notif-desc">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam vitae quae accusantium
+                        hic alias eos similique voluptatibus nam reprehenderit itaque.
+                    </div>
+                </div>
+                <div class="vertical space-between-5px">
+                    <span class="box-notif-subTitle">ATCDs</span>
+                    <div class="box-notif-desc">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Totam vitae quae accusantium
+                        hic alias eos similique voluptatibus nam reprehenderit itaque.
+                    </div>
+                </div>
+                <div class="horizontal">
+                    <span class="box-notif-subTitle">Nombre de jour apporté :</span>
+                    <span class="box-notif-pj">7</span>
+                </div>
+                <div class="vertical space-between-5px">
+                    <span class="box-notif-subTitle">Pièces jointes</span>
+                    <div class="row-collection">
+                        <button class="btn-download">image.jpg</button>
+                        <button class="btn-download">doc.pdf</button>
+                    </div>
+                </div>
+                <div class="horizontal m-top-15 align-right">
+                    <button class="btn-no m-top-20 radiusLeft margin-r-5">Refuser</button>
+                    <button class="btn-acc m-top-20 radiusRight">Accepter</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--  -->
+    <script src="../js/medecin_ops_OCP_1.js"></script>
+
+
+
+
+
+
+    <!-- <h1>Page li fiha les notifications</h1>
+    <h4>Preconsultations active</h4> -->
     <div id="activeNotifications"></div>
-    <h4>Incoming notifications</h4>
+    <!-- <h4>Incoming notifications</h4> -->
     <div id="notificationsContainer">
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"
