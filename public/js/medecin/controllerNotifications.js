@@ -1,14 +1,14 @@
 $(document).ready(async () => {
     // NOT YET ACCEPTED NOTIFICATIONS BUT ADDDRESSED TO THIS DOCTOR
     let inActiveNotifs = await $.post('/getNotifications', {
-        matricule: sessionStorage.getItem('matricule') || null
+        matricule: localStorage.getItem('matricule') || null
     }).promise();
     // 
     inActiveNotifs = JSON.parse(inActiveNotifs);
     generateNotification(inActiveNotifs);
     // THE NOTIFICATIONS THIS DOCTOR ACCEPTED
     let activeNotifs = await $.post('/getMedecinActiveNotifs', {
-        matricule: sessionStorage.getItem('matricule') || null
+        matricule: localStorage.getItem('matricule') || null
     }).promise();
     // 
     generateActiveNotification(JSON.parse(activeNotifs));

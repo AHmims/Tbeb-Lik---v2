@@ -1,6 +1,6 @@
 $(document).ready(async () => {
-    if (sessionStorage.getItem('matricule')) {
-        await logmeIn(sessionStorage.getItem('matricule'));
+    if (localStorage.getItem('matricule')) {
+        await logmeIn(localStorage.getItem('matricule'));
     }
 });
 document.getElementById('btnLogin').addEventListener('click', async () => {
@@ -15,7 +15,7 @@ async function logmeIn(matriculeId) {
     if (response == 'null')
         alert('Enter a diffrent id')
     else {
-        sessionStorage.setItem('matricule', matriculeId);
+        localStorage.setItem('matricule', matriculeId);
         if (response == 'Medecin')
             window.location.href = "/medecin/notifications";
         else

@@ -4,18 +4,18 @@ $(document).ready(async () => {
     // 
     await joinRoom();
     let msgs = await $.post('/getMesssages', {
-        matricule: sessionStorage.getItem('matricule'),
+        matricule: localStorage.getItem('matricule'),
         room: roomMedcin
     }).promise();
     // 
-    console.log(sessionStorage.getItem('matricule'));
+    console.log(localStorage.getItem('matricule'));
     // 
     msgs = JSON.parse(msgs);
     console.log(msgs);
     // 
     for (let i = 0; i < msgs.length; i++) {
         let type = 'receivedMessage';
-        if (msgs[i].MATRICULE_EMETTEUR == sessionStorage.getItem('matricule'))
+        if (msgs[i].MATRICULE_EMETTEUR == localStorage.getItem('matricule'))
             type = 'sentMessage';
         // 
         createMsgBox(msgs[i], type);
@@ -26,7 +26,7 @@ $(document).ready(async () => {
         sendMsg(document.getElementById('chatInput').value);
         // 
         let msg = {
-            MATRICULE_EMETTEUR: sessionStorage.getItem('user_M'),
+            MATRICULE_EMETTEUR: localStorage.getItem('user_M'),
             CONTENU: document.getElementById('chatInput').value,
             ID_ROOM: null,
             DATE_ENVOI: new Date(Date.now()),
@@ -41,7 +41,7 @@ $(document).ready(async () => {
     // 
     document.getElementById('patientSubmit').addEventListener('click', async () => {
         let finaleResult = await $.post('/finalizeConsultation', {
-            matricule: sessionStorage.getItem('matricule'),
+            matricule: localStorage.getItem('matricule'),
             room: roomMedcin
         }).promise();
         // 

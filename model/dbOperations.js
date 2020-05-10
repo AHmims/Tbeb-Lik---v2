@@ -301,7 +301,7 @@ async function getNotacceptedYetNotifs(patientId) {
 // 
 async function getNotifIdByRoomId(roomId, medecinId) {
     try {
-        let req = `SELECT p.ID_PRECONS FROM preConsultation AS p,room AS r WHERE p.MATRICULE_PAT = r.MATRICULE_PAT AND r.ID_ROOM = ? AND r.MATRICULE_MED = ?`,
+        let req = `SELECT p.ID_PRECONS FROM preConsultation AS p,room AS r WHERE p.MATRICULE_PAT = r.MATRICULE_PAT AND r.ID_ROOM = ? AND r.MATRICULE_MED = ? AND p.ID_PRECONS in (SELECT ID_PRECONS FROM consultation WHERE JOUR_REPOS = -1)`,
             cnx = await db.connect(),
             res = await cnx.query(req, [roomId, medecinId]);
         cnx.release();

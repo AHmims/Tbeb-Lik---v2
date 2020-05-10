@@ -4,7 +4,7 @@ $(document).ready(async () => {
         sendMsg(document.getElementById('chatInput').value);
         // 
         let msg = {
-            MATRICULE_EMETTEUR: sessionStorage.getItem('user_M'),
+            MATRICULE_EMETTEUR: localStorage.getItem('user_M'),
             CONTENU: document.getElementById('chatInput').value,
             ID_ROOM: null,
             DATE_ENVOI: new Date(Date.now()),
@@ -30,7 +30,7 @@ $(document).ready(async () => {
     });
     // 
     let msgs = await $.post('/getMesssages', {
-        matricule: sessionStorage.getItem('matricule'),
+        matricule: localStorage.getItem('matricule'),
         room: ''
     }).promise();
     // 
@@ -38,7 +38,7 @@ $(document).ready(async () => {
     // 
     for (let i = 0; i < msgs.length; i++) {
         let type = 'receivedMessage';
-        if (msgs[i].MATRICULE_EMETTEUR == sessionStorage.getItem('matricule'))
+        if (msgs[i].MATRICULE_EMETTEUR == localStorage.getItem('matricule'))
             type = 'sentMessage';
         // 
         createMsgBox(msgs[i], type);

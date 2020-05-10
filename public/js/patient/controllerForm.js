@@ -39,7 +39,7 @@ $(document).ready(async () => {
     // CHECK IF THE PATIENT HAVE ANY ONGOING NOTIFICATIONS
     // IF YES ADD A BTN FOR HIM TO GO TO THE CONTACT PAGE
     let exists = await $.post('/getAccessNotif', {
-        matricule: sessionStorage.getItem('matricule') || null
+        matricule: localStorage.getItem('matricule') || null
     }).promise();
     // exists = Boolean(exists);
     console.log('/getAccessNotif | exists => ', exists);
@@ -50,7 +50,7 @@ $(document).ready(async () => {
     // 
     // 
     let notAcceptedRequests = await $.post('/getNotYetAcceptedRequest', {
-        matricule: sessionStorage.getItem('matricule') || null
+        matricule: localStorage.getItem('matricule') || null
     }).promise();
     // 
     if (notAcceptedRequests != 'false') {
