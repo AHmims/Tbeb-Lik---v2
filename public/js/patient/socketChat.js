@@ -1,4 +1,5 @@
 const __GLOBAL_SOCKET = io();
+let __PEER;
 // 
 __GLOBAL_SOCKET.on('connect', async () => {
     console.log('Socket Connected ! userId => ', localStorage.getItem('matricule') || null);
