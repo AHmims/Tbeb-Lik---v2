@@ -16,6 +16,7 @@ __APP.use(__EXPRESS.urlencoded({
     extended: true
 }));
 __APP.use(__EXPRESS.json());
+__APP.use(__EXPRESS.static(__dirname));
 __APP.use(__EXPRESS.static(__PATH.join(__dirname, 'public')));
 // 
 // NOTIICATIONS SYSTEM NAMESPACE
