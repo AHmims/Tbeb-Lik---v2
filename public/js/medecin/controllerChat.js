@@ -5,6 +5,7 @@ $(document).ready(async () => {
     document.getElementById('navChatUrl').setAttribute('href', window.location.href);
     // 
     await joinRoom();
+    // 
     let msgs = await $.post('/getMesssages', {
         matricule: localStorage.getItem('matricule'),
         room: roomMedcin
@@ -13,7 +14,7 @@ $(document).ready(async () => {
     console.log(localStorage.getItem('matricule'));
     // 
     msgs = JSON.parse(msgs);
-    console.log(msgs);
+    // console.log(msgs);
     // 
     for (let i = 0; i < msgs.length; i++) {
         let type = 'receivedMessage';
@@ -22,6 +23,7 @@ $(document).ready(async () => {
         // 
         createMsgBox(msgs[i], type);
     }
+    scrollDown();
     // 
     // SEND MSG BTN
     document.getElementById('chatSendBtn').addEventListener('click', () => {
@@ -71,6 +73,7 @@ $(document).ready(async () => {
 // 
 function displayReceivedMsg(msg) {
     createMsgBox(msg, 'receivedMessage');
+    scrollDown();
 }
 // 
 function sendMsgFunc() {
@@ -87,5 +90,6 @@ function sendMsgFunc() {
     createMsgBox(msg, 'sentMessage');
     // 
     document.getElementById('chatInput').value = "";
-
+    // 
+    scrollDown();
 }

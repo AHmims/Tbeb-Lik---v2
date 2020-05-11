@@ -81,6 +81,8 @@ __GLOBAL_SOCKET.on('liveStreamTerminated', () => {
         });
         // 
         controllPosters("flex");
+        // 
+        document.getElementById('videoSection').style.display = "none";
         // document.getElementById('remoteVideoPoster').style.display = "flex";
     }
 });

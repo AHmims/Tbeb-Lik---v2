@@ -454,4 +454,39 @@ body {
   font-weight: 400;
 }
 
-/*# sourceMappingURL=home.css.map */
+/*  */
+@media screen and (max-width:360px) {
+  #navBar {
+    padding: 0 5px !important;
+  }
+
+  #body {
+    padding-top: 0 !important;
+  }
+
+  #bodyContent {
+    background-image: none !important;
+  }
+
+  #body #bodyContent h1 {
+    margin-top: 0 !important;
+    font-size: 37px !important;
+  }
+
+  #body #bodyContent span {
+    font-size: 19px !important;
+  }
+
+  #btnCons {
+    font-size: 16px !important;
+  }
+
+  body>div:nth-of-type(2) {
+    display: none;
+  }
+
+  #footing #banner div img {
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}

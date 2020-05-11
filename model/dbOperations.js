@@ -30,7 +30,7 @@ async function getDataAll(className, constraint = '') {
         cnx.release();
         // 
         console.log(`SELECT * FROM ${className} ${constraint}`);
-        console.log(res[0]);
+        // console.log(res[0]);
         return res[0];
     } catch (err) {
         console.error('error :', err);

@@ -34,10 +34,12 @@ $(document).ready(async () => {
         // 
         createMsgBox(msgs[i], type);
     }
+    scrollDown();
 });
 // 
 function displayReceivedMsg(msg) {
     createMsgBox(msg, 'receivedMessage');
+    scrollDown();
 }
 // 
 // 
@@ -81,4 +83,5 @@ function sendMsgFunc() {
     createMsgBox(msg, 'sentMessage');
     // 
     document.getElementById('chatInput').value = "";
+    scrollDown();
 }

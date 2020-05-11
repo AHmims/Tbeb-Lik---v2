@@ -347,7 +347,8 @@ video {
   flex: 1;
   padding: 9px;
   border: none;
-  background: #F6F9FC;
+  /* background: #F6F9FC; */
+  background-color: #f2f6fb;
   border-radius: 10px;
   font-size: 17px;
   outline: none;
@@ -361,7 +362,7 @@ video {
 
 #content #container .bottomTable .bottomTable-msgInput::placeholder {
   font-style: italic;
-  color: #C5D7EA;
+  color: #aec2d8;
 }
 
 #content #container .bottomTable .bottomTableBtn {
@@ -598,7 +599,17 @@ video {
   border-bottom: 1px solid #E8EFF6;
 }
 
-/*# sourceMappingURL=styles.css.map */
 #logout {
   cursor: pointer;
+}
+
+/*  */
+#msgsCont::-webkit-scrollbar {
+  width: 8px;
+  margin-right: 2px;
+}
+
+#msgsCont::-webkit-scrollbar-thumb {
+  background: #e3e9ef;
+  border-radius: 696969px;
 }

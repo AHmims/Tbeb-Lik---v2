@@ -210,6 +210,10 @@ __IO.on('connection', socket => {
                 id: "ID_USER"
             });
             // 
+            let roomId = await getRoomIdFromSocket();
+            console.log('disconnect() | roomId => ', roomId);
+            socket.to(roomId).emit('liveStreamTerminated');
+            // 
             // if (appUserData.TYPE_USER == "Medecin") {
             // unlinkMedecinFromRooms()
             // console.log(`disconnect() | updatingRoomData => `, updatingRoomData);

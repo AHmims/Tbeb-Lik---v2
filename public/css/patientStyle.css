@@ -791,7 +791,8 @@ footer {
   flex: 1;
   padding: 9px;
   border: none;
-  background: #F6F9FC;
+  /* background: #F6F9FC; */
+  background-color: #f2f6fb;
   border-radius: 10px;
   font-size: 17px;
   outline: none;
@@ -805,7 +806,7 @@ footer {
 
 #content #smallblox #chatSection .bottomTable .bottomTable-msgInput::placeholder {
   font-style: italic;
-  color: #C5D7EA;
+  color: #aec2d8;
 }
 
 #content #smallblox #chatSection .bottomTable .bottomTableBtn {
@@ -927,6 +928,26 @@ footer {
   }
 }
 
+@media screen and (max-width:360px) {
+  #videoSectionBody {
+    padding: 10px !important;
+  }
+
+  #videoSectionHost {
+    right: 10px !important;
+  }
+
+  #videoChatControls {
+    flex-direction: column !important;
+    justify-content: center !important;
+  }
+
+  .videoControlBtn:not(:last-of-type) {
+    margin-right: 0 !important;
+    margin-bottom: 5px !important;
+  }
+}
+
 /* 
  */
 @media screen and (max-width: 750px) {
@@ -1004,4 +1025,16 @@ footer {
 .waitingCancel:hover {
   background-color: #ff4b4b;
   color: white;
+}
+
+/*  */
+/*  */
+#msgsCont::-webkit-scrollbar {
+  width: 8px;
+  margin-right: 2px;
+}
+
+#msgsCont::-webkit-scrollbar-thumb {
+  background: #e3e9ef;
+  border-radius: 696969px;
 }
