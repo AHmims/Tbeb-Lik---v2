@@ -234,8 +234,8 @@ body {
 
   #navBar #navBarIn #navBarNavText #btnLogin {
     border-radius: 5px;
-    padding: 8% 15px;
-    font-size: 3px;
+    /* padding: 8% 15px; */
+    font-size: 13px !important;
 
   }
 

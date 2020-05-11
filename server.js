@@ -82,7 +82,7 @@ __IO.on('connection', socket => {
                 console.log('sendNotif() | listMedecins => ', listMedecins);
                 if (listMedecins != null) {
                     // INSERT DATA INTO TABLE PRECONSULTATION
-                    let insertRes = await _DB.insertData(new _CLASSES.preConsultation(null, null, '', '', -1, false, appUserData.ID_USER));
+                    let insertRes = await _DB.insertData(new _CLASSES.preConsultation(null, data.date, '', '', -1, false, appUserData.ID_USER));
                     console.log('sendNotif() | insertData(preConsultation) => ', insertRes);
                     // SELECTION DES MEDECINS ET  L'ENVOI DES NOTIFICATIONS
                     const MAX_NB = listMedecins.length >= 3 ? 3 : listMedecins.length;
@@ -128,7 +128,7 @@ __IO.on('connection', socket => {
             }
         }
     });
-    socket.on('acceptNotif', async (notifId) => {
+    socket.on('acceptNotif', async (notifId, clientDate) => {
         console.log('------');
         // TO STAY IN THE CLEAR HOW NOTIFICATIONS WORKS,
         // A DOCOTR ACCEPTS THE NOTIFICATION WHICH RESULTS INSENDING
@@ -183,7 +183,7 @@ __IO.on('connection', socket => {
                     });
                     console.log('acceptNotif() | notificationUpdate => ', notificationUpdate);
                     // 
-                    let consultationInsert = await _DB.insertData(new _CLASSES.consultation(-1, new Date(Date.now()), medecin.ID_USER, '', notifId));
+                    let consultationInsert = await _DB.insertData(new _CLASSES.consultation(-1, clientDate, medecin.ID_USER, '', notifId));
                     console.log('acceptNotif() | consultationInsert => ', consultationInsert);
                     // SEND A SOCKET BACK TO THE SENDER
                     __IO.to(socket.id).emit('activeNotification', await acceptedMedecinNotifications(medecin.ID_USER));
@@ -240,14 +240,14 @@ __IO.on('connection', socket => {
         socket.join(room);
     });
     // 
-    socket.on('sendMsg', async msg => {
+    socket.on('sendMsg', async (msg, msgDate) => {
         let room = await getRoomIdFromSocket();
         if (room != null) {
             // socket.leaveAll();
             // socket.join(room);
             // 
             console.log('sendMsg() | room => ', room);
-            msg = await getMsgAdditionalData(msg, 'Text', room);
+            msg = await getMsgAdditionalData(msg, msgDate, 'Text', room);
             console.log('sendMsg() | msg => ', msg);
             socket.to(room).emit('receiveMsg', msg); //MESSAGE RECEIVED BY EVERYONE EXCEPT SENDER
             //__CHAT.to(room).emit('receiveMsg', msg); // MESSAGE RECEIVED BY EVERYONE INCLUDIG SENDER
@@ -257,8 +257,8 @@ __IO.on('connection', socket => {
         } else console.log('sendMsg() | room not found');
     });
     // 
-    async function getMsgAdditionalData(msgTxt, type, room = null) {
-        let msgObject = new _CLASSES.message(null, msgTxt, room, new Date(Date.now()), type, null);
+    async function getMsgAdditionalData(msgTxt, date, type, room = null) {
+        let msgObject = new _CLASSES.message(null, msgTxt, room, date, type, null);
         // 
         let retData = await _DB.getAppUserCustomDataBySocket(["ID_USER"], socket.client.id);
         if (retData != null) {

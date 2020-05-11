@@ -131,4 +131,5 @@ function makeElement(type) {
 function getDate(date) {
     date = new Date(date);
     return `Le ${date.getDate()}/${date.getMonth() + 1}/${date.getFullYear()} à ${date.getHours()}:${date.getMinutes()}`;
+    // return date;
 }

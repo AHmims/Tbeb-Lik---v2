@@ -83,7 +83,7 @@ function sendMsgFunc() {
         MATRICULE_EMETTEUR: localStorage.getItem('user_M'),
         CONTENU: document.getElementById('chatInput').value,
         ID_ROOM: null,
-        DATE_ENVOI: new Date(Date.now()),
+        DATE_ENVOI: new Date().toJSON().slice(0, 19).replace('T', ' '),
         TYPE: 'Text',
         ID_PIECEJOINTES: null
     }

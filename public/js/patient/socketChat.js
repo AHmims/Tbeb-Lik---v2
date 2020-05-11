@@ -77,7 +77,7 @@ __GLOBAL_SOCKET.on('liveStreamTerminated', () => {
 // 
 // 
 function sendMsg(content) {
-    __GLOBAL_SOCKET.emit('sendMsg', content);
+    __GLOBAL_SOCKET.emit('sendMsg', content, new Date().toJSON().slice(0, 19).replace('T', ' '));
 }
 // 
 function endCall() {

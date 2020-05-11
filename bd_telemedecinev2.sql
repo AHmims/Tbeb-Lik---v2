@@ -160,7 +160,7 @@ BEFORE INSERT
 ON `preConsultation` FOR EACH ROW
 BEGIN
 	SET NEW.ID_PRECONS = CONCAT('NOTIF-',(SELECT FLOOR(RAND()*(1000000-2))+1));
-    SET NEW.DATE_CREATION = now();
+    -- SET NEW.DATE_CREATION = now();
 END;//
 DELIMITER ;
 -- --------------------------------------------------------
@@ -181,14 +181,14 @@ CREATE TABLE IF NOT EXISTS `consultation` (
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 drop trigger if exists autoConsultationDate;
-DELIMITER //
+/* DELIMITER //
 CREATE TRIGGER autoConsultationDate
 BEFORE INSERT
 ON `consultation` FOR EACH ROW
 BEGIN
     SET NEW.DATE_CONSULTATION = now();
 END;//
-DELIMITER ;
+DELIMITER ; */
 
 -- -----------------------------------
 

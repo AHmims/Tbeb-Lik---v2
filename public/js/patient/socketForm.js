@@ -33,9 +33,11 @@ __GLOBAL_SOCKET.on('cancelRequestSuccess', () => {
 // FUNCTIONS
 //#region 
 function sendNotification(ville, proffession) {
+    var date = new Date().toJSON().slice(0, 19).replace('T', ' ');
     __GLOBAL_SOCKET.emit('sendNotif', {
         ville,
-        proffession
+        proffession,
+        date
     });
     // 
 }
