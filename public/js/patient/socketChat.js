@@ -66,9 +66,10 @@ __GLOBAL_SOCKET.on('liveStreamTerminated', () => {
             track.stop();
         });
         // 
-        controllPosters("flex");
+        // controllPosters("flex");
         // 
-        hideVideoBox();
+        // hideVideoBox();
+
         // document.getElementById('remoteVideoPoster').style.display = "flex";
         // document.getElementById('hostVideoPoster').style.display = "flex";
     }
@@ -92,9 +93,10 @@ function endCall() {
         // 
         __GLOBAL_SOCKET.emit('endCall');
         // 
-        controllPosters("flex");
+        // controllPosters("flex");
         // 
-        hideVideoBox();
+        // hideVideoBox();
+
         // document.getElementById('remoteVideoPoster').style.display = "flex";
     }
 }

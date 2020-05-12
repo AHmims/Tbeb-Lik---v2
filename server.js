@@ -409,7 +409,8 @@ __APP.get('/patient/form', (req, res) => {
     res.sendFile(__PATH.join(__dirname, 'public', 'html', 'patientForm.html'));
 });
 __APP.get('/patient/contact', (req, res) => {
-    res.sendFile(__PATH.join(__dirname, 'public', 'html', 'patientChat.html'));
+    // res.sendFile(__PATH.join(__dirname, 'public', 'html', 'patientChat.html'));
+    res.sendFile(__PATH.join(__dirname, 'public', 'html', 'patientChat-barebones.html'));
 });
 // 
 __APP.post('/userTypeById', async (req, res) => {
