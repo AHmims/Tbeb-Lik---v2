@@ -1,0 +1,272 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&display=swap');
+
+/*  */
+body {
+    margin: 0;
+}
+
+/*  */
+#toasts {
+    height: 30vh;
+    width: 100vw;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 20px;
+    box-sizing: border-box;
+    /*  */
+    z-index: 10;
+}
+
+#toastsContainer {
+    height: fit-content;
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.toastBox {
+    position: relative;
+    display: flex;
+    /* flex-direction: row; */
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    /* align-items: center; */
+    min-height: 65px;
+    width: 450px;
+    margin: 0 10px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12);
+    border-radius: 5px;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    background-color: white;
+    /*  */
+    z-index: 13;
+    /* backdrop-filter: blur(5px); */
+    /* opacity: 0; */
+    animation: showUp 400ms ease 0s 1;
+    transition: all 400ms ease;
+}
+
+.toastBox:not(:last-child) {
+    margin-bottom: 20px;
+}
+
+/*  */
+@keyframes showUp {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.toastFadeOut {
+    animation: fadeOut 400ms ease 0s 1;
+}
+
+@keyframes fadeOut {
+    100% {
+        opacity: 0;
+    }
+}
+
+/*  */
+.toastHide {
+    width: 375px;
+    z-index: 12;
+    /* background-color: red; */
+    /* margin-bottom: 0 !important; */
+    margin-bottom: -50px !important;
+}
+
+.toastHide>* {
+    display: none;
+}
+
+.toastHideLast {
+    width: 325px;
+    z-index: 11;
+    /* background-color: blue; */
+}
+
+/*  */
+#toastsContainer:hover .toastHide {
+    width: 450px;
+    margin-bottom: 20px !important;
+}
+
+#toastsContainer:hover .toastHide>* {
+    display: flex;
+}
+
+#toastsContainer:hover .toastHideLast {
+    width: 450px;
+}
+
+/*  */
+
+.toastText {
+    /* flex: 1; */
+    font-family: 'Raleway', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    max-width: 85%;
+    /* display: flex; */
+    /* align-items: center; */
+}
+
+/*  */
+.toastCross {
+    flex: none;
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    background: white;
+    border: none;
+    padding: 2px 3px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 100ms ease-in-out;
+    outline: none;
+}
+
+.toastCross:hover {
+    background: #f2f2f2;
+}
+
+.toastCross svg {
+    margin-left: 2px;
+    margin-top: 1px;
+}
+
+.toastLink {
+    color: #5a5aff;
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.toastsButtonsContainer {
+    display: flex;
+    flex-direction: row-reverse;
+    align-self: flex-end;
+    margin-top: 20px;
+}
+
+.toastButton {
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    /* border: 1px solid white; */
+    transition: all 150ms ease-in-out;
+    outline: none;
+    /*  */
+}
+
+.toastButton:active {
+    /* box-shadow: 0px 0px 0px 3px #3c3748; */
+    /* border-color: #3c3748; */
+}
+
+.toastButton:not(:last-child) {
+    margin-left: 5px;
+}
+
+.buttonMain {
+    background: black;
+    color: white;
+    box-shadow: inset 0px 0px 0px 1px black;
+}
+
+.buttonMain:hover {
+    background: transparent;
+    color: black;
+    border-color: black;
+}
+
+.buttonSecondary {
+    background: white;
+    color: #5b5b5b;
+    box-sizing: border-box;
+    box-shadow: inset 0px 0px 0px 1px #c3c3c3;
+}
+
+.buttonSecondary:hover {
+    color: black;
+    box-shadow: inset 0px 0px 0px 1px black;
+}
+
+/*  */
+.toastError {
+    background-color: #ff4848;
+    color: white;
+}
+
+.toastError .toastCross {
+    background-color: transparent;
+}
+
+.toastError .toastCross:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.toastError .toastCross path {
+    fill: white;
+}
+
+/*  */
+.toastSuccess {
+    background-color: #1FDBAE;
+    color: white;
+}
+
+.toastSuccess .toastCross {
+    background-color: transparent;
+}
+
+.toastSuccess .toastCross:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.toastSuccess .toastCross path {
+    fill: white;
+}
+
+/*  */
+.toastWarning {
+    background-color: #ffd93a;
+    color: white;
+}
+
+.toastWarning .toastCross {
+    background-color: transparent;
+}
+
+.toastWarning .toastCross:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+.toastWarning .toastCross path {
+    fill: white;
+}
+
+/*  */
+@media screen and (max-width:480px) {
+    .toastBox {
+        width: 100%;
+        min-width: unset;
+    }
+
+    #toastsContainer:hover .toastHide {
+        width: 100%;
+    }
+}

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/toasts.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <h3>Normal toasts with life time</h3>
+    <div>
+        <input type="button" value="Normal" id="btn-n">
+        <input type="button" value="Error" id="btn-n-e">
+        <input type="button" value="Success" id="btn-n-s">
+        <input type="button" value="Warning" id="btn-n-w">
+    </div>
+    <h3>Normal toasts with remove button</h3>
+    <div>
+        <input type="button" value="short text" id="btn-x-s">
+        <input type="button" value="long text" id="btn-x-l">
+        <br>
+        <input type="button" value="short text error" id="btn-x-s-e">
+        <input type="button" value="short text success" id="btn-x-s-s">
+        <input type="button" value="short text warning" id="btn-x-s-w">
+    </div>
+    <h3>Normal toasts with controls</h3>
+    <div>
+        <input type="button" value="link" id="btn-ok">
+        <input type="button" value="ok no" id="btn-ok-no">
+    </div>
+    <script src="../js/toast.js"></script>
+    <script>
+        document.getElementById('btn-n').addEventListener('click', async () => {
+            var params = {
+                content: "Lorem, ipsum dolor sit amet consectetur",
+                type: "normal",
+                behavior: {
+                    type: "normal"
+                },
+                duration: 3000
+            }
+            let btnRes = await toast(params);
+            console.log(btnRes);
+        });
+        document.getElementById('btn-n-e').addEventListener('click', async () => {
+            var params = {
+                content: "Lorem, ipsum dolor sit amet consectetur",
+                type: "error",
+                behavior: {
+                    type: "normal"
+                },
+                duration: 3000
+            }
+            let btnRes = await toast(params);
+            console.log(btnRes);
+        });
+        document.getElementById('btn-n-s').addEventListener('click', async () => {
+            var params = {
+                content: "Lorem, ipsum dolor sit amet consectetur",
+                type: "success",
+                behavior: {
+                    type: "normal"
+                },
+                duration: 3000
+            }
+            let btnRes = await toast(params);
+            console.log(btnRes);
+        });
+        document.getElementById('btn-n-w').addEventListener('click', async () => {
+            var params = {
+                content: "Lorem, ipsum dolor sit amet consectetur",
+                type: "warning",
+                behavior: {
+                    type: "normal"
+                },
+                duration: 3000
+            }
+            let btnRes = await toast(params);
+            console.log(btnRes);
+        });
+        // 
+        document.getElementById('btn-x-s').addEventListener('click', async () => {
+            var params = {
+                content: "Lorem, ipsum dolor sit amet consectetur",
+                type: "normal",
+                behavior: {
+                    type: "normal"
+                },
+                duration: "active"
+            }
+            let btnRes = await toast(params);
+            console.log(btnRes);
+        });
+        document.getElementById('btn-x-l').addEventListener('click', async () => {
+            var params = {
+                content: "Lorem, ipsum dolor sit amet consectetur dolor sit amet consectetur dolor sit amet consectetur",
+                type: "normal",
+                behavior: {
+                    type: "normal"
+                },
+                duration: "active"
+            }
+            let btnRes = await toast(params);
+            console.log(btnRes);
+        });
+        document.getElementById('btn-x-s-e').addEventListener('click', async () => {
+            var params = {
+                content: "Lorem, ipsum dolor sit amet consectetur",
+                type: "error",
+                behavior: {
+                    type: "normal"
+                },
+                duration: "active"
+            }
+            let btnRes = await toast(params);
+            console.log(btnRes);
+        });
+        document.getElementById('btn-x-s-s').addEventListener('click', async () => {
+            var params = {
+                content: "Lorem, ipsum dolor sit amet consectetur",
+                type: "success",
+                behavior: {
+                    type: "normal"
+                },
+                duration: "active"
+            }
+            let btnRes = await toast(params);
+            console.log(btnRes);
+        });
+        document.getElementById('btn-x-s-w').addEventListener('click', async () => {
+            var params = {
+                content: "Lorem, ipsum dolor sit amet consectetur",
+                type: "warning",
+                behavior: {
+                    type: "normal"
+                },
+                duration: "active"
+            }
+            let btnRes = await toast(params);
+            console.log(btnRes);
+        });
+        // 
+        document.getElementById('btn-ok').addEventListener('click', async () => {
+            // 
+            var params = {
+                content: "Lorem, ipsum dolor sit amet consectetur",
+                type: "normal",
+                behavior: {
+                    type: "advanced",
+                    controls: [{
+                        type: "link",
+                        appearance: "link",
+                        text: "click me",
+                        callback: "www.google.com"
+                    }]
+                },
+                duration: "active"
+            }
+            let btnRes = await toast(params);
+            console.log(btnRes);
+        });
+        document.getElementById('btn-ok-no').addEventListener('click', async () => {
+            var paramsTest = {
+                content: "Lorem, ipsum dolor sit amet consectetur",
+                type: "normal",
+                behavior: {
+                    type: "normal"
+                },
+                duration: 3000
+            }
+            // 
+            var params = {
+                content: "Lorem, ipsum dolor sit amet consectetur",
+                type: "normal",
+                behavior: {
+                    type: "advanced",
+                    controls: [{
+                        type: "button",
+                        appearance: "main",
+                        text: "Ok",
+                        callback: async () => await toast(paramsTest)
+                    }, {
+                        type: "button",
+                        appearance: "sec",
+                        text: "doki",
+                        callback: "cancel"
+                    }]
+                },
+                duration: "active"
+            }
+            let btnRes = await toast(params);
+            console.log(btnRes);
+        });
+        // 
+        // 
+        // 
+    </script>
+</body>
+
+</html>
