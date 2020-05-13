@@ -28,7 +28,8 @@ function generateNotification(array) {
 }
 // 
 function generateActiveNotification(activeNotifs) {
-    document.getElementById('navChatUrl').setAttribute('href', `/medecin/contact?room=${activeNotifs[0].ID_ROOM}&patient=${activeNotifs[0].MATRICULE_PAT}`);
+    if (activeNotifs.length > 0)
+        document.getElementById('navChatUrl').setAttribute('href', `/medecin/contact?room=${activeNotifs[0].ID_ROOM}&patient=${activeNotifs[0].MATRICULE_PAT}`);
     let activeNotifications = document.getElementsByClassName('activeNotificationBox');
     activeNotifs.forEach(notif => {
         let exists = false;

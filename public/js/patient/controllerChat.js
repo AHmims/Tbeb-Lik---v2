@@ -22,7 +22,7 @@ $(document).ready(async () => {
     // 
     let msgs = await $.post('/getMesssages', {
         matricule: localStorage.getItem('matricule'),
-        room: ''
+        room: null
     }).promise();
     console.log(msgs);
     // 
