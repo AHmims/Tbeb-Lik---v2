@@ -124,7 +124,16 @@ function toast(params) {
                                     btn.setAttribute('href', control.callback);
                                 } else {
                                     btnsCount++;
-                                    if (control.callback == "cancel") {
+                                    if (control.callback == "true") {
+                                        btn.onclick = function () {
+                                            toast.classList.add('toastFadeOut');
+                                            setTimeout(() => {
+                                                toast.remove();
+                                            }, 400);
+                                            resetToasts(container, toast);
+                                            resolve(true);
+                                        }
+                                    } else if (control.callback == "cancel") {
                                         btn.onclick = function () {
                                             toast.classList.add('toastFadeOut');
                                             setTimeout(() => {

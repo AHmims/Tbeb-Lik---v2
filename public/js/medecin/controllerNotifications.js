@@ -17,8 +17,8 @@ $(document).ready(async () => {
             // 
 
             // generateNotification(response);
-        } else let btnClickRes = await logServerError();
-    } else let btnClickRes = await logServerError();
+        } else await logServerError();
+    } else await logServerError();
 });
 // 
 function generateNotification(array) {

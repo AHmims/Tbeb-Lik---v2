@@ -13,7 +13,7 @@ async function logmeIn(matriculeId) {
     }).promise();
     // 
     if (response == 'null')
-        alert('Enter a diffrent id')
+        logError('Entrez un matricule différent');
     else {
         localStorage.setItem('matricule', matriculeId);
         if (response == 'Medecin')

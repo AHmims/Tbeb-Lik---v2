@@ -2,21 +2,22 @@ const __GLOBAL_SOCKET = io();
 const __HUB_SOCKET = io('/medecinHub');
 // 
 __GLOBAL_SOCKET.on('connect', () => {
-    console.log('Socket Connected ! userId => ', localStorage.getItem('matricule') || null);
+    // console.log('Socket Connected ! userId => ', localStorage.getItem('matricule') || null);
     __GLOBAL_SOCKET.emit('newUser', localStorage.getItem('matricule'));
 });
 __GLOBAL_SOCKET.on('activeNotification', (data) => {
     generateActiveNotification(data);
 });
-__GLOBAL_SOCKET.on('notifAlreadyAccepted', () => {
+__GLOBAL_SOCKET.on('notifAlreadyAccepted', async () => {
     // 
     // 
-    console.log('notif accepted, insert pop up here | and refresh');
+    await logError('Demande de consultation déja accepté par un autre medecin');
+    window.location.reload();
 });
 // 
 __GLOBAL_SOCKET.on('platformFail', async () => {
     // console.log('some error in code | refresh page');
-    let btnClickRes = await logServerError();
+    await logServerError();
 });
 // 
 // 

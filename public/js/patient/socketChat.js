@@ -11,14 +11,16 @@ __GLOBAL_SOCKET.on('receiveMsg', msg => {
 });
 __GLOBAL_SOCKET.on('platformFail', async () => {
     // console.log('some error in code | refresh page');
-    let btnClickRes = await logServerError();
+    await logServerError();
 });
 // 
 // 
 let stream = null;
 __GLOBAL_SOCKET.on('liveStreamDataFlux', async (offer) => {
     // let status = ;
-    if (confirm('Votre medecin est entrain de vous appelle.')) {
+    // if (confirm('Votre medecin est entrain de vous appelle.')) {
+    let btnRes = await toastConfirm(`Votre medecin est entrain de vous appelle.`);
+    if (btnRes) {
         videoChatIconsControlls();
         showVideoBox();
         // 

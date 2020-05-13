@@ -6,22 +6,23 @@ __GLOBAL_SOCKET.on('connect', () => {
 });
 __GLOBAL_SOCKET.on('platformFail', async () => {
     // console.log('some error in code | refresh page');
-    let btnClickRes = await logServerError();
+    await logServerError();
 });
-__GLOBAL_SOCKET.on('queryResult', data => {
+__GLOBAL_SOCKET.on('queryResult', async data => {
     switch (data.status) {
         case 0:
-            alert(`Aucune medecin disponible à ete trouver !`);
+            logError(`Aucune medecin disponible à ete trouver !`);
+            // alert(``);
             break;
         case 1:
-            alert('Vous avez deja un demande en cours');
+            logError('Vous avez deja une demande en cours');
             break;
         case 2:
+            logSuccess(`Demande envoyer à ${data.data} Medecin(s)`);
             waiting();
-            alert(`demande envoyer à ${data.data} Medecin(s)`);
             break;
         default:
-            console.warn(`Unknown status code !`);
+            logError(`Unknown status code !`);
     }
 });
 __GLOBAL_SOCKET.on('notificationAccepted', () => {

@@ -12,7 +12,7 @@ __GLOBAL_SOCKET.on('receiveMsg', msg => {
 });
 __GLOBAL_SOCKET.on('platformFail', async () => {
     // console.log('some error in code | refresh page');
-    let btnClickRes = await logServerError();
+    await logServerError();
 });
 // 
 // 

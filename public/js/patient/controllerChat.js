@@ -24,6 +24,7 @@ $(document).ready(async () => {
         matricule: localStorage.getItem('matricule'),
         room: ''
     }).promise();
+    console.log(msgs);
     // 
     if (msgs != 'platformFail') {
         msgs = JSON.parse(msgs);
@@ -36,7 +37,7 @@ $(document).ready(async () => {
             createMsgBox(msgs[i], type);
         }
         scrollDown();
-    } else let btnClickRes = await logServerError();
+    } else await logServerError();
 });
 // 
 function displayReceivedMsg(msg) {

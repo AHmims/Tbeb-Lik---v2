@@ -29,7 +29,7 @@ $(document).ready(async () => {
             // 
             document.getElementById('profsOptions').appendChild(slctOption);
         });
-    } else let btnClickRes = await logServerError();
+    } else await logServerError();
     // 
     document.getElementById('btnEnvoyer').addEventListener('click', async () => {
         let ville = document.getElementById('cityOptions').options[document.getElementById('cityOptions').selectedIndex].value;
@@ -50,7 +50,7 @@ $(document).ready(async () => {
             addNotification();
             // waiting();
         }
-    } else let btnClickRes = await logServerError();
+    } else await logServerError();
     // 
     // 
     let notAcceptedRequests = await $.post('/getNotYetAcceptedRequest', {
@@ -61,7 +61,7 @@ $(document).ready(async () => {
         if (notAcceptedRequests != 'false') {
             waiting();
         }
-    } else let btnClickRes = await logServerError();
+    } else await logServerError();
 });
 // 
 var state = false,

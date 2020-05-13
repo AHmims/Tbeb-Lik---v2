@@ -23,7 +23,7 @@ $(document).ready(async () => {
             createMsgBox(msgs[i], type);
         }
         scrollDown();
-    } else let btnClickRes = await logServerError();
+    } else await logServerError();
     // 
     // SEND MSG BTN
     document.getElementById('chatSendBtn').addEventListener('click', () => {
@@ -35,23 +35,26 @@ $(document).ready(async () => {
     });
     // 
     document.getElementById('patientSubmit').addEventListener('click', async () => {
-        let finaleResult = await $.post('/finalizeConsultation', {
-            matricule: localStorage.getItem('matricule'),
-            room: roomMedcin
-        }).promise();
-        if (finaleResult != 'platformFail') {
-            // 
-            console.log(`patientSubmit() | finaleResult => `, finaleResult);
-            // 
-            if (finaleResult == 'False')
-                alert('ERROR!');
-            else {
-                alert('La consultation est terminée, vous serez redirigé dans 3 secondes');
-                setTimeout(() => {
-                    window.location.assign('/medecin/notifications');
-                }, 3000);
-            }
-        } else let btnClickRes = await logServerError();
+        let btnRes = await toastConfirmWarning();
+        if (btnRes) {
+            let finaleResult = await $.post('/finalizeConsultation', {
+                matricule: localStorage.getItem('matricule'),
+                room: roomMedcin
+            }).promise();
+            if (finaleResult != 'platformFail') {
+                // 
+                console.log(`patientSubmit() | finaleResult => `, finaleResult);
+                // 
+                if (finaleResult == 'False')
+                    logError('Erreur!');
+                else {
+                    logToast('La consultation est terminée, vous serez redirigé dans 3 secondes');
+                    setTimeout(() => {
+                        window.location.assign('/medecin/notifications');
+                    }, 3000);
+                }
+            } else await logServerError();
+        }
     });
     // 
     document.getElementById('chatVideoBtn').addEventListener('click', async () => {

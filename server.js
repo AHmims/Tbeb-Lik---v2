@@ -594,7 +594,7 @@ __APP.post('/getMesssages', async (req, res) => {
             let room = await _DB.getDataAll('room', `where MATRICULE_PAT = '${req.body.matricule}' or MATRICULE_MED = '${req.body.matricule}'`);
             if (room.length > 0) {
                 room = room[0];
-                if (req.body.room.length > 0 || req.body.room != null)
+                if (req.body.room.length > 0 && req.body.room != null)
                     room.ID_ROOM = req.body.room;
                 console.log(`getMesssages() | room => `, room);
                 if (Object.keys(room).length > 0) {
