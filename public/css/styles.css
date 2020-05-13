@@ -27,6 +27,7 @@ body {
   height: 100%;
   padding: 0;
   margin: 0;
+  position: none !important;
 }
 
 video {
@@ -133,7 +134,7 @@ video {
   flex: auto;
   width: 100%;
   height: 1px;
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
