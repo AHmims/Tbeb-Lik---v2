@@ -20,11 +20,25 @@ $(document).ready(async () => {
         camControll();
     });
     // 
+    // 
+    let medecinData = await $.post('/medecinChatBasicData', {
+        matricule: localStorage.getItem('matricule')
+    }).promise();
+    if (medecinData != 'platformFail') {
+        medecinData = JSON.parse(medecinData);
+        if (medecinData.length > 0) {
+            medecinData = medecinData[0];
+            document.getElementById('patientChatMedecinName').innerText = medecinData.NOM_MED;
+            document.getElementById('patientChatConsultation').innerText = medecinData.NOM_SPEC;
+        } else logError('Erreur récuperation des donéess');
+    } else await logServerError();
+    // console.log(msgs);
+    // 
     let msgs = await $.post('/getMesssages', {
         matricule: localStorage.getItem('matricule'),
         room: null
     }).promise();
-    console.log(msgs);
+    //     
     // 
     if (msgs != 'platformFail') {
         msgs = JSON.parse(msgs);

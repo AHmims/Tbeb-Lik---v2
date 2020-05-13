@@ -596,7 +596,7 @@ __APP.post('/getMesssages', async (req, res) => {
                 room = room[0];
                 if (req.body.room.length > 0 && req.body.room != null)
                     room.ID_ROOM = req.body.room;
-                console.log(`getMesssages() | room => `, room);
+                console.log(`/getMesssages | room => `, room);
                 if (Object.keys(room).length > 0) {
                     let msgs = await _DB.getDataAll('message', `where ID_ROOM = '${room.ID_ROOM}' order by ID_MESSAGE asc ,DATE_ENVOI asc`);
                     if (msgs.length > 0)
@@ -656,6 +656,29 @@ __APP.post('/finalizeConsultation', async (req, res) => {
     } catch (err) {
         res.end('platformFail');
     }
+});
+// 
+__APP.post('/medecinChatBasicData', async (req, res) => {
+    try {
+        console.log('123456789123456789');
+        let retData = [];
+        if (req.body.matricule != null) {
+            let data = await _DB.getMedecinNameWithConsul(req.body.matricule);
+            if (data != null)
+                retData = [data];
+            else {
+                console.log('/medecinChatBasicData | data = no data ?!');
+            }
+        } else {
+            console.log('/medecinChatBasicData | matricule = null');
+            throw 'Matricule invalid';
+        }
+        res.end(JSON.stringify(retData));
+    } catch (err) {
+        console.log(err);
+        res.end('platformFail');
+    }
+
 });
 // 
 //START SERVER

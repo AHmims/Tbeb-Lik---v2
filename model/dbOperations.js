@@ -326,6 +326,19 @@ async function customDataDelete(params, id) {
     }
 }
 // 
+async function getMedecinNameWithConsul(patientId) {
+    try {
+        let req = `select m.NOM_MED,s.NOM_SPEC from medecin as m,specialites as s where m.ID_SPEC = s.ID_SPEC and MATRICULE_MED in (select MATRICULE_MED from appUser where ID_USER = ?)`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [patientId]);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0][0] : null;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// 
 //#endregion
 // 
 //#region HELPER FUNCTIONS
@@ -385,6 +398,7 @@ module.exports = {
     getRoomIdBySocketId,
     getNotacceptedYetNotifs,
     getNotifIdByRoomId,
-    customDataDelete
+    customDataDelete,
+    getMedecinNameWithConsul
 }
 // 
