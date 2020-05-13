@@ -9,6 +9,10 @@ __GLOBAL_SOCKET.on('connect', async () => {
 __GLOBAL_SOCKET.on('receiveMsg', msg => {
     displayReceivedMsg(msg);
 });
+__GLOBAL_SOCKET.on('platformFail', async () => {
+    // console.log('some error in code | refresh page');
+    let btnClickRes = await logServerError();
+});
 // 
 // 
 let stream = null;

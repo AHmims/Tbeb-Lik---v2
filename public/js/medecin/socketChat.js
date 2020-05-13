@@ -10,6 +10,11 @@ __GLOBAL_SOCKET.on('connect', async () => {
 __GLOBAL_SOCKET.on('receiveMsg', msg => {
     displayReceivedMsg(msg);
 });
+__GLOBAL_SOCKET.on('platformFail', async () => {
+    // console.log('some error in code | refresh page');
+    let btnClickRes = await logServerError();
+});
+// 
 // 
 // 
 async function joinRoom() {
@@ -18,7 +23,7 @@ async function joinRoom() {
 }
 // 
 async function sendMsg(content) {
-    await __GLOBAL_SOCKET.emit('sendMsg', content);
+    await __GLOBAL_SOCKET.emit('sendMsg', content, new Date().toJSON().slice(0, 19).replace('T', ' '));
 }
 // 
 let ready = false;

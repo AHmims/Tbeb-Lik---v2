@@ -24,303 +24,388 @@ const __HUB = __IO.of('/medecinHub');
 //TRAITMENT
 __IO.on('connection', socket => {
     socket.on('newUser', async (matricule) => {
-        console.log('--------');
-        if (matricule != null) {
-            let type = await _DB.getTypeById(matricule);
-            console.log('newUser() | type => ', type);
-            if (type != null) {
-                let existingUser = await _DB.getAppUserDataById(matricule);
-                console.log('newUser() | existingUser => ', existingUser)
-                // 
-                if (existingUser != null) {
-                    let updatingResult = await _DB.customDataUpdate({
-                        SOCKET: socket.id,
-                        ONLINE: true
-                    }, existingUser.ID_USER, {
-                        table: "appUser",
-                        id: "ID_USER"
-                    });
+        try {
+            console.log('--------');
+            if (matricule != null) {
+                let type = await _DB.getTypeById(matricule);
+                console.log('newUser() | type => ', type);
+                if (type != null) {
+                    let existingUser = await _DB.getAppUserDataById(matricule);
+                    console.log('newUser() | existingUser => ', existingUser)
                     // 
-                    console.log('newUser() | updatingResult => ', updatingResult);
-                    // 
-                    if (type == 'Patient') {
-                        socket.join(existingUser.ID_ROOM);
-                        console.log('§§§§§§§§§§§§PATIENT ROOMID =>', existingUser.ID_ROOM);
-                    }
-                } else {
-                    let userInstance = makeUserInstance(matricule, type, socket.id);
-                    console.log('newUser() | userInstance => ', userInstance);
-                    let insertResult = await _DB.insertData(userInstance);
-                    console.log('newUser() | insertResult => ', insertResult);
-                    // GET THE ROOM ID FROM THE INSERTED USER
-                    //IF IT WAS A PATIENT
-                    if (type == 'Patient') {
-                        let insertedPatient = await _DB.getDataAll('appUser', `where ID_USER = '${matricule}'`);
-                        if (insertedPatient.length > 0) {
-                            socket.join(insertedPatient[0].ID_ROOM);
-                            console.log('§§§§§§§§§§§§PATIENT ROOMID =>', insertedPatient[0].ID_ROOM);
+                    if (existingUser != null) {
+                        let updatingResult = await _DB.customDataUpdate({
+                            SOCKET: socket.id,
+                            ONLINE: true
+                        }, existingUser.ID_USER, {
+                            table: "appUser",
+                            id: "ID_USER"
+                        });
+                        // 
+                        console.log('newUser() | updatingResult => ', updatingResult);
+                        // 
+                        if (type == 'Patient') {
+                            socket.join(existingUser.ID_ROOM);
+                            console.log('§§§§§§§§§§§§PATIENT ROOMID =>', existingUser.ID_ROOM);
+                        }
+                    } else {
+                        let userInstance = makeUserInstance(matricule, type, socket.id);
+                        console.log('newUser() | userInstance => ', userInstance);
+                        let insertResult = await _DB.insertData(userInstance);
+                        console.log('newUser() | insertResult => ', insertResult);
+                        // GET THE ROOM ID FROM THE INSERTED USER
+                        //IF IT WAS A PATIENT
+                        if (type == 'Patient') {
+                            let insertedPatient = await _DB.getDataAll('appUser', `where ID_USER = '${matricule}'`);
+                            if (insertedPatient.length > 0) {
+                                socket.join(insertedPatient[0].ID_ROOM);
+                                console.log('§§§§§§§§§§§§PATIENT ROOMID =>', insertedPatient[0].ID_ROOM);
+                            } else {
+                                throw 'newUser() getDataAll returned Empty';
+                            }
                         }
                     }
-                }
-            }
-        } else
-            console.log('newUser() | matricule == null');
-    });
-    socket.on('sendNotif', async data => {
-        console.log('------');
-        console.log('sendNotif() | receivedData => ', data);
-        // GET USERID FROM SOCKET
-        let appUserData = await _DB.getAppUserCustomDataBySocket(["ID_USER"], socket.id);
-        console.log('sendNotif() | appUserData => ', appUserData);
-        if (appUserData != null) {
-            // CHECK IF THE PATIENT GOT ANY ONGOING DEMANDES
-            let exists = await _DB.consultationCheck(appUserData.ID_USER);
-            console.log('sendNotif() | exists => ', exists);
-            if (!exists) {
-                // GET ONLINE DOCTORS FROM THE GIVEN CITY AND PROFESSIONS
-                let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession(data.ville, data.proffession);
-                console.log('sendNotif() | listMedecins => ', listMedecins);
-                if (listMedecins != null) {
-                    // INSERT DATA INTO TABLE PRECONSULTATION
-                    let insertRes = await _DB.insertData(new _CLASSES.preConsultation(null, data.date, '', '', -1, false, appUserData.ID_USER));
-                    console.log('sendNotif() | insertData(preConsultation) => ', insertRes);
-                    // SELECTION DES MEDECINS ET  L'ENVOI DES NOTIFICATIONS
-                    const MAX_NB = listMedecins.length >= 3 ? 3 : listMedecins.length;
-                    console.log('sendNotif() | MAX_NB => ', MAX_NB);
-                    let randomIndexes = [];
-                    while (randomIndexes.length < MAX_NB) {
-                        var index = Math.floor(Math.random() * listMedecins.length);
-                        if (randomIndexes.indexOf(index) == -1) randomIndexes.push(index);
-                    }
-                    // 
-                    console.log('sendNotif() | randomIndexes => ', randomIndexes);
-                    // ARRAY OF MAX 3, OF DOCTORS ID
-                    let tableauDesMedecins = [];
-                    let notifData = await getNotificationFullData(appUserData.ID_USER);
-                    randomIndexes.forEach(async index => {
-                        tableauDesMedecins.push(listMedecins[index].MATRICULE_MED);
-                        let inboxInsertResult = await _DB.insertData(new _CLASSES.medecinInbox(notifData.index, listMedecins[index].MATRICULE_MED));
-                        console.log('sendNotif() | inboxInsertResult => ', inboxInsertResult);
-                        __HUB.to(`/medecinHub#${listMedecins[index].SOCKET}`).emit('receivedNotification', notifData);
-                    });
-                    console.log('sendNotif() | tableauDesMedecins => ', tableauDesMedecins);
-                    //SEND FEEDBACK TO THE SENDER
-                    __IO.to(socket.id).emit('queryResult', {
-                        status: 2,
-                        data: randomIndexes.length
-                    });
-                    // 
                 } else {
-                    //SEND FEEDBACK TO THE SENDER
-                    __IO.to(socket.id).emit('queryResult', {
-                        status: 0,
-                        data: null
-                    });
-                    console.log('sendNotif() | listMedecins : no person found with the given values');
+                    throw 'newUser() | type = null';
                 }
             } else {
-                // YOU ALREADY HAVE AN ONGOING DEMANDE YOU CAN'T SEND ANYMORE SHIT
-                console.log('sendNotif() | exists : User have ongoing notification');
-                __IO.to(socket.id).emit('queryResult', {
-                    status: 1,
-                    data: null
-                });
+                console.log('newUser() | matricule == null');
+                throw 'newUser() | matricule = null';
             }
+        } catch (err) {
+            socket.emit('platformFail');
+        }
+    });
+    socket.on('sendNotif', async data => {
+        try {
+            console.log('------');
+            console.log('sendNotif() | receivedData => ', data);
+            // GET USERID FROM SOCKET
+            let appUserData = await _DB.getAppUserCustomDataBySocket(["ID_USER"], socket.id);
+            console.log('sendNotif() | appUserData => ', appUserData);
+            if (appUserData != null) {
+                // CHECK IF THE PATIENT GOT ANY ONGOING DEMANDES
+                let exists = await _DB.consultationCheck(appUserData.ID_USER);
+                console.log('sendNotif() | exists => ', exists);
+                if (!exists) {
+                    // GET ONLINE DOCTORS FROM THE GIVEN CITY AND PROFESSIONS
+                    let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession(data.ville, data.proffession);
+                    console.log('sendNotif() | listMedecins => ', listMedecins);
+                    if (listMedecins != null) {
+                        // INSERT DATA INTO TABLE PRECONSULTATION
+                        let insertRes = await _DB.insertData(new _CLASSES.preConsultation(null, data.date, '', '', -1, false, appUserData.ID_USER));
+                        console.log('sendNotif() | insertData(preConsultation) => ', insertRes);
+                        // SELECTION DES MEDECINS ET  L'ENVOI DES NOTIFICATIONS
+                        const MAX_NB = listMedecins.length >= 3 ? 3 : listMedecins.length;
+                        console.log('sendNotif() | MAX_NB => ', MAX_NB);
+                        let randomIndexes = [];
+                        while (randomIndexes.length < MAX_NB) {
+                            var index = Math.floor(Math.random() * listMedecins.length);
+                            if (randomIndexes.indexOf(index) == -1) randomIndexes.push(index);
+                        }
+                        // 
+                        console.log('sendNotif() | randomIndexes => ', randomIndexes);
+                        // ARRAY OF MAX 3, OF DOCTORS ID
+                        let tableauDesMedecins = [];
+                        let notifData = await getNotificationFullData(appUserData.ID_USER);
+                        randomIndexes.forEach(async index => {
+                            tableauDesMedecins.push(listMedecins[index].MATRICULE_MED);
+                            let inboxInsertResult = await _DB.insertData(new _CLASSES.medecinInbox(notifData.index, listMedecins[index].MATRICULE_MED));
+                            console.log('sendNotif() | inboxInsertResult => ', inboxInsertResult);
+                            __HUB.to(`/medecinHub#${listMedecins[index].SOCKET}`).emit('receivedNotification', notifData);
+                        });
+                        console.log('sendNotif() | tableauDesMedecins => ', tableauDesMedecins);
+                        //SEND FEEDBACK TO THE SENDER
+                        __IO.to(socket.id).emit('queryResult', {
+                            status: 2,
+                            data: randomIndexes.length
+                        });
+                        // 
+                    } else {
+                        //SEND FEEDBACK TO THE SENDER
+                        __IO.to(socket.id).emit('queryResult', {
+                            status: 0,
+                            data: null
+                        });
+                        console.log('sendNotif() | listMedecins : no person found with the given values');
+                    }
+                } else {
+                    // YOU ALREADY HAVE AN ONGOING DEMANDE YOU CAN'T SEND ANYMORE SHIT
+                    console.log('sendNotif() | exists : User have ongoing notification');
+                    __IO.to(socket.id).emit('queryResult', {
+                        status: 1,
+                        data: null
+                    });
+                }
+            } else {
+                throw 'sendNoti() | appUserData = null';
+            }
+        } catch (err) {
+            socket.emit('platformFail');
         }
     });
     socket.on('acceptNotif', async (notifId, clientDate) => {
-        console.log('------');
-        // TO STAY IN THE CLEAR HOW NOTIFICATIONS WORKS,
-        // A DOCOTR ACCEPTS THE NOTIFICATION WHICH RESULTS INSENDING
-        // A SOCKET TO ALL ASSOCIATED MEDECINS TO REMOVE THE NOTIF BOX
-        // FOR THEM. ALL GOOD RIGHT ?
-        // NO!! WHAT IF THEY HAVE SLOW INTERNET ?
-        // DOCTOR A WILL ACCEPT THE NOTIFICATION BUT DOCOTR B STILL HAVE IT DISPLAYED IN HIS UI
-        // BECAUSE SLOW INETNET REMEMEBER ?
-        // TO STAY SAFE, LETS DO A CHECK FOR THE NOTIFICATION AND SEE IF IT'S ACCEPTED OR NOT
-        // IF NOT PROCCED SAFELY
-        // IF IT WAS ACCEPTED RETURN AN ERROR TO THE SENDER INFORMING THEM 
-        // THAT THE NOTIFICATION WAS ACCEPTED
-        // 
-        let conultationCheck = await _DB.checkExistence({
-            table: 'consultation',
-            id: 'ID_PRECONS'
-        }, notifId, '');
-        // 
-        if (!conultationCheck) {
-            let medecin = await _DB.getAppUserCustomDataBySocket(["ID_USER"], socket.id);
-            if (medecin != null) {
-                console.log('acceptNotif() | medecin => ', medecin);
-                let room = await _DB.getRoomIdByNotifId(notifId);
-                if (room != null) {
-                    // 
-                    console.log('acceptNotif() | room => ', room);
-                    // REMOVE ME FROM ROOMS
-                    let roomUnlinkMedecin = await unlinkMedecinFromRooms(medecin.ID_USER);
-                    console.log('unlinkMedecinFromRooms() | roomUnlinkMedecin => ', roomUnlinkMedecin);
-                    // 
-                    let patientUpdate = await _DB.customDataUpdate({
-                        MATRICULE_MED: medecin.ID_USER
-                    }, room.MATRICULE_PAT, {
-                        table: "appUser",
-                        id: "ID_USER"
-                    });
-                    console.log('acceptNotif() | patientUpdate => ', patientUpdate);
-                    // 
-                    let roomUpdate = await _DB.customDataUpdate({
-                        MATRICULE_MED: medecin.ID_USER
-                    }, room.ID_ROOM, {
-                        table: "room",
-                        id: "ID_ROOM"
-                    });
-                    console.log('acceptNotif() | roomUpdate => ', roomUpdate);
-                    // 
-                    let notificationUpdate = await _DB.customDataUpdate({
-                        ACCEPTE: true
-                    }, notifId, {
-                        table: "preConsultation",
-                        id: "ID_PRECONS"
-                    });
-                    console.log('acceptNotif() | notificationUpdate => ', notificationUpdate);
-                    // 
-                    let consultationInsert = await _DB.insertData(new _CLASSES.consultation(-1, clientDate, medecin.ID_USER, '', notifId));
-                    console.log('acceptNotif() | consultationInsert => ', consultationInsert);
-                    // SEND A SOCKET BACK TO THE SENDER
-                    __IO.to(socket.id).emit('activeNotification', await acceptedMedecinNotifications(medecin.ID_USER));
-                    // SEND A PING TO THE PATIENT INFORMING THEM ABOUT THE ACCEPTANCE OF THE NOTIFICATION
-                    socket.to(room.ID_ROOM).emit('notificationAccepted');
-                } else
-                    console.log('acceptNotif() | room not found');
-            } else
-                console.log('acceptNotif() | medecin not found');
-        } else
-            console.log('acceptNotif() | consultation deja accepté');
+        try {
+            console.log('------');
+            // TO STAY IN THE CLEAR HOW NOTIFICATIONS WORKS,
+            // A DOCOTR ACCEPTS THE NOTIFICATION WHICH RESULTS INSENDING
+            // A SOCKET TO ALL ASSOCIATED MEDECINS TO REMOVE THE NOTIF BOX
+            // FOR THEM. ALL GOOD RIGHT ?
+            // NO!! WHAT IF THEY HAVE SLOW INTERNET ?
+            // DOCTOR A WILL ACCEPT THE NOTIFICATION BUT DOCOTR B STILL HAVE IT DISPLAYED IN HIS UI
+            // BECAUSE SLOW INETNET REMEMEBER ?
+            // TO STAY SAFE, LETS DO A CHECK FOR THE NOTIFICATION AND SEE IF IT'S ACCEPTED OR NOT
+            // IF NOT PROCCED SAFELY
+            // IF IT WAS ACCEPTED RETURN AN ERROR TO THE SENDER INFORMING THEM 
+            // THAT THE NOTIFICATION WAS ACCEPTED
+            // 
+            let conultationCheck = await _DB.checkExistence({
+                table: 'consultation',
+                id: 'ID_PRECONS'
+            }, notifId, '');
+            // 
+            if (!conultationCheck) {
+                let medecin = await _DB.getAppUserCustomDataBySocket(["ID_USER"], socket.id);
+                if (medecin != null) {
+                    console.log('acceptNotif() | medecin => ', medecin);
+                    let room = await _DB.getRoomIdByNotifId(notifId);
+                    if (room != null) {
+                        // 
+                        console.log('acceptNotif() | room => ', room);
+                        // REMOVE ME FROM ROOMS
+                        let roomUnlinkMedecin = await unlinkMedecinFromRooms(medecin.ID_USER);
+                        console.log('unlinkMedecinFromRooms() | roomUnlinkMedecin => ', roomUnlinkMedecin);
+                        // 
+                        let patientUpdate = await _DB.customDataUpdate({
+                            MATRICULE_MED: medecin.ID_USER
+                        }, room.MATRICULE_PAT, {
+                            table: "appUser",
+                            id: "ID_USER"
+                        });
+                        console.log('acceptNotif() | patientUpdate => ', patientUpdate);
+                        // 
+                        let roomUpdate = await _DB.customDataUpdate({
+                            MATRICULE_MED: medecin.ID_USER
+                        }, room.ID_ROOM, {
+                            table: "room",
+                            id: "ID_ROOM"
+                        });
+                        console.log('acceptNotif() | roomUpdate => ', roomUpdate);
+                        // 
+                        let notificationUpdate = await _DB.customDataUpdate({
+                            ACCEPTE: true
+                        }, notifId, {
+                            table: "preConsultation",
+                            id: "ID_PRECONS"
+                        });
+                        console.log('acceptNotif() | notificationUpdate => ', notificationUpdate);
+                        // 
+                        let consultationInsert = await _DB.insertData(new _CLASSES.consultation(-1, clientDate, medecin.ID_USER, '', notifId));
+                        console.log('acceptNotif() | consultationInsert => ', consultationInsert);
+                        // SEND A SOCKET BACK TO THE SENDER
+                        __IO.to(socket.id).emit('activeNotification', await acceptedMedecinNotifications(medecin.ID_USER));
+                        // SEND A PING TO THE PATIENT INFORMING THEM ABOUT THE ACCEPTANCE OF THE NOTIFICATION
+                        socket.to(room.ID_ROOM).emit('notificationAccepted');
+                    } else {
+                        console.log('acceptNotif() | room not found');
+                        throw 'acceptNotif() | room not found';
+                    }
+                } else {
+                    console.log('acceptNotif() | medecin not found');
+                    throw 'acceptNotif() | medecin not found';
+                }
+            } else {
+                console.log('acceptNotif() | consultation deja accepté');
+                socket.emit('notifAlreadyAccepted');
+            }
+        } catch (err) {
+            socket.emit('platformFail');
+        }
     });
     socket.on('disconnect', async () => {
-        console.log('--------');
-        // let socketId = socket.id;
-        let appUserData = await _DB.getAppUserCustomDataBySocket(["ID_USER", "TYPE_USER", "MATRICULE_MED"], socket.id);
-        console.log('disconnect() | appUserData => ', appUserData);
-        if (appUserData != null) {
-            // IF A USER DISCONNECTS SET THEIR STATUS TO OFFLINE
-            let updatingResult = await _DB.customDataUpdate({
-                ONLINE: false
-            }, appUserData.ID_USER, {
-                table: "appUser",
-                id: "ID_USER"
-            });
-            // 
-            let roomId = await getRoomIdFromSocket();
-            console.log('disconnect() | roomId => ', roomId);
-            socket.to(roomId).emit('liveStreamTerminated');
-            // 
-            // if (appUserData.TYPE_USER == "Medecin") {
-            // unlinkMedecinFromRooms()
-            // console.log(`disconnect() | updatingRoomData => `, updatingRoomData);
-            // }
-            // 
-            console.log('disconnect() | updatingResult => ', updatingResult);
+        try {
+            console.log('--------');
+            // let socketId = socket.id;
+            let appUserData = await _DB.getAppUserCustomDataBySocket(["ID_USER", "TYPE_USER", "MATRICULE_MED"], socket.id);
+            console.log('disconnect() | appUserData => ', appUserData);
+            if (appUserData != null) {
+                // IF A USER DISCONNECTS SET THEIR STATUS TO OFFLINE
+                let updatingResult = await _DB.customDataUpdate({
+                    ONLINE: false
+                }, appUserData.ID_USER, {
+                    table: "appUser",
+                    id: "ID_USER"
+                });
+                // 
+                let roomId = await getRoomIdFromSocket();
+                console.log('disconnect() | roomId => ', roomId);
+                socket.to(roomId).emit('liveStreamTerminated');
+                // 
+                // if (appUserData.TYPE_USER == "Medecin") {
+                // unlinkMedecinFromRooms()
+                // console.log(`disconnect() | updatingRoomData => `, updatingRoomData);
+                // }
+                // 
+                console.log('disconnect() | updatingResult => ', updatingResult);
+            } else {
+                console.log('disconnect() | user not found');
+                throw 'disconnect() | user not found';
+            }
+        } catch (err) {
+            socket.emit('platformFail');
         }
     });
     // 
     // 
     socket.on('joinChat', async (medecinId, room, patientId) => {
-        console.log('#-#-#-#');
-        let roomUnlinkMedecin = await unlinkMedecinFromRooms(medecinId);
-        console.log('joinChat() | roomUnlinkMedecin => ', roomUnlinkMedecin);
-        let patientUpdate = await _DB.customDataUpdate({
-            MATRICULE_MED: medecinId
-        }, patientId, {
-            table: "room",
-            id: "MATRICULE_PAT"
-        });
-        console.log('unlinkMedecinFromRooms() | patientUpdate => ', patientUpdate);
-        // 
-        // socket.leaveAll();
-        socket.join(room);
+        try {
+            console.log('#-#-#-#');
+            let roomUnlinkMedecin = await unlinkMedecinFromRooms(medecinId);
+            console.log('joinChat() | roomUnlinkMedecin => ', roomUnlinkMedecin);
+            let patientUpdate = await _DB.customDataUpdate({
+                MATRICULE_MED: medecinId
+            }, patientId, {
+                table: "room",
+                id: "MATRICULE_PAT"
+            });
+            console.log('unlinkMedecinFromRooms() | patientUpdate => ', patientUpdate);
+            // 
+            // socket.leaveAll();
+            socket.join(room);
+        } catch (err) {
+            socket.emit('platformFail');
+        }
     });
     // 
     socket.on('sendMsg', async (msg, msgDate) => {
-        let room = await getRoomIdFromSocket();
-        if (room != null) {
-            // socket.leaveAll();
-            // socket.join(room);
-            // 
-            console.log('sendMsg() | room => ', room);
-            msg = await getMsgAdditionalData(msg, msgDate, 'Text', room);
-            console.log('sendMsg() | msg => ', msg);
-            socket.to(room).emit('receiveMsg', msg); //MESSAGE RECEIVED BY EVERYONE EXCEPT SENDER
-            //__CHAT.to(room).emit('receiveMsg', msg); // MESSAGE RECEIVED BY EVERYONE INCLUDIG SENDER
-            // SAVE MSG IN DB
-            let insertResult = await _DB.insertData(msg);
-            console.log('sendMsg() | insertResult => ', insertResult);
-        } else console.log('sendMsg() | room not found');
+        try {
+            let room = await getRoomIdFromSocket();
+            if (room != null) {
+                // socket.leaveAll();
+                // socket.join(room);
+                // 
+                console.log('sendMsg() | room => ', room);
+                msg = await getMsgAdditionalData(msg, msgDate, 'Text', room);
+                console.log('sendMsg() | msg => ', msg);
+                socket.to(room).emit('receiveMsg', msg); //MESSAGE RECEIVED BY EVERYONE EXCEPT SENDER
+                //__CHAT.to(room).emit('receiveMsg', msg); // MESSAGE RECEIVED BY EVERYONE INCLUDIG SENDER
+                // SAVE MSG IN DB
+                let insertResult = await _DB.insertData(msg);
+                console.log('sendMsg() | insertResult => ', insertResult);
+            } else {
+                console.log('sendMsg() | room not found');
+                throw 'sendMsg() | room not found'
+            }
+        } catch (err) {
+            socket.emit('platformFail');
+        }
     });
     // 
     async function getMsgAdditionalData(msgTxt, date, type, room = null) {
-        let msgObject = new _CLASSES.message(null, msgTxt, room, date, type, null);
-        // 
-        let retData = await _DB.getAppUserCustomDataBySocket(["ID_USER"], socket.client.id);
-        if (retData != null) {
-            console.log('getMsgAdditionalData() | retData => ', retData);
-            msgObject.MATRICULE_EMETTEUR = retData.ID_USER;
-        } else
-            console.log('getMsgAdditionalData() | retData = null ');
-        // 
-        return msgObject;
+        try {
+            let msgObject = new _CLASSES.message(null, msgTxt, room, date, type, null);
+            // 
+            let retData = await _DB.getAppUserCustomDataBySocket(["ID_USER"], socket.client.id);
+            if (retData != null) {
+                console.log('getMsgAdditionalData() | retData => ', retData);
+                msgObject.MATRICULE_EMETTEUR = retData.ID_USER;
+                return msgObject;
+            } else {
+                console.log('getMsgAdditionalData() | retData = null');
+                throw 'getMsgAdditionalData() | retData = null';
+            }
+            // 
+        } catch (err) {
+            socket.emit('platformFail');
+        }
+
     }
     // 
     socket.on('cancelRequest', async (patientId) => {
-        let nId = null;
-        console.log('cancelRequest() | patientId => ', patientId);
-        if (patientId != null) {
-            nId = await _DB.getLastInsertedNotification(patientId);
-            console.log('cancelRequest() | nId => ', nId);
-            if (nId != null) {
-                nId = nId.ID_PRECONS;
-                let deleteFromPreConsultation = await _DB.customDataDelete({
-                    table: "preConsultation",
-                    id: "ID_PRECONS"
-                }, nId);
-                console.log(`cancelRequest() | deleteFromPreConsultation => `, deleteFromPreConsultation);
-                // 
-                let deleteFromMedecinInbox = await _DB.customDataDelete({
-                    table: "medecinInbox",
-                    id: "ID_PRECONS"
-                }, nId);
-                console.log(`cancelRequest() | deleteFromMedecinInbox => `, deleteFromMedecinInbox);
-                // 
-                __HUB.emit('removeNotificationBox', nId);
-                // SEND BACK TOTHE SANEDER
-                socket.emit('cancelRequestSuccess');
+        try {
+            let nId = null;
+            console.log('cancelRequest() | patientId => ', patientId);
+            if (patientId != null) {
+                nId = await _DB.getLastInsertedNotification(patientId);
+                console.log('cancelRequest() | nId => ', nId);
+                if (nId != null) {
+                    nId = nId.ID_PRECONS;
+                    let deleteFromPreConsultation = await _DB.customDataDelete({
+                        table: "preConsultation",
+                        id: "ID_PRECONS"
+                    }, nId);
+                    console.log(`cancelRequest() | deleteFromPreConsultation => `, deleteFromPreConsultation);
+                    // 
+                    let deleteFromMedecinInbox = await _DB.customDataDelete({
+                        table: "medecinInbox",
+                        id: "ID_PRECONS"
+                    }, nId);
+                    console.log(`cancelRequest() | deleteFromMedecinInbox => `, deleteFromMedecinInbox);
+                    // 
+                    __HUB.emit('removeNotificationBox', nId);
+                    // SEND BACK TO THE SANEDER
+                    socket.emit('cancelRequestSuccess');
+                } else {
+                    throw 'cancelRequest() | NotiicationId = null';
+                }
+            } else {
+                throw 'cancelRequest() | patientId = null';
             }
+        } catch (err) {
+            socket.emit('platformFail');
         }
-
     });
-    // 
     // 
     // VIDEO
     socket.on('liveStreamInitFail', async () => {
-        let roomId = await getRoomIdFromSocket();
-        console.log('liveStreamInitFail() | roomId => ', roomId);
-        socket.to(roomId).emit('patientLinkFailed');
+        try {
+            let roomId = await getRoomIdFromSocket();
+            console.log('liveStreamInitFail() | roomId => ', roomId);
+            if (roomId != null) {
+                socket.to(roomId).emit('patientLinkFailed');
+            } else {
+                throw 'liveStreamInitFail() | roomId = null';
+            }
+        } catch (err) {
+            socket.emit('platformFail');
+        }
     });
     // 
     socket.on('liveStreamLink', async (data) => {
-        let roomId = await getRoomIdFromSocket();
-        console.log('liveStreamLink() | roomId => ', roomId);
-        socket.to(roomId).emit('liveStreamDataFlux', data);
+        try {
+            let roomId = await getRoomIdFromSocket();
+            console.log('liveStreamLink() | roomId => ', roomId);
+            if (roomId != null) {
+                socket.to(roomId).emit('liveStreamDataFlux', data);
+            } else {
+                throw 'liveStreamLink() | roomId = null';
+            }
+        } catch (err) {
+            socket.emit('platformFail');
+        }
     });
     // 
     socket.on('endCall', async () => {
-        let roomId = await getRoomIdFromSocket();
-        console.log('endCall() | roomId => ', roomId);
-        socket.to(roomId).emit('liveStreamTerminated');
+        try {
+            let roomId = await getRoomIdFromSocket();
+            console.log('endCall() | roomId => ', roomId);
+            if (roomId != null) {
+                socket.to(roomId).emit('liveStreamTerminated');
+            } else {
+                throw 'endCall() | roomId = null';
+            }
+        } catch (err) {
+            socket.emit('platformFail');
+        }
     });
     // 
     async function getRoomIdFromSocket() {
-        let dbResult = await _DB.getRoomIdBySocketId(socket.id);
-        return dbResult != null ? dbResult : null;
+        try {
+            let dbResult = await _DB.getRoomIdBySocketId(socket.id);
+            return dbResult != null ? dbResult : null;
+        } catch (err) {
+            socket.emit('platformFail');
+        }
     }
 });
 // 
@@ -336,58 +421,82 @@ __HUB.on('connection', socket => {
 // 
 // 
 function makeUserInstance(id, type, socketId) {
-    return new _CLASSES.appUser(id, type, socketId, true);
+    try {
+        return new _CLASSES.appUser(id, type, socketId, true);
+    } catch (err) {
+        socket.emit('platformFail');
+    }
 }
 // 
 async function getNotificationFullData(userId) {
-    let patientData = await _DB.getPatientPreConsultationDataById(userId);
-    if (patientData != null) {
-        let insertedNotificationData = await _DB.getLastInsertedNotification(userId);
-        if (insertedNotificationData != null) {
-            return {
-                index: insertedNotificationData.ID_PRECONS,
-                name: patientData.nom,
-                date: insertedNotificationData.DATE_CREATION,
-                matricule: userId,
-                age: patientData.age,
-                numeroTel: patientData.tel,
-                motif: insertedNotificationData.MOTIF,
-                atcds: insertedNotificationData.ATCD,
-                nbJourApporte: insertedNotificationData.NB_JOUR_A,
-                files: ["null"]
+    try {
+        let patientData = await _DB.getPatientPreConsultationDataById(userId);
+        if (patientData != null) {
+            let insertedNotificationData = await _DB.getLastInsertedNotification(userId);
+            if (insertedNotificationData != null) {
+                return {
+                    index: insertedNotificationData.ID_PRECONS,
+                    name: patientData.nom,
+                    date: insertedNotificationData.DATE_CREATION,
+                    matricule: userId,
+                    age: patientData.age,
+                    numeroTel: patientData.tel,
+                    motif: insertedNotificationData.MOTIF,
+                    atcds: insertedNotificationData.ATCD,
+                    nbJourApporte: insertedNotificationData.NB_JOUR_A,
+                    files: ["null"]
+                }
+            } else {
+                throw 'getNotificationFullData() | insertedNotificationData = null';
             }
+        } else {
+            throw 'getNotificationFullData() | patientData = null';
         }
+    } catch (err) {
+        console.log(err)
     }
 }
 // 
 async function getNotificationsForMedecin(medecinId) {
-    let notifications = await _DB.notificationsByMedecin(medecinId);
-    let fullNotifications = [];
-    if (notifications != null) {
-        for (let i = 0; i < notifications.length; i++) {
-            fullNotifications.push(await getNotificationFullData(notifications[i].MATRICULE_PAT));
+    try {
+        let notifications = await _DB.notificationsByMedecin(medecinId);
+        let fullNotifications = [];
+        if (notifications != null) {
+            for (let i = 0; i < notifications.length; i++) {
+                fullNotifications.push(await getNotificationFullData(notifications[i].MATRICULE_PAT));
+            }
+        } else {
+            console.log('getNotificationsForMedecin() | no notifications were found !');
+            // throw 'getNotificationsForMedecin() | notifications = null';
         }
-    } else
-        console.log('getNotificationsForMedecin() | no notifications were found !');
-    // 
-    return fullNotifications;
+        // 
+        return fullNotifications;
+    } catch (err) {
+        console.log(err);
+    }
 }
 // 
 async function acceptedMedecinNotifications(medecinId) {
-    return await _DB.getAcceptedMedecinNotificationsInfos(medecinId);
+    try {
+        return await _DB.getAcceptedMedecinNotificationsInfos(medecinId);
+    } catch (err) {
+        console.log(err);
+    }
 }
 // 
 async function unlinkMedecinFromRooms(medecinId) {
-    console.log('------');
-    return await _DB.customDataUpdate({
-        MATRICULE_MED: null
-    }, medecinId, {
-        table: "room",
-        id: "MATRICULE_MED"
-    });
+    try {
+        console.log('------');
+        return await _DB.customDataUpdate({
+            MATRICULE_MED: null
+        }, medecinId, {
+            table: "room",
+            id: "MATRICULE_MED"
+        });
+    } catch (err) {
+        console.log(err);
+    }
 }
-// 
-// 
 // 
 // ROUTES
 __APP.get('/', (req, res) => {
@@ -414,89 +523,140 @@ __APP.get('/patient/contact', (req, res) => {
 });
 // 
 __APP.post('/userTypeById', async (req, res) => {
-    let result = 'null';
-    if (req.body.matricule != null)
-        result = await _DB.getTypeById(req.body.matricule);
-    res.end(result);
+    try {
+        let result = 'null';
+        if (req.body.matricule != null)
+            result = await _DB.getTypeById(req.body.matricule);
+        console.log('/userTypeById | result => ', result);
+        res.end(result);
+    } catch (err) {
+        res.end('platformFail');
+    }
 });
 __APP.post('/listeConsultationFields', async (req, res) => {
-    console.log('******');
-    let villes = await _DB.getVilles();
-    console.log('/listeConsultationFields | villes => ', villes);
-    let proffess = await _DB.getDataAll("specialites", '');
-    console.log('/listeConsultationFields | proffess => ', proffess);
-    res.end(JSON.stringify({
-        villes: villes,
-        proffess: proffess
-    }));
+    try {
+        console.log('******');
+        let villes = await _DB.getVilles();
+        console.log('/listeConsultationFields | villes => ', villes);
+        let proffess = await _DB.getDataAll("specialites", '');
+        console.log('/listeConsultationFields | proffess => ', proffess);
+        res.end(JSON.stringify({
+            villes: villes,
+            proffess: proffess
+        }));
+    } catch (err) {
+        res.end('platformFail');
+    }
 });
 __APP.post('/getNotifications', async (req, res) => {
-    let result = [];
-    if (req.body.matricule != null)
-        result = await getNotificationsForMedecin(req.body.matricule);
-    res.end(JSON.stringify(result));
+    try {
+        let result = [];
+        if (req.body.matricule != null)
+            result = await getNotificationsForMedecin(req.body.matricule);
+        console.log('/getNotifications | result => ', result);
+        res.end(JSON.stringify(result));
+    } catch (err) {
+        res.end('platformFail');
+    }
+
 });
 __APP.post('/getMedecinActiveNotifs', async (req, res) => {
-    console.log('******');
-    let retData = [];
-    if (req.body.matricule != null)
-        retData = await acceptedMedecinNotifications(req.body.matricule);
-    res.end(JSON.stringify(retData));
+    try {
+        console.log('******');
+        let retData = [];
+        if (req.body.matricule != null)
+            retData = await acceptedMedecinNotifications(req.body.matricule);
+        console.log('/getMedecinActiveNotifs | retData => ', retData);
+        res.end(JSON.stringify(retData));
+    } catch (err) {
+        res.end('platformFail');
+    }
+
 });
 __APP.post('/getAccessNotif', async (req, res) => {
-    console.log('******');
-    let retData = false;
-    if (req.body.matricule != null)
-        retData = await _DB.checkPatientActiveNotifsExistance(req.body.matricule);
-    res.end(retData.toString());
+    try {
+        console.log('******');
+        let retData = false;
+        if (req.body.matricule != null)
+            retData = await _DB.checkPatientActiveNotifsExistance(req.body.matricule);
+        console.log('/getAccessNotif | retData => ', retData);
+        res.end(retData.toString());
+    } catch (err) {
+        res.end('platformFail');
+    }
+
 });
 __APP.post('/getMesssages', async (req, res) => {
-    console.log('******');
-    let retData = [];
-    if (req.body.matricule != null) {
-        let room = await _DB.getDataAll('room', `where MATRICULE_PAT = '${req.body.matricule}' or MATRICULE_MED = '${req.body.matricule}'`);
-        room = room[0];
-        if (req.body.room.length > 0)
-            room.ID_ROOM = req.body.room;
-        console.log(`getMesssages() | room => `, room);
-        if (Object.keys(room).length > 0) {
-            let msgs = await _DB.getDataAll('message', `where ID_ROOM = '${room.ID_ROOM}' order by DATE_ENVOI asc`);
-            if (msgs.length > 0)
-                retData = msgs;
-            else console.log('/getMesssages | msgs = no messages !');
-        } else console.log('/getMesssages | room not found');
-    } else console.log('/getMesssages | matricule = null');
-    res.end(JSON.stringify(retData));
+    try {
+        console.log('******');
+        let retData = [];
+        if (req.body.matricule != null) {
+            let room = await _DB.getDataAll('room', `where MATRICULE_PAT = '${req.body.matricule}' or MATRICULE_MED = '${req.body.matricule}'`);
+            if (room.length > 0) {
+                room = room[0];
+                if (req.body.room.length > 0 || req.body.room != null)
+                    room.ID_ROOM = req.body.room;
+                console.log(`getMesssages() | room => `, room);
+                if (Object.keys(room).length > 0) {
+                    let msgs = await _DB.getDataAll('message', `where ID_ROOM = '${room.ID_ROOM}' order by ID_MESSAGE asc ,DATE_ENVOI asc`);
+                    if (msgs.length > 0)
+                        retData = msgs;
+                    else {
+                        console.log('/getMesssages | msgs = no messages !');
+                    }
+                } else {
+                    console.log('/getMesssages | room not found');
+                    throw 'No room was found';
+                }
+            } else {
+                console.log('/getMesssages | no room was found');
+                throw 'No room was found';
+            }
+        } else {
+            console.log('/getMesssages | matricule = null');
+            throw 'Matricule invalid';
+        }
+        res.end(JSON.stringify(retData));
+    } catch (err) {
+        res.end('platformFail');
+    }
 });
 // 
 __APP.post('/getNotYetAcceptedRequest', async (req, res) => {
-    console.log('******');
-    let retData = false;
-    if (req.body.matricule != null)
-        retData = await _DB.getNotacceptedYetNotifs(req.body.matricule);
-    res.end(retData.toString());
+    try {
+        console.log('******');
+        let retData = false;
+        if (req.body.matricule != null)
+            retData = await _DB.getNotacceptedYetNotifs(req.body.matricule);
+        console.log('/getNotYetAcceptedRequest | retData => ', retData);
+        res.end(retData.toString());
+    } catch (err) {
+        res.end('platformFail');
+    }
 });
 // 
 __APP.post('/finalizeConsultation', async (req, res) => {
-    let status = false;
-    let notifId = await _DB.getNotifIdByRoomId(req.body.room, req.body.matricule);
-    console.log(`finalizeConsultation() | notifId => `, notifId);
-    if (notifId != null) {
-        let consultationFinished = await _DB.customDataUpdate({
-            JOUR_REPOS: 1
-        }, notifId, {
-            table: "consultation",
-            id: "ID_PRECONS"
-        });
-        console.log('finalizeConsultation() | consultationFinished => ', consultationFinished);
+    try {
+        let status = false;
+        let notifId = await _DB.getNotifIdByRoomId(req.body.room, req.body.matricule);
+        console.log(`finalizeConsultation() | notifId => `, notifId);
+        if (notifId != null) {
+            let consultationFinished = await _DB.customDataUpdate({
+                JOUR_REPOS: 1
+            }, notifId, {
+                table: "consultation",
+                id: "ID_PRECONS"
+            });
+            console.log('finalizeConsultation() | consultationFinished => ', consultationFinished);
+            // 
+            status = Boolean(consultationFinished);
+        }
         // 
-        status = Boolean(consultationFinished);
+        res.end(status.toString());
+    } catch (err) {
+        res.end('platformFail');
     }
-    // 
-    res.end(status.toString());
 });
-// __APP.post('/')
-// 
 // 
 //START SERVER
 __SERVER.listen(__PORT, '0.0.0.0', () => {

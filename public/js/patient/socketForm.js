@@ -4,6 +4,10 @@ __GLOBAL_SOCKET.on('connect', () => {
     console.log('Socket Connected ! userId => ', localStorage.getItem('matricule') || null);
     __GLOBAL_SOCKET.emit('newUser', localStorage.getItem('matricule'));
 });
+__GLOBAL_SOCKET.on('platformFail', async () => {
+    // console.log('some error in code | refresh page');
+    let btnClickRes = await logServerError();
+});
 __GLOBAL_SOCKET.on('queryResult', data => {
     switch (data.status) {
         case 0:

@@ -11,23 +11,25 @@ $(document).ready(async () => {
     // 
     // 
     let response = await $.post('/listeConsultationFields', {}).promise();
-    response = JSON.parse(response);
-    console.log('/listeConsultationFields | response => ', response);
-    response.villes.forEach(element => {
-        let slctOption = document.createElement('option');
-        slctOption.setAttribute('value', element.VILLE);
-        slctOption.innerText = element.VILLE;
-        // 
-        document.getElementById('cityOptions').appendChild(slctOption);
-    });
-    //
-    response.proffess.forEach(element => {
-        let slctOption = document.createElement('option');
-        slctOption.setAttribute('value', element.ID_SPEC);
-        slctOption.innerText = element.NOM_SPEC;
-        // 
-        document.getElementById('profsOptions').appendChild(slctOption);
-    });
+    if (response != 'platformFail') {
+        response = JSON.parse(response);
+        console.log('/listeConsultationFields | response => ', response);
+        response.villes.forEach(element => {
+            let slctOption = document.createElement('option');
+            slctOption.setAttribute('value', element.VILLE);
+            slctOption.innerText = element.VILLE;
+            // 
+            document.getElementById('cityOptions').appendChild(slctOption);
+        });
+        //
+        response.proffess.forEach(element => {
+            let slctOption = document.createElement('option');
+            slctOption.setAttribute('value', element.ID_SPEC);
+            slctOption.innerText = element.NOM_SPEC;
+            // 
+            document.getElementById('profsOptions').appendChild(slctOption);
+        });
+    } else let btnClickRes = await logServerError();
     // 
     document.getElementById('btnEnvoyer').addEventListener('click', async () => {
         let ville = document.getElementById('cityOptions').options[document.getElementById('cityOptions').selectedIndex].value;
@@ -41,23 +43,25 @@ $(document).ready(async () => {
     let exists = await $.post('/getAccessNotif', {
         matricule: localStorage.getItem('matricule') || null
     }).promise();
-    // exists = Boolean(exists);
-    console.log('/getAccessNotif | exists => ', exists);
-    if (exists != 'false') {
-        addNotification();
-        // waiting();
-    }
+    if (exists != 'platformFail') {
+        // exists = Boolean(exists);
+        console.log('/getAccessNotif | exists => ', exists);
+        if (exists != 'false') {
+            addNotification();
+            // waiting();
+        }
+    } else let btnClickRes = await logServerError();
     // 
     // 
     let notAcceptedRequests = await $.post('/getNotYetAcceptedRequest', {
         matricule: localStorage.getItem('matricule') || null
     }).promise();
-    // 
-    if (notAcceptedRequests != 'false') {
-        waiting();
-    }
-
-
+    if (notAcceptedRequests != 'platformFail') {
+        // 
+        if (notAcceptedRequests != 'false') {
+            waiting();
+        }
+    } else let btnClickRes = await logServerError();
 });
 // 
 var state = false,

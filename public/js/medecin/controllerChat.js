@@ -11,19 +11,19 @@ $(document).ready(async () => {
         room: roomMedcin
     }).promise();
     // 
-    console.log(localStorage.getItem('matricule'));
-    // 
-    msgs = JSON.parse(msgs);
-    // console.log(msgs);
-    // 
-    for (let i = 0; i < msgs.length; i++) {
-        let type = 'receivedMessage';
-        if (msgs[i].MATRICULE_EMETTEUR == localStorage.getItem('matricule'))
-            type = 'sentMessage';
+    if (msgs != 'platformFail') {
+        msgs = JSON.parse(msgs);
+        // console.log(msgs);
         // 
-        createMsgBox(msgs[i], type);
-    }
-    scrollDown();
+        for (let i = 0; i < msgs.length; i++) {
+            let type = 'receivedMessage';
+            if (msgs[i].MATRICULE_EMETTEUR == localStorage.getItem('matricule'))
+                type = 'sentMessage';
+            // 
+            createMsgBox(msgs[i], type);
+        }
+        scrollDown();
+    } else let btnClickRes = await logServerError();
     // 
     // SEND MSG BTN
     document.getElementById('chatSendBtn').addEventListener('click', () => {
@@ -39,17 +39,19 @@ $(document).ready(async () => {
             matricule: localStorage.getItem('matricule'),
             room: roomMedcin
         }).promise();
-        // 
-        console.log(`patientSubmit() | finaleResult => `, finaleResult);
-        // 
-        if (finaleResult == 'False')
-            alert('ERROR!');
-        else {
-            alert('La consultation est terminée, vous serez redirigé dans 3 secondes');
-            setTimeout(() => {
-                window.location.assign('/medecin/notifications');
-            }, 3000);
-        }
+        if (finaleResult != 'platformFail') {
+            // 
+            console.log(`patientSubmit() | finaleResult => `, finaleResult);
+            // 
+            if (finaleResult == 'False')
+                alert('ERROR!');
+            else {
+                alert('La consultation est terminée, vous serez redirigé dans 3 secondes');
+                setTimeout(() => {
+                    window.location.assign('/medecin/notifications');
+                }, 3000);
+            }
+        } else let btnClickRes = await logServerError();
     });
     // 
     document.getElementById('chatVideoBtn').addEventListener('click', async () => {

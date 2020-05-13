@@ -8,7 +8,8 @@ body {
 /*  */
 #toasts {
     height: 30vh;
-    width: 100vw;
+    /* width: 100vw; */
+    width: 100%;
     position: absolute;
     bottom: 0;
     display: flex;
@@ -19,6 +20,7 @@ body {
     box-sizing: border-box;
     /*  */
     z-index: 10;
+    pointer-events: none;
 }
 
 #toastsContainer {
@@ -28,6 +30,7 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
+    pointer-events: all;
 }
 
 .toastBox {
@@ -50,7 +53,7 @@ body {
     z-index: 13;
     /* backdrop-filter: blur(5px); */
     /* opacity: 0; */
-    animation: showUp 400ms ease 0s 1;
+    animation: showUp 400ms ease;
     transition: all 400ms ease;
 }
 
@@ -69,6 +72,7 @@ body {
     }
 }
 
+/*  */
 .toastFadeOut {
     animation: fadeOut 400ms ease 0s 1;
 }
@@ -209,6 +213,11 @@ body {
 .toastError {
     background-color: #ff4848;
     color: white;
+    /* animation: shake 0.4s cubic-bezier(.36, .07, .19, .97) both; */
+}
+
+.toastError .toastText {
+    flex-direction: column;
 }
 
 .toastError .toastCross {
@@ -222,6 +231,48 @@ body {
 .toastError .toastCross path {
     fill: white;
 }
+
+.toastError .toastLink {
+    color: #1d1d1d;
+    margin-left: 0px;
+}
+
+.toastError .buttonMain {
+    background: white;
+    box-shadow: inset 0px 0px 0px 1px white;
+    color: #ff4848;
+}
+
+.toastError .buttonMain:hover {
+    color: white;
+    background: #ff4848;
+    /* box-shadow: inset 0px 0px 0px 1px black; */
+}
+
+@keyframes shake {
+
+    10%,
+    90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+
+    20%,
+    80% {
+        transform: translate3d(2px, 0, 0);
+    }
+
+    30%,
+    50%,
+    70% {
+        transform: translate3d(-4px, 0, 0);
+    }
+
+    40%,
+    60% {
+        transform: translate3d(4px, 0, 0);
+    }
+}
+
 
 /*  */
 .toastSuccess {

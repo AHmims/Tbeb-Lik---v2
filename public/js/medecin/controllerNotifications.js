@@ -3,18 +3,22 @@ $(document).ready(async () => {
     let inActiveNotifs = await $.post('/getNotifications', {
         matricule: localStorage.getItem('matricule') || null
     }).promise();
-    // 
-    inActiveNotifs = JSON.parse(inActiveNotifs);
-    generateNotification(inActiveNotifs);
-    // THE NOTIFICATIONS THIS DOCTOR ACCEPTED
-    let activeNotifs = await $.post('/getMedecinActiveNotifs', {
-        matricule: localStorage.getItem('matricule') || null
-    }).promise();
-    // 
-    generateActiveNotification(JSON.parse(activeNotifs));
-    // 
+    if (inActiveNotifs != 'platformFail') {
+        // 
+        inActiveNotifs = JSON.parse(inActiveNotifs);
+        generateNotification(inActiveNotifs);
+        // THE NOTIFICATIONS THIS DOCTOR ACCEPTED
+        let activeNotifs = await $.post('/getMedecinActiveNotifs', {
+            matricule: localStorage.getItem('matricule') || null
+        }).promise();
+        if (activeNotifs != 'platformFail') {
+            // 
+            generateActiveNotification(JSON.parse(activeNotifs));
+            // 
 
-    // generateNotification(response);
+            // generateNotification(response);
+        } else let btnClickRes = await logServerError();
+    } else let btnClickRes = await logServerError();
 });
 // 
 function generateNotification(array) {

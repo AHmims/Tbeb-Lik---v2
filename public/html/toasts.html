@@ -30,6 +30,7 @@
         <input type="button" value="link" id="btn-ok">
         <input type="button" value="ok no" id="btn-ok-no">
     </div>
+    <input type="button" value="teting" id="btnTesting" />
     <script src="../js/toast.js"></script>
     <script>
         document.getElementById('btn-n').addEventListener('click', async () => {
@@ -196,6 +197,35 @@
         // 
         // 
         // 
+        document.getElementById('btnTesting').addEventListener('click', async () => {
+            var res = await logServerError();
+            console.log(res);
+        });
+        async function logServerError() {
+            var params = {
+                content: "Une erreur s'est produite lors de l'exécution de votre demande.<br/>Si l'erreur persiste merci de nous contacter.<br/>",
+                type: "error",
+                behavior: {
+                    type: "advanced",
+                    controls: [{
+                            type: "button",
+                            appearance: "main",
+                            text: "Continuer",
+                            callback: "cancel"
+                        },
+                        {
+                            type: "link",
+                            appearance: "link",
+                            text: "actualiser la page.",
+                            callback: window.location.href
+                        }
+                    ]
+                },
+                duration: "active"
+            }
+            let btnRes = await toast(params);
+            return btnRes;
+        }
     </script>
 </body>
 

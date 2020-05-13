@@ -62,7 +62,7 @@ function toast(params) {
             toast.setAttribute('class', 'toastBox');
             toastText.setAttribute('class', 'toastText');
             // 
-            toastText.innerText = params.content;
+            toastText.innerHTML = params.content;
             // 
             switch (params.type) {
                 case 'error':

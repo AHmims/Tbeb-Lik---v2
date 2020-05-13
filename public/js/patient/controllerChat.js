@@ -25,16 +25,18 @@ $(document).ready(async () => {
         room: ''
     }).promise();
     // 
-    msgs = JSON.parse(msgs);
-    // 
-    for (let i = 0; i < msgs.length; i++) {
-        let type = 'receivedMessage';
-        if (msgs[i].MATRICULE_EMETTEUR == localStorage.getItem('matricule'))
-            type = 'sentMessage';
+    if (msgs != 'platformFail') {
+        msgs = JSON.parse(msgs);
         // 
-        createMsgBox(msgs[i], type);
-    }
-    scrollDown();
+        for (let i = 0; i < msgs.length; i++) {
+            let type = 'receivedMessage';
+            if (msgs[i].MATRICULE_EMETTEUR == localStorage.getItem('matricule'))
+                type = 'sentMessage';
+            // 
+            createMsgBox(msgs[i], type);
+        }
+        scrollDown();
+    } else let btnClickRes = await logServerError();
 });
 // 
 function displayReceivedMsg(msg) {

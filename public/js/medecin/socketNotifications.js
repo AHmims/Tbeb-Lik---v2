@@ -8,6 +8,16 @@ __GLOBAL_SOCKET.on('connect', () => {
 __GLOBAL_SOCKET.on('activeNotification', (data) => {
     generateActiveNotification(data);
 });
+__GLOBAL_SOCKET.on('notifAlreadyAccepted', () => {
+    // 
+    // 
+    console.log('notif accepted, insert pop up here | and refresh');
+});
+// 
+__GLOBAL_SOCKET.on('platformFail', async () => {
+    // console.log('some error in code | refresh page');
+    let btnClickRes = await logServerError();
+});
 // 
 // 
 __HUB_SOCKET.on('receivedNotification', data => {
