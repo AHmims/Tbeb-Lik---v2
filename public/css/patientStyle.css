@@ -877,6 +877,7 @@ footer {
     border-top-right-radius: 20px;
     height: 500px !important;
     border-bottom-left-radius: 0 !important;
+    flex: none !important;
   }
 
   #videoSectionHost {
