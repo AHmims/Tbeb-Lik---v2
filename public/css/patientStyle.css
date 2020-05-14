@@ -555,7 +555,7 @@ footer {
   border-bottom-left-radius: 20px;
   overflow: hidden;
   display: none;
-  will-change: transform;
+  will-change: transform !important;
 }
 
 #content #smallblox #videoSection #videoSectionBody {
@@ -579,7 +579,7 @@ footer {
   border-radius: 20px;
   overflow: hidden;
   box-shadow: 0px 0px 20px #00000029;
-  will-change: transform;
+  will-change: transform !important;
 }
 
 #content #smallblox #videoSection #videoSectionBody #videoSectionHost #hostVideoPoster {
