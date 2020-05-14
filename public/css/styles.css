@@ -407,6 +407,7 @@ video {
   font-weight: 700;
   font-size: 24px;
   color: #004348;
+  text-align: left;
 }
 
 #content .messageContainer {

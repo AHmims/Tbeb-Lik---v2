@@ -453,6 +453,7 @@ body {
   font-weight: 700;
   font-size: 24px;
   color: #004348;
+  text-align: left;
 }
 
 .radiusRight {
@@ -655,6 +656,7 @@ body {
   font-size: 24px;
   font-weight: 600;
   color: #004348;
+  text-align: left;
 }
 
 .contSubRow {
