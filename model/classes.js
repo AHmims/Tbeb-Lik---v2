@@ -96,6 +96,13 @@ class message {
     }
 }
 // 
+class medecinInbox {
+    constructor(idPreCons, Matricule_Med) {
+        this.idPreCons = idPreCons;
+        this.Matricule_Med = Matricule_Med;
+    }
+}
+// 
 module.exports = {
     medecin,
     patients,
@@ -104,5 +111,6 @@ module.exports = {
     preConsultation,
     room,
     appUser,
-    message
+    message,
+    medecinInbox
 }

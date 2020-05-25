@@ -29,12 +29,12 @@ function generateNotification(array) {
 // 
 function generateActiveNotification(activeNotifs) {
     if (activeNotifs.length > 0)
-        document.getElementById('navChatUrl').setAttribute('href', `/medecin/contact?room=${activeNotifs[0].ID_ROOM}&patient=${activeNotifs[0].MATRICULE_PAT}`);
+        document.getElementById('navChatUrl').setAttribute('href', `/medecin/contact?room=${activeNotifs[0].roomId}&patient=${activeNotifs[0].MATRICULE_PAT}`);
     let activeNotifications = document.getElementsByClassName('activeNotificationBox');
     activeNotifs.forEach(notif => {
         let exists = false;
         for (let i = 0; i < activeNotifications.length; i++) {
-            if (activeNotifications[i].getAttribute('data-notifId') == notif.ID_PRECONS)
+            if (activeNotifications[i].getAttribute('data-notifId') == notif.idPreCons)
                 exists = true;
         }
         if (!exists)

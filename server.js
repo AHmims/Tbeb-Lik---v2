@@ -103,7 +103,8 @@ __IO.on('connection', socket => {
                         // SEND NOTIFS TO DOCTORS
                         let notifData = await getNotificationFullData(appUserData.userId);
                         listMedecins.forEach(async medecin => {
-                            // console.log('sendNotif() | inboxInsertResult => ', inboxInsertResult);
+                            let inboxInsertResult = await _DB.insertData(new _CLASSES.medecinInbox(notifData.index, medecin.Matricule_Med));
+                            console.log('sendNotif() | inboxInsertResult => ', inboxInsertResult);
                             __HUB.to(`/medecinHub#${medecin.socket}`).emit('receivedNotification', notifData);
                         });
                         //SEND FEEDBACK TO THE SENDER
@@ -447,7 +448,7 @@ async function getNotificationFullData(userId) {
         console.log(err)
     }
 }
-// 
+// ADAPTED
 async function getNotificationsForMedecin(medecinId) {
     try {
         let notifications = await _DB.notificationsByMedecin(medecinId);
@@ -466,7 +467,7 @@ async function getNotificationsForMedecin(medecinId) {
         console.log(err);
     }
 }
-// 
+// ADAPTED
 async function acceptedMedecinNotifications(medecinId) {
     try {
         return await _DB.getAcceptedMedecinNotificationsInfos(medecinId);
@@ -512,7 +513,7 @@ __APP.get('/patient/contact', (req, res) => {
     res.sendFile(__PATH.join(__dirname, 'public', 'html', 'patientChat.html'));
     // res.sendFile(__PATH.join(__dirname, 'public', 'html', 'patientChat-barebones.html'));
 });
-// 
+// ADAPTED
 __APP.post('/userTypeById', async (req, res) => {
     try {
         let result = 'null';
@@ -524,12 +525,13 @@ __APP.post('/userTypeById', async (req, res) => {
         res.end('platformFail');
     }
 });
+// ADAPTED
 __APP.post('/listeConsultationFields', async (req, res) => {
     try {
         console.log('******');
         let villes = await _DB.getVilles();
         console.log('/listeConsultationFields | villes => ', villes);
-        let proffess = await _DB.getDataAll("specialites", '');
+        let proffess = await _DB.getDataAll("specialites");
         console.log('/listeConsultationFields | proffess => ', proffess);
         res.end(JSON.stringify({
             villes: villes,
@@ -539,6 +541,7 @@ __APP.post('/listeConsultationFields', async (req, res) => {
         res.end('platformFail');
     }
 });
+// ADAPETD
 __APP.post('/getNotifications', async (req, res) => {
     try {
         let result = [];
@@ -551,6 +554,7 @@ __APP.post('/getNotifications', async (req, res) => {
     }
 
 });
+// ADAPTED
 __APP.post('/getMedecinActiveNotifs', async (req, res) => {
     try {
         console.log('******');
@@ -564,6 +568,7 @@ __APP.post('/getMedecinActiveNotifs', async (req, res) => {
     }
 
 });
+// ADAPTED
 __APP.post('/getAccessNotif', async (req, res) => {
     try {
         console.log('******');
@@ -577,6 +582,7 @@ __APP.post('/getAccessNotif', async (req, res) => {
     }
 
 });
+// ADAPTED
 __APP.post('/getMesssages', async (req, res) => {
     try {
         console.log('******');
@@ -586,10 +592,10 @@ __APP.post('/getMesssages', async (req, res) => {
             if (room.length > 0) {
                 room = room[0];
                 if (req.body.room.length > 0 && req.body.room != null)
-                    room.ID_ROOM = req.body.room;
+                    room.roomId = req.body.room;
                 console.log(`/getMesssages | room => `, room);
                 if (Object.keys(room).length > 0) {
-                    let msgs = await _DB.getDataAll('message', `where ID_ROOM = '${room.ID_ROOM}' order by ID_MESSAGE asc ,DATE_ENVOI asc`);
+                    let msgs = await _DB.getDataAll('message', `where roomId = '${room.roomId}' order by messageId asc ,date_envoi asc`);
                     if (msgs.length > 0)
                         retData = msgs;
                     else {
@@ -612,7 +618,7 @@ __APP.post('/getMesssages', async (req, res) => {
         res.end('platformFail');
     }
 });
-// 
+// ADAPTED
 __APP.post('/getNotYetAcceptedRequest', async (req, res) => {
     try {
         console.log('******');
@@ -625,7 +631,7 @@ __APP.post('/getNotYetAcceptedRequest', async (req, res) => {
         res.end('platformFail');
     }
 });
-// 
+// ADAPTED
 __APP.post('/finalizeConsultation', async (req, res) => {
     try {
         let status = false;
@@ -636,7 +642,7 @@ __APP.post('/finalizeConsultation', async (req, res) => {
                 JOUR_REPOS: 1
             }, notifId, {
                 table: "consultation",
-                id: "ID_PRECONS"
+                id: "isPreCons"
             });
             console.log('finalizeConsultation() | consultationFinished => ', consultationFinished);
             // 
@@ -648,7 +654,7 @@ __APP.post('/finalizeConsultation', async (req, res) => {
         res.end('platformFail');
     }
 });
-// 
+// ADAPTED
 __APP.post('/medecinChatBasicData', async (req, res) => {
     try {
         console.log('123456789123456789');

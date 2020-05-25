@@ -69,7 +69,7 @@ function generateSemiNotifBox(data) {
     // 🎲
     var container = makeElement('div');
     container.setAttribute('class', 'box-notif space-between-15px activeNotificationBox');
-    container.setAttribute('data-notifId', data.ID_PRECONS);
+    container.setAttribute('data-notifId', data.idPreCons);
     // //
     var cont1 = makeElement('div');
     cont1.setAttribute('class', 'space-between-2_5px vertical');
@@ -113,7 +113,7 @@ function generateSemiNotifBox(data) {
     btn2.innerText = 'Contacter';
     if (data.JOUR_REPOS == 1)
         btn2.innerText = "Reviser";
-    btn2.setAttribute('href', `/medecin/contact?room=${data.ID_ROOM}&patient=${data.MATRICULE_PAT}`);
+    btn2.setAttribute('href', `/medecin/contact?room=${data.roomId}&patient=${data.MATRICULE_PAT}`);
     // 
     cont7.appendChild(btn2);
     // //

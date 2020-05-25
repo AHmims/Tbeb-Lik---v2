@@ -236,10 +236,10 @@ async function getRoomIdByNotifId(notifId) {
         console.error('error :', err);
     }
 }
-//
+// ADAPTED
 async function notificationsByMedecin(medecinId) {
     try {
-        let req = `select ID_PRECONS,MATRICULE_PAT from preconsultation where ACCEPTE = false and ID_PRECONS in (select ID_PRECONS from medecinInbox where MATRICULE_MED = ?)`,
+        let req = `select idPreCons,MATRICULE_PAT from preconsultation where accepted = false and idPreCons in (select idPreCons from medecinInbox where Matricule_Med = ?)`,
             cnx = await db.connect(),
             res = await cnx.query(req, [medecinId]);
         cnx.release();
@@ -249,11 +249,11 @@ async function notificationsByMedecin(medecinId) {
         console.error('error :', err);
     }
 }
-// 
+// ADAPTED
 async function getAcceptedMedecinNotificationsInfos(medecinId) {
     console.log(medecinId);
     try {
-        let req = `select p.ID_PRECONS,concat(pt.NOM_PAT,' ',pt.PRENOM_PAT) as nom,p.DATE_CREATION,c.DATE_CONSULTATION,c.JOUR_REPOS,p.MATRICULE_PAT,au.ID_ROOM from patient as pt,preconsultation as p,consultation as c,appUser as au where p.ID_PRECONS = c.ID_PRECONS and c.MATRICULE_MED = ? and p.ACCEPTE = true and pt.MATRICULE_PAT = p.MATRICULE_PAT and au.ID_USER = p.MATRICULE_PAT`,
+        let req = `select p.idPreCons,concat(pt.NOM_PAT,' ',pt.Prenom_PAT) as nom,p.dateCreation,c.DATE_CONSULTATION,c.JOUR_REPOS,p.MATRICULE_PAT,au.roomId from patient as pt,preconsultation as p,consultation as c,appUser as au where p.idPreCons = c.idPreCons and c.Matricule_Med = ? and p.accepted = true and pt.MATRICULE_PAT = p.MATRICULE_PAT and au.userId = p.MATRICULE_PAT`,
             cnx = await db.connect(),
             res = await cnx.query(req, [medecinId]);
         cnx.release();
@@ -289,10 +289,10 @@ async function getRoomIdBySocketId(socketId) {
         console.error('error :', err);
     }
 }
-// 
+// ADAPTED
 async function getNotacceptedYetNotifs(patientId) {
     try {
-        let req = `select * from preconsultation where MATRICULE_PAT = ? and ID_PRECONS not in(select ID_PRECONS from consultation)`,
+        let req = `select * from preconsultation where MATRICULE_PAT = ? and idPreCons not in(select idPreCons from consultation)`,
             cnx = await db.connect(),
             res = await cnx.query(req, [patientId]);
         cnx.release();
@@ -302,15 +302,15 @@ async function getNotacceptedYetNotifs(patientId) {
         console.error('error :', err);
     }
 }
-// 
+// ADAPETD
 async function getNotifIdByRoomId(roomId, medecinId) {
     try {
-        let req = `SELECT p.ID_PRECONS FROM preconsultation AS p,room AS r WHERE p.MATRICULE_PAT = r.MATRICULE_PAT AND r.ID_ROOM = ? AND r.MATRICULE_MED = ? AND p.ID_PRECONS in (SELECT ID_PRECONS FROM consultation WHERE JOUR_REPOS = -1)`,
+        let req = `SELECT p.idPreCons FROM preconsultation AS p,room AS r WHERE p.MATRICULE_PAT = r.userPatientMatricule AND r.roomId = ? AND r.userMedecinMatricule = ? AND p.idPreCons in (SELECT idPreCons FROM consultation WHERE JOUR_REPOS = -1)`,
             cnx = await db.connect(),
             res = await cnx.query(req, [roomId, medecinId]);
         cnx.release();
         // 
-        return res[0].length > 0 ? res[0][0].ID_PRECONS : null;
+        return res[0].length > 0 ? res[0][0].idPreCons : null;
     } catch (err) {
         console.error('error :', err);
     }
@@ -329,10 +329,10 @@ async function customDataDelete(params, id) {
         console.error('error :', err);
     }
 }
-// 
+// ADAPTED
 async function getMedecinNameWithConsul(patientId) {
     try {
-        let req = `select m.NOM_MED,s.NOM_SPEC from medecin as m,specialites as s where m.ID_SPEC = s.ID_SPEC and MATRICULE_MED in (select MATRICULE_MED from appUser where ID_USER = ?)`,
+        let req = `select m.NOM_MED,s.NOM_SPEC from medecin as m,specialites as s where m.ID_SPEC = s.ID_SPEC and m.Matricule_Med in (select Matricule_Med from appUser where userId = ?)`,
             cnx = await db.connect(),
             res = await cnx.query(req, [patientId]);
         cnx.release();
