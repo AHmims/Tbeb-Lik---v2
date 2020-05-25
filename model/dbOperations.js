@@ -89,6 +89,7 @@ async function getAppUserCustomDataBySocket(keys, socketId) {
     }
 }
 // EXAMPLE OF KEY {online : false,socket : 'ssss'} | params = {table : "ss",id : "userId"}
+// ADAPTED
 async function customDataUpdate(keyANDvalue, id, params) {
     keyANDvalue = getObjectKeysWithValues(keyANDvalue);
     let strSection = '';
