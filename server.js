@@ -81,44 +81,33 @@ __IO.on('connection', socket => {
             console.log('------');
             console.log('sendNotif() | receivedData => ', data);
             // GET USERID FROM SOCKET
-            let appUserData = await _DB.getAppUserCustomDataBySocket(["ID_USER"], socket.id);
+            let appUserData = await _DB.getAppUserCustomDataBySocket(["userId"], socket.id);
             console.log('sendNotif() | appUserData => ', appUserData);
             if (appUserData != null) {
                 // CHECK IF THE PATIENT GOT ANY ONGOING DEMANDES
-                let exists = await _DB.consultationCheck(appUserData.ID_USER);
+                let exists = await _DB.consultationCheck(appUserData.userId);
                 console.log('sendNotif() | exists => ', exists);
                 if (!exists) {
-                    // GET ONLINE DOCTORS FROM THE GIVEN CITY AND PROFESSIONS
-                    let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession(data.ville, data.proffession);
+                    // v2 => GET ONLINE DOCTORS FROM THE GIVEN CITY AND PROFESSIONS
+                    // V3 => I'LL HARD CODE THE CITY PARAM VALUE SINCE WE DON'T KNOW YET IF
+                    // WE NEED TO SELECT BY CITY OR NOT
+                    // let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession(data.ville, data.proffession);
+                    let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession('cityValue', data.proffession);
                     console.log('sendNotif() | listMedecins => ', listMedecins);
                     if (listMedecins != null) {
                         // INSERT DATA INTO TABLE PRECONSULTATION
-                        let insertRes = await _DB.insertData(new _CLASSES.preConsultation(null, data.date, '', '', -1, false, appUserData.ID_USER));
+                        let insertRes = await _DB.insertData(new _CLASSES.preConsultation(null, data.date, '', '', -1, false, appUserData.userId));
                         console.log('sendNotif() | insertData(preConsultation) => ', insertRes);
-                        // SELECTION DES MEDECINS ET  L'ENVOI DES NOTIFICATIONS
-                        const MAX_NB = listMedecins.length >= 3 ? 3 : listMedecins.length;
-                        console.log('sendNotif() | MAX_NB => ', MAX_NB);
-                        let randomIndexes = [];
-                        while (randomIndexes.length < MAX_NB) {
-                            var index = Math.floor(Math.random() * listMedecins.length);
-                            if (randomIndexes.indexOf(index) == -1) randomIndexes.push(index);
-                        }
-                        // 
-                        console.log('sendNotif() | randomIndexes => ', randomIndexes);
-                        // ARRAY OF MAX 3, OF DOCTORS ID
-                        let tableauDesMedecins = [];
-                        let notifData = await getNotificationFullData(appUserData.ID_USER);
-                        randomIndexes.forEach(async index => {
-                            tableauDesMedecins.push(listMedecins[index].MATRICULE_MED);
-                            let inboxInsertResult = await _DB.insertData(new _CLASSES.medecinInbox(notifData.index, listMedecins[index].MATRICULE_MED));
-                            console.log('sendNotif() | inboxInsertResult => ', inboxInsertResult);
-                            __HUB.to(`/medecinHub#${listMedecins[index].SOCKET}`).emit('receivedNotification', notifData);
+                        // SEND NOTIFS TO DOCTORS
+                        let notifData = await getNotificationFullData(appUserData.userId);
+                        listMedecins.forEach(async medecin => {
+                            // console.log('sendNotif() | inboxInsertResult => ', inboxInsertResult);
+                            __HUB.to(`/medecinHub#${medecin.socket}`).emit('receivedNotification', notifData);
                         });
-                        console.log('sendNotif() | tableauDesMedecins => ', tableauDesMedecins);
                         //SEND FEEDBACK TO THE SENDER
                         __IO.to(socket.id).emit('queryResult', {
                             status: 2,
-                            data: randomIndexes.length
+                            data: listMedecins.length
                         });
                         // 
                     } else {
@@ -127,7 +116,7 @@ __IO.on('connection', socket => {
                             status: 0,
                             data: null
                         });
-                        console.log('sendNotif() | listMedecins : no person found with the given values');
+                        console.log('sendNotif() | listMedecins : no doctor found with the given values');
                     }
                 } else {
                     // YOU ALREADY HAVE AN ONGOING DEMANDE YOU CAN'T SEND ANYMORE SHIT
@@ -232,7 +221,7 @@ __IO.on('connection', socket => {
                 // IF A USER DISCONNECTS SET THEIR STATUS TO OFFLINE
                 let updatingResult = await _DB.customDataUpdate({
                     ONLINE: false
-                }, appUserData.ID_USER, {
+                }, appUserData.userId, {
                     table: "appUser",
                     id: "ID_USER"
                 });
@@ -435,15 +424,15 @@ async function getNotificationFullData(userId) {
             let insertedNotificationData = await _DB.getLastInsertedNotification(userId);
             if (insertedNotificationData != null) {
                 return {
-                    index: insertedNotificationData.ID_PRECONS,
+                    index: insertedNotificationData.idPreCons,
                     name: patientData.nom,
-                    date: insertedNotificationData.DATE_CREATION,
+                    date: insertedNotificationData.dateCreation,
                     matricule: userId,
                     age: patientData.age,
                     numeroTel: patientData.tel,
-                    motif: insertedNotificationData.MOTIF,
-                    atcds: insertedNotificationData.ATCD,
-                    nbJourApporte: insertedNotificationData.NB_JOUR_A,
+                    motif: insertedNotificationData.motif,
+                    atcds: insertedNotificationData.atcd,
+                    nbJourApporte: insertedNotificationData.nbJourA,
                     files: ["null"]
                 }
             } else {

@@ -68,6 +68,7 @@ async function getAppUserCustomData(keys, id) {
         console.error('error :', err);
     }
 }
+// ADAPTED
 async function getAppUserCustomDataBySocket(keys, socketId) {
     let slctdKeys = '';
     keys.forEach(key => {
@@ -76,7 +77,7 @@ async function getAppUserCustomDataBySocket(keys, socketId) {
     slctdKeys = removeLastChar(slctdKeys);
 
     try {
-        let req = `SELECT ${slctdKeys} FROM appUser where appUser.SOCKET = ? LIMIT 1`,
+        let req = `SELECT ${slctdKeys} FROM appUser where appUser.socket = ? LIMIT 1`,
             cnx = await db.connect(),
             res = await cnx.query(req, [socketId]);
         cnx.release();
@@ -147,12 +148,12 @@ async function getVilles() {
         console.error('error :', err);
     }
 }
-// 
+// ADAPTED
 async function getOnlineMedecinsWithCityAndProffession(ville, idSpec) {
     try {
-        let req = `select m.MATRICULE_MED,a.SOCKET FROM medecin as m,appUser as a where m.VILLE = ? and m.ID_SPEC = ? and m.MATRICULE_MED = a.ID_USER and a.TYPE_USER = 'Medecin' and ONLINE  = true`,
+        let req = `select m.Matricule_Med,a.socket FROM medecin as m,appUser as a where m.ID_SPEC = ? and m.Matricule_Med = a.userId and a.userType = 'Medecin'`,
             cnx = await db.connect(),
-            res = await cnx.query(req, [ville, idSpec]);
+            res = await cnx.query(req, [idSpec]);
         cnx.release();
         // 
         return res[0].length > 0 ? res[0] : null;
@@ -173,16 +174,16 @@ async function checkExistence(params, id, constraint = '') {
         console.error('error :', err);
     }
 }
-// 
+// ADAPTED
 async function consultationCheck(userId) {
     let table1Check = await checkExistence({
-        table: "preConsultation",
+        table: "preconsultation",
         id: "MATRICULE_PAT"
-    }, userId, 'AND ACCEPTE = false');
+    }, userId, 'AND accepted = false');
     // 
     if (!table1Check) {
         try {
-            let req = `select count(*) as nb from consultation where JOUR_REPOS <= -1 AND ID_PRECONS in (select ID_PRECONS from preConsultation where MATRICULE_PAT = ?)`,
+            let req = `select count(*) as nb from consultation where JOUR_REPOS <= -1 AND idPreCons in (select idPreCons from preConsultation where MATRICULE_PAT = ?)`,
                 cnx = await db.connect(),
                 res = await cnx.query(req, [userId]);
             cnx.release();
@@ -193,10 +194,10 @@ async function consultationCheck(userId) {
         }
     } else return true;
 }
-// 
+// ADAPTED
 async function getPatientPreConsultationDataById(userId) {
     try {
-        let req = `SELECT concat(NOM_PAT,' ',PRENOM_PAT) AS nom,TIMESTAMPDIFF(YEAR, DATE_NAISSENCE, CURDATE()) AS age,TEL AS tel FROM patient WHERE MATRICULE_PAT = ?`,
+        let req = `SELECT concat(NOM_PAT,' ',Prenom_PAT) AS nom,TIMESTAMPDIFF(YEAR, Date_Naissence, CURDATE()) AS age,Tel AS tel FROM patients WHERE MATRICULE_PAT = ?`,
             cnx = await db.connect(),
             res = await cnx.query(req, [userId]);
         cnx.release();
@@ -206,10 +207,10 @@ async function getPatientPreConsultationDataById(userId) {
         console.error('error :', err);
     }
 }
-// 
+// ADAPTED
 async function getLastInsertedNotification(userId, accepted = false) {
     try {
-        let req = `SELECT * FROM preConsultation WHERE ACCEPTE = ${accepted} AND  MATRICULE_PAT = ? ORDER BY DATE_CREATION DESC LIMIT 1`,
+        let req = `SELECT * FROM preconsultation WHERE accepted = ${accepted} AND MATRICULE_PAT = ? ORDER BY dateCreation DESC LIMIT 1`,
             cnx = await db.connect(),
             res = await cnx.query(req, [userId]);
         cnx.release();
