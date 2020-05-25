@@ -23,6 +23,7 @@ __APP.use(__EXPRESS.static(__PATH.join(__dirname, 'public')));
 const __HUB = __IO.of('/medecinHub');
 //TRAITMENT
 __IO.on('connection', socket => {
+    // ADAPTED
     socket.on('newUser', async (matricule) => {
         try {
             console.log('--------');
@@ -76,6 +77,7 @@ __IO.on('connection', socket => {
             socket.emit('platformFail');
         }
     });
+    // ADAPTED
     socket.on('sendNotif', async data => {
         try {
             console.log('------');
@@ -133,6 +135,7 @@ __IO.on('connection', socket => {
             socket.emit('platformFail');
         }
     });
+    // ADAPTED
     socket.on('acceptNotif', async (notifId, clientDate, comment) => {
         try {
             console.log('------');
@@ -211,19 +214,20 @@ __IO.on('connection', socket => {
             socket.emit('platformFail');
         }
     });
+    // ADAPTED
     socket.on('disconnect', async () => {
         try {
             console.log('--------');
             // let socketId = socket.id;
-            let appUserData = await _DB.getAppUserCustomDataBySocket(["ID_USER", "TYPE_USER", "MATRICULE_MED"], socket.id);
+            let appUserData = await _DB.getAppUserCustomDataBySocket(["userId", "userType", "linkedMedecinMatricule"], socket.id);
             console.log('disconnect() | appUserData => ', appUserData);
             if (appUserData != null) {
                 // IF A USER DISCONNECTS SET THEIR STATUS TO OFFLINE
                 let updatingResult = await _DB.customDataUpdate({
-                    ONLINE: false
+                    online: false
                 }, appUserData.userId, {
                     table: "appUser",
-                    id: "ID_USER"
+                    id: "userId"
                 });
                 // 
                 let roomId = await getRoomIdFromSocket();

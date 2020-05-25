@@ -276,15 +276,15 @@ async function checkPatientActiveNotifsExistance(patientId) {
         console.error('error :', err);
     }
 }
-// 
+// ADAPTED
 async function getRoomIdBySocketId(socketId) {
     try {
-        let req = `SELECT r.ID_ROOM FROM room AS r,appUser as a WHERE (r.MATRICULE_PAT = a.ID_USER OR r.MATRICULE_MED = a.ID_USER) AND a.SOCKET = ?`,
+        let req = `SELECT r.roomId FROM room AS r,appUser as a WHERE (r.userPatientMatricule = a.userId OR r.userMedecinMatricule = a.userId) AND a.socket = ?`,
             cnx = await db.connect(),
             res = await cnx.query(req, [socketId]);
         cnx.release();
         // 
-        return res[0].length > 0 ? res[0][0].ID_ROOM : null;
+        return res[0].length > 0 ? res[0][0].roomId : null;
     } catch (err) {
         console.error('error :', err);
     }
