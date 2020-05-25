@@ -133,7 +133,7 @@ __IO.on('connection', socket => {
             socket.emit('platformFail');
         }
     });
-    socket.on('acceptNotif', async (notifId, clientDate) => {
+    socket.on('acceptNotif', async (notifId, clientDate, comment) => {
         try {
             console.log('------');
             // TO STAY IN THE CLEAR HOW NOTIFICATIONS WORKS,
@@ -150,7 +150,7 @@ __IO.on('connection', socket => {
             // 
             let conultationCheck = await _DB.checkExistence({
                 table: 'consultation',
-                id: 'ID_PRECONS'
+                id: 'idPreCons'
             }, notifId, '');
             // 
             if (!conultationCheck) {
@@ -162,37 +162,37 @@ __IO.on('connection', socket => {
                         // 
                         console.log('acceptNotif() | room => ', room);
                         // REMOVE ME FROM ROOMS
-                        let roomUnlinkMedecin = await unlinkMedecinFromRooms(medecin.ID_USER);
+                        let roomUnlinkMedecin = await unlinkMedecinFromRooms(medecin.userId);
                         console.log('unlinkMedecinFromRooms() | roomUnlinkMedecin => ', roomUnlinkMedecin);
                         // 
                         let patientUpdate = await _DB.customDataUpdate({
-                            MATRICULE_MED: medecin.ID_USER
-                        }, room.MATRICULE_PAT, {
+                            MATRICULE_MED: medecin.userId
+                        }, room.userPatientMatricule, {
                             table: "appUser",
-                            id: "ID_USER"
+                            id: "userId"
                         });
                         console.log('acceptNotif() | patientUpdate => ', patientUpdate);
                         // 
                         let roomUpdate = await _DB.customDataUpdate({
-                            MATRICULE_MED: medecin.ID_USER
-                        }, room.ID_ROOM, {
+                            MATRICULE_MED: medecin.userId
+                        }, room.roomId, {
                             table: "room",
-                            id: "ID_ROOM"
+                            id: "roomId"
                         });
                         console.log('acceptNotif() | roomUpdate => ', roomUpdate);
                         // 
                         let notificationUpdate = await _DB.customDataUpdate({
-                            ACCEPTE: true
+                            accepted: true
                         }, notifId, {
                             table: "preConsultation",
-                            id: "ID_PRECONS"
+                            id: "idPreCons"
                         });
                         console.log('acceptNotif() | notificationUpdate => ', notificationUpdate);
                         // 
-                        let consultationInsert = await _DB.insertData(new _CLASSES.consultation(-1, clientDate, medecin.ID_USER, '', notifId));
+                        let consultationInsert = await _DB.insertData(new _CLASSES.consultation(-1, clientDate, medecin.userId, comment, notifId));
                         console.log('acceptNotif() | consultationInsert => ', consultationInsert);
                         // SEND A SOCKET BACK TO THE SENDER
-                        __IO.to(socket.id).emit('activeNotification', await acceptedMedecinNotifications(medecin.ID_USER));
+                        __IO.to(socket.id).emit('activeNotification', await acceptedMedecinNotifications(medecin.userId));
                         // SEND A PING TO THE PATIENT INFORMING THEM ABOUT THE ACCEPTANCE OF THE NOTIFICATION
                         socket.to(room.ID_ROOM).emit('notificationAccepted');
                     } else {

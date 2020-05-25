@@ -36,6 +36,10 @@ __HUB_SOCKET.on('tist', () => {
 // 
 // FUNCTIONS CALLED FROM >VIEW 
 function acceptNotification(nId) {
-    __GLOBAL_SOCKET.emit('acceptNotif', nId, new Date().toJSON().slice(0, 19).replace('T', ' '));
+    // TO ADAPT
+    var date = new Date().toJSON().slice(0, 19).replace('T', ' '); //DATE SELECTED BY MEDECIN
+    var comment = "medecin comment";
+    // 
+    __GLOBAL_SOCKET.emit('acceptNotif', nId, date, comment);
     __HUB_SOCKET.emit('acceptNotif', nId);
 }
