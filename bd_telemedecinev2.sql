@@ -1,14 +1,35 @@
--- ---EXECUTER CETTER PARTIE APPARTIR DE "root"
-create database tbeblikDBv2;
-use tbeblikDBv2;
+create database tbeblikDB;
+use tbeblikDB;
 
 create user 'tbeblikAdmin'@'localhost';
 alter user 'tbeblikAdmin'@'localhost' IDENTIFIED BY 't2b0e2b0l5i1kadmin';
-grant ALL on tbeblikDBv2.* to 'tbeblikAdmin'@'localhost';
+grant ALL on tbeblikDB.* to 'tbeblikAdmin'@'localhost';
 
 set global log_bin_trust_function_creators=1;
 
--- ------
+DROP TABLE IF EXISTS `preConsultation`;
+CREATE TABLE IF NOT EXISTS `preConsultation` (
+	`idPreCons` char(250) not null,
+	`dateCreation` datetime default now(),
+	`motif` text,
+	`atcd` text,
+	`nbJourA` int(11) NOT NULL,
+    `accepted` boolean default false,
+	`MATRICULE_PAT` char(250) NOT NULL,
+	PRIMARY KEY (`idPreCons`),
+	KEY `FK_CONSULTATION2` (`MATRICULE_PAT`)
+);
+show triggers;
+drop trigger assignNotifId;
+DELIMITER //
+CREATE TRIGGER assignNotifId
+BEFORE INSERT
+ON `preConsultation` FOR EACH ROW
+BEGIN
+	SET NEW.idPreCons = CONCAT('NOTIF-',(SELECT FLOOR(RAND()*(1000000-2))+1));
+    -- SET NEW.dateCreation = now();
+END;//
+DELIMITER ;
 /* */
 -- phpMyAdmin SQL Dump
 -- version 4.8.5
@@ -31,7 +52,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `bd_TELemedecinev1`
+-- Base de données :  `bd_telemedecinev1`
 --
 
 -- --------------------------------------------------------
@@ -58,12 +79,54 @@ INSERT INTO `admin` (`ID_ADMIN`, `EMAIL`, `PASSWORD`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `certification_medical`
+--
+
+DROP TABLE IF EXISTS `certification_medical`;
+CREATE TABLE IF NOT EXISTS `certification_medical` (
+  `ID` int(11) NOT NULL,
+  `DOCUMENT` longblob,
+  `ID_Sender` char(250) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `consultation`
+--
+
+DROP TABLE IF EXISTS `consultation`;
+CREATE TABLE IF NOT EXISTS `consultation` (
+	`JOUR_REPOS` int(11) DEFAULT -1,
+	`DATE_CONSULTATION` datetime NOT NULL,
+	`Matricule_Med` char(250) NOT NULL,
+    `commentaire` text,
+	`idPreCons` char(250) NOT NULL,
+	KEY `FK_CONSULTATION` (`Matricule_Med`),
+	KEY `FK_CONTIENT3` (`idPreCons`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `consultation`
+--
+
+INSERT INTO `consultation` (`MATRICULE_PAT`, `Matricule_Med`, `ID_CNSLT`, `CODE_REF`, `JOUR_REPOS`, `MOTIF`, `ATC`, `TYPE`, `DATE_CONSULTATION`, `ID_PIECE`, `ID`) VALUES
+('BH82982', '', 1, 'REF CONS', 5, NULL, NULL, NULL, '2020-04-26 00:00:00', NULL, NULL),
+('BH82900', '', 2, 'CODE REF', 6, NULL, NULL, NULL, '2020-04-29 00:00:00', NULL, NULL),
+('BH82901', '', 3, 'FDFD', 4, 'GGG', 'GGG', NULL, '2020-05-18 00:00:00', NULL, NULL),
+('BH82902', '', 4, 'CODE REF', 6, NULL, NULL, NULL, '2020-05-19 00:00:00', NULL, NULL),
+('BH82903', '', 5, 'FDFD', 4, 'GGG', 'GGG', NULL, '2020-05-04 00:00:00', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `medecin`
 --
 
 DROP TABLE IF EXISTS `medecin`;
 CREATE TABLE IF NOT EXISTS `medecin` (
-  `MATRICULE_MED` char(250) NOT NULL,
+  `Matricule_Med` char(250) NOT NULL,
   `ID_SPEC` int(11) NOT NULL,
   `ID_ADMIN` int(11) NOT NULL,
   `NOM_MED` char(250) DEFAULT NULL,
@@ -81,9 +144,9 @@ CREATE TABLE IF NOT EXISTS `medecin` (
 -- Déchargement des données de la table `medecin`
 --
 
-INSERT INTO `medecin` (`MATRICULE_MED`, `ID_SPEC`, `ID_ADMIN`, `NOM_MED`, `TEL`, `EMAIL`, `DISPONIBLE`, `VILLE`, `PASSWORD`) VALUES
-('bh150', 2, 1, 'Mohamed Elmehdi Choukri', '0614075409', 'medelmehdi.choukri@gmail.com', 1, 'Safi', '123456'),
-('bh151', 2, 1, 'Kamili Zakaria', '0666663614', 'Zakaria@gmail.com', 1, 'Safi', '123456');
+INSERT INTO `medecin` (`Matricule_Med`, `ID_SPEC`, `ID_ADMIN`, `NOM_MED`, `TEL`, `EMAIL`, `DISPONIBLE`, `VILLE`, `PASSWORD`) VALUES
+('bh150', 2, 1, 'Mohamed Elmehdi Choukri', '0614075409', 'medelmehdi.choukri@gmail.com', 1, NULL, '123456'),
+('bh151', 2, 1, 'Kamili Zakaria', '0666663614', 'Zakaria@gmail.com', 1, NULL, '123456');
 
 -- --------------------------------------------------------
 
@@ -93,45 +156,59 @@ INSERT INTO `medecin` (`MATRICULE_MED`, `ID_SPEC`, `ID_ADMIN`, `NOM_MED`, `TEL`,
 
 DROP TABLE IF EXISTS `message`;
 CREATE TABLE IF NOT EXISTS `message` (
-  `ID_MESSAGE` int(11) auto_increment,
-  `MATRICULE_EMETTEUR` char(250) NOT NULL,
-  `CONTENU` text,
-  `ID_ROOM` char(250) DEFAULT NULL,
-  `DATE_ENVOI` datetime DEFAULT NULL,
-  `TYPE` text,
-  `ID_PIECEJOINTES` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ID_MESSAGE`),
-  KEY `FK_CONSULTATION3` (`ID_ROOM`)
+  `messageId` int(11) auto_increment,
+  `Matricule_emmeter` char(250) NOT NULL,
+  `contenu` text,
+  `roomId` char(250) DEFAULT NULL,
+  `date_envoi` datetime DEFAULT NULL,
+  `type` text,
+  `id_pieceJointes` int(11) DEFAULT NULL,
+  PRIMARY KEY (`messageId`),
+  KEY `FK_CONSULTATION3` (`roomId`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `patient`
+-- Structure de la table `ordonnance`
 --
 
-DROP TABLE IF EXISTS `patient`;
-CREATE TABLE IF NOT EXISTS `patient` (
+DROP TABLE IF EXISTS `ordonnance`;
+CREATE TABLE IF NOT EXISTS `ordonnance` (
+  `ID_ord` int(11) NOT NULL,
+  `DOCUMENT` longblob,
+  `ID_Sender` char(250) DEFAULT NULL,
+  PRIMARY KEY (`ID_ord`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `patients`
+--
+
+DROP TABLE IF EXISTS `patients`;
+CREATE TABLE IF NOT EXISTS `patients` (
   `CIN` char(250) DEFAULT NULL,
   `MATRICULE_PAT` char(250) NOT NULL,
   `NOM_PAT` char(250) DEFAULT NULL,
-  `PRENOM_PAT` char(250) DEFAULT NULL,
+  `Prenom_PAT` char(250) DEFAULT NULL,
   `PASSWORD` char(250) DEFAULT NULL,
-  `DATE_EMB` date DEFAULT NULL,
-  `DATE_NAISSENCE` date DEFAULT NULL,
-  `TEL` char(250) DEFAULT NULL,
-  `ADRESSE` char(250) DEFAULT NULL,
-  `DATE_RETRAIT` date DEFAULT NULL,
-  `DIRECTION` char(250) DEFAULT NULL,
-  `SEXE` char(250) DEFAULT NULL,
+  `Date_Emb` date DEFAULT NULL,
+  `Date_Naissence` date DEFAULT NULL,
+  `Tel` char(250) DEFAULT NULL,
+  `ADRESS` char(250) DEFAULT NULL,
+  `Date_Retrait` date DEFAULT NULL,
+  `Direction` char(250) DEFAULT NULL,
+  `Genre` char(250) DEFAULT NULL,
   PRIMARY KEY (`MATRICULE_PAT`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
--- Déchargement des données de la table `patient`
+-- Déchargement des données de la table `patients`
 --
 
-INSERT INTO `patient` (`CIN`, `MATRICULE_PAT`, `NOM_PAT`, `PRENOM_PAT`, `PASSWORD`, `DATE_EMB`, `DATE_NAISSENCE`, `TEL`, `ADRESSE`, `DATE_RETRAIT`, `DIRECTION`, `SEXE`) VALUES
+INSERT INTO `patients` (`CIN`, `MATRICULE_PAT`, `NOM_PAT`, `Prenom_PAT`, `PASSWORD`, `Date_Emb`, `Date_Naissence`, `Tel`, `ADRESS`, `Date_Retrait`, `Direction`, `Genre`) VALUES
 ('HH112313', 'BH82982', 'Chraiki', 'Mohammed', '123456', '2014-06-07', '1995-02-26', '0614075409', '173 safi II', '2048-06-06', 'FIT', 'Homme'),
 ('HH112300', 'BH82900', 'Chaloumi', 'Fadwa', '123456', '2014-06-07', '1985-02-26', '0614075409', 'Plateau', '2048-06-06', 'FIT', 'Femme'),
 ('HH112301', 'BH82901', 'Filali', 'Hamza', '123456', '2014-06-07', '1956-02-26', '0614075409', 'Saada', '2048-06-06', 'FIT', 'Homme'),
@@ -140,98 +217,43 @@ INSERT INTO `patient` (`CIN`, `MATRICULE_PAT`, `NOM_PAT`, `PRENOM_PAT`, `PASSWOR
 ('HH112304', 'BH82904', 'Yezza', 'Asmae', '123456', '2014-06-07', '1968-02-26', '0614075409', '173 safi II', '2048-06-06', 'FIT', 'Femme');
 
 -- --------------------------------------------------------
-DROP TABLE IF EXISTS `preConsultation`;
-CREATE TABLE IF NOT EXISTS `preConsultation` (
-	`ID_PRECONS` char(250) not null,
-	`DATE_CREATION` datetime default now(),
-	`MOTIF` text,
-	`ATCD` text,
-	`NB_JOUR_A` int(11) NOT NULL,
-  `ACCEPTE` boolean default false,
-	`MATRICULE_PAT` char(250) NOT NULL,
-	PRIMARY KEY (`ID_PRECONS`),
-	KEY `FK_CONSULTATION2` (`MATRICULE_PAT`)
-);
 
-drop trigger if exists assignNotifId;
-DELIMITER //
-CREATE TRIGGER assignNotifId
-BEFORE INSERT
-ON `preConsultation` FOR EACH ROW
-BEGIN
-	SET NEW.ID_PRECONS = CONCAT('NOTIF-',(SELECT FLOOR(RAND()*(1000000-2))+1));
-    -- SET NEW.DATE_CREATION = now();
-END;//
-DELIMITER ;
--- --------------------------------------------------------
-
---
--- Structure de la table `consultation`
---
-
-DROP TABLE IF EXISTS `consultation`;
-CREATE TABLE IF NOT EXISTS `consultation` (
-	`JOUR_REPOS` int(11) DEFAULT -1,
-	`DATE_CONSULTATION` datetime NOT NULL,
-	`MATRICULE_MED` char(250) NOT NULL,
-  `COMMENTAIRE` text,
-	`ID_PRECONS` char(250) NOT NULL,
-	KEY `FK_CONSULTATION` (`MATRICULE_MED`),
-	KEY `FK_CONTIENT3` (`ID_PRECONS`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
-drop trigger if exists autoConsultationDate;
-/* DELIMITER //
-CREATE TRIGGER autoConsultationDate
-BEFORE INSERT
-ON `consultation` FOR EACH ROW
-BEGIN
-    SET NEW.DATE_CONSULTATION = now();
-END;//
-DELIMITER ; */
-
--- -----------------------------------
-
-DROP TABLE IF EXISTS `room`;
-CREATE TABLE IF NOT EXISTS `room` (
-  `ID_ROOM` char(250) NOT NULL,
-  `MATRICULE_PAT` char(250) NOT NULL,
-  `MATRICULE_MED` char(250) DEFAULT NULL,
-  PRIMARY KEY (`ID_ROOM`),
-  KEY `FK_LINK1` (`MATRICULE_PAT`),
-  KEY `FK_LINK2` (`MATRICULE_MED`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
 --
 -- Structure de la table `room`
 --
 drop table if exists `appUser`;
 create table if not exists `appUser` (
-	`ID_USER` char(250) NOT NULL,
-  `TYPE_USER` char(7) not null,
-  `SOCKET` char(250) not null,
-  `ONLINE` boolean,
-  `MATRICULE_MED` char(250) default null,
-  `ID_ROOM` char(250) default null,
-  KEY `FK_LINK2` (`MATRICULE_MED`)
-);
-
+	`userId` char(250) NOT NULL,
+    `userType` char(7) not null,
+    `socket` char(250) not null,
+    `online` boolean,
+    `linkedMedecinMatricule` char(250) default null,
+    `roomId` char(250) default null
+)
 DELIMITER //
 CREATE TRIGGER createRoom
 BEFORE INSERT
 ON `appUser` FOR EACH ROW
 BEGIN
 	DECLARE roomUniqueId varchar(250) default null;
-	if new.TYPE_USER = 'Patient' then
+	if new.userType = 'Patient' then
 		SET roomUniqueId = CONCAT('cRoom-',(SELECT FLOOR(RAND()*(100000-2))+1));
-		SET new.ID_ROOM = roomUniqueId;
+		SET new.roomId = roomUniqueId;
         -- ----
-		insert into `room` (ID_ROOM,MATRICULE_PAT)
-			values(new.ID_ROOM,new.ID_USER);
+		insert into `room` (roomId,userPatientMatricule)
+			values(new.roomId,new.userId);
     end if;
 END;//
 DELIMITER ;
+-- -----------------------------------
+
+DROP TABLE IF EXISTS `room`;
+CREATE TABLE IF NOT EXISTS `room` (
+  `roomId` char(250) NOT NULL,
+  `userPatientMatricule` char(250) NOT NULL,
+  `userMedecinMatricule` char(250) DEFAULT NULL,
+  PRIMARY KEY (`roomId`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -254,12 +276,42 @@ INSERT INTO `specialites` (`ID_SPEC`, `NOM_SPEC`) VALUES
 (1, 'Medecine génerale'),
 (2, 'Cardiologie');
 
--- ----------------
+-- --------------------------------------------------------
 
+--
+-- Structure de la table `type_repos`
+--
+
+DROP TABLE IF EXISTS `type_repos`;
+CREATE TABLE IF NOT EXISTS `type_repos` (
+  `ID_TYPE` int(11) NOT NULL,
+  `DESCRIPTION` char(250) DEFAULT NULL,
+  PRIMARY KEY (`ID_TYPE`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `type_repos`
+--
+
+INSERT INTO `type_repos` (`ID_TYPE`, `DESCRIPTION`) VALUES
+(1, 'Repos accident de travail'),
+(2, 'Repos maladie longue durée'),
+(3, 'Repos maladie'),
+(4, 'Consultation santé au travail'),
+(5, 'Consultation médicale spontanée');
+COMMIT;
+-- -----
 DROP TABLE IF EXISTS `medecinInbox`;
 CREATE TABLE IF NOT EXISTS `medecinInbox` (
-	`ID_PRECONS` char(250) not null,
-	`MATRICULE_MED` char(250) NOT NULL,
-	KEY `FK_LINK1` (`ID_PRECONS`),
-    KEY `FK_LINK2` (`MATRICULE_MED`)
+	`idPreCons` char(250) not null,
+	`Matricule_Med` char(250) NOT NULL,
+	KEY `FK_LINK1` (`idPreCons`),
+    KEY `FK_LINK2` (`Matricule_Med`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+

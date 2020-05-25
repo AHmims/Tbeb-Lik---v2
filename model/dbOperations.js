@@ -29,8 +29,6 @@ async function getDataAll(className, constraint = '') {
             res = await cnx.query(req);
         cnx.release();
         // 
-        console.log(`SELECT * FROM ${className} ${constraint}`);
-        // console.log(res[0]);
         return res[0];
     } catch (err) {
         console.error('error :', err);
@@ -59,7 +57,7 @@ async function getAppUserCustomData(keys, id) {
     slctdKeys = removeLastChar(slctdKeys);
 
     try {
-        let req = `SELECT ${slctdKeys} FROM appUser where ID_USER = ? LIMIT 1`,
+        let req = `SELECT ${slctdKeys} FROM appUser where userId = ? LIMIT 1`,
             cnx = await db.connect(),
             res = await cnx.query(req, [id]);
         cnx.release();
@@ -137,10 +135,10 @@ async function getTypeById(id) {
         console.error('error :', err);
     }
 }
-// 
+// ADAPTED
 async function getVilles() {
     try {
-        let req = `SELECT distinct(VILLE) FROM medecin;`,
+        let req = `SELECT distinct(VILLE) FROM medecin`,
             cnx = await db.connect(),
             res = await cnx.query(req);
         cnx.release();
@@ -198,7 +196,7 @@ async function consultationCheck(userId) {
     } else return true;
 }
 // ADAPTED
-async function getPatientpreconsultationDataById(userId) {
+async function getPatientPreConsultationDataById(userId) {
     try {
         let req = `SELECT concat(NOM_PAT,' ',Prenom_PAT) AS nom,TIMESTAMPDIFF(YEAR, Date_Naissence, CURDATE()) AS age,Tel AS tel FROM patients WHERE MATRICULE_PAT = ?`,
             cnx = await db.connect(),
@@ -251,9 +249,8 @@ async function notificationsByMedecin(medecinId) {
 }
 // ADAPTED
 async function getAcceptedMedecinNotificationsInfos(medecinId) {
-    console.log(medecinId);
     try {
-        let req = `select p.idPreCons,concat(pt.NOM_PAT,' ',pt.Prenom_PAT) as nom,p.dateCreation,c.DATE_CONSULTATION,c.JOUR_REPOS,p.MATRICULE_PAT,au.roomId from patient as pt,preconsultation as p,consultation as c,appUser as au where p.idPreCons = c.idPreCons and c.Matricule_Med = ? and p.accepted = true and pt.MATRICULE_PAT = p.MATRICULE_PAT and au.userId = p.MATRICULE_PAT`,
+        let req = `select p.idPreCons,concat(pt.NOM_PAT,' ',pt.Prenom_PAT) as nom,p.dateCreation,c.DATE_CONSULTATION,c.JOUR_REPOS,p.MATRICULE_PAT,au.roomId from patients as pt,preconsultation as p,consultation as c,appUser as au where p.idPreCons = c.idPreCons and c.Matricule_Med = ? and p.accepted = true and pt.MATRICULE_PAT = p.MATRICULE_PAT and au.userId = p.MATRICULE_PAT`,
             cnx = await db.connect(),
             res = await cnx.query(req, [medecinId]);
         cnx.release();
@@ -263,10 +260,10 @@ async function getAcceptedMedecinNotificationsInfos(medecinId) {
         console.error('error :', err);
     }
 }
-// 
+// ADAPTED
 async function checkPatientActiveNotifsExistance(patientId) {
     try {
-        let req = `select count(c.ID_PRECONS) as nb from consultation as c,preconsultation as p where p.ID_PRECONS = c.ID_PRECONS and p.MATRICULE_PAT = ? and p.ACCEPTE = true and c.JOUR_REPOS = -1`,
+        let req = `select count(c.idPreCons) as nb from consultation as c,preconsultation as p where p.idPreCons = c.idPreCons and p.MATRICULE_PAT = ? and p.accepted = true and c.JOUR_REPOS = -1`,
             cnx = await db.connect(),
             res = await cnx.query(req, [patientId]);
         cnx.release();
@@ -393,7 +390,7 @@ module.exports = {
     getOnlineMedecinsWithCityAndProffession,
     checkExistence,
     consultationCheck,
-    getPatientpreconsultationDataById,
+    getPatientPreConsultationDataById,
     getLastInsertedNotification,
     getRoomIdByNotifId,
     notificationsByMedecin,

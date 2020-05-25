@@ -11,6 +11,7 @@ $(document).ready(async () => {
         let activeNotifs = await $.post('/getMedecinActiveNotifs', {
             matricule: localStorage.getItem('matricule') || null
         }).promise();
+        console.log(activeNotifs);
         if (activeNotifs != 'platformFail') {
             // 
             generateActiveNotification(JSON.parse(activeNotifs));

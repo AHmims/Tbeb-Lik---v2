@@ -90,12 +90,12 @@ function sendMsgFunc() {
     sendMsg(document.getElementById('chatInput').value);
     // 
     let msg = {
-        MATRICULE_EMETTEUR: localStorage.getItem('user_M'),
-        CONTENU: document.getElementById('chatInput').value,
-        ID_ROOM: null,
-        DATE_ENVOI: new Date().toJSON().slice(0, 19).replace('T', ' '),
-        TYPE: 'Text',
-        ID_PIECEJOINTES: null
+        Matricule_emmeter: localStorage.getItem('user_M'),
+        contenu: document.getElementById('chatInput').value,
+        roomId: null,
+        date_envoi: new Date().toJSON().slice(0, 19).replace('T', ' '),
+        type: 'Text',
+        id_pieceJointes: null
     }
     createMsgBox(msg, 'sentMessage');
     // 

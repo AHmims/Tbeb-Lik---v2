@@ -32,10 +32,10 @@ $(document).ready(async () => {
     } else await logServerError();
     // 
     document.getElementById('btnEnvoyer').addEventListener('click', async () => {
-        let ville = document.getElementById('cityOptions').options[document.getElementById('cityOptions').selectedIndex].value;
+        // let ville = document.getElementById('cityOptions').options[document.getElementById('cityOptions').selectedIndex].value;
         let proffes = document.getElementById('profsOptions').options[document.getElementById('profsOptions').selectedIndex].value;
         // 
-        sendNotification(ville, proffes);
+        sendNotification('cityId', proffes);
     });
     // 
     // CHECK IF THE PATIENT HAVE ANY ONGOING NOTIFICATIONS

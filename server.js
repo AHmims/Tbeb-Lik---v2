@@ -98,7 +98,7 @@ __IO.on('connection', socket => {
                     console.log('sendNotif() | listMedecins => ', listMedecins);
                     if (listMedecins != null) {
                         // INSERT DATA INTO TABLE PRECONSULTATION
-                        let insertRes = await _DB.insertData(new _CLASSES.preConsultation(null, data.date, '', '', -1, false, appUserData.userId));
+                        let insertRes = await _DB.insertData(new _CLASSES.preConsultation('tempId', data.date, '', '', -1, false, appUserData.userId));
                         console.log('sendNotif() | insertData(preConsultation) => ', insertRes);
                         // SEND NOTIFS TO DOCTORS
                         let notifData = await getNotificationFullData(appUserData.userId);
@@ -158,7 +158,7 @@ __IO.on('connection', socket => {
             }, notifId, '');
             // 
             if (!conultationCheck) {
-                let medecin = await _DB.getAppUserCustomDataBySocket(["ID_USER"], socket.id);
+                let medecin = await _DB.getAppUserCustomDataBySocket(["userId"], socket.id);
                 if (medecin != null) {
                     console.log('acceptNotif() | medecin => ', medecin);
                     let room = await _DB.getRoomIdByNotifId(notifId);
@@ -170,7 +170,7 @@ __IO.on('connection', socket => {
                         console.log('unlinkMedecinFromRooms() | roomUnlinkMedecin => ', roomUnlinkMedecin);
                         // 
                         let patientUpdate = await _DB.customDataUpdate({
-                            MATRICULE_MED: medecin.userId
+                            linkedMedecinMatricule: medecin.userId
                         }, room.userPatientMatricule, {
                             table: "appUser",
                             id: "userId"
@@ -178,7 +178,7 @@ __IO.on('connection', socket => {
                         console.log('acceptNotif() | patientUpdate => ', patientUpdate);
                         // 
                         let roomUpdate = await _DB.customDataUpdate({
-                            MATRICULE_MED: medecin.userId
+                            userMedecinMatricule: medecin.userId
                         }, room.roomId, {
                             table: "room",
                             id: "roomId"
@@ -198,7 +198,7 @@ __IO.on('connection', socket => {
                         // SEND A SOCKET BACK TO THE SENDER
                         __IO.to(socket.id).emit('activeNotification', await acceptedMedecinNotifications(medecin.userId));
                         // SEND A PING TO THE PATIENT INFORMING THEM ABOUT THE ACCEPTANCE OF THE NOTIFICATION
-                        socket.to(room.ID_ROOM).emit('notificationAccepted');
+                        socket.to(room.roomId).emit('notificationAccepted');
                     } else {
                         console.log('acceptNotif() | room not found');
                         throw 'acceptNotif() | room not found';
@@ -250,17 +250,17 @@ __IO.on('connection', socket => {
         }
     });
     // 
-    // 
+    // ADAPTED
     socket.on('joinChat', async (medecinId, room, patientId) => {
         try {
             console.log('#-#-#-#');
             let roomUnlinkMedecin = await unlinkMedecinFromRooms(medecinId);
             console.log('joinChat() | roomUnlinkMedecin => ', roomUnlinkMedecin);
             let patientUpdate = await _DB.customDataUpdate({
-                MATRICULE_MED: medecinId
+                userMedecinMatricule: medecinId
             }, patientId, {
                 table: "room",
-                id: "MATRICULE_PAT"
+                id: "userPatientMatricule"
             });
             console.log('unlinkMedecinFromRooms() | patientUpdate => ', patientUpdate);
             // 
@@ -270,7 +270,7 @@ __IO.on('connection', socket => {
             socket.emit('platformFail');
         }
     });
-    // 
+    // ADAPTED
     socket.on('sendMsg', async (msg, msgDate) => {
         try {
             let room = await getRoomIdFromSocket();
@@ -294,15 +294,15 @@ __IO.on('connection', socket => {
             socket.emit('platformFail');
         }
     });
-    // 
+    // ADAPTED
     async function getMsgAdditionalData(msgTxt, date, type, room = null) {
         try {
             let msgObject = new _CLASSES.message(null, msgTxt, room, date, type, null);
             // 
-            let retData = await _DB.getAppUserCustomDataBySocket(["ID_USER"], socket.client.id);
+            let retData = await _DB.getAppUserCustomDataBySocket(["userId"], socket.client.id);
             if (retData != null) {
                 console.log('getMsgAdditionalData() | retData => ', retData);
-                msgObject.MATRICULE_EMETTEUR = retData.ID_USER;
+                msgObject.Matricule_emmeter = retData.userId;
                 return msgObject;
             } else {
                 console.log('getMsgAdditionalData() | retData = null');
@@ -314,7 +314,7 @@ __IO.on('connection', socket => {
         }
 
     }
-    // 
+    // ADAPTED
     socket.on('cancelRequest', async (patientId) => {
         try {
             let nId = null;
@@ -323,16 +323,16 @@ __IO.on('connection', socket => {
                 nId = await _DB.getLastInsertedNotification(patientId);
                 console.log('cancelRequest() | nId => ', nId);
                 if (nId != null) {
-                    nId = nId.ID_PRECONS;
+                    nId = nId.idPreCons;
                     let deleteFromPreConsultation = await _DB.customDataDelete({
                         table: "preConsultation",
-                        id: "ID_PRECONS"
+                        id: "idPreCons"
                     }, nId);
                     console.log(`cancelRequest() | deleteFromPreConsultation => `, deleteFromPreConsultation);
                     // 
                     let deleteFromMedecinInbox = await _DB.customDataDelete({
                         table: "medecinInbox",
-                        id: "ID_PRECONS"
+                        id: "idPreCons"
                     }, nId);
                     console.log(`cancelRequest() | deleteFromMedecinInbox => `, deleteFromMedecinInbox);
                     // 
@@ -392,7 +392,7 @@ __IO.on('connection', socket => {
             socket.emit('platformFail');
         }
     });
-    // 
+    // ADAPTED
     async function getRoomIdFromSocket() {
         try {
             let dbResult = await _DB.getRoomIdBySocketId(socket.id);
@@ -475,15 +475,15 @@ async function acceptedMedecinNotifications(medecinId) {
         console.log(err);
     }
 }
-// 
+// ADAPTED
 async function unlinkMedecinFromRooms(medecinId) {
     try {
         console.log('------');
         return await _DB.customDataUpdate({
-            MATRICULE_MED: null
+            userMedecinMatricule: null
         }, medecinId, {
             table: "room",
-            id: "MATRICULE_MED"
+            id: "userMedecinMatricule"
         });
     } catch (err) {
         console.log(err);
@@ -588,7 +588,7 @@ __APP.post('/getMesssages', async (req, res) => {
         console.log('******');
         let retData = [];
         if (req.body.matricule != null) {
-            let room = await _DB.getDataAll('room', `where MATRICULE_PAT = '${req.body.matricule}' or MATRICULE_MED = '${req.body.matricule}'`);
+            let room = await _DB.getDataAll('room', `where userPatientMatricule = '${req.body.matricule}' or userMedecinMatricule = '${req.body.matricule}'`);
             if (room.length > 0) {
                 room = room[0];
                 if (req.body.room.length > 0 && req.body.room != null)
@@ -642,7 +642,7 @@ __APP.post('/finalizeConsultation', async (req, res) => {
                 JOUR_REPOS: 1
             }, notifId, {
                 table: "consultation",
-                id: "isPreCons"
+                id: "idPreCons"
             });
             console.log('finalizeConsultation() | consultationFinished => ', consultationFinished);
             // 
