@@ -35,18 +35,18 @@ __IO.on('connection', socket => {
                     // 
                     if (existingUser != null) {
                         let updatingResult = await _DB.customDataUpdate({
-                            SOCKET: socket.id,
-                            ONLINE: true
-                        }, existingUser.ID_USER, {
+                            socket: socket.id,
+                            online: true
+                        }, existingUser.userId, {
                             table: "appUser",
-                            id: "ID_USER"
+                            id: "userId"
                         });
                         // 
                         console.log('newUser() | updatingResult => ', updatingResult);
                         // 
                         if (type == 'Patient') {
-                            socket.join(existingUser.ID_ROOM);
-                            console.log('§§§§§§§§§§§§PATIENT ROOMID =>', existingUser.ID_ROOM);
+                            socket.join(existingUser.roomId);
+                            console.log('newUser() | patientJoin | roomId => ', existingUser.roomId);
                         }
                     } else {
                         let userInstance = makeUserInstance(matricule, type, socket.id);
@@ -56,10 +56,10 @@ __IO.on('connection', socket => {
                         // GET THE ROOM ID FROM THE INSERTED USER
                         //IF IT WAS A PATIENT
                         if (type == 'Patient') {
-                            let insertedPatient = await _DB.getDataAll('appUser', `where ID_USER = '${matricule}'`);
+                            let insertedPatient = await _DB.getDataAll('appUser', `where userId = '${matricule}'`);
                             if (insertedPatient.length > 0) {
-                                socket.join(insertedPatient[0].ID_ROOM);
-                                console.log('§§§§§§§§§§§§PATIENT ROOMID =>', insertedPatient[0].ID_ROOM);
+                                socket.join(insertedPatient[0].roomId);
+                                console.log('newUser() | patientJoin | roomId => ', insertedPatient[0].roomId);
                             } else {
                                 throw 'newUser() getDataAll returned Empty';
                             }
@@ -406,9 +406,7 @@ __HUB.on('connection', socket => {
         __HUB.emit('removeNotificationBox', nId);
     });
 });
-// 
-// 
-// 
+// ADAPTED
 function makeUserInstance(id, type, socketId) {
     try {
         return new _CLASSES.appUser(id, type, socketId, true);
@@ -416,7 +414,7 @@ function makeUserInstance(id, type, socketId) {
         socket.emit('platformFail');
     }
 }
-// 
+// ADAPTED
 async function getNotificationFullData(userId) {
     try {
         let patientData = await _DB.getPatientPreConsultationDataById(userId);

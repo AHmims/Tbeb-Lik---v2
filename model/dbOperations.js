@@ -21,7 +21,7 @@ async function insertData(data) {
         console.error('error :', err);
     }
 }
-// 
+// ADAPTED
 async function getDataAll(className, constraint = '') {
     try {
         let req = `SELECT * FROM ${className} ${constraint}`,
@@ -37,9 +37,10 @@ async function getDataAll(className, constraint = '') {
     }
 }
 // GET appUSER data by id
+// ADAPTED
 async function getAppUserDataById(id) {
     try {
-        let req = `SELECT * FROM appUser where ID_USER = ? LIMIT 1`,
+        let req = `SELECT * FROM appUser where userId = ? LIMIT 1`,
             cnx = await db.connect(),
             res = await cnx.query(req, [id]);
         cnx.release();
@@ -111,17 +112,17 @@ async function customDataUpdate(keyANDvalue, id, params) {
         console.error('error :', err);
     }
 }
-// 
+// ADAPTED
 async function getTypeById(id) {
     let type = 'null';
     try {
-        let req = `SELECT count(*) as nb FROM patient where MATRICULE_PAT = ?`,
+        let req = `SELECT count(*) as nb FROM patients where MATRICULE_PAT = ?`,
             cnx = await db.connect(),
             res = await cnx.query(req, [id]);
         // 
         type = res[0][0].nb > 0 ? "Patient" : 'null';
         if (type == 'null') {
-            req = `SELECT count(*) as nb FROM medecin where MATRICULE_MED = ?`;
+            req = `SELECT count(*) as nb FROM medecin where Matricule_Med = ?`;
             cnx = await db.connect();
             res = await cnx.query(req, [id]);
             // 
