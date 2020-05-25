@@ -45,7 +45,7 @@ $(document).ready(async () => {
         // 
         for (let i = 0; i < msgs.length; i++) {
             let type = 'receivedMessage';
-            if (msgs[i].MATRICULE_EMETTEUR.toUpperCase() == localStorage.getItem('matricule').toUpperCase())
+            if (msgs[i].Matricule_emmeter.toUpperCase() == localStorage.getItem('matricule').toUpperCase())
                 type = 'sentMessage';
             // 
             createMsgBox(msgs[i], type);
