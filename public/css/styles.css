@@ -419,7 +419,7 @@ video {
   align-items: center;
 }
 
-#content .messageContainer span {
+#content .messageContainer>* {
   padding: 10px;
   font-size: 20px;
   font-family: "Roboto", sans-serif;
@@ -435,12 +435,12 @@ video {
   flex-direction: row-reverse;
 }
 
-#content .sentMessage span {
+#content .sentMessage>* {
   background-color: #1FDBAE;
   color: #FFFFFF;
 }
 
-#content .receivedMessage span {
+#content .receivedMessage>* {
   background-color: #E8EFF6;
   color: #004348;
 }
@@ -614,4 +614,135 @@ video {
 #msgsCont::-webkit-scrollbar-thumb {
   background: #e3e9ef;
   border-radius: 696969px;
+}
+
+/*  */
+
+.submitPopupBg {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  backdrop-filter: blur(5px);
+}
+
+.submitPopupBg .submitPopup {
+  background-color: #FFFFFF;
+  border-radius: 20px;
+  padding: 20px;
+  /* min-width: 450px; */
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.submitPopupBg .submitPopup .submitPopupTitle {
+  font-weight: 700;
+  text-transform: capitalize;
+  font-size: 18px;
+  margin-bottom: 25px;
+  color: #004348;
+}
+
+.submitPopupBg .submitPopup .submitPopupBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.submitPopupBg .submitPopup .submitPopupBox .submitPopupInputCont {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* flex-direction: row; */
+  /* justify-content: space-between; */
+  /* align-items: center; */
+}
+
+.submitPopupBg .submitPopup .submitPopupBox .submitPopupInputCont .submitPopupInputLabel {
+  font-weight: 500;
+  color: #004348;
+  text-transform: capitalize;
+  font-size: 20px;
+  font-size: 16px;
+  letter-spacing: initial;
+  margin-bottom: 5px;
+}
+
+.submitPopupBg .submitPopup .submitPopupBox .submitPopupInputCont .submitPopupInput {
+  border: 1px solid #E8EFF6;
+  outline: none;
+  background-color: #F6F9FC;
+  border-radius: 5px;
+  height: 26px;
+  width: 250px;
+  padding: 1px 5px;
+  box-sizing: border-box;
+  color: #506070;
+  font-size: 15px;
+}
+
+.submitPopupBg .submitPopup .submitPopupBox .submitPopupInputCont .submitPopupInputComment {
+  height: initial;
+}
+
+.submitPopupBg .submitPopup .submitPopupBox .submitPopupInputCont .submitPopupInput:disabled {
+  background-color: #eff4f8;
+  cursor: not-allowed;
+}
+
+.submitPopupBg .submitPopup .submitPopupBox .submitPopupInputCont .submitPopupInput:focus {
+  border-color: #C5D7EA;
+}
+
+.submitPopupBg .submitPopup .submitPopupBox .submitPopupInputCont:not(:last-of-type) {
+  margin-bottom: 10px;
+}
+
+.submitPopupBg .submitPopup .btnsBox {
+  /* align-self: flex-end; */
+}
+
+.submitPopupBg .submitPopup .btnsBox .submitPopupBtn {
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  text-transform: capitalize;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 5px 10px;
+  margin-right: 10px;
+}
+
+.submitPopupBg .submitPopup .btnsBox .submitPopupBtnMain {
+  background-color: #1FDBAE;
+  color: #FFFFFF;
+}
+
+.submitPopupBg .submitPopup .btnsBox .submitPopupBtnSec {
+  background-color: #f6f9fc;
+  color: #004348;
+}
+
+/*  */
+#content .messageContainer .msgTxtLink {
+  display: flex;
+  align-items: center;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#content .messageContainer .msgTxtLink svg {
+  height: 20px;
 }

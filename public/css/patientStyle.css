@@ -751,7 +751,7 @@ footer {
   align-items: center;
 }
 
-#content #smallblox #chatSection .chatSectionMessages .messageContainer span {
+#content #smallblox #chatSection .chatSectionMessages .messageContainer>* {
   padding: 10px;
   font-size: 20px;
   font-family: "Roboto", sans-serif;
@@ -767,12 +767,12 @@ footer {
   flex-direction: row-reverse;
 }
 
-#content #smallblox #chatSection .chatSectionMessages .sentMessage span {
+#content #smallblox #chatSection .chatSectionMessages .sentMessage>* {
   background-color: #1FDBAE;
   color: #FFFFFF;
 }
 
-#content #smallblox #chatSection .chatSectionMessages .receivedMessage span {
+#content #smallblox #chatSection .chatSectionMessages .receivedMessage>* {
   background-color: #E8EFF6;
   color: #004348;
 }
@@ -1040,4 +1040,16 @@ footer {
 #msgsCont::-webkit-scrollbar-thumb {
   background: #e3e9ef;
   border-radius: 696969px;
+}
+
+/*  */
+#content .messageContainer .msgTxtLink {
+  display: flex;
+  align-items: center;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#content .messageContainer .msgTxtLink svg {
+  height: 20px;
 }

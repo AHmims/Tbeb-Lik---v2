@@ -95,7 +95,7 @@ function generateSemiNotifBox(data) {
     var txt4 = makeElement('span');
     var statusConsultation = "En cours",
         statusClasses = "box-notif-matric notifInProgress";
-    if (data.JOUR_REPOS == 1) {
+    if (data.JOUR_REPOS > -1) {
         statusConsultation = "Terminé";
         statusClasses = "box-notif-matric notifDone";
     }
@@ -111,7 +111,7 @@ function generateSemiNotifBox(data) {
     var btn2 = makeElement('a');
     btn2.setAttribute('class', 'btn-acc m-top-20');
     btn2.innerText = 'Contacter';
-    if (data.JOUR_REPOS == 1)
+    if (data.JOUR_REPOS > -1)
         btn2.innerText = "Reviser";
     btn2.setAttribute('href', `/medecin/contact?room=${data.roomId}&patient=${data.MATRICULE_PAT}`);
     // 

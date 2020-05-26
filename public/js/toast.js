@@ -18,7 +18,6 @@
 //     duration: "active/100/300..."
 // }
 function toast(params) {
-    console.log(params);
     return new Promise(function (resolve, reject) {
         try {
             //#region

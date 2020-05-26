@@ -137,7 +137,7 @@ __IO.on('connection', socket => {
         }
     });
     // ADAPTED
-    socket.on('acceptNotif', async (notifId, clientDate, comment) => {
+    socket.on('acceptNotif', async (notifId, clientDate) => {
         try {
             console.log('------');
             // TO STAY IN THE CLEAR HOW NOTIFICATIONS WORKS,
@@ -193,7 +193,7 @@ __IO.on('connection', socket => {
                         });
                         console.log('acceptNotif() | notificationUpdate => ', notificationUpdate);
                         // 
-                        let consultationInsert = await _DB.insertData(new _CLASSES.consultation(-1, clientDate, medecin.userId, comment, notifId));
+                        let consultationInsert = await _DB.insertData(new _CLASSES.consultation(-1, clientDate, medecin.userId, '', '', notifId));
                         console.log('acceptNotif() | consultationInsert => ', consultationInsert);
                         // SEND A SOCKET BACK TO THE SENDER
                         __IO.to(socket.id).emit('activeNotification', await acceptedMedecinNotifications(medecin.userId));
@@ -271,7 +271,7 @@ __IO.on('connection', socket => {
         }
     });
     // ADAPTED
-    socket.on('sendMsg', async (msg, msgDate) => {
+    socket.on('sendMsg', async (msg, msgDate, msgType, filePath = null) => {
         try {
             let room = await getRoomIdFromSocket();
             if (room != null) {
@@ -279,7 +279,7 @@ __IO.on('connection', socket => {
                 // socket.join(room);
                 // 
                 console.log('sendMsg() | room => ', room);
-                msg = await getMsgAdditionalData(msg, msgDate, 'Text', room);
+                msg = await getMsgAdditionalData(msg, msgDate, msgType, filePath, room);
                 console.log('sendMsg() | msg => ', msg);
                 socket.to(room).emit('receiveMsg', msg); //MESSAGE RECEIVED BY EVERYONE EXCEPT SENDER
                 //__CHAT.to(room).emit('receiveMsg', msg); // MESSAGE RECEIVED BY EVERYONE INCLUDIG SENDER
@@ -295,9 +295,9 @@ __IO.on('connection', socket => {
         }
     });
     // ADAPTED
-    async function getMsgAdditionalData(msgTxt, date, type, room = null) {
+    async function getMsgAdditionalData(msgTxt, date, type, filePath, room = null) {
         try {
-            let msgObject = new _CLASSES.message(null, msgTxt, room, date, type, null);
+            let msgObject = new _CLASSES.message(null, msgTxt, room, date, type, filePath);
             // 
             let retData = await _DB.getAppUserCustomDataBySocket(["userId"], socket.client.id);
             if (retData != null) {
@@ -635,21 +635,53 @@ __APP.post('/getNotYetAcceptedRequest', async (req, res) => {
 __APP.post('/finalizeConsultation', async (req, res) => {
     try {
         let status = false;
+        let reqRetData = {
+            status: false,
+            filename: null,
+            downloadLink: null
+        };
         let notifId = await _DB.getNotifIdByRoomId(req.body.room, req.body.matricule);
         console.log(`finalizeConsultation() | notifId => `, notifId);
         if (notifId != null) {
-            let consultationFinished = await _DB.customDataUpdate({
-                JOUR_REPOS: 1
+            let preConsultationFinished = await _DB.customDataUpdate({
+                nbJourA: req.body.data.nbrJA
             }, notifId, {
-                table: "consultation",
+                table: "preConsultation",
                 id: "idPreCons"
             });
-            console.log('finalizeConsultation() | consultationFinished => ', consultationFinished);
-            // 
-            status = Boolean(consultationFinished);
-        }
+            console.log('finalizeConsultation() | preConsultationFinished => ', preConsultationFinished);
+            if (preConsultationFinished > 0) {
+                // 
+                let consultationFinished = await _DB.customDataUpdate({
+                    JOUR_REPOS: req.body.data.nbrJV,
+                    commentaire: req.body.data.cmnt,
+                    visa_med: req.body.data.visaM
+                }, notifId, {
+                    table: "consultation",
+                    id: "idPreCons"
+                });
+                console.log('finalizeConsultation() | consultationFinished => ', consultationFinished);
+                if (consultationFinished > 0) {
+                    let patientData = await _DB.getDataAll('patients', `WHERE MATRICULE_PAT = '${req.body.patientId}'`);
+                    if (patientData.length > 0) {
+                        let finalData = {
+                            mle: patientData[0].MATRICULE_PAT,
+                            direction: patientData[0].Direction,
+                            nom: patientData[0].NOM_PAT,
+                            prenom: patientData[0].Prenom_PAT,
+                            ...req.body.data
+                        }
+                        // 
+                        const __PDF = require('./model/savePdf');
+                        var docGenRes = await __PDF.makeDoc(finalData);
+                        if (docGenRes.status)
+                            reqRetData = docGenRes;
+                    } else throw 'Patient not found';
+                } else throw 'Consultation update failed';
+            } else throw 'Preconsultation update failed';
+        } else throw 'notifId invalid';
         // 
-        res.end(status.toString());
+        res.end(JSON.stringify(reqRetData));
     } catch (err) {
         res.end('platformFail');
     }
@@ -657,7 +689,6 @@ __APP.post('/finalizeConsultation', async (req, res) => {
 // ADAPTED
 __APP.post('/medecinChatBasicData', async (req, res) => {
     try {
-        console.log('123456789123456789');
         let retData = [];
         if (req.body.matricule != null) {
             let data = await _DB.getMedecinNameWithConsul(req.body.matricule);
@@ -668,6 +699,48 @@ __APP.post('/medecinChatBasicData', async (req, res) => {
             }
         } else {
             console.log('/medecinChatBasicData | matricule = null');
+            throw 'Matricule invalid';
+        }
+        res.end(JSON.stringify(retData));
+    } catch (err) {
+        console.log(err);
+        res.end('platformFail');
+    }
+
+});
+// 
+__APP.post('/roomActiveCheck', async (req, res) => {
+    try {
+        let status = false;
+        let notifId = await _DB.getNotifIdByRoomId(req.body.room, req.body.matricule);
+        console.log(`roomActiveCheck() | notifId => `, notifId);
+        if (notifId != null)
+            status = true;
+        // 
+        res.end(status.toString());
+    } catch (err) {
+        res.end('platformFail');
+    }
+});
+// 
+__APP.post('/patientChatBasicData', async (req, res) => {
+    try {
+        let retData = [];
+        if (req.body.matricule != null) {
+            let data = await _DB.getDataAll('patients', `WHERE MATRICULE_PAT = '${req.body.matricule}'`);
+            if (data.length > 0) {
+                console.log('/patientChatBasicData | data = ', data);
+                retData = [{
+                    mle: data[0].MATRICULE_PAT,
+                    nom: data[0].NOM_PAT,
+                    prenom: data[0].Prenom_PAT,
+                    direction: data[0].Direction
+                }];
+            } else {
+                console.log('/patientChatBasicData | data = no data ?!');
+            }
+        } else {
+            console.log('/patientChatBasicData | matricule = null');
             throw 'Matricule invalid';
         }
         res.end(JSON.stringify(retData));

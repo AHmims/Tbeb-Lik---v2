@@ -22,8 +22,8 @@ async function joinRoom() {
     await __GLOBAL_SOCKET.emit('joinChat', localStorage.getItem('matricule'), _URL_PARAMS.get('room'), _URL_PARAMS.get('patient'));
 }
 // 
-async function sendMsg(content) {
-    await __GLOBAL_SOCKET.emit('sendMsg', content, new Date().toJSON().slice(0, 19).replace('T', ' '));
+async function sendMsg(content, type, file) {
+    await __GLOBAL_SOCKET.emit('sendMsg', content, new Date().toJSON().slice(0, 19).replace('T', ' '), type, file);
 }
 // 
 let ready = false;

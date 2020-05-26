@@ -108,3 +108,14 @@ async function logToast(text) {
     }
     return await toast(params);
 }
+async function logToastActive(text) {
+    var params = {
+        content: text,
+        type: "normal",
+        behavior: {
+            type: "normal"
+        },
+        duration: "active"
+    }
+    return await toast(params);
+}
