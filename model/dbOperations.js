@@ -340,6 +340,19 @@ async function getMedecinNameWithConsul(patientId) {
     }
 }
 // 
+async function getPatientNotificationsByMatricule(patientId) {
+    try {
+        let req = `select c.idPreCons as nid, c.JOUR_REPOS as jr,c.DATE_CONSULTATION as dc from consultation as c,preconsultation as p where p.idPreCons = c.idPreCons and p.MATRICULE_PAT = ?`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [patientId]);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0] : null;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// 
 //#endregion
 // 
 //#region HELPER FUNCTIONS
@@ -400,6 +413,7 @@ module.exports = {
     getNotacceptedYetNotifs,
     getNotifIdByRoomId,
     customDataDelete,
-    getMedecinNameWithConsul
+    getMedecinNameWithConsul,
+    getPatientNotificationsByMatricule
 }
 // 

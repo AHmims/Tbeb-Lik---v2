@@ -40,16 +40,26 @@ $(document).ready(async () => {
     // 
     // CHECK IF THE PATIENT HAVE ANY ONGOING NOTIFICATIONS
     // IF YES ADD A BTN FOR HIM TO GO TO THE CONTACT PAGE
-    let exists = await $.post('/getAccessNotif', {
+    // let exists = await $.post('/getAccessNotif', {
+    //     matricule: localStorage.getItem('matricule') || null
+    // }).promise();
+    // if (exists != 'platformFail') {
+    //     // exists = Boolean(exists);
+    //     console.log('/getAccessNotif | exists => ', exists);
+    //     if (exists != 'false') {
+    //         addNotification();
+    //         // waiting();
+    //     }
+    // } else await logServerError();
+    // 
+    let patientNotifs = await $.post('/getNotifsByPatient', {
         matricule: localStorage.getItem('matricule') || null
     }).promise();
-    if (exists != 'platformFail') {
-        // exists = Boolean(exists);
-        console.log('/getAccessNotif | exists => ', exists);
-        if (exists != 'false') {
-            addNotification();
-            // waiting();
-        }
+    if (patientNotifs != 'platformFail') {
+        patientNotifs = JSON.parse(patientNotifs);
+        patientNotifs.forEach(notif => {
+            addNotification(notif.dc, notif.jr > -1 ? true : false, notif.nid);
+        });
     } else await logServerError();
     // 
     // 
@@ -87,9 +97,9 @@ function updateCounter() {
 }
 // 
 // 
-function addNotification() {
-    // MAYBE SOME SALT AND FLAVORS HERE
-    // document.body.appendChild(createNotification());
-    addNotification();
-}
+// function addNotification() {
+// MAYBE SOME SALT AND FLAVORS HERE
+// document.body.appendChild(createNotification());
+// addNotification();
+// }
 // 

@@ -198,7 +198,7 @@ __IO.on('connection', socket => {
                         // SEND A SOCKET BACK TO THE SENDER
                         __IO.to(socket.id).emit('activeNotification', await acceptedMedecinNotifications(medecin.userId));
                         // SEND A PING TO THE PATIENT INFORMING THEM ABOUT THE ACCEPTANCE OF THE NOTIFICATION
-                        socket.to(room.roomId).emit('notificationAccepted');
+                        socket.to(room.roomId).emit('notificationAccepted', clientDate);
                     } else {
                         console.log('acceptNotif() | room not found');
                         throw 'acceptNotif() | room not found';
@@ -750,6 +750,23 @@ __APP.post('/patientChatBasicData', async (req, res) => {
     }
 
 });
+// 
+__APP.post('/getNotifsByPatient', async (req, res) => {
+    try {
+        console.log('******');
+        let retData = [];
+        if (req.body.matricule != null) {
+            let reqData = await _DB.getPatientNotificationsByMatricule(req.body.matricule);
+            if (reqData != null)
+                retData = reqData;
+        }
+        res.end(JSON.stringify(retData));
+    } catch (err) {
+        res.end('platformFail');
+    }
+
+});
+
 // 
 //START SERVER
 __SERVER.listen(__PORT, '0.0.0.0', () => {

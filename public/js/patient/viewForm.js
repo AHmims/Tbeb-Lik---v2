@@ -1,15 +1,7 @@
-function createNotification() {
-    let cont = document.createElement('h5');
-    cont.style.textAlign = "center";
-    cont.innerHTML = "Un medecin à accepeter votre demande<br/><a href='/patient/contact'>Click ici pour commencer</a>";
-    // 
-    return cont;
-}
-// 
-function addNotification() {
+function addNotification(date, state, nId) {
     // console.log(state);
     let cont = document.createElement('div');
-    // cont.setAttribute('id', nId);
+    cont.setAttribute('id', nId);
     let contClass = 'notification';
     if (!state != true)
         contClass += ' notif-inactive';
@@ -28,7 +20,13 @@ function addNotification() {
     txtTitle.innerText = "Votre demande à été accepte";
     let txtDesc = document.createElement('span');
     txtDesc.setAttribute('class', 'notifiDesc');
-    txtDesc.innerText = "Click ici pour commencer";
+    txtDesc.innerText = "Une réunion était prévue pour le ";
+    let txtDescDate = document.createElement('span');
+    txtDescDate.setAttribute('class', 'notifDate');
+    date = new Date(date);
+    txtDescDate.innerText = `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()} à ${date.getHours()}:${date.getMinutes()}`;
+    // 
+    txtDesc.appendChild(txtDescDate);
     // 
     txtCont.appendChild(txtTitle);
     txtCont.appendChild(txtDesc);
@@ -36,8 +34,11 @@ function addNotification() {
     cont.appendChild(iconbox);
     cont.appendChild(txtCont);
     // 
-    cont.addEventListener('click', () => {
-        window.location.assign('/patient/contact');
+    cont.addEventListener('click', async () => {
+        let dateDiff = (new Date(date)) - (new Date());
+        if (dateDiff <= 0)
+            window.location.assign('/patient/contact');
+        else await logError("Trop tôt pour participer à la conversation avec votre médecin.");
     });
     // 
     document.getElementById('notifBoxBody').appendChild(cont);

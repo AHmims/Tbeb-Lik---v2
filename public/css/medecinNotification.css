@@ -72,6 +72,10 @@ body {
   border-radius: 10px;
 }
 
+#navBar .navCont .navIconBoxActive {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
 #content {
   box-sizing: border-box;
   width: 100%;
@@ -92,6 +96,7 @@ body {
   align-items: center;
   padding: 0 40px;
   background-color: #FFFFFF;
+  flex: none;
 }
 
 #content #container {
@@ -102,7 +107,19 @@ body {
   background-color: #F6F9FC;
   font-family: "Gilroy";
   letter-spacing: 0.6px;
+  overflow: auto;
 }
+
+#content #container::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+#content #container::-webkit-scrollbar-thumb {
+  background: #e3e9ef;
+  border-radius: 696969px;
+}
+
 
 #content #container .bigBox {
   width: 100%;
@@ -217,6 +234,12 @@ body {
   cursor: pointer;
 }
 
+#content #container .btn-disable {
+  background: #7deed35c;
+  cursor: not-allowed;
+  color: #004348;
+}
+
 #content #container .btn-acc img {
   margin-right: 5px;
 }
@@ -317,6 +340,10 @@ body {
   letter-spacing: 0.6px;
   overflow: hidden;
   margin-right: 20px;
+}
+
+#content #container .box-notif-main {
+  width: 350px;
 }
 
 #content #container .box-notif .box-notif-switch {
@@ -686,7 +713,8 @@ body {
 
 /*  */
 .notifDone,
-.notifInProgress {
+.notifInProgress,
+.notifWaiting {
   position: relative;
   display: flex;
 }
@@ -698,7 +726,8 @@ body {
   width: 20px;
   height: 20px;
   border-radius: 696969px;
-  background-color: #faf30b;
+  /* background-color: #faf30b; */
+  background-color: #fd9999;
   position: absolute;
   right: -28px;
   top: 2px;
@@ -716,7 +745,89 @@ body {
   top: 2px;
 }
 
+.notifWaiting::after {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 696969px;
+  background-color: #faf30b;
+  position: absolute;
+  right: -28px;
+  top: 2px;
+}
+
 /*  */
 #logout {
   cursor: pointer;
+}
+
+/*  */
+.box-notif-datePickerBoxBg {
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.box-notif-datePickerBoxBg .box-notif-datePickerBox {
+  background-color: #FFFFFF;
+  border-radius: 20px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.box-notif-datePickerBoxBg .box-notif-datePickerBox>*:not(:last-child) {
+  margin-bottom: 20px;
+}
+
+.box-notif-datePickerBoxBg .box-notif-datePickerBox .box-notif-datePickerBoxTxt {
+  font-family: "Gilroy", sans-serif;
+  font-size: 20px;
+  color: #004348;
+  font-weight: 700;
+}
+
+.box-notif-datePickerBoxBg .box-notif-datePickerBox .box-notif-datePickerBtnBox {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+.box-notif-datePickerBoxBg .box-notif-datePickerBox .box-notif-datePickerBtnBox input {
+  font-size: 16px;
+  border: none;
+  background: none;
+  padding: 2px 5px;
+  border-radius: 5px;
+  font-family: "Gilroy", sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.box-notif-datePickerBoxBg .box-notif-datePickerBox .box-notif-datePickerBtnBox .box-notif-datePickerBtn {
+  background-color: #1FDBAE;
+  color: #FFFFFF;
+  text-transform: capitalize;
+  padding: 3px 6px;
+}
+
+.box-notif-datePickerBoxBg .box-notif-datePickerBox .box-notif-datePickerBtnBox .box-notif-datePickerBtnNo {
+  background: transparent;
+  border: 1px solid #1FDBAE;
+  text-transform: capitalize;
+  color: #1FDBAE;
+  margin-right: 5px;
 }
