@@ -230,6 +230,7 @@ create table if not exists `appUser` (
     `linkedMedecinMatricule` char(250) default null,
     `roomId` char(250) default null
 )
+DROP TRIGGER IF EXISTS createRoom.
 DELIMITER //
 CREATE TRIGGER createRoom
 BEFORE INSERT

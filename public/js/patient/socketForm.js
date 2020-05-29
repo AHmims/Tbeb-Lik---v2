@@ -37,14 +37,8 @@ __GLOBAL_SOCKET.on('cancelRequestSuccess', () => {
 });
 // FUNCTIONS
 //#region 
-function sendNotification(ville, proffession) {
-    __GLOBAL_SOCKET.emit('sendNotif', {
-        ville,
-        proffession,
-        date: new Date().toJSON().slice(0, 19).replace('T', ' '),
-        motif: 'motif text',
-        atcd: 'atcd text'
-    });
+function sendNotification(formData) {
+    __GLOBAL_SOCKET.emit('sendNotif', formData);
     // 
 }
 

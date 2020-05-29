@@ -83,9 +83,12 @@ __IO.on('connection', socket => {
             console.log('------');
             console.log('sendNotif() | receivedData => ', data);
             // GET USERID FROM SOCKET
-            let appUserData = await _DB.getAppUserCustomDataBySocket(["userId"], socket.id);
-            console.log('sendNotif() | appUserData => ', appUserData);
-            if (appUserData != null) {
+            // let appUserData = await _DB.getAppUserCustomDataBySocket(["userId"], socket.id);
+            // console.log('sendNotif() | appUserData => ', appUserData);
+            if (data.patientId != null) {
+                let appUserData = {
+                    userId: data.patientId
+                };
                 // CHECK IF THE PATIENT GOT ANY ONGOING DEMANDES
                 let exists = await _DB.consultationCheck(appUserData.userId);
                 console.log('sendNotif() | exists => ', exists);
@@ -94,11 +97,12 @@ __IO.on('connection', socket => {
                     // V3 => I'LL HARD CODE THE CITY PARAM VALUE SINCE WE DON'T KNOW YET IF
                     // WE NEED TO SELECT BY CITY OR NOT
                     // let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession(data.ville, data.proffession);
-                    let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession('cityValue', data.proffession);
+                    // let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession('cityValue', data.proffession);
+                    let listMedecins = await _DB.getToSendToDoctors();
                     console.log('sendNotif() | listMedecins => ', listMedecins);
                     if (listMedecins != null) {
                         // INSERT DATA INTO TABLE PRECONSULTATION
-                        let insertRes = await _DB.insertData(new _CLASSES.preConsultation('tempId', data.date, '', '', -1, false, appUserData.userId));
+                        let insertRes = await _DB.insertData(new _CLASSES.preConsultation('tempId', data.date, data.motif, data.atcd, data.nbja, false, appUserData.userId));
                         console.log('sendNotif() | insertData(preConsultation) => ', insertRes);
                         // SEND NOTIFS TO DOCTORS
                         let notifData = await getNotificationFullData(appUserData.userId);
@@ -507,7 +511,8 @@ __APP.get('/medecin/contact', (req, res) => {
     res.sendFile(__PATH.join(__dirname, 'public', 'html', 'medecinChat.html'));
 });
 __APP.get('/patient/form', (req, res) => {
-    res.sendFile(__PATH.join(__dirname, 'public', 'html', 'patientForm.html'));
+    // res.sendFile(__PATH.join(__dirname, 'public', 'html', 'patientForm.html'));
+    res.sendFile(__PATH.join(__dirname, 'public', 'html', 'patientFormv2.html'));
 });
 __APP.get('/patient/contact', (req, res) => {
     res.sendFile(__PATH.join(__dirname, 'public', 'html', 'patientChat.html'));
@@ -561,7 +566,7 @@ __APP.post('/getMedecinActiveNotifs', async (req, res) => {
         let retData = [];
         if (req.body.matricule != null)
             retData = await acceptedMedecinNotifications(req.body.matricule);
-        console.log('/getMedecinActiveNotifs | retData => ', retData);
+        console.log('/getMedecinActiveNotifs | retData => data');
         res.end(JSON.stringify(retData));
     } catch (err) {
         res.end('platformFail');
@@ -748,7 +753,6 @@ __APP.post('/patientChatBasicData', async (req, res) => {
         console.log(err);
         res.end('platformFail');
     }
-
 });
 // 
 __APP.post('/getNotifsByPatient', async (req, res) => {
@@ -766,7 +770,33 @@ __APP.post('/getNotifsByPatient', async (req, res) => {
     }
 
 });
-
+// 
+__APP.post('/patientFormBasicData', async (req, res) => {
+    try {
+        let retData = [];
+        if (req.body.matricule != null) {
+            let data = await _DB.getDataAll('patients', `WHERE MATRICULE_PAT = '${req.body.matricule}'`);
+            if (data.length > 0) {
+                console.log('/patientFormBasicData | data = ', data);
+                retData = [{
+                    mle: data[0].MATRICULE_PAT,
+                    nom: data[0].NOM_PAT,
+                    prenom: data[0].Prenom_PAT,
+                    dateN: data[0].Date_Naissence
+                }];
+            } else {
+                console.log('/patientFormBasicData | data = no data ?!');
+            }
+        } else {
+            console.log('/patientFormBasicData | matricule = null');
+            throw 'Matricule invalid';
+        }
+        res.end(JSON.stringify(retData));
+    } catch (err) {
+        console.log(err);
+        res.end('platformFail');
+    }
+});
 // 
 //START SERVER
 __SERVER.listen(__PORT, '0.0.0.0', () => {

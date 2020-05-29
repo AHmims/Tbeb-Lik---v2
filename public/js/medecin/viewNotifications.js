@@ -90,10 +90,11 @@ function makeNotificationBox(data) {
     for (var i = 0; i < data.files.length; i++) {
         var btnDown = makeElement('button');
         btnDown.setAttribute('class', 'btn-download');
-        btnDown.innerText = data.files[i];
-        btnDown.addEventListener('click', function () {
-            console.log('download');
-        });
+        // btnDown.innerText = data.files[i];
+        btnDown.innerText = "non-inclus";
+        // btnDown.addEventListener('click', function () {
+        // console.log('download');
+        // });
         conttxt13.appendChild(btnDown);
     }
     cont6.appendChild(txt12);
@@ -249,6 +250,7 @@ function generateSemiNotifBox(data) {
     container.appendChild(cont2);
     container.appendChild(cont7);
     // 
+    // document.getElementById('botRowElementsContainer').insertBefore(container, document.getElementById('botRowElementsContainer').firstChild);
     document.getElementById('botRowElementsContainer').appendChild(container);
 }
 

@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
 
 @font-face {
   font-family: "Gilroy";
@@ -295,8 +296,170 @@ video {
   flex-direction: column;
   justify-content: unset;
   align-items: center;
+  /*  */
+  padding: 0 200px;
 }
 
+@media screen and (max-width: 1200px) {
+  #content #main {
+    padding-left: 100px;
+    padding-right: 100px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  #content #main {
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+}
+
+#content #main #form_patient {
+  width: 100%;
+}
+
+#content #main .jeGoPoof {
+  transition: opacity 1000ms ease-in-out;
+  opacity: 0;
+}
+
+#content #main #form_patient .patientFormBtnsConts {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  margin-top: 50px;
+}
+
+#btnEnvoyer {
+  background: #1FDBAE;
+  color: #FFFFFF;
+  font-weight: 600;
+  font-size: 18px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  outline: none;
+  box-shadow: 0px 3px 7px #0000002e;
+  padding: 14px 40px;
+  transition: background 150ms ease-in-out;
+}
+
+#btnEnvoyer:hover {
+  background: rgb(27, 200, 160);
+}
+
+#content #main #form_patient .patientFormBlock {
+  padding: 2px 0;
+}
+
+#content #main #form_patient .patientFormBlock h2 {
+  font-family: 'Inter', sans-serif;
+  letter-spacing: -0.5px;
+  color: #004348;
+  font-size: 26px;
+  border-bottom: 1px solid #e5e7eb;
+  line-height: 50px;
+  margin-bottom: 0;
+}
+
+#content #main #form_patient .patientFormBlock .patientFormBlockRow {
+  padding: 25px 0;
+  border-bottom: 1px solid #e5e7eb;
+  display: flex;
+}
+
+#content #main #form_patient .patientFormBlock .patientFormBlockRow input:disabled {
+  cursor: not-allowed;
+}
+
+#content #main #form_patient .patientFormBlock .patientFormBlockRow label {
+  font-family: 'Inter', sans-serif;
+  color: #161d2e;
+  letter-spacing: -0.3px;
+  width: 440px;
+  display: inline-block;
+  vertical-align: top;
+}
+
+#content #main #form_patient .patientFormBlock .patientFormBlockRow input,
+textarea {
+  /* width: 225px; */
+  width: 325px;
+  /* height: 26px; */
+  height: 30px;
+  padding-left: 5px;
+  border-radius: 8px;
+  border: 1px solid #d2d6db;
+  box-shadow: 0px 0.5px 2px #cacccf;
+  font-family: 'Inter', sans-serif;
+}
+
+#content #main #form_patient .patientFormBlock .patientFormBlockRow input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(31, 219, 174, 0.2);
+  border-color: #42efc6;
+}
+
+#content #main #form_patient .patientFormBlock .patientFormBlockRow textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(31, 219, 174, 0.2);
+  border-color: #42efc6;
+}
+
+#content #main #form_patient .patientFormBlock .patientFormBlockRow textarea {
+  /* height: 75px; */
+  height: 100px;
+}
+
+#content #main #form_patient .patientFormBlock .patientFormBlockRow input::placeholder {
+  color: #718096;
+}
+
+@media screen and (max-width: 850px) {
+  #content #main #form_patient .patientFormBlock .patientFormBlockRow label {
+    width: 390px;
+  }
+
+  #content #main #form_patient .patientFormBlock .patientFormBlockRow input,
+  textarea {
+    width: 275px;
+  }
+}
+
+@media screen and (max-width: 450px) {
+  #content #main #form_patient .patientFormBlock {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  #content #main #form_patient .patientFormBtnsConts {
+    margin-top: 30px;
+  }
+
+  #content #main #form_patient .patientFormBlock h2 {
+    font-size: 22px;
+    border-bottom: none;
+  }
+
+  /*  */
+  #content #main #form_patient .patientFormBlock .patientFormBlockRow {
+    flex-direction: column;
+    padding: 15px 0;
+    border-bottom: none;
+  }
+
+  #content #main #form_patient .patientFormBlock .patientFormBlockRow label {
+    width: fit-content;
+  }
+
+  #content #main #form_patient .patientFormBlock .patientFormBlockRow input,
+  textarea {
+    margin-top: 10px;
+    width: auto;
+  }
+}
+
+/*  */
 #content #main #form {
   display: flex;
   flex-direction: column;
@@ -520,18 +683,6 @@ footer {
 }
 
 /*btn*/
-#btnEnvoyer {
-  padding: 10px 40px;
-  background: #1FDBAE;
-  color: #FFFFFF;
-  font-weight: 600;
-  font-size: 18px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  margin-top: 70px;
-  outline: none;
-}
 
 /* 
  */

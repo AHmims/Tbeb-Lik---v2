@@ -7,6 +7,7 @@ __GLOBAL_SOCKET.on('connect', () => {
 });
 __GLOBAL_SOCKET.on('activeNotification', (data) => {
     generateActiveNotification(data);
+    document.getElementById('botRowElementsContainer').scrollTo(9999, 0);
 });
 __GLOBAL_SOCKET.on('notifAlreadyAccepted', async () => {
     // 

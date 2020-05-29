@@ -27,14 +27,14 @@ $(document).ready(async () => {
     } else await logServerError();
     // 
     // 
-    let roomActive = await $.post('/roomActiveCheck', {
-        matricule: localStorage.getItem('matricule'),
-        room: roomMedcin
-    }).promise();
-    if (roomActive != 'platformFail') {
-        if (roomActive == 'false')
-            document.getElementsByClassName('bottomTableMedecin')[0].style.display = "none";
-    } else await logServerError();
+    // let roomActive = await $.post('/roomActiveCheck', {
+    //     matricule: localStorage.getItem('matricule'),
+    //     room: roomMedcin
+    // }).promise();
+    // if (roomActive != 'platformFail') {
+    //     if (roomActive == 'false')
+    //         document.getElementsByClassName('bottomTableMedecin')[0].style.display = "none";
+    // } else await logServerError();
     // 
     // SEND MSG BTN
     document.getElementById('chatSendBtn').addEventListener('click', () => {
