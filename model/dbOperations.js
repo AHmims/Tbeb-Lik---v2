@@ -255,7 +255,7 @@ async function getAcceptedMedecinNotificationsInfos(medecinId) {
             res = await cnx.query(req, [medecinId]);
         cnx.release();
         // 
-        return res[0].length > 0 ? res[0] : [];
+        return res[0].length > 0 ? res[0] : null;
     } catch (err) {
         console.error('error :', err);
     }
@@ -329,7 +329,7 @@ async function customDataDelete(params, id) {
 // ADAPTED
 async function getMedecinNameWithConsul(patientId) {
     try {
-        let req = `select m.NOM_MED,s.NOM_SPEC from medecin as m,specialites as s where m.ID_SPEC = s.ID_SPEC and m.Matricule_Med in (select Matricule_Med from appUser where userId = ?)`,
+        let req = `select m.NOM_MED,s.NOM_SPEC from medecin as m,specialites as s where m.ID_SPEC = s.ID_SPEC and m.Matricule_Med in (select linkedMedecinMatricule from appUser where userId = ?)`,
             cnx = await db.connect(),
             res = await cnx.query(req, [patientId]);
         cnx.release();

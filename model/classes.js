@@ -38,12 +38,11 @@ class certification_medical {
 }
 // 
 class consultation {
-    constructor(JOUR_REPOS, DATE_CONSULTATION, Matricule_Med, commentaire, visa_med, idPreCons) {
+    constructor(JOUR_REPOS, DATE_CONSULTATION, Matricule_Med, commentaire, idPreCons) {
         this.JOUR_REPOS = JOUR_REPOS;
         this.DATE_CONSULTATION = DATE_CONSULTATION;
         this.Matricule_Med = Matricule_Med;
         this.commentaire = commentaire;
-        this.visa_med = visa_med
         this.idPreCons = idPreCons;
     }
 }
@@ -87,13 +86,13 @@ class appUser {
 }
 // 
 class message {
-    constructor(Matricule_emmeter, contenu, roomId, date_envoi, type, pieceJointes) {
+    constructor(Matricule_emmeter, contenu, roomId, date_envoi, type, id_pieceJointes) {
         this.Matricule_emmeter = Matricule_emmeter;
         this.contenu = contenu;
         this.roomId = roomId;
         this.date_envoi = date_envoi;
         this.type = type;
-        this.pieceJointes = pieceJointes;
+        this.id_pieceJointes = id_pieceJointes;
     }
 }
 // 

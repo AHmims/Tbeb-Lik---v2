@@ -197,7 +197,7 @@ __IO.on('connection', socket => {
                         });
                         console.log('acceptNotif() | notificationUpdate => ', notificationUpdate);
                         // 
-                        let consultationInsert = await _DB.insertData(new _CLASSES.consultation(-1, clientDate, medecin.userId, '', '', notifId));
+                        let consultationInsert = await _DB.insertData(new _CLASSES.consultation(-1, clientDate, medecin.userId, '', notifId));
                         console.log('acceptNotif() | consultationInsert => ', consultationInsert);
                         // SEND A SOCKET BACK TO THE SENDER
                         __IO.to(socket.id).emit('activeNotification', await acceptedMedecinNotifications(medecin.userId));
@@ -564,8 +564,11 @@ __APP.post('/getMedecinActiveNotifs', async (req, res) => {
     try {
         console.log('******');
         let retData = [];
-        if (req.body.matricule != null)
-            retData = await acceptedMedecinNotifications(req.body.matricule);
+        if (req.body.matricule != null) {
+            let reqRes = await acceptedMedecinNotifications(req.body.matricule);
+            if (reqRes != null)
+                retData = reqRes;
+        }
         console.log('/getMedecinActiveNotifs | retData => data');
         res.end(JSON.stringify(retData));
     } catch (err) {
@@ -659,8 +662,8 @@ __APP.post('/finalizeConsultation', async (req, res) => {
                 // 
                 let consultationFinished = await _DB.customDataUpdate({
                     JOUR_REPOS: req.body.data.nbrJV,
-                    commentaire: req.body.data.cmnt,
-                    visa_med: req.body.data.visaM
+                    commentaire: req.body.data.cmnt
+                    // visa_med: req.body.data.visaM
                 }, notifId, {
                     table: "consultation",
                     id: "idPreCons"
