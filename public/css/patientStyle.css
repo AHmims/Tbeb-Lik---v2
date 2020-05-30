@@ -127,6 +127,7 @@ video {
   justify-content: unset;
   align-items: center;
   display: none;
+  z-index: 2;
 }
 
 #content #navBar #navBarIn #navBarNavText #notifsContainer .triang {
@@ -1128,6 +1129,7 @@ footer {
   align-items: center;
   justify-content: center;
   backdrop-filter: blur(5px);
+  z-index: 3;
 }
 
 .bgWaitingInner {
@@ -1203,4 +1205,58 @@ footer {
 
 #content .messageContainer .msgTxtLink svg {
   height: 20px;
+}
+
+/*  */
+#modChoice {
+  /* position: absolute; */
+  height: 290px;
+  width: 100%;
+  /* height: 125%; */
+  background: #ffffff;
+  /* backdrop-filter: blur(5px); */
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
+  /* z-index: 1; */
+  box-sizing: border-box;
+  padding-top: 100px;
+}
+
+#modChoice span {
+  font-size: 30px;
+  font-family: 'Inter';
+  color: #161d2e;
+  text-align: center;
+}
+
+#modChoice select {
+  border-radius: 6px;
+  height: 30px;
+  width: 275px;
+  margin-top: 20px;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  border: 1px solid #161d2e;
+  color: #161d2e;
+  /* box-shadow: 0px 0.5px 2px #161d2e;*/
+}
+
+#modChoice button {
+  padding: 10px;
+  margin-top: 20px;
+  font-family: 'Inter', sans-serif;
+  color: white;
+  background: #1fdbae;
+  border: none;
+  font-size: 18px;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0px 0px 10px rgba(72, 69, 100, 0.17);
+  transition: background 150ms ease-in-out;
+}
+
+#modChoice button:hover {
+  background: #1bcaa1;
 }

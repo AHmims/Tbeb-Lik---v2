@@ -126,3 +126,7 @@ function updateCounter() {
 // addNotification();
 // }
 // 
+function showForm(element) {
+    element.parentElement.remove();
+    document.getElementById('form_patient').style.display = "block";
+}

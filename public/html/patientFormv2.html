@@ -47,7 +47,7 @@
             </div>
         </header>
         <div id="main">
-            <div id="form_patient">
+            <div id="form_patient" style="display: none;">
                 <div class="patientFormBlock">
                     <h2>Informations personnelles</h2>
                     <div class="patientFormBlockRow">
@@ -100,7 +100,15 @@
                 </div>
             </div>
             <div id="modChoice">
-
+                <span>Veuillez choisir votre option</span>
+                <select id="">
+                    <option value="1" selected>Repos maladie</option>
+                    <option value="2" disabled>Repos maladie longue durée</option>
+                    <option value="3" disabled>Repos accident de travail</option>
+                    <option value="4" disabled>Consultation santé au travail</option>
+                    <option value="5" disabled>Consultation médicale spontanée</option>
+                </select>
+                <button id="" onclick="showForm(this)">Choisir</button>
             </div>
         </div>
         <footer>
