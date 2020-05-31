@@ -18,13 +18,13 @@
 
     <div id="id_content">
         <img id="id_content--img" src="../img/Logo_vertical.svg" alt="logo">
-        <div id="id_form">
+        <form id="id_form" method="POST" action="/userAuth">
             <h1>Login</h1>
             <!-- <h4 style="text-align: center;">Les champs li kynin homa li daroriyin 3ndi</h4> -->
             <!--  -->
             <div class="inputCont">
                 <span>Matricule :</span>
-                <input type="text" placeholder="Matricule" id="inputMatricule" />
+                <input type="text" placeholder="Matricule" name="matricule" id="inputMatricule" />
 
             </div>
             <div class="inputCont">
@@ -33,7 +33,7 @@
             </div>
 
 
-            <button id="btnLogin">Connexion</button>
+            <button id="btnLogin" type="submit">Connexion</button>
             <div class="whiteSpace">
 
             </div>
@@ -43,7 +43,7 @@
             <!-- <h5>The goal from this is to login then save the attribute "matricule" <br />cause i'll need it in every upcoming
             interface
         </h5> -->
-        </div>
+        </form>
 
     </div>
 

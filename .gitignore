@@ -3,5 +3,6 @@
 /js/patient_com.js
 ./server-old.js
 /playground
-./env
+./.env
 /data
+*.key

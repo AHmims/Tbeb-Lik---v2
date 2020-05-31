@@ -1,24 +1,33 @@
 $(document).ready(async () => {
-    if (localStorage.getItem('matricule')) {
-        await logmeIn(localStorage.getItem('matricule'));
-    }
+    // if (localStorage.getItem('matricule')) {
+    //     await logmeIn(localStorage.getItem('matricule'));
+    // }
 });
 document.getElementById('btnLogin').addEventListener('click', async () => {
-    await logmeIn(document.getElementById('inputMatricule').value);
+    // await logmeIn(document.getElementById('inputMatricule').value);
 });
 // 
 async function logmeIn(matriculeId) {
-    let response = await $.post('userTypeById', {
+    // $.ajaxSetup({
+    //     headers: {
+    //         'Authorization': "auth username and password"
+    //     }
+    // });
+    // let response = await $.post('/userTypeById', {
+    //     matricule: matriculeId || null
+    // }).promise();
+    // // 
+    // if (response == 'null')
+    //     logError('Entrez un matricule différent');
+    // else {
+    //     localStorage.setItem('matricule', matriculeId);
+    //     if (response == 'Medecin')
+    //         window.location.href = "/medecin/notifications";
+    //     else
+    //         window.location.href = "/patient/form";
+    // }
+    let response = await $.post('/userAuth', {
         matricule: matriculeId || null
     }).promise();
-    // 
-    if (response == 'null')
-        logError('Entrez un matricule différent');
-    else {
-        localStorage.setItem('matricule', matriculeId);
-        if (response == 'Medecin')
-            window.location.href = "/medecin/notifications";
-        else
-            window.location.href = "/patient/form";
-    }
+    console.log(response);
 }

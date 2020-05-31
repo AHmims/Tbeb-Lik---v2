@@ -366,6 +366,79 @@ async function getToSendToDoctors() {
     }
 }
 // 
+// 
+async function authGetUserData(userId) {
+    try {
+        let resData = null;
+        let req = `SELECT userId,userType FROM appUser WHERE userId = ?`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [userId]);
+        if (res[0].length > 0) {
+            req = `SELECT CONCAT(?,' ',?) AS nom FROM ? WHERE ? = ?`;
+            let inData = {
+                patient: [
+                    "NOM_PAT",
+                    "Prenom_PAT",
+                    "patients",
+                    "MATRICULE_PAT"
+                ],
+                medecin: [
+                    "NOM_MED",
+                    '',
+                    'medecin',
+                    'Matricule_Med'
+                ]
+            }
+            let res2 = await cnx.query(req, [res[0][0].userType == 'Patient' ? inData.patient : inData.medecin, res[0][0].userId]);
+            // 
+            resData = res2[0].length > 0 ? {
+                id: res[0][0].userId,
+                type: res[0][0].userType,
+                nom: res2[0][0].nom
+            } : {
+                id: res[0][0].userId,
+                type: res[0][0].userType,
+                nom: null
+            };
+        }
+        cnx.release();
+        return resData;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// 
+async function authGetUserData(userId) {
+    try {
+        let resData = null;
+        let req = `SELECT userId,userType FROM appUser WHERE userId = ?`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [userId]);
+        if (res[0].length > 0) {
+            let inData = {
+                patient: `SELECT CONCAT(NOM_PAT,' ',Prenom_PAT) AS nom FROM patients WHERE MATRICULE_PAT = ?`,
+                medecin: `SELECT NOM_MED AS nom FROM medecin WHERE Matricule_Med = ?`
+            }
+            let res2 = await cnx.query(res[0][0].userType == 'Patient' ? inData.patient : inData.medecin, [res[0][0].userId]);
+            // 
+            resData = res2[0].length > 0 ? {
+                id: res[0][0].userId,
+                type: res[0][0].userType,
+                nom: res2[0][0].nom
+            } : {
+                id: res[0][0].userId,
+                type: res[0][0].userType,
+                nom: null
+            };
+        }
+        cnx.release();
+        // console.log(resData);
+        return resData;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// 
 //#endregion
 // 
 //#region HELPER FUNCTIONS
@@ -428,6 +501,7 @@ module.exports = {
     customDataDelete,
     getMedecinNameWithConsul,
     getPatientNotificationsByMatricule,
-    getToSendToDoctors
+    getToSendToDoctors,
+    authGetUserData
 }
 // 

@@ -5,6 +5,7 @@ const __APP = __EXPRESS();
 const __SERVER = require('http').createServer(__APP);
 const __IO = require('socket.io')(__SERVER);
 const __PATH = require('path');
+const __JWT = require('jsonwebtoken');
 //IMPORTED MODULES
 // const __PDF = require('./model/savePdf');
 const _CLASSES = require('./model/classes');
@@ -18,6 +19,38 @@ __APP.use(__EXPRESS.urlencoded({
 __APP.use(__EXPRESS.json());
 __APP.use(__EXPRESS.static(__dirname));
 __APP.use(__EXPRESS.static(__PATH.join(__dirname, 'public')));
+__APP.use('/login', async (req, res, next) => {
+    try {
+        const _AUTH_TOKEN = req.query.auth;
+        if (_AUTH_TOKEN == undefined || _AUTH_TOKEN == null)
+            return next();
+        else {
+            let userData = await decodeAndFetchUser(_AUTH_TOKEN);
+            if (userData == null)
+                return next();
+            else {
+                let redirectUrl = '/login';
+                switch (userData.type) {
+                    case 'Patient':
+                        redirectUrl = '/patient/form';
+                        break;
+                    case 'Medecin':
+                        redirectUrl = '/medecin/notifications';
+                        break;
+                    default:
+                        throw `userType unknown => ${userData.type}`;
+                }
+                // 
+                res.redirect(`${redirectUrl}?auth=${_AUTH_TOKEN}`);
+            }
+        }
+    } catch (err) {
+        console.log(err);
+    }
+});
+// __APP.use('/patient/:page', (req, res, next) => {
+// res.redirect('/');
+// });
 // 
 // NOTIICATIONS SYSTEM NAMESPACE
 const __HUB = __IO.of('/medecinHub');
@@ -25,6 +58,7 @@ const __HUB = __IO.of('/medecinHub');
 __IO.on('connection', socket => {
     // ADAPTED
     socket.on('newUser', async (matricule) => {
+        console.log('in');
         try {
             console.log('--------');
             if (matricule != null) {
@@ -493,6 +527,24 @@ async function unlinkMedecinFromRooms(medecinId) {
         console.log(err);
     }
 }
+//
+async function decodeAndFetchUser(userToken) {
+    try {
+        var publicKEY = __FS.readFileSync('./public.key', 'utf8');
+        let tokenData = __JWT.verify(userToken, publicKEY, {
+            issuer: "3li",
+            subject: "Auth tokens",
+            audience: 'users',
+            expiresIn: "468h",
+            algorithm: "RS256"
+        });
+        return await _DB.authGetUserData(tokenData.id);
+        // retdata = {id:"",type:"",nom:""}
+    } catch (err) {
+        console.log(err);
+    }
+}
+// 
 // 
 // ROUTES
 __APP.get('/', (req, res) => {
@@ -518,6 +570,8 @@ __APP.get('/patient/contact', (req, res) => {
     res.sendFile(__PATH.join(__dirname, 'public', 'html', 'patientChat.html'));
     // res.sendFile(__PATH.join(__dirname, 'public', 'html', 'patientChat-barebones.html'));
 });
+// 
+// 
 // ADAPTED
 __APP.post('/userTypeById', async (req, res) => {
     try {
@@ -798,6 +852,65 @@ __APP.post('/patientFormBasicData', async (req, res) => {
     } catch (err) {
         console.log(err);
         res.end('platformFail');
+    }
+});
+// 
+__APP.post('/userAuth', async (req, res) => {
+    let retData = 'null';
+    try {
+        if (req.body.matricule != null || req.body.matricule != undefined) {
+            let userType = await _DB.getTypeById(req.body.matricule);
+            if (userType != 'null') {
+                // TEST PASSWORD HERE
+                let passwordCheck = true;
+                if (passwordCheck) {
+                    var privateKEY = __FS.readFileSync('./private.key', 'utf8'); // to sign JWT
+                    let token = __JWT.sign({
+                        id: req.body.matricule
+                    }, privateKEY, {
+                        issuer: "3li",
+                        subject: "Auth tokens",
+                        audience: 'users',
+                        expiresIn: "468h",
+                        algorithm: "RS256"
+                    });
+                    let pathRedirect = userType == 'Patient' ? '/patient/form' : '/medecin/notifications';
+                    retData = `${pathRedirect}?auth=${token}`;
+                    // __JWT.sign(req.body.matricule, process.env.TOKEN_SECRET_KEY, (err, token) => {
+                    //     if (err)
+                    //         throw 'Error while signing token';
+                    //     let pathRedirect = userType == 'Patient' ? '/patient/form' : '/medecin/notifications';
+                    //     retData = `${pathRedirect}?auth=${token}`;
+                    //     // res.redirect(`${pathRedirect}?auth=${token}`);
+                    // });
+                } else {
+                    console.log('/userAuth | password => doesnt match the user');
+                    retData = 105;
+                }
+            } else {
+                console.log('/userAuth | userType => userNotfound in DB');
+                retData = 104;
+                // throw 'User not found in DB';
+            }
+        } else {
+            console.log('/userAuth | matricule = null');
+            throw 'Matricule invalid';
+        }
+        // res.end(retData.toString());
+        // res.redirect('/login/?err=' + retData);
+        console.log(retData);
+        console.log(process.env.TOKEN_SECRET_KEY);
+        if (typeof retData != "number" && retData != 'null')
+            res.redirect(retData);
+        else
+            res.redirect('/login/?err=' + retData);
+        // 104 => matricule n'existe pas / matricule est incorrect
+        // 105 => mot de pass est incorrect
+    } catch (err) {
+        console.log(err);
+        retData = 100;
+        // res.end('platformFail');
+        res.redirect('/login/?err=' + retData);
     }
 });
 // 
