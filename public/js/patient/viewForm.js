@@ -37,7 +37,7 @@ function addNotification(date, state, nId) {
     cont.addEventListener('click', async () => {
         let dateDiff = (new Date(date)) - (new Date());
         if (dateDiff <= 0)
-            window.location.assign('/patient/contact');
+            window.location.assign(`/patient/contact?auth=${localStorage.getItem('authToken')}&authId=${localStorage.getItem('authId')}`);
         else await logError("Trop tôt pour participer à la conversation avec votre médecin.");
     });
     // 

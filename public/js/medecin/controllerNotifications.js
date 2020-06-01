@@ -1,6 +1,6 @@
 $(document).ready(async () => {
     // UPDATE LINKS
-    // document.getElementById('navChatUrl').setAttribute('href',`/medecin/contact?`)
+    // document.getElementById('navChatUrl').setAttribute('href', `/medecin/contact?auth=${localStorage.getItem('authToken')}&authId=${localStorage.getItem('authId')}`);
     document.getElementById('navNotifsUrl').setAttribute('href', `/medecin/notifications?auth=${localStorage.getItem('authToken')}&authId=${localStorage.getItem('authId')}`);
     // NOT YET ACCEPTED NOTIFICATIONS BUT ADDDRESSED TO THIS DOCTOR
     let inActiveNotifs = await $.post('/getNotifications', {
@@ -14,7 +14,6 @@ $(document).ready(async () => {
         let activeNotifs = await $.post('/getMedecinActiveNotifs', {
             matricule: localStorage.getItem('matricule') || null
         }).promise();
-        console.log(activeNotifs);
         if (activeNotifs != 'platformFail' && activeNotifs != '') {
             // 
             generateActiveNotification(JSON.parse(activeNotifs));
@@ -32,8 +31,8 @@ function generateNotification(array) {
 }
 // 
 function generateActiveNotification(activeNotifs) {
-    if (activeNotifs.length > 0)
-        document.getElementById('navChatUrl').setAttribute('href', `/medecin/contact?room=${activeNotifs[0].roomId}&patient=${activeNotifs[0].MATRICULE_PAT}`);
+    // if (activeNotifs.length > 0)
+    // document.getElementById('navChatUrl').setAttribute('href', `/medecin/contact?room=${activeNotifs[0].roomId}&patient=${activeNotifs[0].MATRICULE_PAT}&auth=${localStorage.getItem('authToken')}&authId=${localStorage.getItem('authId')}`);
     let activeNotifications = document.getElementsByClassName('activeNotificationBox');
     activeNotifs.forEach(notif => {
         let exists = false;

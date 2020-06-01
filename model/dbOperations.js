@@ -367,7 +367,7 @@ async function getToSendToDoctors() {
 }
 // 
 // 
-async function authGetUserData(userId) {
+/*async function authGetUserData(userId) {
     try {
         let resData = null;
         let req = `SELECT userId,userType FROM appUser WHERE userId = ?`,
@@ -406,9 +406,9 @@ async function authGetUserData(userId) {
     } catch (err) {
         console.error('error :', err);
     }
-}
+}*/
 // 
-async function authGetUserData(userId) {
+/*async function authGetUserData(userId) {
     try {
         let resData = null;
         let req = `SELECT userId,userType FROM appUser WHERE userId = ?`,
@@ -433,6 +433,39 @@ async function authGetUserData(userId) {
         }
         cnx.release();
         // console.log(resData);
+        return resData;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}*/
+async function authGetUserData(userId) {
+    try {
+        let resData = null;
+        // 
+        let req = `SELECT MATRICULE_PAT,CONCAT(NOM_PAT,' ',Prenom_PAT) AS nom FROM patients WHERE MATRICULE_PAT = ?`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [userId]);
+        // 
+        if (res[0].length <= 0) {
+            req = `SELECT NOM_MED,Matricule_Med FROM medecin WHERE Matricule_Med = ?`;
+            res = await cnx.query(req, [userId]);
+            // 
+            if (res[0].length > 0) {
+                resData = {
+                    id: res[0][0].Matricule_Med,
+                    type: 'Medecin',
+                    nom: res[0][0].NOM_MED
+                }
+            }
+        } else {
+            resData = {
+                id: res[0][0].MATRICULE_PAT,
+                type: 'Patient',
+                nom: res[0][0].nom
+            }
+        }
+        cnx.release();
+        // 
         return resData;
     } catch (err) {
         console.error('error :', err);

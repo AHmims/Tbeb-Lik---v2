@@ -95,7 +95,7 @@ function sendMsgFunc() {
         roomId: null,
         date_envoi: new Date().toJSON().slice(0, 19).replace('T', ' '),
         type: 'Text',
-        id_pieceJointes: null
+        filePath: null
     }
     createMsgBox(msg, 'sentMessage');
     // 

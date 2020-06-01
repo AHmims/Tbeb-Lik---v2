@@ -6,7 +6,7 @@ localStorage.setItem('authId', _QUERY_AUTH_ID);
 // 
 $.ajaxSetup({
     headers: {
-        'authToken': localStorage.getItem('authToken')
+        'authtoken': localStorage.getItem('authToken')
     }
 });
 // 

@@ -92,7 +92,7 @@ class message {
         this.roomId = roomId;
         this.date_envoi = date_envoi;
         this.type = type;
-        this.id_pieceJointes = id_pieceJointes;
+        this.filePath = id_pieceJointes;
     }
 }
 // 

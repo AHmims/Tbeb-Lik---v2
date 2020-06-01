@@ -4,7 +4,7 @@ $(document).ready(async () => {
         _URL_PARAMS.set('auth', localStorage.getItem('authToken'));
         _URL_PARAMS.set('authId', localStorage.getItem('authId'));
         // 
-        localStorage.removeItem('auth');
+        localStorage.removeItem('authToken');
         localStorage.removeItem('authId');
         // 
         window.location.search = _URL_PARAMS;

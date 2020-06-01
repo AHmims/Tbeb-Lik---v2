@@ -54,7 +54,7 @@ $(document).ready(async () => {
         let btnRes = await toastConfirmWarning();
         if (btnRes) {
             let patientData = await $.post('/patientChatBasicData', {
-                matricule: patientMatricule
+                matriculePatient: patientMatricule
             }).promise();
             patientData = JSON.parse(patientData);
             if (patientData.length > 0) {
@@ -78,7 +78,8 @@ $(document).ready(async () => {
                             sendMsgFunc(finaleResult.filename, "document", finaleResult.downloadLink);
                             logToast('La consultation est terminée, vous serez redirigé dans 3 secondes');
                             setTimeout(() => {
-                                window.location.assign('/medecin/notifications');
+                                // window.location.assign('/medecin/notifications');
+                                // history.back();
                             }, 3000);
                         }
                     } else await logServerError();
@@ -120,7 +121,7 @@ function sendMsgFunc(txtMsg, type, file = null) {
         roomId: null,
         date_envoi: new Date().toJSON().slice(0, 19).replace('T', ' '),
         type: type,
-        pieceJointes: file
+        filePath: file
     }
     createMsgBox(msg, 'sentMessage');
     // 

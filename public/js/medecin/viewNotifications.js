@@ -1,5 +1,5 @@
 function makeNotificationBox(data) {
-    console.log(data);
+    // console.log(data);
     // 🎲
     var container = makeElement('div');
     container.setAttribute('class', 'box-notif box-notif-main space-between-15px notificationBox');
@@ -181,7 +181,7 @@ function makeNotificationBox(data) {
 }
 
 function generateSemiNotifBox(data) {
-    console.log(data);
+    // console.log(data);
     // 🎲
     var container = makeElement('div');
     container.setAttribute('class', 'box-notif space-between-15px activeNotificationBox');
@@ -232,7 +232,7 @@ function generateSemiNotifBox(data) {
     var btn2 = makeElement('a');
     btn2.setAttribute('class', 'btn-acc m-top-20');
     btn2.innerText = 'Contacter';
-    btn2.setAttribute('href', `/medecin/contact?room=${data.roomId}&patient=${data.MATRICULE_PAT}`);
+    btn2.setAttribute('href', `/medecin/contact?room=${data.roomId}&patient=${data.MATRICULE_PAT}&auth=${localStorage.getItem('authToken')}&authId=${localStorage.getItem('authId')}`);
     if (data.JOUR_REPOS > -1)
         btn2.innerText = "Reviser";
     else {

@@ -26,7 +26,7 @@ __GLOBAL_SOCKET.on('queryResult', async data => {
     }
 });
 __GLOBAL_SOCKET.on('notificationAccepted', (date, nId) => {
-    addNotification(date, true, nId);
+    addNotification(date, false, nId);
     if (document.getElementById('waitingConsultation'))
         document.getElementById('waitingConsultation').remove();
     // window.location.assign('/patient/contact');

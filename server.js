@@ -54,10 +54,12 @@ async function isAuth(req, res, next) {
     try {
         const _AUTH_TOKEN = req.query.auth;
         const _AUTH_USER_ID = req.query.authId;
+        console.log(_AUTH_TOKEN);
         if (_AUTH_TOKEN == undefined || _AUTH_TOKEN == null)
             // return next();
             res.redirect('/login');
         else {
+            console.log(_AUTH_USER_ID);
             let userData = await decodeAndFetchUser(_AUTH_TOKEN);
             if (userData == null || userData.id != _AUTH_USER_ID)
                 res.redirect('/login');
@@ -72,9 +74,8 @@ async function isAuth(req, res, next) {
 }
 async function postAuthVerify(req, res, next) {
     try {
-        const _AUTH_TOKEN = req.headers.authToken;
+        const _AUTH_TOKEN = req.headers.authtoken;
         if (_AUTH_TOKEN == undefined || _AUTH_TOKEN == null)
-            // return next();
             req.body.matricule = null;
         else {
             let userData = await decodeAndFetchUser(_AUTH_TOKEN);
@@ -84,10 +85,10 @@ async function postAuthVerify(req, res, next) {
                 req.body.matricule = userData.id;
         }
         // 
-        next();
+        return next();
     } catch (err) {
         req.body.matricule = null;
-        next();
+        return next();
     }
 }
 // 
@@ -697,6 +698,7 @@ __APP.post('/getMedecinActiveNotifs', postAuthVerify, async (req, res) => {
     try {
         console.log('******');
         let retData = [];
+        console.log(req.body.matricule);
         if (req.body.matricule != null) {
             let reqRes = await acceptedMedecinNotifications(req.body.matricule);
             if (reqRes != null)
@@ -872,20 +874,25 @@ __APP.post('/patientChatBasicData', postAuthVerify, async (req, res) => {
     try {
         let retData = [];
         if (req.body.matricule != null) {
-            let data = await _DB.getDataAll('patients', `WHERE MATRICULE_PAT = '${req.body.matricule}'`);
-            if (data.length > 0) {
-                console.log('/patientChatBasicData | data = ', data);
-                retData = [{
-                    mle: data[0].MATRICULE_PAT,
-                    nom: data[0].NOM_PAT,
-                    prenom: data[0].Prenom_PAT,
-                    direction: data[0].Direction
-                }];
+            if (req.body.matriculePatient != null && req.body.matriculePatient != undefined) {
+                let data = await _DB.getDataAll('patients', `WHERE MATRICULE_PAT = '${req.body.matriculePatient}'`);
+                console.log(data);
+                if (data.length > 0) {
+                    console.log('/patientChatBasicData | data = ', data);
+                    retData = [{
+                        mle: data[0].MATRICULE_PAT,
+                        nom: data[0].NOM_PAT,
+                        prenom: data[0].Prenom_PAT,
+                        direction: data[0].Direction
+                    }];
+                } else {
+                    console.log('/patientChatBasicData | data = no data ?!');
+                }
             } else {
-                console.log('/patientChatBasicData | data = no data ?!');
+                console.log('/patientChatBasicData | Patient matricule = null');
             }
         } else {
-            console.log('/patientChatBasicData | matricule = null');
+            console.log('/patientChatBasicData | Medecin matricule = null');
             // throw 'Matricule invalid';
         }
         res.end(JSON.stringify(retData));
@@ -979,6 +986,7 @@ __APP.post('/userAuth', async (req, res) => {
             console.log('/userAuth | matricule = null');
             throw 'Matricule invalid';
         }
+        console.log(retData);
         if (typeof retData != "number" && retData != 'null')
             res.redirect(retData);
         else
