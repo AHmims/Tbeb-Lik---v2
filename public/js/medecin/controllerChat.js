@@ -1,4 +1,6 @@
 $(document).ready(async () => {
+    document.getElementById('navNotifsUrl').setAttribute('href', `/medecin/notifications?auth=${localStorage.getItem('authToken')}&authId=${localStorage.getItem('authId')}`);
+    // 
     const _URL_PARAMS = new URLSearchParams(window.location.search);
     const roomMedcin = _URL_PARAMS.get('room');
     const patientMatricule = _URL_PARAMS.get('patient');
@@ -18,7 +20,7 @@ $(document).ready(async () => {
         // 
         for (let i = 0; i < msgs.length; i++) {
             let type = 'receivedMessage';
-            if (msgs[i].Matricule_emmeter.toUpperCase() == localStorage.getItem('matricule').toUpperCase())
+            if (msgs[i].Matricule_emmeter.toUpperCase() == localStorage.getItem('authId').toUpperCase())
                 type = 'sentMessage';
             // 
             createMsgBox(msgs[i], type);

@@ -2,8 +2,8 @@ const __GLOBAL_SOCKET = io();
 let __PEER;
 // 
 __GLOBAL_SOCKET.on('connect', async () => {
-    console.log('Socket Connected ! userId => ', localStorage.getItem('matricule') || null);
-    await __GLOBAL_SOCKET.emit('newUser', localStorage.getItem('matricule'));
+    console.log('Socket Connected ! userId => ', localStorage.getItem('authToken') || null);
+    await __GLOBAL_SOCKET.emit('newUser', localStorage.getItem('authToken'));
 });
 // 
 __GLOBAL_SOCKET.on('receiveMsg', msg => {

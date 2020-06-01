@@ -22,11 +22,12 @@ __APP.use(__EXPRESS.static(__PATH.join(__dirname, 'public')));
 __APP.use('/login', async (req, res, next) => {
     try {
         const _AUTH_TOKEN = req.query.auth;
+        const _AUTH_USER_ID = req.query.authId;
         if (_AUTH_TOKEN == undefined || _AUTH_TOKEN == null)
             return next();
         else {
             let userData = await decodeAndFetchUser(_AUTH_TOKEN);
-            if (userData == null)
+            if (userData == null || userData.id != _AUTH_USER_ID)
                 return next();
             else {
                 let redirectUrl = '/login';
@@ -41,71 +42,116 @@ __APP.use('/login', async (req, res, next) => {
                         throw `userType unknown => ${userData.type}`;
                 }
                 // 
-                res.redirect(`${redirectUrl}?auth=${_AUTH_TOKEN}`);
+                res.redirect(`${redirectUrl}?auth=${_AUTH_TOKEN}&authId=${userData.id}`);
             }
         }
     } catch (err) {
+        res.redirect('/login?err=fatal');
         console.log(err);
     }
 });
-// __APP.use('/patient/:page', (req, res, next) => {
-// res.redirect('/');
-// });
+async function isAuth(req, res, next) {
+    try {
+        const _AUTH_TOKEN = req.query.auth;
+        const _AUTH_USER_ID = req.query.authId;
+        if (_AUTH_TOKEN == undefined || _AUTH_TOKEN == null)
+            // return next();
+            res.redirect('/login');
+        else {
+            let userData = await decodeAndFetchUser(_AUTH_TOKEN);
+            if (userData == null || userData.id != _AUTH_USER_ID)
+                res.redirect('/login');
+            else {
+                return next();
+            }
+        }
+    } catch (err) {
+        res.redirect('/login?err=fatal');
+        console.log(err);
+    }
+}
+async function postAuthVerify(req, res, next) {
+    try {
+        const _AUTH_TOKEN = req.headers.authToken;
+        if (_AUTH_TOKEN == undefined || _AUTH_TOKEN == null)
+            // return next();
+            req.body.matricule = null;
+        else {
+            let userData = await decodeAndFetchUser(_AUTH_TOKEN);
+            if (userData == null)
+                req.body.matricule = null;
+            else
+                req.body.matricule = userData.id;
+        }
+        // 
+        next();
+    } catch (err) {
+        req.body.matricule = null;
+        next();
+    }
+}
 // 
 // NOTIICATIONS SYSTEM NAMESPACE
 const __HUB = __IO.of('/medecinHub');
 //TRAITMENT
 __IO.on('connection', socket => {
     // ADAPTED
-    socket.on('newUser', async (matricule) => {
-        console.log('in');
+    socket.on('newUser', async (authToken) => {
         try {
-            console.log('--------');
-            if (matricule != null) {
-                let type = await _DB.getTypeById(matricule);
-                console.log('newUser() | type => ', type);
-                if (type != null) {
-                    let existingUser = await _DB.getAppUserDataById(matricule);
-                    console.log('newUser() | existingUser => ', existingUser)
-                    // 
-                    if (existingUser != null) {
-                        let updatingResult = await _DB.customDataUpdate({
-                            socket: socket.id,
-                            online: true
-                        }, existingUser.userId, {
-                            table: "appUser",
-                            id: "userId"
-                        });
+            if (authToken != null) {
+                let conUserData = await decodeAndFetchUser(authToken);
+                console.log('--------');
+                if (conUserData != null) {
+                    let type = conUserData.type;
+                    let matricule = conUserData.id;
+                    // let type = await _DB.getTypeById(matricule);
+                    console.log('newUser() | type => ', type);
+                    if (type != null) {
+                        let existingUser = await _DB.getAppUserDataById(matricule);
+                        console.log('newUser() | existingUser => ', existingUser)
                         // 
-                        console.log('newUser() | updatingResult => ', updatingResult);
-                        // 
-                        if (type == 'Patient') {
-                            socket.join(existingUser.roomId);
-                            console.log('newUser() | patientJoin | roomId => ', existingUser.roomId);
-                        }
-                    } else {
-                        let userInstance = makeUserInstance(matricule, type, socket.id);
-                        console.log('newUser() | userInstance => ', userInstance);
-                        let insertResult = await _DB.insertData(userInstance);
-                        console.log('newUser() | insertResult => ', insertResult);
-                        // GET THE ROOM ID FROM THE INSERTED USER
-                        //IF IT WAS A PATIENT
-                        if (type == 'Patient') {
-                            let insertedPatient = await _DB.getDataAll('appUser', `where userId = '${matricule}'`);
-                            if (insertedPatient.length > 0) {
-                                socket.join(insertedPatient[0].roomId);
-                                console.log('newUser() | patientJoin | roomId => ', insertedPatient[0].roomId);
-                            } else {
-                                throw 'newUser() getDataAll returned Empty';
+                        if (existingUser != null) {
+                            let updatingResult = await _DB.customDataUpdate({
+                                socket: socket.id,
+                                online: true
+                            }, existingUser.userId, {
+                                table: "appUser",
+                                id: "userId"
+                            });
+                            // 
+                            console.log('newUser() | updatingResult => ', updatingResult);
+                            // 
+                            if (type == 'Patient') {
+                                socket.join(existingUser.roomId);
+                                console.log('newUser() | patientJoin | roomId => ', existingUser.roomId);
+                            }
+                        } else {
+                            let userInstance = makeUserInstance(matricule, type, socket.id);
+                            console.log('newUser() | userInstance => ', userInstance);
+                            let insertResult = await _DB.insertData(userInstance);
+                            console.log('newUser() | insertResult => ', insertResult);
+                            // GET THE ROOM ID FROM THE INSERTED USER
+                            //IF IT WAS A PATIENT
+                            if (type == 'Patient') {
+                                let insertedPatient = await _DB.getDataAll('appUser', `where userId = '${matricule}'`);
+                                if (insertedPatient.length > 0) {
+                                    socket.join(insertedPatient[0].roomId);
+                                    console.log('newUser() | patientJoin | roomId => ', insertedPatient[0].roomId);
+                                } else {
+                                    throw 'newUser() getDataAll returned Empty';
+                                }
                             }
                         }
+                    } else {
+                        throw 'newUser() | type = null';
                     }
                 } else {
-                    throw 'newUser() | type = null';
+                    console.log('newUser() | matricule == null');
+                    throw 'newUser() | matricule = null';
                 }
             } else {
-                console.log('newUser() | matricule == null');
-                throw 'newUser() | matricule = null';
+                console.log('newUser() | auToken == null');
+                throw 'newUser() | auToken = null';
             }
         } catch (err) {
             socket.emit('platformFail');
@@ -119,63 +165,70 @@ __IO.on('connection', socket => {
             // GET USERID FROM SOCKET
             // let appUserData = await _DB.getAppUserCustomDataBySocket(["userId"], socket.id);
             // console.log('sendNotif() | appUserData => ', appUserData);
-            if (data.patientId != null) {
-                let appUserData = {
-                    userId: data.patientId
-                };
-                // CHECK IF THE PATIENT GOT ANY ONGOING DEMANDES
-                let exists = await _DB.consultationCheck(appUserData.userId);
-                console.log('sendNotif() | exists => ', exists);
-                if (!exists) {
-                    // v2 => GET ONLINE DOCTORS FROM THE GIVEN CITY AND PROFESSIONS
-                    // V3 => I'LL HARD CODE THE CITY PARAM VALUE SINCE WE DON'T KNOW YET IF
-                    // WE NEED TO SELECT BY CITY OR NOT
-                    // let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession(data.ville, data.proffession);
-                    // let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession('cityValue', data.proffession);
-                    let listMedecins = await _DB.getToSendToDoctors();
-                    console.log('sendNotif() | listMedecins => ', listMedecins);
-                    if (listMedecins != null) {
-                        // INSERT DATA INTO TABLE PRECONSULTATION
-                        let insertRes = await _DB.insertData(new _CLASSES.preConsultation('tempId', data.date, data.motif, data.atcd, data.nbja, false, appUserData.userId));
-                        console.log('sendNotif() | insertData(preConsultation) => ', insertRes);
-                        // SEND NOTIFS TO DOCTORS
-                        let notifData = await getNotificationFullData(appUserData.userId);
-                        listMedecins.forEach(async medecin => {
-                            let inboxInsertResult = await _DB.insertData(new _CLASSES.medecinInbox(notifData.index, medecin.Matricule_Med));
-                            console.log('sendNotif() | inboxInsertResult => ', inboxInsertResult);
-                            __HUB.to(`/medecinHub#${medecin.socket}`).emit('receivedNotification', notifData);
-                        });
-                        //SEND FEEDBACK TO THE SENDER
-                        __IO.to(socket.id).emit('queryResult', {
-                            status: 2,
-                            data: listMedecins.length
-                        });
-                        // 
+            if (data.authToken != null) {
+                let conUserData = await decodeAndFetchUser(data.authToken);
+                if (conUserData != null) {
+                    data.patientId = conUserData.id;
+                    let appUserData = {
+                        userId: data.patientId
+                    };
+                    // CHECK IF THE PATIENT GOT ANY ONGOING DEMANDES
+                    let exists = await _DB.consultationCheck(appUserData.userId);
+                    console.log('sendNotif() | exists => ', exists);
+                    if (!exists) {
+                        // v2 => GET ONLINE DOCTORS FROM THE GIVEN CITY AND PROFESSIONS
+                        // V3 => I'LL HARD CODE THE CITY PARAM VALUE SINCE WE DON'T KNOW YET IF
+                        // WE NEED TO SELECT BY CITY OR NOT
+                        // let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession(data.ville, data.proffession);
+                        // let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession('cityValue', data.proffession);
+                        let listMedecins = await _DB.getToSendToDoctors();
+                        console.log('sendNotif() | listMedecins => ', listMedecins);
+                        if (listMedecins != null) {
+                            // INSERT DATA INTO TABLE PRECONSULTATION
+                            let insertRes = await _DB.insertData(new _CLASSES.preConsultation('tempId', data.date, data.motif, data.atcd, data.nbja, false, appUserData.userId));
+                            console.log('sendNotif() | insertData(preConsultation) => ', insertRes);
+                            // SEND NOTIFS TO DOCTORS
+                            let notifData = await getNotificationFullData(appUserData.userId);
+                            listMedecins.forEach(async medecin => {
+                                let inboxInsertResult = await _DB.insertData(new _CLASSES.medecinInbox(notifData.index, medecin.Matricule_Med));
+                                console.log('sendNotif() | inboxInsertResult => ', inboxInsertResult);
+                                __HUB.to(`/medecinHub#${medecin.socket}`).emit('receivedNotification', notifData);
+                            });
+                            //SEND FEEDBACK TO THE SENDER
+                            __IO.to(socket.id).emit('queryResult', {
+                                status: 2,
+                                data: listMedecins.length
+                            });
+                            // 
+                        } else {
+                            //SEND FEEDBACK TO THE SENDER
+                            __IO.to(socket.id).emit('queryResult', {
+                                status: 0,
+                                data: null
+                            });
+                            console.log('sendNotif() | listMedecins : no doctor found with the given values');
+                        }
                     } else {
-                        //SEND FEEDBACK TO THE SENDER
+                        // YOU ALREADY HAVE AN ONGOING DEMANDE YOU CAN'T SEND ANYMORE SHIT
+                        console.log('sendNotif() | exists : User have ongoing notification');
                         __IO.to(socket.id).emit('queryResult', {
-                            status: 0,
+                            status: 1,
                             data: null
                         });
-                        console.log('sendNotif() | listMedecins : no doctor found with the given values');
                     }
                 } else {
-                    // YOU ALREADY HAVE AN ONGOING DEMANDE YOU CAN'T SEND ANYMORE SHIT
-                    console.log('sendNotif() | exists : User have ongoing notification');
-                    __IO.to(socket.id).emit('queryResult', {
-                        status: 1,
-                        data: null
-                    });
+                    throw 'sendNoti() | userData = userNotFound';
                 }
             } else {
-                throw 'sendNoti() | appUserData = null';
+                console.log('sendNotif() | auToken == null');
+                throw 'sendNotif() | auToken = null';
             }
         } catch (err) {
             socket.emit('platformFail');
         }
     });
     // ADAPTED
-    socket.on('acceptNotif', async (notifId, clientDate) => {
+    socket.on('acceptNotif', async (notifId, clientDate, authToken) => {
         try {
             console.log('------');
             // TO STAY IN THE CLEAR HOW NOTIFICATIONS WORKS,
@@ -190,64 +243,75 @@ __IO.on('connection', socket => {
             // IF IT WAS ACCEPTED RETURN AN ERROR TO THE SENDER INFORMING THEM 
             // THAT THE NOTIFICATION WAS ACCEPTED
             // 
-            let conultationCheck = await _DB.checkExistence({
-                table: 'consultation',
-                id: 'idPreCons'
-            }, notifId, '');
-            // 
-            if (!conultationCheck) {
-                let medecin = await _DB.getAppUserCustomDataBySocket(["userId"], socket.id);
-                if (medecin != null) {
-                    console.log('acceptNotif() | medecin => ', medecin);
-                    let room = await _DB.getRoomIdByNotifId(notifId);
-                    if (room != null) {
-                        // 
-                        console.log('acceptNotif() | room => ', room);
-                        // REMOVE ME FROM ROOMS
-                        let roomUnlinkMedecin = await unlinkMedecinFromRooms(medecin.userId);
-                        console.log('unlinkMedecinFromRooms() | roomUnlinkMedecin => ', roomUnlinkMedecin);
-                        // 
-                        let patientUpdate = await _DB.customDataUpdate({
-                            linkedMedecinMatricule: medecin.userId
-                        }, room.userPatientMatricule, {
-                            table: "appUser",
-                            id: "userId"
-                        });
-                        console.log('acceptNotif() | patientUpdate => ', patientUpdate);
-                        // 
-                        let roomUpdate = await _DB.customDataUpdate({
-                            userMedecinMatricule: medecin.userId
-                        }, room.roomId, {
-                            table: "room",
-                            id: "roomId"
-                        });
-                        console.log('acceptNotif() | roomUpdate => ', roomUpdate);
-                        // 
-                        let notificationUpdate = await _DB.customDataUpdate({
-                            accepted: true
-                        }, notifId, {
-                            table: "preConsultation",
-                            id: "idPreCons"
-                        });
-                        console.log('acceptNotif() | notificationUpdate => ', notificationUpdate);
-                        // 
-                        let consultationInsert = await _DB.insertData(new _CLASSES.consultation(-1, clientDate, medecin.userId, '', notifId));
-                        console.log('acceptNotif() | consultationInsert => ', consultationInsert);
-                        // SEND A SOCKET BACK TO THE SENDER
-                        __IO.to(socket.id).emit('activeNotification', await acceptedMedecinNotifications(medecin.userId));
-                        // SEND A PING TO THE PATIENT INFORMING THEM ABOUT THE ACCEPTANCE OF THE NOTIFICATION
-                        socket.to(room.roomId).emit('notificationAccepted', clientDate);
+            if (authToken != null) {
+                let conUserData = await decodeAndFetchUser(authToken);
+                if (conUserData != null) {
+                    let conultationCheck = await _DB.checkExistence({
+                        table: 'consultation',
+                        id: 'idPreCons'
+                    }, notifId, '');
+                    // 
+                    if (!conultationCheck) {
+                        // let medecin = await _DB.getAppUserCustomData(["userId"], socket.id);
+                        let medecinId = conUserData.id;
+                        if (medecinId != null || medecinId != undefined) {
+                            console.log('acceptNotif() | medecin => ', medecinId);
+                            let room = await _DB.getRoomIdByNotifId(notifId);
+                            if (room != null) {
+                                console.log('acceptNotif() | room => ', room);
+                                // REMOVE ME FROM ROOMS
+                                let roomUnlinkMedecin = await unlinkMedecinFromRooms(medecinId);
+                                console.log('unlinkMedecinFromRooms() | roomUnlinkMedecin => ', roomUnlinkMedecin);
+                                // 
+                                let patientUpdate = await _DB.customDataUpdate({
+                                    linkedMedecinMatricule: medecinId
+                                }, room.userPatientMatricule, {
+                                    table: "appUser",
+                                    id: "userId"
+                                });
+                                console.log('acceptNotif() | patientUpdate => ', patientUpdate);
+                                // 
+                                let roomUpdate = await _DB.customDataUpdate({
+                                    userMedecinMatricule: medecinId
+                                }, room.roomId, {
+                                    table: "room",
+                                    id: "roomId"
+                                });
+                                console.log('acceptNotif() | roomUpdate => ', roomUpdate);
+                                // 
+                                let notificationUpdate = await _DB.customDataUpdate({
+                                    accepted: true
+                                }, notifId, {
+                                    table: "preConsultation",
+                                    id: "idPreCons"
+                                });
+                                console.log('acceptNotif() | notificationUpdate => ', notificationUpdate);
+                                // 
+                                let consultationInsert = await _DB.insertData(new _CLASSES.consultation(-1, clientDate, medecinId, '', notifId));
+                                console.log('acceptNotif() | consultationInsert => ', consultationInsert);
+                                // SEND A SOCKET BACK TO THE SENDER
+                                __IO.to(socket.id).emit('activeNotification', await acceptedMedecinNotifications(medecinId));
+                                // SEND A PING TO THE PATIENT INFORMING THEM ABOUT THE ACCEPTANCE OF THE NOTIFICATION
+                                socket.to(room.roomId).emit('notificationAccepted', clientDate, notifId);
+                            } else {
+                                console.log('acceptNotif() | room not found');
+                                throw 'acceptNotif() | room not found';
+                            }
+                        } else {
+                            console.log('acceptNotif() | medecin not found');
+                            throw 'acceptNotif() | medecin not found';
+                        }
                     } else {
-                        console.log('acceptNotif() | room not found');
-                        throw 'acceptNotif() | room not found';
+                        console.log('acceptNotif() | consultation deja accepté');
+                        socket.emit('notifAlreadyAccepted');
                     }
                 } else {
-                    console.log('acceptNotif() | medecin not found');
-                    throw 'acceptNotif() | medecin not found';
+                    console.log('acceptNotif() | matricule == null');
+                    throw 'acceptNotif() | matricule = null';
                 }
             } else {
-                console.log('acceptNotif() | consultation deja accepté');
-                socket.emit('notifAlreadyAccepted');
+                console.log('acceptNotif() | auToken == null');
+                throw 'acceptNotif() | auToken = null';
             }
         } catch (err) {
             socket.emit('platformFail');
@@ -289,21 +353,28 @@ __IO.on('connection', socket => {
     });
     // 
     // ADAPTED
-    socket.on('joinChat', async (medecinId, room, patientId) => {
+    socket.on('joinChat', async (medecinAuthToken, room, patientId) => {
         try {
-            console.log('#-#-#-#');
-            let roomUnlinkMedecin = await unlinkMedecinFromRooms(medecinId);
-            console.log('joinChat() | roomUnlinkMedecin => ', roomUnlinkMedecin);
-            let patientUpdate = await _DB.customDataUpdate({
-                userMedecinMatricule: medecinId
-            }, patientId, {
-                table: "room",
-                id: "userPatientMatricule"
-            });
-            console.log('unlinkMedecinFromRooms() | patientUpdate => ', patientUpdate);
-            // 
-            // socket.leaveAll();
-            socket.join(room);
+            let authUserData = await decodeAndFetchUser(medecinAuthToken);
+            if (authUserData != null) {
+                let medecinId = authUserData.id;
+                console.log('#-#-#-#');
+                let roomUnlinkMedecin = await unlinkMedecinFromRooms(medecinId);
+                console.log('joinChat() | roomUnlinkMedecin => ', roomUnlinkMedecin);
+                let patientUpdate = await _DB.customDataUpdate({
+                    userMedecinMatricule: medecinId
+                }, patientId, {
+                    table: "room",
+                    id: "userPatientMatricule"
+                });
+                console.log('unlinkMedecinFromRooms() | patientUpdate => ', patientUpdate);
+                // 
+                // socket.leaveAll();
+                socket.join(room);
+            } else {
+                console.log('joinChat() | token invalid');
+                throw 'joinChat() | token invalid';
+            }
         } catch (err) {
             socket.emit('platformFail');
         }
@@ -326,7 +397,7 @@ __IO.on('connection', socket => {
                 console.log('sendMsg() | insertResult => ', insertResult);
             } else {
                 console.log('sendMsg() | room not found');
-                throw 'sendMsg() | room not found'
+                throw 'sendMsg() | room not found';
             }
         } catch (err) {
             socket.emit('platformFail');
@@ -353,35 +424,42 @@ __IO.on('connection', socket => {
 
     }
     // ADAPTED
-    socket.on('cancelRequest', async (patientId) => {
+    socket.on('cancelRequest', async (patientAuthToken) => {
         try {
             let nId = null;
-            console.log('cancelRequest() | patientId => ', patientId);
-            if (patientId != null) {
-                nId = await _DB.getLastInsertedNotification(patientId);
-                console.log('cancelRequest() | nId => ', nId);
-                if (nId != null) {
-                    nId = nId.idPreCons;
-                    let deleteFromPreConsultation = await _DB.customDataDelete({
-                        table: "preConsultation",
-                        id: "idPreCons"
-                    }, nId);
-                    console.log(`cancelRequest() | deleteFromPreConsultation => `, deleteFromPreConsultation);
-                    // 
-                    let deleteFromMedecinInbox = await _DB.customDataDelete({
-                        table: "medecinInbox",
-                        id: "idPreCons"
-                    }, nId);
-                    console.log(`cancelRequest() | deleteFromMedecinInbox => `, deleteFromMedecinInbox);
-                    // 
-                    __HUB.emit('removeNotificationBox', nId);
-                    // SEND BACK TO THE SANEDER
-                    socket.emit('cancelRequestSuccess');
+            let patientAuthData = await decodeAndFetchUser(patientAuthToken);
+            if (patientAuthData != null) {
+                let patientId = patientAuthData.id;
+                console.log('cancelRequest() | patientId => ', patientId);
+                if (patientId != null || patientId != undefined) {
+                    nId = await _DB.getLastInsertedNotification(patientId);
+                    console.log('cancelRequest() | nId => ', nId);
+                    if (nId != null) {
+                        nId = nId.idPreCons;
+                        let deleteFromPreConsultation = await _DB.customDataDelete({
+                            table: "preConsultation",
+                            id: "idPreCons"
+                        }, nId);
+                        console.log(`cancelRequest() | deleteFromPreConsultation => `, deleteFromPreConsultation);
+                        // 
+                        let deleteFromMedecinInbox = await _DB.customDataDelete({
+                            table: "medecinInbox",
+                            id: "idPreCons"
+                        }, nId);
+                        console.log(`cancelRequest() | deleteFromMedecinInbox => `, deleteFromMedecinInbox);
+                        // 
+                        __HUB.emit('removeNotificationBox', nId);
+                        // SEND BACK TO THE SANEDER
+                        socket.emit('cancelRequestSuccess');
+                    } else {
+                        throw 'cancelRequest() | NotiicationId = null';
+                    }
                 } else {
-                    throw 'cancelRequest() | NotiicationId = null';
+                    throw 'cancelRequest() | patientId = null';
                 }
             } else {
-                throw 'cancelRequest() | patientId = null';
+                console.log('cancelRequest() | token invalid');
+                throw 'cancelRequest() | token invalid';
             }
         } catch (err) {
             socket.emit('platformFail');
@@ -541,7 +619,8 @@ async function decodeAndFetchUser(userToken) {
         return await _DB.authGetUserData(tokenData.id);
         // retdata = {id:"",type:"",nom:""}
     } catch (err) {
-        console.log(err);
+        // console.log(err);
+        return null;
     }
 }
 // 
@@ -555,25 +634,25 @@ __APP.get('/login', (req, res) => {
     res.sendFile(__PATH.join(__dirname, 'public', 'html', 'identification.html'));
 });
 // 
-__APP.get('/medecin/notifications', (req, res) => {
+__APP.get('/medecin/notifications', isAuth, (req, res) => {
     res.sendFile(__PATH.join(__dirname, 'public', 'html', 'medecinNotifications.html'));
 });
-__APP.get('/medecin/contact', (req, res) => {
+__APP.get('/medecin/contact', isAuth, (req, res) => {
     // console.log(req.query.room);
     res.sendFile(__PATH.join(__dirname, 'public', 'html', 'medecinChat.html'));
 });
-__APP.get('/patient/form', (req, res) => {
+__APP.get('/patient/form', isAuth, (req, res) => {
     // res.sendFile(__PATH.join(__dirname, 'public', 'html', 'patientForm.html'));
     res.sendFile(__PATH.join(__dirname, 'public', 'html', 'patientFormv2.html'));
 });
-__APP.get('/patient/contact', (req, res) => {
+__APP.get('/patient/contact', isAuth, (req, res) => {
     res.sendFile(__PATH.join(__dirname, 'public', 'html', 'patientChat.html'));
     // res.sendFile(__PATH.join(__dirname, 'public', 'html', 'patientChat-barebones.html'));
 });
 // 
 // 
 // ADAPTED
-__APP.post('/userTypeById', async (req, res) => {
+__APP.post('/userTypeById', postAuthVerify, async (req, res) => {
     try {
         let result = 'null';
         if (req.body.matricule != null)
@@ -601,7 +680,7 @@ __APP.post('/listeConsultationFields', async (req, res) => {
     }
 });
 // ADAPETD
-__APP.post('/getNotifications', async (req, res) => {
+__APP.post('/getNotifications', postAuthVerify, async (req, res) => {
     try {
         let result = [];
         if (req.body.matricule != null)
@@ -614,7 +693,7 @@ __APP.post('/getNotifications', async (req, res) => {
 
 });
 // ADAPTED
-__APP.post('/getMedecinActiveNotifs', async (req, res) => {
+__APP.post('/getMedecinActiveNotifs', postAuthVerify, async (req, res) => {
     try {
         console.log('******');
         let retData = [];
@@ -631,7 +710,7 @@ __APP.post('/getMedecinActiveNotifs', async (req, res) => {
 
 });
 // ADAPTED
-__APP.post('/getAccessNotif', async (req, res) => {
+__APP.post('/getAccessNotif', postAuthVerify, async (req, res) => {
     try {
         console.log('******');
         let retData = false;
@@ -645,7 +724,7 @@ __APP.post('/getAccessNotif', async (req, res) => {
 
 });
 // ADAPTED
-__APP.post('/getMesssages', async (req, res) => {
+__APP.post('/getMesssages', postAuthVerify, async (req, res) => {
     try {
         console.log('******');
         let retData = [];
@@ -673,7 +752,7 @@ __APP.post('/getMesssages', async (req, res) => {
             }
         } else {
             console.log('/getMesssages | matricule = null');
-            throw 'Matricule invalid';
+            // throw 'Matricule invalid';
         }
         res.end(JSON.stringify(retData));
     } catch (err) {
@@ -681,7 +760,7 @@ __APP.post('/getMesssages', async (req, res) => {
     }
 });
 // ADAPTED
-__APP.post('/getNotYetAcceptedRequest', async (req, res) => {
+__APP.post('/getNotYetAcceptedRequest', postAuthVerify, async (req, res) => {
     try {
         console.log('******');
         let retData = false;
@@ -694,7 +773,7 @@ __APP.post('/getNotYetAcceptedRequest', async (req, res) => {
     }
 });
 // ADAPTED
-__APP.post('/finalizeConsultation', async (req, res) => {
+__APP.post('/finalizeConsultation', postAuthVerify, async (req, res) => {
     try {
         let status = false;
         let reqRetData = {
@@ -702,46 +781,48 @@ __APP.post('/finalizeConsultation', async (req, res) => {
             filename: null,
             downloadLink: null
         };
-        let notifId = await _DB.getNotifIdByRoomId(req.body.room, req.body.matricule);
-        console.log(`finalizeConsultation() | notifId => `, notifId);
-        if (notifId != null) {
-            let preConsultationFinished = await _DB.customDataUpdate({
-                nbJourA: req.body.data.nbrJA
-            }, notifId, {
-                table: "preConsultation",
-                id: "idPreCons"
-            });
-            console.log('finalizeConsultation() | preConsultationFinished => ', preConsultationFinished);
-            if (preConsultationFinished > 0) {
-                // 
-                let consultationFinished = await _DB.customDataUpdate({
-                    JOUR_REPOS: req.body.data.nbrJV,
-                    commentaire: req.body.data.cmnt
-                    // visa_med: req.body.data.visaM
+        if (req.body.matricule != null) {
+            let notifId = await _DB.getNotifIdByRoomId(req.body.room, req.body.matricule);
+            console.log(`finalizeConsultation() | notifId => `, notifId);
+            if (notifId != null) {
+                let preConsultationFinished = await _DB.customDataUpdate({
+                    nbJourA: req.body.data.nbrJA
                 }, notifId, {
-                    table: "consultation",
+                    table: "preConsultation",
                     id: "idPreCons"
                 });
-                console.log('finalizeConsultation() | consultationFinished => ', consultationFinished);
-                if (consultationFinished > 0) {
-                    let patientData = await _DB.getDataAll('patients', `WHERE MATRICULE_PAT = '${req.body.patientId}'`);
-                    if (patientData.length > 0) {
-                        let finalData = {
-                            mle: patientData[0].MATRICULE_PAT,
-                            direction: patientData[0].Direction,
-                            nom: patientData[0].NOM_PAT,
-                            prenom: patientData[0].Prenom_PAT,
-                            ...req.body.data
-                        }
-                        // 
-                        const __PDF = require('./model/savePdf');
-                        var docGenRes = await __PDF.makeDoc(finalData);
-                        if (docGenRes.status)
-                            reqRetData = docGenRes;
-                    } else throw 'Patient not found';
-                } else throw 'Consultation update failed';
-            } else throw 'Preconsultation update failed';
-        } else throw 'notifId invalid';
+                console.log('finalizeConsultation() | preConsultationFinished => ', preConsultationFinished);
+                if (preConsultationFinished > 0) {
+                    // 
+                    let consultationFinished = await _DB.customDataUpdate({
+                        JOUR_REPOS: req.body.data.nbrJV,
+                        commentaire: req.body.data.cmnt
+                        // visa_med: req.body.data.visaM
+                    }, notifId, {
+                        table: "consultation",
+                        id: "idPreCons"
+                    });
+                    console.log('finalizeConsultation() | consultationFinished => ', consultationFinished);
+                    if (consultationFinished > 0) {
+                        let patientData = await _DB.getDataAll('patients', `WHERE MATRICULE_PAT = '${req.body.patientId}'`);
+                        if (patientData.length > 0) {
+                            let finalData = {
+                                mle: patientData[0].MATRICULE_PAT,
+                                direction: patientData[0].Direction,
+                                nom: patientData[0].NOM_PAT,
+                                prenom: patientData[0].Prenom_PAT,
+                                ...req.body.data
+                            }
+                            // 
+                            const __PDF = require('./model/savePdf');
+                            var docGenRes = await __PDF.makeDoc(finalData);
+                            if (docGenRes.status)
+                                reqRetData = docGenRes;
+                        } else throw 'Patient not found';
+                    } else throw 'Consultation update failed';
+                } else throw 'Preconsultation update failed';
+            } else throw 'notifId invalid';
+        }
         // 
         res.end(JSON.stringify(reqRetData));
     } catch (err) {
@@ -749,7 +830,7 @@ __APP.post('/finalizeConsultation', async (req, res) => {
     }
 });
 // ADAPTED
-__APP.post('/medecinChatBasicData', async (req, res) => {
+__APP.post('/medecinChatBasicData', postAuthVerify, async (req, res) => {
     try {
         let retData = [];
         if (req.body.matricule != null) {
@@ -771,13 +852,15 @@ __APP.post('/medecinChatBasicData', async (req, res) => {
 
 });
 // 
-__APP.post('/roomActiveCheck', async (req, res) => {
+__APP.post('/roomActiveCheck', postAuthVerify, async (req, res) => {
     try {
         let status = false;
-        let notifId = await _DB.getNotifIdByRoomId(req.body.room, req.body.matricule);
-        console.log(`roomActiveCheck() | notifId => `, notifId);
-        if (notifId != null)
-            status = true;
+        if (req.body.matricule != null) {
+            let notifId = await _DB.getNotifIdByRoomId(req.body.room, req.body.matricule);
+            console.log(`roomActiveCheck() | notifId => `, notifId);
+            if (notifId != null)
+                status = true;
+        }
         // 
         res.end(status.toString());
     } catch (err) {
@@ -785,7 +868,7 @@ __APP.post('/roomActiveCheck', async (req, res) => {
     }
 });
 // 
-__APP.post('/patientChatBasicData', async (req, res) => {
+__APP.post('/patientChatBasicData', postAuthVerify, async (req, res) => {
     try {
         let retData = [];
         if (req.body.matricule != null) {
@@ -803,7 +886,7 @@ __APP.post('/patientChatBasicData', async (req, res) => {
             }
         } else {
             console.log('/patientChatBasicData | matricule = null');
-            throw 'Matricule invalid';
+            // throw 'Matricule invalid';
         }
         res.end(JSON.stringify(retData));
     } catch (err) {
@@ -812,7 +895,7 @@ __APP.post('/patientChatBasicData', async (req, res) => {
     }
 });
 // 
-__APP.post('/getNotifsByPatient', async (req, res) => {
+__APP.post('/getNotifsByPatient', postAuthVerify, async (req, res) => {
     try {
         console.log('******');
         let retData = [];
@@ -828,7 +911,7 @@ __APP.post('/getNotifsByPatient', async (req, res) => {
 
 });
 // 
-__APP.post('/patientFormBasicData', async (req, res) => {
+__APP.post('/patientFormBasicData', postAuthVerify, async (req, res) => {
     try {
         let retData = [];
         if (req.body.matricule != null) {
@@ -846,7 +929,7 @@ __APP.post('/patientFormBasicData', async (req, res) => {
             }
         } else {
             console.log('/patientFormBasicData | matricule = null');
-            throw 'Matricule invalid';
+            // throw 'Matricule invalid';
         }
         res.end(JSON.stringify(retData));
     } catch (err) {
@@ -854,6 +937,7 @@ __APP.post('/patientFormBasicData', async (req, res) => {
         res.end('platformFail');
     }
 });
+// 
 // 
 __APP.post('/userAuth', async (req, res) => {
     let retData = 'null';
@@ -875,7 +959,7 @@ __APP.post('/userAuth', async (req, res) => {
                         algorithm: "RS256"
                     });
                     let pathRedirect = userType == 'Patient' ? '/patient/form' : '/medecin/notifications';
-                    retData = `${pathRedirect}?auth=${token}`;
+                    retData = `${pathRedirect}?auth=${token}&authId=${req.body.matricule}`;
                     // __JWT.sign(req.body.matricule, process.env.TOKEN_SECRET_KEY, (err, token) => {
                     //     if (err)
                     //         throw 'Error while signing token';
@@ -890,16 +974,11 @@ __APP.post('/userAuth', async (req, res) => {
             } else {
                 console.log('/userAuth | userType => userNotfound in DB');
                 retData = 104;
-                // throw 'User not found in DB';
             }
         } else {
             console.log('/userAuth | matricule = null');
             throw 'Matricule invalid';
         }
-        // res.end(retData.toString());
-        // res.redirect('/login/?err=' + retData);
-        console.log(retData);
-        console.log(process.env.TOKEN_SECRET_KEY);
         if (typeof retData != "number" && retData != 'null')
             res.redirect(retData);
         else

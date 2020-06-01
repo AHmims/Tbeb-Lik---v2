@@ -1,4 +1,7 @@
 $(document).ready(async () => {
+    // UPDATE LINKS
+    // document.getElementById('navChatUrl').setAttribute('href',`/medecin/contact?`)
+    document.getElementById('navNotifsUrl').setAttribute('href', `/medecin/notifications?auth=${localStorage.getItem('authToken')}&authId=${localStorage.getItem('authId')}`);
     // NOT YET ACCEPTED NOTIFICATIONS BUT ADDDRESSED TO THIS DOCTOR
     let inActiveNotifs = await $.post('/getNotifications', {
         matricule: localStorage.getItem('matricule') || null
@@ -11,6 +14,7 @@ $(document).ready(async () => {
         let activeNotifs = await $.post('/getMedecinActiveNotifs', {
             matricule: localStorage.getItem('matricule') || null
         }).promise();
+        console.log(activeNotifs);
         if (activeNotifs != 'platformFail' && activeNotifs != '') {
             // 
             generateActiveNotification(JSON.parse(activeNotifs));

@@ -3,8 +3,8 @@ let __PEER;
 // 
 // 
 __GLOBAL_SOCKET.on('connect', async () => {
-    console.log('Socket Connected ! userId => ', localStorage.getItem('matricule') || null);
-    await __GLOBAL_SOCKET.emit('newUser', localStorage.getItem('matricule'));
+    console.log('Socket Connected ! userId => ', localStorage.getItem('authToken') || null);
+    await __GLOBAL_SOCKET.emit('newUser', localStorage.getItem('authToken'));
 });
 // 
 __GLOBAL_SOCKET.on('receiveMsg', msg => {
@@ -19,7 +19,7 @@ __GLOBAL_SOCKET.on('platformFail', async () => {
 // 
 async function joinRoom() {
     const _URL_PARAMS = new URLSearchParams(window.location.search);
-    await __GLOBAL_SOCKET.emit('joinChat', localStorage.getItem('matricule'), _URL_PARAMS.get('room'), _URL_PARAMS.get('patient'));
+    await __GLOBAL_SOCKET.emit('joinChat', localStorage.getItem('authToken'), _URL_PARAMS.get('room'), _URL_PARAMS.get('patient'));
 }
 // 
 async function sendMsg(content, type, file) {

@@ -50,7 +50,7 @@ $(document).ready(async () => {
         // let proffes = document.getElementById('profsOptions').options[document.getElementById('profsOptions').selectedIndex].value;
         // 
         let formData = {
-            patientId: localStorage.getItem('matricule') || null,
+            authToken: localStorage.getItem('authToken') || null,
             // ville,
             // proffession,
             date: new Date().toJSON().slice(0, 19).replace('T', ' '),

@@ -22,7 +22,7 @@ $(document).ready(async () => {
     // 
     // 
     let medecinData = await $.post('/medecinChatBasicData', {
-        matricule: localStorage.getItem('matricule')
+        matricule: localStorage.getItem('authToken')
     }).promise();
     if (medecinData != 'platformFail') {
         medecinData = JSON.parse(medecinData);
@@ -35,7 +35,7 @@ $(document).ready(async () => {
     // console.log(msgs);
     // 
     let msgs = await $.post('/getMesssages', {
-        matricule: localStorage.getItem('matricule'),
+        matricule: localStorage.getItem('authToken'),
         room: null
     }).promise();
     //     
@@ -45,7 +45,7 @@ $(document).ready(async () => {
         // 
         for (let i = 0; i < msgs.length; i++) {
             let type = 'receivedMessage';
-            if (msgs[i].Matricule_emmeter.toUpperCase() == localStorage.getItem('matricule').toUpperCase())
+            if (msgs[i].Matricule_emmeter.toUpperCase() == localStorage.getItem('authId').toUpperCase())
                 type = 'sentMessage';
             // 
             createMsgBox(msgs[i], type);

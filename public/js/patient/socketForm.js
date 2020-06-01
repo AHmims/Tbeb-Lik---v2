@@ -1,8 +1,8 @@
 const __GLOBAL_SOCKET = io();
 // 
 __GLOBAL_SOCKET.on('connect', () => {
-    console.log('Socket Connected ! userId => ', localStorage.getItem('matricule') || null);
-    __GLOBAL_SOCKET.emit('newUser', localStorage.getItem('matricule'));
+    console.log('Socket Connected ! userId => ', localStorage.getItem('authToken') || null);
+    __GLOBAL_SOCKET.emit('newUser', localStorage.getItem('authToken'));
 });
 __GLOBAL_SOCKET.on('platformFail', async () => {
     // console.log('some error in code | refresh page');
@@ -25,9 +25,11 @@ __GLOBAL_SOCKET.on('queryResult', async data => {
             logError(`Unknown status code !`);
     }
 });
-__GLOBAL_SOCKET.on('notificationAccepted', () => {
-    // addNotification();
-    window.location.assign('/patient/contact');
+__GLOBAL_SOCKET.on('notificationAccepted', (date, nId) => {
+    addNotification(date, true, nId);
+    if (document.getElementById('waitingConsultation'))
+        document.getElementById('waitingConsultation').remove();
+    // window.location.assign('/patient/contact');
 });
 // 
 __GLOBAL_SOCKET.on('cancelRequestSuccess', () => {
@@ -38,11 +40,12 @@ __GLOBAL_SOCKET.on('cancelRequestSuccess', () => {
 // FUNCTIONS
 //#region 
 function sendNotification(formData) {
+    // THIS SEND TOKEN IN THE DATA
     __GLOBAL_SOCKET.emit('sendNotif', formData);
     // 
 }
 
 function canceRequest() {
-    __GLOBAL_SOCKET.emit('cancelRequest', localStorage.getItem('matricule') || null);
+    __GLOBAL_SOCKET.emit('cancelRequest', localStorage.getItem('authToken') || null);
 }
 //#endregion

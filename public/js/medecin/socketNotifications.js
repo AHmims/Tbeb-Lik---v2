@@ -2,8 +2,8 @@ const __GLOBAL_SOCKET = io();
 const __HUB_SOCKET = io('/medecinHub');
 // 
 __GLOBAL_SOCKET.on('connect', () => {
-    // console.log('Socket Connected ! userId => ', localStorage.getItem('matricule') || null);
-    __GLOBAL_SOCKET.emit('newUser', localStorage.getItem('matricule'));
+    // console.log('Socket Connected ! userId => ', localStorage.getItem('authToken') || null);
+    __GLOBAL_SOCKET.emit('newUser', localStorage.getItem('authToken'));
 });
 __GLOBAL_SOCKET.on('activeNotification', (data) => {
     generateActiveNotification(data);
@@ -40,6 +40,6 @@ function acceptNotification(nId, date) {
     // TO ADAPT
     // var date = new Date().toJSON().slice(0, 19).replace('T', ' '); //DATE SELECTED BY MEDECIN
     // 
-    __GLOBAL_SOCKET.emit('acceptNotif', nId, date);
+    __GLOBAL_SOCKET.emit('acceptNotif', nId, date, localStorage.getItem('authToken'));
     __HUB_SOCKET.emit('acceptNotif', nId);
 }
