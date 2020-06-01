@@ -79,7 +79,7 @@ $(document).ready(async () => {
                             logToast('La consultation est terminée, vous serez redirigé dans 3 secondes');
                             setTimeout(() => {
                                 // window.location.assign('/medecin/notifications');
-                                // history.back();
+                                history.back();
                             }, 3000);
                         }
                     } else await logServerError();
