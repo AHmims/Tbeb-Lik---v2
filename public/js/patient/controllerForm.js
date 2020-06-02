@@ -97,15 +97,24 @@ $(document).ready(async () => {
     } else await logServerError();
 });
 // 
-var state = false,
-    style = ["flex", "none"];
+var notifState = false,
+    notifStyle = ["flex", "none"];
 document.getElementById('btnNotif').addEventListener('click', (e) => {
+    if (document.getElementById('notifsContainer').style.display == "flex")
+        notifState = true;
     if (e.target == document.getElementById('btnNotif').children[0])
-        document.getElementById('notifsContainer').style.display = style[+state];
-    state = !state;
-    if (state)
+        document.getElementById('notifsContainer').style.display = notifStyle[+notifState];
+    notifState = !notifState;
+    if (notifState)
         updateCounter();
 });
+
+function instaShowNotifs() {
+    document.getElementById('notifsContainer').style.display = notifStyle[+notifState];
+    notifState = !notifState;
+    if (notifState)
+        updateCounter();
+}
 // 
 // 
 function updateCounter() {

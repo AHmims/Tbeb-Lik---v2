@@ -43,8 +43,11 @@ function addNotification(date, state, nId) {
     // 
     document.getElementById('notifBoxBody').appendChild(cont);
     // 
-    if (!state)
+    if (!state) {
         document.getElementById('btnNotif').setAttribute('class', 'notifActive');
+        document.getElementById('notifsContainer').style.display = "flex";
+        updateCounter();
+    }
 }
 // 
 function waiting() {

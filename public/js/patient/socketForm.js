@@ -1,7 +1,7 @@
 const __GLOBAL_SOCKET = io();
 // 
 __GLOBAL_SOCKET.on('connect', () => {
-    console.log('Socket Connected ! userId => ', localStorage.getItem('authToken') || null);
+    console.log('Socket Connected ! userId => ', localStorage.getItem('authToken'));
     __GLOBAL_SOCKET.emit('newUser', localStorage.getItem('authToken'));
 });
 __GLOBAL_SOCKET.on('platformFail', async () => {
@@ -27,6 +27,7 @@ __GLOBAL_SOCKET.on('queryResult', async data => {
 });
 __GLOBAL_SOCKET.on('notificationAccepted', (date, nId) => {
     addNotification(date, false, nId);
+    // instaShowNotifs();
     if (document.getElementById('waitingConsultation'))
         document.getElementById('waitingConsultation').remove();
     // window.location.assign('/patient/contact');
