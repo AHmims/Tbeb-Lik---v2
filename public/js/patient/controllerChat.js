@@ -66,7 +66,7 @@ function displayReceivedMsg(msg) {
 function showVideoSection() {
     document.getElementById('videoSection').style.display = "block";
     if (document.body.offsetWidth + 17 <= 1200) {
-        console.log('in');
+        // console.log('in');
         document.getElementById('chatSection').style = "height : 500px !important;border-top-left-radius : 0px;border-top-right-radius : 0px;";
     } else {
         document.getElementById('chatSection').style.width = "475px";

@@ -27,7 +27,7 @@ __APP.use('/login', async (req, res, next) => {
             return next();
         else {
             let userData = await decodeAndFetchUser(_AUTH_TOKEN);
-            if (userData == null || userData.id != _AUTH_USER_ID)
+            if (userData == null || userData.id != _AUTH_USER_ID.toLowerCase())
                 return next();
             else {
                 let redirectUrl = '/login';
@@ -54,16 +54,16 @@ async function isAuth(req, res, next) {
     try {
         const _AUTH_TOKEN = req.query.auth;
         const _AUTH_USER_ID = req.query.authId;
-        console.log(_AUTH_TOKEN);
         if (_AUTH_TOKEN == undefined || _AUTH_TOKEN == null)
             // return next();
             res.redirect('/login');
         else {
-            console.log(_AUTH_USER_ID);
             let userData = await decodeAndFetchUser(_AUTH_TOKEN);
-            if (userData == null || userData.id != _AUTH_USER_ID)
+            console.log(userData);
+            if (userData == null || userData.id != _AUTH_USER_ID.toLowerCase()) {
+                console.log(userData.id, _AUTH_USER_ID.toLowerCase());
                 res.redirect('/login');
-            else {
+            } else {
                 return next();
             }
         }
@@ -617,7 +617,16 @@ async function decodeAndFetchUser(userToken) {
             expiresIn: "468h",
             algorithm: "RS256"
         });
-        return await _DB.authGetUserData(tokenData.id);
+        let retData = await _DB.authGetUserData(tokenData.id);
+        if (retData == null)
+            return null;
+        else {
+            return {
+                id: retData.id.toLowerCase(),
+                type: retData.type,
+                nom: retData.nom
+            }
+        }
         // retdata = {id:"",type:"",nom:""}
     } catch (err) {
         // console.log(err);
@@ -951,6 +960,7 @@ __APP.post('/userAuth', async (req, res) => {
     try {
         if (req.body.matricule != null || req.body.matricule != undefined) {
             let userType = await _DB.getTypeById(req.body.matricule);
+            console.log(userType);
             if (userType != 'null') {
                 // TEST PASSWORD HERE
                 let passwordCheck = true;
@@ -986,10 +996,10 @@ __APP.post('/userAuth', async (req, res) => {
             console.log('/userAuth | matricule = null');
             throw 'Matricule invalid';
         }
-        console.log(retData);
-        if (typeof retData != "number" && retData != 'null')
+        if (typeof retData != "number" && retData != 'null') {
+            // console.log(retData);
             res.redirect(retData);
-        else
+        } else
             res.redirect('/login/?err=' + retData);
         // 104 => matricule n'existe pas / matricule est incorrect
         // 105 => mot de pass est incorrect

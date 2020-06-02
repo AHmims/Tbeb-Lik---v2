@@ -38,7 +38,7 @@ async function getDataAll(className, constraint = '') {
 // ADAPTED
 async function getAppUserDataById(id) {
     try {
-        let req = `SELECT * FROM appUser where userId = ? LIMIT 1`,
+        let req = `SELECT * FROM appUser where LOWER(userId) = LOWER(?) LIMIT 1`,
             cnx = await db.connect(),
             res = await cnx.query(req, [id]);
         cnx.release();
@@ -57,7 +57,7 @@ async function getAppUserCustomData(keys, id) {
     slctdKeys = removeLastChar(slctdKeys);
 
     try {
-        let req = `SELECT ${slctdKeys} FROM appUser where userId = ? LIMIT 1`,
+        let req = `SELECT ${slctdKeys} FROM appUser where LOWER(userId) = LOWER(?) LIMIT 1`,
             cnx = await db.connect(),
             res = await cnx.query(req, [id]);
         cnx.release();
@@ -115,13 +115,13 @@ async function customDataUpdate(keyANDvalue, id, params) {
 async function getTypeById(id) {
     let type = 'null';
     try {
-        let req = `SELECT count(*) as nb FROM patients where MATRICULE_PAT = ?`,
+        let req = `SELECT count(*) as nb FROM patients where LOWER(MATRICULE_PAT) = ?`,
             cnx = await db.connect(),
             res = await cnx.query(req, [id]);
         // 
         type = res[0][0].nb > 0 ? "Patient" : 'null';
         if (type == 'null') {
-            req = `SELECT count(*) as nb FROM medecin where Matricule_Med = ?`;
+            req = `SELECT count(*) as nb FROM medecin where LOWER(Matricule_Med) = ?`;
             cnx = await db.connect();
             res = await cnx.query(req, [id]);
             // 
@@ -151,7 +151,7 @@ async function getVilles() {
 // ADAPTED
 async function getOnlineMedecinsWithCityAndProffession(ville, idSpec) {
     try {
-        let req = `select m.Matricule_Med,a.socket FROM medecin as m,appUser as a where m.ID_SPEC = ? and m.Matricule_Med = a.userId and a.userType = 'Medecin'`,
+        let req = `select m.Matricule_Med,a.socket FROM medecin as m,appUser as a where m.ID_SPEC = ? and LOWER(m.Matricule_Med) = LOWER(a.userId) and a.userType = 'Medecin'`,
             cnx = await db.connect(),
             res = await cnx.query(req, [idSpec]);
         cnx.release();
@@ -184,7 +184,7 @@ async function consultationCheck(userId) {
     // 
     if (!table1Check) {
         try {
-            let req = `select count(*) as nb from consultation where JOUR_REPOS <= -1 AND idPreCons in (select idPreCons from preConsultation where MATRICULE_PAT = ?)`,
+            let req = `select count(*) as nb from consultation where JOUR_REPOS <= -1 AND idPreCons in (select idPreCons from preConsultation where LOWER(MATRICULE_PAT) = LOWER(?))`,
                 cnx = await db.connect(),
                 res = await cnx.query(req, [userId]);
             cnx.release();
@@ -198,7 +198,7 @@ async function consultationCheck(userId) {
 // ADAPTED
 async function getPatientPreConsultationDataById(userId) {
     try {
-        let req = `SELECT concat(NOM_PAT,' ',Prenom_PAT) AS nom,TIMESTAMPDIFF(YEAR, Date_Naissence, CURDATE()) AS age,Tel AS tel FROM patients WHERE MATRICULE_PAT = ?`,
+        let req = `SELECT concat(NOM_PAT,' ',Prenom_PAT) AS nom,TIMESTAMPDIFF(YEAR, Date_Naissence, CURDATE()) AS age,Tel AS tel FROM patients WHERE LOWER(MATRICULE_PAT) = LOWER(?)`,
             cnx = await db.connect(),
             res = await cnx.query(req, [userId]);
         cnx.release();
@@ -211,7 +211,7 @@ async function getPatientPreConsultationDataById(userId) {
 // ADAPTED
 async function getLastInsertedNotification(userId, accepted = false) {
     try {
-        let req = `SELECT * FROM preConsultation WHERE accepted = ${accepted} AND MATRICULE_PAT = ? ORDER BY dateCreation DESC LIMIT 1`,
+        let req = `SELECT * FROM preConsultation WHERE accepted = ${accepted} AND LOWER(MATRICULE_PAT) = LOWER(?) ORDER BY dateCreation DESC LIMIT 1`,
             cnx = await db.connect(),
             res = await cnx.query(req, [userId]);
         cnx.release();
@@ -224,7 +224,7 @@ async function getLastInsertedNotification(userId, accepted = false) {
 // ADAPTED
 async function getRoomIdByNotifId(notifId) {
     try {
-        let req = `SELECT p.accepted,r.roomId,r.userPatientMatricule FROM preConsultation AS p,room AS r WHERE p.MATRICULE_PAT = r.userPatientMatricule AND p.idPreCons = ?`,
+        let req = `SELECT p.accepted,r.roomId,r.userPatientMatricule FROM preConsultation AS p,room AS r WHERE LOWER(p.MATRICULE_PAT) = LOWER(r.userPatientMatricule) AND p.idPreCons = ?`,
             cnx = await db.connect(),
             res = await cnx.query(req, [notifId]);
         cnx.release();
@@ -237,7 +237,7 @@ async function getRoomIdByNotifId(notifId) {
 // ADAPTED
 async function notificationsByMedecin(medecinId) {
     try {
-        let req = `select idPreCons,MATRICULE_PAT from preConsultation where accepted = false and idPreCons in (select idPreCons from medecinInbox where Matricule_Med = ?)`,
+        let req = `select idPreCons,MATRICULE_PAT from preConsultation where accepted = false and idPreCons in (select idPreCons from medecinInbox where LOWER(Matricule_Med) = LOWER(?))`,
             cnx = await db.connect(),
             res = await cnx.query(req, [medecinId]);
         cnx.release();
@@ -250,7 +250,7 @@ async function notificationsByMedecin(medecinId) {
 // ADAPTED
 async function getAcceptedMedecinNotificationsInfos(medecinId) {
     try {
-        let req = `select p.idPreCons,concat(pt.NOM_PAT,' ',pt.Prenom_PAT) as nom,p.dateCreation,c.DATE_CONSULTATION,c.JOUR_REPOS,p.MATRICULE_PAT,au.roomId from patients as pt,preConsultation as p,consultation as c,appUser as au where p.idPreCons = c.idPreCons and c.Matricule_Med = ? and p.accepted = true and pt.MATRICULE_PAT = p.MATRICULE_PAT and au.userId = p.MATRICULE_PAT ORDER BY JOUR_REPOS ASC,dateCreation DESC`,
+        let req = `select p.idPreCons,concat(pt.NOM_PAT,' ',pt.Prenom_PAT) as nom,p.dateCreation,c.DATE_CONSULTATION,c.JOUR_REPOS,p.MATRICULE_PAT,au.roomId from patients as pt,preConsultation as p,consultation as c,appUser as au where p.idPreCons = c.idPreCons and LOWER(c.Matricule_Med) = LOWER(?) and p.accepted = true and LOWER(pt.MATRICULE_PAT) = LOWER(p.MATRICULE_PAT) and LOWER(au.userId) = LOWER(p.MATRICULE_PAT) ORDER BY JOUR_REPOS ASC,dateCreation DESC`,
             cnx = await db.connect(),
             res = await cnx.query(req, [medecinId]);
         cnx.release();
@@ -263,7 +263,7 @@ async function getAcceptedMedecinNotificationsInfos(medecinId) {
 // ADAPTED
 async function checkPatientActiveNotifsExistance(patientId) {
     try {
-        let req = `select count(c.idPreCons) as nb from consultation as c,preConsultation as p where p.idPreCons = c.idPreCons and p.MATRICULE_PAT = ? and p.accepted = true and c.JOUR_REPOS = -1`,
+        let req = `select count(c.idPreCons) as nb from consultation as c,preConsultation as p where p.idPreCons = c.idPreCons and LOWER(p.MATRICULE_PAT) = LOWER(?) and p.accepted = true and c.JOUR_REPOS = -1`,
             cnx = await db.connect(),
             res = await cnx.query(req, [patientId]);
         cnx.release();
@@ -276,7 +276,7 @@ async function checkPatientActiveNotifsExistance(patientId) {
 // ADAPTED
 async function getRoomIdBySocketId(socketId) {
     try {
-        let req = `SELECT r.roomId FROM room AS r,appUser as a WHERE (r.userPatientMatricule = a.userId OR r.userMedecinMatricule = a.userId) AND a.socket = ?`,
+        let req = `SELECT r.roomId FROM room AS r,appUser as a WHERE (LOWER(r.userPatientMatricule) = LOWER(a.userId) OR LOWER(r.userMedecinMatricule) = LOWER(a.userId)) AND a.socket = ?`,
             cnx = await db.connect(),
             res = await cnx.query(req, [socketId]);
         cnx.release();
@@ -289,7 +289,7 @@ async function getRoomIdBySocketId(socketId) {
 // ADAPTED
 async function getNotacceptedYetNotifs(patientId) {
     try {
-        let req = `select * from preConsultation where MATRICULE_PAT = ? and idPreCons not in(select idPreCons from consultation)`,
+        let req = `select * from preConsultation where LOWER(MATRICULE_PAT) = LOWER(?) and idPreCons not in(select idPreCons from consultation)`,
             cnx = await db.connect(),
             res = await cnx.query(req, [patientId]);
         cnx.release();
@@ -302,7 +302,7 @@ async function getNotacceptedYetNotifs(patientId) {
 // ADAPETD
 async function getNotifIdByRoomId(roomId, medecinId) {
     try {
-        let req = `SELECT p.idPreCons FROM preConsultation AS p,room AS r WHERE p.MATRICULE_PAT = r.userPatientMatricule AND r.roomId = ? AND r.userMedecinMatricule = ? AND p.idPreCons in (SELECT idPreCons FROM consultation WHERE JOUR_REPOS = -1)`,
+        let req = `SELECT p.idPreCons FROM preConsultation AS p,room AS r WHERE LOWER(p.MATRICULE_PAT) = LOWER(r.userPatientMatricule) AND r.roomId = ? AND LOWER(r.userMedecinMatricule) = LOWER(?) AND p.idPreCons in (SELECT idPreCons FROM consultation WHERE JOUR_REPOS = -1)`,
             cnx = await db.connect(),
             res = await cnx.query(req, [roomId, medecinId]);
         cnx.release();
@@ -329,7 +329,7 @@ async function customDataDelete(params, id) {
 // ADAPTED
 async function getMedecinNameWithConsul(patientId) {
     try {
-        let req = `select m.NOM_MED,s.NOM_SPEC from medecin as m,specialites as s where m.ID_SPEC = s.ID_SPEC and m.Matricule_Med in (select linkedMedecinMatricule from appUser where userId = ?)`,
+        let req = `select m.NOM_MED,s.NOM_SPEC from medecin as m,specialites as s where m.ID_SPEC = s.ID_SPEC and LOWER(m.Matricule_Med) in (select LOWER(linkedMedecinMatricule) from appUser where LOWER(userId) = LOWER(?))`,
             cnx = await db.connect(),
             res = await cnx.query(req, [patientId]);
         cnx.release();
@@ -342,7 +342,7 @@ async function getMedecinNameWithConsul(patientId) {
 // 
 async function getPatientNotificationsByMatricule(patientId) {
     try {
-        let req = `select c.idPreCons as nid, c.JOUR_REPOS as jr,c.DATE_CONSULTATION as dc from consultation as c,preConsultation as p where p.idPreCons = c.idPreCons and p.MATRICULE_PAT = ?`,
+        let req = `select c.idPreCons as nid, c.JOUR_REPOS as jr,c.DATE_CONSULTATION as dc from consultation as c,preConsultation as p where p.idPreCons = c.idPreCons and LOWER(p.MATRICULE_PAT) = LOWER(?)`,
             cnx = await db.connect(),
             res = await cnx.query(req, [patientId]);
         cnx.release();
@@ -355,7 +355,7 @@ async function getPatientNotificationsByMatricule(patientId) {
 // 
 async function getToSendToDoctors() {
     try {
-        let req = `select m.Matricule_Med,a.socket FROM medecin as m,appUser as a where m.Matricule_Med = a.userId and a.userType = 'Medecin'`,
+        let req = `select m.Matricule_Med,a.socket FROM medecin as m,appUser as a where LOWER(m.Matricule_Med) = LOWER(a.userId) and a.userType = 'Medecin'`,
             cnx = await db.connect(),
             res = await cnx.query(req, []);
         cnx.release();
@@ -442,12 +442,12 @@ async function authGetUserData(userId) {
     try {
         let resData = null;
         // 
-        let req = `SELECT MATRICULE_PAT,CONCAT(NOM_PAT,' ',Prenom_PAT) AS nom FROM patients WHERE MATRICULE_PAT = ?`,
+        let req = `SELECT MATRICULE_PAT,CONCAT(NOM_PAT,' ',Prenom_PAT) AS nom FROM patients WHERE LOWER(MATRICULE_PAT) = LOWER(?)`,
             cnx = await db.connect(),
             res = await cnx.query(req, [userId]);
         // 
         if (res[0].length <= 0) {
-            req = `SELECT NOM_MED,Matricule_Med FROM medecin WHERE Matricule_Med = ?`;
+            req = `SELECT NOM_MED,Matricule_Med FROM medecin WHERE LOWER(Matricule_Med) = LOWER(?)`;
             res = await cnx.query(req, [userId]);
             // 
             if (res[0].length > 0) {

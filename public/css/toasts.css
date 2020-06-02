@@ -49,6 +49,7 @@ body {
     padding: 15px 25px;
     box-sizing: border-box;
     background-color: white;
+    text-align: left;
     /*  */
     z-index: 13;
     /* backdrop-filter: blur(5px); */
