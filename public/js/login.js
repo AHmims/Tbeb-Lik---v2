@@ -12,6 +12,23 @@ $(document).ready(async () => {
     // if (localStorage.getItem('matricule')) {
     //     await logmeIn(localStorage.getItem('matricule'));
     // }
+    if (_URL_PARAMS.get('err')) {
+        switch (_URL_PARAMS.get('err')) {
+            case 'fatal':
+            case '100':
+                await logServerError();
+                break;
+            case '104':
+                await logError("Matricule n'existe pas");
+                break;
+            case '105':
+                await logError("Le mot de passe ne correspond pas à l'utilisateur");
+                break;
+            default:
+                await logServerError();
+        }
+        // 
+    }
 });
 document.getElementById('btnLogin').addEventListener('click', async () => {
     // await logmeIn(document.getElementById('inputMatricule').value);

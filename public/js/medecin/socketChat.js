@@ -42,7 +42,17 @@ async function streaminit() {
     __PEER = new SimplePeer({
         initiator: true,
         stream: stream,
-        trickle: false
+        iceTransportPolicy: 'relay',
+        trickle: false,
+        config: {
+            iceServers: [{
+                urls: ["stun:eu-turn1.xirsys.com"]
+            }, {
+                username: "ihySyqDUKfNLk7-RgdPz97TucUIdJxVOJtuKg8BhhisaLp9KRMz08AQ8jRhjbXfLAAAAAF7Vm31uaW9jZQ==",
+                credential: "fa34f73c-a466-11ea-a913-0242ac140004",
+                urls: ["turn:eu-turn1.xirsys.com:80?transport=udp", "turn:eu-turn1.xirsys.com:3478?transport=udp", "turn:eu-turn1.xirsys.com:80?transport=tcp", "turn:eu-turn1.xirsys.com:3478?transport=tcp", "turns:eu-turn1.xirsys.com:443?transport=tcp", "turns:eu-turn1.xirsys.com:5349?transport=tcp"]
+            }]
+        }
     });
     console.log('streaminit() | peer => ', __PEER);
     // 
