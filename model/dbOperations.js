@@ -250,7 +250,7 @@ async function notificationsByMedecin(medecinId) {
 // ADAPTED
 async function getAcceptedMedecinNotificationsInfos(medecinId) {
     try {
-        let req = `select p.idPreCons,concat(pt.NOM_PAT,' ',pt.Prenom_PAT) as nom,p.dateCreation,c.DATE_CONSULTATION,c.JOUR_REPOS,p.MATRICULE_PAT,au.roomId from patients as pt,preConsultation as p,consultation as c,appUser as au where p.idPreCons = c.idPreCons and LOWER(c.Matricule_Med) = LOWER(?) and p.accepted = true and LOWER(pt.MATRICULE_PAT) = LOWER(p.MATRICULE_PAT) and LOWER(au.userId) = LOWER(p.MATRICULE_PAT) ORDER BY JOUR_REPOS ASC,dateCreation DESC`,
+        let req = `select p.idPreCons,concat(pt.NOM_PAT,' ',pt.Prenom_PAT) as nom,p.dateCreation,c.DATE_CONSULTATION,c.JOUR_REPOS,p.MATRICULE_PAT,au.roomId,IFNULL(ordo.DOCUMENT,null) AS doc_ordo,IFNULL(cert.DOCUMENT,null) AS doc_cert from patients as pt,preConsultation as p LEFT JOIN ordonnance ordo ON p.idPreCons = ordo.idPreCons LEFT JOIN certification_medical cert ON p.idPreCons = cert.idPreCons,consultation as c,appUser as au where p.idPreCons = c.idPreCons and LOWER(c.Matricule_Med) = LOWER(?) and p.accepted = true and LOWER(pt.MATRICULE_PAT) = LOWER(p.MATRICULE_PAT) and LOWER(au.userId) = LOWER(p.MATRICULE_PAT) ORDER BY JOUR_REPOS ASC,dateCreation DESC`,
             cnx = await db.connect(),
             res = await cnx.query(req, [medecinId]);
         cnx.release();

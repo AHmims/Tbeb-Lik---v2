@@ -294,6 +294,7 @@ body {
 
 #content #container .btn-download:not(:last-of-type) {
   margin-right: 5px;
+  margin-bottom: 5px;
 }
 
 #content #container .btn-download img {

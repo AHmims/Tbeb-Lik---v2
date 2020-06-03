@@ -195,6 +195,9 @@ function generateSemiNotifBox(data) {
     var cont2 = makeElement('div');
     cont2.setAttribute('class', 'vertical');
     // 
+    var cont3 = makeElement('div');
+    cont3.setAttribute('class', 'vertical');
+    // 
     var cont7 = makeElement('div');
     cont7.setAttribute('class', 'horizontal align-right');
     // // //
@@ -229,11 +232,29 @@ function generateSemiNotifBox(data) {
     cont2.appendChild(txt3);
     cont2.appendChild(txt4);
     // 
+    if (data.doc_ordo != null) {
+        var docBtn = makeElement('a');
+        docBtn.setAttribute('class', 'btn-download');
+        docBtn.setAttribute('href', `/data/ordonnances/${data.MATRICULE_PAT}/${data.doc_ordo}`);
+        docBtn.setAttribute('download', true);
+        docBtn.innerHTML = `<svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>`;
+        docBtn.innerHTML += "Ordonnance";
+        cont3.appendChild(docBtn);
+    }
+    if (data.doc_cert != null) {
+        var docBtn = makeElement('a');
+        docBtn.setAttribute('class', 'btn-download');
+        docBtn.setAttribute('href', `/data/certifs_medicale/${data.MATRICULE_PAT}/${data.doc_cert}`);
+        docBtn.setAttribute('download', true);
+        docBtn.innerHTML = `<svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>`;
+        docBtn.innerHTML += "Certif medical";
+        cont3.appendChild(docBtn);
+    }
 
     // 
     // cont 7
     var btn2 = makeElement('a');
-    btn2.setAttribute('class', 'btn-acc m-top-20');
+    btn2.setAttribute('class', 'btn-acc');
     btn2.innerText = 'Contacter';
     btn2.setAttribute('href', `/medecin/contact?room=${data.roomId}&patient=${data.MATRICULE_PAT}&auth=${localStorage.getItem('authToken')}&authId=${localStorage.getItem('authId')}`);
     if (data.JOUR_REPOS > -1)
@@ -251,6 +272,7 @@ function generateSemiNotifBox(data) {
     // //
     container.appendChild(cont1);
     container.appendChild(cont2);
+    container.appendChild(cont3);
     container.appendChild(cont7);
     // 
     // document.getElementById('botRowElementsContainer').insertBefore(container, document.getElementById('botRowElementsContainer').firstChild);

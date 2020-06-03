@@ -28,6 +28,7 @@ __GLOBAL_SOCKET.on('queryResult', async data => {
 });
 __GLOBAL_SOCKET.on('notificationAccepted', (date, nId) => {
     addNotification(date, false, nId);
+    scrollUp();
     // instaShowNotifs();
     if (document.getElementById('waitingConsultation'))
         document.getElementById('waitingConsultation').remove();
