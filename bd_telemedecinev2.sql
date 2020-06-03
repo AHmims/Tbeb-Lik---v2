@@ -30,6 +30,20 @@ BEGIN
     -- SET NEW.dateCreation = now();
 END;//
 DELIMITER ;
+
+
+drop trigger if exists linkDocsWithConsultation;
+DELIMITER //
+CREATE TRIGGER linkDocsWithConsultation
+AFTER INSERT
+ON `preConsultation` FOR EACH ROW
+BEGIN
+	UPDATE `ordonnance` SET idPreCons = NEW.idPreCons WHERE idPreCons = NEW.MATRICULE_PAT;
+    UPDATE `certification_medical` SET idPreCons = NEW.idPreCons WHERE idPreCons = NEW.MATRICULE_PAT;
+END;//
+DELIMITER ;
+
+
 /* */
 -- phpMyAdmin SQL Dump
 -- version 4.8.5
@@ -84,9 +98,10 @@ INSERT INTO `admin` (`ID_ADMIN`, `EMAIL`, `PASSWORD`) VALUES
 
 DROP TABLE IF EXISTS `certification_medical`;
 CREATE TABLE IF NOT EXISTS `certification_medical` (
-  `ID` int(11) NOT NULL,
-  `DOCUMENT` longblob,
+  `ID` int(11) NOT NULL auto_increment,
+  `DOCUMENT` text,
   `ID_Sender` char(250) DEFAULT NULL,
+  `idPreCons` char(250) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
@@ -175,9 +190,10 @@ CREATE TABLE IF NOT EXISTS `message` (
 
 DROP TABLE IF EXISTS `ordonnance`;
 CREATE TABLE IF NOT EXISTS `ordonnance` (
-  `ID_ord` int(11) NOT NULL,
-  `DOCUMENT` longblob,
+  `ID_ord` int(11) NOT NULL auto_increment,
+  `DOCUMENT` text,
   `ID_Sender` char(250) DEFAULT NULL,
+  `idPreCons` char(250) DEFAULT NULL,
   PRIMARY KEY (`ID_ord`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 

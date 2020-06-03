@@ -49,16 +49,40 @@ $(document).ready(async () => {
         // let ville = document.getElementById('cityOptions').options[document.getElementById('cityOptions').selectedIndex].value;
         // let proffes = document.getElementById('profsOptions').options[document.getElementById('profsOptions').selectedIndex].value;
         // 
-        let formData = {
-            authToken: localStorage.getItem('authToken') || null,
-            // ville,
-            // proffession,
-            date: new Date().toJSON().slice(0, 19).replace('T', ' '),
-            motif: document.getElementById('form-patient-motif').value,
-            atcd: document.getElementById('form-patient-atcds').value,
-            nbja: document.getElementById('form-patient-nombre_jrs').value
-        }
-        sendNotification(formData);
+        // let formData = {
+        //     authToken: localStorage.getItem('authToken') || null,
+        //     // ville,
+        //     // proffession,
+        //     date: new Date().toJSON().slice(0, 19).replace('T', ' '),
+        //     motif: document.getElementById('form-patient-motif').value,
+        //     atcd: document.getElementById('form-patient-atcds').value,
+        //     nbja: document.getElementById('form-patient-nombre_jrs').value
+        // }
+        let formData = new FormData();
+        // 
+        formData.append('ordo', $('#form-patient-ordo')[0].files[0]);
+        formData.append('certif', $('#form-patient-certif')[0].files[0]);
+        formData.append('date', new Date().toJSON().slice(0, 19).replace('T', ' '));
+        formData.append('motif', $('#form-patient-motif').val());
+        formData.append('atcd', $('#form-patient-atcds').val());
+        formData.append('nbja', $('#form-patient-nombre_jrs').val());
+        // 
+        $.ajax({
+            url: '/sendNotif',
+            type: 'post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: async response => {
+                console.log(response);
+            }
+        });
+
+
+        // if (patientFormData != 'platformFail') {} else await logServerError();
+        // 
+        // sendNotification(formData);
+
     });
     // 
     // CHECK IF THE PATIENT HAVE ANY ONGOING NOTIFICATIONS

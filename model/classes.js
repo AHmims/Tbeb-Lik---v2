@@ -30,10 +30,19 @@ class patients {
 }
 // 
 class certification_medical {
-    constructor(ID, DOCUMENT, ID_Sender) {
+    constructor(ID, DOCUMENT, ID_Sender, idPreCons) {
         this.ID = ID;
         this.DOCUMENT = DOCUMENT;
         this.ID_Sender = ID_Sender;
+        this.idPreCons = idPreCons;
+    }
+}
+class ordonnance {
+    constructor(ID_ord, DOCUMENT, ID_Sender, idPreCons) {
+        this.ID_ord = ID_ord;
+        this.DOCUMENT = DOCUMENT;
+        this.ID_Sender = ID_Sender;
+        this.idPreCons = idPreCons;
     }
 }
 // 
@@ -107,6 +116,7 @@ module.exports = {
     medecin,
     patients,
     certification_medical,
+    ordonnance,
     consultation,
     preConsultation,
     room,

@@ -1,11 +1,14 @@
 //PACKAGES DECLARATION
 const __FS = require('fs');
+const __FSE = require('fs-extra');
 const __EXPRESS = require('express');
 const __APP = __EXPRESS();
 const __SERVER = require('http').createServer(__APP);
 const __IO = require('socket.io')(__SERVER);
 const __PATH = require('path');
 const __JWT = require('jsonwebtoken');
+const formData = require('express-form-data');
+
 //IMPORTED MODULES
 // const __PDF = require('./model/savePdf');
 const _CLASSES = require('./model/classes');
@@ -13,6 +16,11 @@ const _DB = require('./model/dbOperations');
 //GLOBAL VARIABLES
 const __PORT = process.env.PORT || 8080;
 //MIDDLEWARES
+const options = {
+    uploadDir: __PATH.join(__dirname, 'filesTmp'),
+    autoClean: true
+};
+__APP.use('/sendNotif', formData.parse(options));
 __APP.use(__EXPRESS.urlencoded({
     extended: true
 }));
@@ -173,50 +181,51 @@ __IO.on('connection', socket => {
                     let appUserData = {
                         userId: data.patientId
                     };
-                    // CHECK IF THE PATIENT GOT ANY ONGOING DEMANDES
-                    let exists = await _DB.consultationCheck(appUserData.userId);
-                    console.log('sendNotif() | exists => ', exists);
-                    if (!exists) {
-                        // v2 => GET ONLINE DOCTORS FROM THE GIVEN CITY AND PROFESSIONS
-                        // V3 => I'LL HARD CODE THE CITY PARAM VALUE SINCE WE DON'T KNOW YET IF
-                        // WE NEED TO SELECT BY CITY OR NOT
-                        // let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession(data.ville, data.proffession);
-                        // let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession('cityValue', data.proffession);
-                        let listMedecins = await _DB.getToSendToDoctors();
-                        console.log('sendNotif() | listMedecins => ', listMedecins);
-                        if (listMedecins != null) {
-                            // INSERT DATA INTO TABLE PRECONSULTATION
-                            let insertRes = await _DB.insertData(new _CLASSES.preConsultation('tempId', data.date, data.motif, data.atcd, data.nbja, false, appUserData.userId));
-                            console.log('sendNotif() | insertData(preConsultation) => ', insertRes);
-                            // SEND NOTIFS TO DOCTORS
-                            let notifData = await getNotificationFullData(appUserData.userId);
-                            listMedecins.forEach(async medecin => {
-                                let inboxInsertResult = await _DB.insertData(new _CLASSES.medecinInbox(notifData.index, medecin.Matricule_Med));
-                                console.log('sendNotif() | inboxInsertResult => ', inboxInsertResult);
-                                __HUB.to(`/medecinHub#${medecin.socket}`).emit('receivedNotification', notifData);
-                            });
-                            //SEND FEEDBACK TO THE SENDER
-                            __IO.to(socket.id).emit('queryResult', {
-                                status: 2,
-                                data: listMedecins.length
-                            });
-                            // 
-                        } else {
-                            //SEND FEEDBACK TO THE SENDER
-                            __IO.to(socket.id).emit('queryResult', {
-                                status: 0,
-                                data: null
-                            });
-                            console.log('sendNotif() | listMedecins : no doctor found with the given values');
-                        }
-                    } else {
-                        // YOU ALREADY HAVE AN ONGOING DEMANDE YOU CAN'T SEND ANYMORE SHIT
-                        console.log('sendNotif() | exists : User have ongoing notification');
-                        __IO.to(socket.id).emit('queryResult', {
-                            status: 1,
-                            data: null
-                        });
-                    }
+                    // // CHECK IF THE PATIENT GOT ANY ONGOING DEMANDES
+                    // let exists = await _DB.consultationCheck(appUserData.userId);
+                    // console.log('sendNotif() | exists => ', exists);
+                    // if (!exists) {
+                    //     // v2 => GET ONLINE DOCTORS FROM THE GIVEN CITY AND PROFESSIONS
+                    //     // V3 => I'LL HARD CODE THE CITY PARAM VALUE SINCE WE DON'T KNOW YET IF
+                    //     // WE NEED TO SELECT BY CITY OR NOT
+                    //     // let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession(data.ville, data.proffession);
+                    //     // let listMedecins = await _DB.getOnlineMedecinsWithCityAndProffession('cityValue', data.proffession);
+                    //     let listMedecins = await _DB.getToSendToDoctors();
+                    //     console.log('sendNotif() | listMedecins => ', listMedecins);
+                    //     if (listMedecins != null) {
+                    //         // INSERT DATA INTO TABLE PRECONSULTATION
+                    //         let insertRes = await _DB.insertData(new _CLASSES.preConsultation('tempId', data.date, data.motif, data.atcd, data.nbja, false, appUserData.userId));
+                    //         console.log('sendNotif() | insertData(preConsultation) => ', insertRes);
+                    // SEND NOTIFS TO DOCTORS
+                    let listMedecins = await _DB.getToSendToDoctors();
+                    let notifData = await getNotificationFullData(appUserData.userId);
+                    listMedecins.forEach(async medecin => {
+                        let inboxInsertResult = await _DB.insertData(new _CLASSES.medecinInbox(notifData.index, medecin.Matricule_Med));
+                        console.log('sendNotif() | inboxInsertResult => ', inboxInsertResult);
+                        __HUB.to(`/medecinHub#${medecin.socket}`).emit('receivedNotification', notifData);
+                    });
+                    //SEND FEEDBACK TO THE SENDER
+                    // __IO.to(socket.id).emit('queryResult', {
+                    //     status: 2,
+                    //     data: listMedecins.length
+                    // });
+                    // 
+                    //     } else {
+                    //         //SEND FEEDBACK TO THE SENDER
+                    //         __IO.to(socket.id).emit('queryResult', {
+                    //             status: 0,
+                    //             data: null
+                    //         });
+                    //         console.log('sendNotif() | listMedecins : no doctor found with the given values');
+                    //     }
+                    // } else {
+                    //     // YOU ALREADY HAVE AN ONGOING DEMANDE YOU CAN'T SEND ANYMORE SHIT
+                    //     console.log('sendNotif() | exists : User have ongoing notification');
+                    //     __IO.to(socket.id).emit('queryResult', {
+                    //         status: 1,
+                    //         data: null
+                    //     });
+                    // }
                 } else {
                     throw 'sendNoti() | userData = userNotFound';
                 }
@@ -1010,6 +1019,173 @@ __APP.post('/userAuth', async (req, res) => {
         res.redirect('/login/?err=' + retData);
     }
 });
+// 
+async function fileSaverWorker(file, patientId, documentType) {
+    let retData = null;
+    if (file != null && file != undefined) {
+        let types = [".png", ".jpg", ".jpeg", ".pdf", ".doc", ".docs"];
+        const _FILE_NAME = file.name;
+        const _FILE_EXTENSION = _FILE_NAME.substr(_FILE_NAME.lastIndexOf("."), _FILE_NAME.length);
+        let supportedExtension = false;
+        types.forEach(type => {
+            if (type == _FILE_EXTENSION)
+                supportedExtension = true;
+        });
+        if (supportedExtension) {
+            // 10mb
+            if (file.size <= 10000000) {
+                const _FILE_PATH = __PATH.join(__dirname, 'data', documentType, patientId);
+                const _FILE_NAME_EXPORT = (documentType == 'ordonnances' ? 'ordo' : 'certM') + `_${Math.floor((Math.random() * 100000) + 1)}${_FILE_EXTENSION}`;
+                console.table([_FILE_NAME_EXPORT, _FILE_EXTENSION]);
+                try {
+                    await __FSE.ensureDir(_FILE_PATH);
+                    await __FSE.copyFile(file.path, __PATH.join(_FILE_PATH, _FILE_NAME_EXPORT));
+                    // 
+                    let insertRes = 0;
+                    if (documentType == 'ordonnances')
+                        insertRes = await _DB.insertData(new _CLASSES.ordonnance(null, _FILE_NAME_EXPORT, patientId, patientId));
+                    else
+                        insertRes = await _DB.insertData(new _CLASSES.certification_medical(null, _FILE_NAME_EXPORT, patientId, patientId));
+                    // 
+                    if (insertRes != 0) retData = 104;
+                    else retData = 103;
+                } catch (err) {
+                    retData = 102;
+                }
+            } else retData = 101;
+        } else retData = 100;
+    } else retData = null;
+    // 
+    return retData;
+}
+// 
+__APP.post('/sendNotif', postAuthVerify, async (req, res) => {
+    let retData = {
+        status: null,
+        data: null
+    };
+    try {
+        if (req.body.matricule != null || req.body.matricule != undefined) {
+            let exists = await _DB.consultationCheck(req.body.matricule);
+            if (true) {
+                let listMedecins = await _DB.getToSendToDoctors();
+                if (listMedecins != null) {
+                    // let insertRes = await _DB.insertData(new _CLASSES.preConsultation('tempId', data.date, data.motif, data.atcd, data.nbja, false, req.body.matricule));
+                    // if (insertRes != 0) {
+                    let docsInserted = true;
+                    let resOrdo = await fileSaverWorker(req.files.ordo, req.body.matricule, 'ordonnances');
+                    switch (resOrdo) {
+                        case 100:
+                            retData = {
+                                status: 10, //extension not supported
+                                data: null
+                            };
+                            docsInserted = false;
+                            break;
+                        case 101:
+                            retData = {
+                                status: 11, //file size exceeded 10mb
+                                data: null
+                            };
+                            docsInserted = false;
+                            break;
+                        case 102:
+                            // retData = {
+                            //     status: 12, //ERROR WHILE SAVING DOCUMENT
+                            //     data: null
+                            // };
+                            throw 'ERROR WHILE SAVING DOCUMENT';
+                        case 103:
+                            // retData = {
+                            //     status: 13, //ERROR WHILE SAVINF RECORD IN DB
+                            //     data: null
+                            // };
+                            throw 'ERROR WHILE SAVING RECORD IN DB';
+                    }
+                    let resCertif = await fileSaverWorker(req.files.certif, req.body.matricule, 'certifs_medicale');
+                    switch (resCertif) {
+                        case 100:
+                            retData = {
+                                status: 10, //extension not supported
+                                data: null
+                            };
+                            docsInserted = false;
+                            break;
+                        case 101:
+                            retData = {
+                                status: 11, //file size exceeded 10mb
+                                data: null
+                            };
+                            docsInserted = false;
+                            break;
+                        case 102:
+                            // retData = {
+                            //     status: 12, //ERROR WHILE SAVING DOCUMENT
+                            //     data: null
+                            // };
+                            throw 'ERROR WHILE SAVING DOCUMENT';
+                        case 103:
+                            // retData = {
+                            //     status: 13, //ERROR WHILE SAVINF RECORD IN DB
+                            //     data: null
+                            // };
+                            throw 'ERROR WHILE SAVING RECORD IN DB';
+                    }
+                    // 
+                    if (docsInserted) {
+                        let insertRes = await _DB.insertData(new _CLASSES.preConsultation('tempId', req.body.date, req.body.motif, req.body.atcd, req.body.nbja, false, req.body.matricule));
+                        if (insertRes != 0) {
+                            retData = {
+                                status: 2,
+                                data: listMedecins.length
+                            }
+                        } else {
+                            let ordoDelete = await _DB.customDataDelete({
+                                table: "ordonnance",
+                                id: "idPreCons"
+                            }, req.body.matricule);
+                            let certDelete = await _DB.customDataDelete({
+                                table: "certification_medical",
+                                id: "idPreCons"
+                            }, req.body.matricule);
+                            throw "Error : preConsultation not saved"
+                        };
+                    } else {
+                        let ordoDelete = await _DB.customDataDelete({
+                            table: "ordonnance",
+                            id: "idPreCons"
+                        }, req.body.matricule);
+                        let certDelete = await _DB.customDataDelete({
+                            table: "certification_medical",
+                            id: "idPreCons"
+                        }, req.body.matricule);
+                    }
+                } else {
+                    console.log('sendNotif() | listMedecins : no doctor found with the given values');
+                    retData = {
+                        status: 1,
+                        data: null
+                    }
+                }
+            } else {
+                console.log('sendNotif() | exists : User have ongoing notification');
+                retData = {
+                    status: 0,
+                    data: null
+                }
+            }
+        } else {
+            console.log('/sendNotif | matricule = null');
+            throw 'Matricule invalid';
+        }
+        // 
+        res.end(JSON.stringify(retData));
+    } catch (err) {
+        console.log(err);
+        res.end('platformFail');
+    }
+});
+
 // 
 //START SERVER
 __SERVER.listen(__PORT, '0.0.0.0', () => {

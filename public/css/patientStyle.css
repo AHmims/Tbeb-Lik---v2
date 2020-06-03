@@ -395,6 +395,12 @@ textarea {
   font-family: 'Inter', sans-serif;
 }
 
+#content #main #form_patient .patientFormBlock .patientFormBlockRow input[type="file"] {
+  height: auto;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
 #content #main #form_patient .patientFormBlock .patientFormBlockRow input:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(31, 219, 174, 0.2);
@@ -458,6 +464,7 @@ textarea {
     margin-top: 10px;
     width: auto;
   }
+
 }
 
 /*  */
