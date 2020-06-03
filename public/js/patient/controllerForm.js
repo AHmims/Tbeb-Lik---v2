@@ -74,7 +74,30 @@ $(document).ready(async () => {
             contentType: false,
             processData: false,
             success: async response => {
-                console.log(response);
+                if (response != 'platformFail') {
+                    response = JSON.parse(response);
+                    // 
+                    switch (response.status) {
+                        case 0:
+                            await logErrorActive('Vous avez déjà une demande en cours');
+                            break;
+                        case 1:
+                            await logWarningActive("Aucun médecin n'est actif maintenant. Merci d'essayer plus tard");
+                            break;
+                        case 10:
+                            await logErrorActive("L'extension du fichier n'est pas supportée. Merci d'utiliser l'une des extensions suivantes : .png, .jpg, .jpeg, .pdf, .doc, .docs");
+                            break;
+                        case 11:
+                            await logErrorActive("La taille du fichier ne doit pas dépasser 10mb");
+                            break;
+                        case 2:
+                            sendNotification(localStorage.getItem('authToken'));
+                            waiting();
+                            await logSuccess(`Demande envoyée à ${response.data} Médecin(s)`);
+                            break;
+                    }
+                    // 
+                } else await logServerError();
             }
         });
 

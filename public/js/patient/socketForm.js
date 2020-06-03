@@ -8,6 +8,7 @@ __GLOBAL_SOCKET.on('platformFail', async () => {
     // console.log('some error in code | refresh page');
     await logServerError();
 });
+// DEAD
 __GLOBAL_SOCKET.on('queryResult', async data => {
     switch (data.status) {
         case 0:

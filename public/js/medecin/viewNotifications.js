@@ -10,24 +10,24 @@ function makeNotificationBox(data) {
     var cont2 = makeElement('div');
     cont2.setAttribute('class', 'vertical');
     var cont3 = makeElement('div');
-    cont3.setAttribute('class', 'vertical space-between-5px');
+    cont3.setAttribute('class', 'vertical space-between-7_5px');
     var cont4 = makeElement('div');
-    cont4.setAttribute('class', 'vertical space-between-5px');
+    cont4.setAttribute('class', 'vertical space-between-7_5px');
     var cont5 = makeElement('div');
     cont5.setAttribute('class', 'horizontal');
     var cont6 = makeElement('div');
-    cont6.setAttribute('class', 'vertical space-between-5px');
+    cont6.setAttribute('class', 'vertical space-between-7_5px');
     var cont7 = makeElement('div');
     cont7.setAttribute('class', 'horizontal m-top-15 align-right');
     // 
     var cont3 = makeElement('div');
-    cont3.setAttribute('class', 'vertical space-between-5px');
+    cont3.setAttribute('class', 'vertical space-between-7_5px');
     var cont4 = makeElement('div');
-    cont4.setAttribute('class', 'vertical space-between-5px');
+    cont4.setAttribute('class', 'vertical space-between-7_5px');
     var cont5 = makeElement('div');
     cont5.setAttribute('class', 'horizontal');
     var cont6 = makeElement('div');
-    cont6.setAttribute('class', 'vertical space-between-5px');
+    cont6.setAttribute('class', 'vertical space-between-7_5px');
     // 
     var cont7 = makeElement('div');
     cont7.setAttribute('class', 'horizontal align-right');
@@ -87,15 +87,18 @@ function makeNotificationBox(data) {
     txt12.innerText = 'Pièces jointes';
     var conttxt13 = makeElement('div');
     conttxt13.setAttribute('class', 'row-collection');
-    for (var i = 0; i < data.files.length; i++) {
-        var btnDown = makeElement('button');
-        btnDown.setAttribute('class', 'btn-download');
+    for (var i = 0; i < Object.keys(data.files).length; i++) {
+        var btnDoc = makeElement('a');
+        btnDoc.setAttribute('class', 'btn-download');
+        btnDoc.setAttribute('href', `${data.files[Object.keys(data.files)[i]].link}`);
+        btnDoc.setAttribute('download', true);
         // btnDown.innerText = data.files[i];
-        btnDown.innerText = "non-inclus";
+        btnDoc.innerHTML = `<svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor"><path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>`;
+        btnDoc.innerHTML += Object.keys(data.files)[i] == "ordo" ? "Ordonnance" : "Certif medical";
         // btnDown.addEventListener('click', function () {
         // console.log('download');
         // });
-        conttxt13.appendChild(btnDown);
+        conttxt13.appendChild(btnDoc);
     }
     cont6.appendChild(txt12);
     cont6.appendChild(conttxt13);

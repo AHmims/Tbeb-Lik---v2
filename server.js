@@ -167,20 +167,20 @@ __IO.on('connection', socket => {
         }
     });
     // ADAPTED
-    socket.on('sendNotif', async data => {
+    socket.on('sendNotif', async authToken => {
         try {
             console.log('------');
-            console.log('sendNotif() | receivedData => ', data);
+            // console.log('sendNotif() | receivedData => ', data);
             // GET USERID FROM SOCKET
             // let appUserData = await _DB.getAppUserCustomDataBySocket(["userId"], socket.id);
             // console.log('sendNotif() | appUserData => ', appUserData);
-            if (data.authToken != null) {
-                let conUserData = await decodeAndFetchUser(data.authToken);
+            if (authToken != null) {
+                let conUserData = await decodeAndFetchUser(authToken);
                 if (conUserData != null) {
-                    data.patientId = conUserData.id;
-                    let appUserData = {
-                        userId: data.patientId
-                    };
+                    // data.patientId = conUserData.id;
+                    // let appUserData = {
+                    //     userId: data.patientId
+                    // };
                     // // CHECK IF THE PATIENT GOT ANY ONGOING DEMANDES
                     // let exists = await _DB.consultationCheck(appUserData.userId);
                     // console.log('sendNotif() | exists => ', exists);
@@ -198,7 +198,7 @@ __IO.on('connection', socket => {
                     //         console.log('sendNotif() | insertData(preConsultation) => ', insertRes);
                     // SEND NOTIFS TO DOCTORS
                     let listMedecins = await _DB.getToSendToDoctors();
-                    let notifData = await getNotificationFullData(appUserData.userId);
+                    let notifData = await getNotificationFullData(conUserData.id);
                     listMedecins.forEach(async medecin => {
                         let inboxInsertResult = await _DB.insertData(new _CLASSES.medecinInbox(notifData.index, medecin.Matricule_Med));
                         console.log('sendNotif() | inboxInsertResult => ', inboxInsertResult);
@@ -458,6 +458,18 @@ __IO.on('connection', socket => {
                         }, nId);
                         console.log(`cancelRequest() | deleteFromMedecinInbox => `, deleteFromMedecinInbox);
                         // 
+                        let deleteFromOrdo = await _DB.customDataDelete({
+                            table: "ordonnance",
+                            id: "idPreCons"
+                        }, nId);
+                        console.log(`cancelRequest() | deleteFromOrdo => `, deleteFromOrdo);
+                        // 
+                        let deleteFromCertMedicale = await _DB.customDataDelete({
+                            table: "certification_medical",
+                            id: "idPreCons"
+                        }, nId);
+                        console.log(`cancelRequest() | deleteFromCertMedicale => `, deleteFromCertMedicale);
+                        // 
                         __HUB.emit('removeNotificationBox', nId);
                         // SEND BACK TO THE SANEDER
                         socket.emit('cancelRequestSuccess');
@@ -552,6 +564,26 @@ async function getNotificationFullData(userId) {
         if (patientData != null) {
             let insertedNotificationData = await _DB.getLastInsertedNotification(userId);
             if (insertedNotificationData != null) {
+                let ordo = await _DB.getDataAll('ordonnance', `WHERE idPreCons = '${insertedNotificationData.idPreCons}'`);
+                let certs = await _DB.getDataAll('certification_medical', `WHERE idPreCons = '${insertedNotificationData.idPreCons}'`);
+                console.log(ordo);
+                let files = {};
+                if (ordo.length > 0) {
+                    ordo = ordo[0];
+                    files.ordo = {
+                        id: ordo.ID_ord,
+                        name: ordo.DOCUMENT,
+                        link: `/data/ordonnances/${userId}/${ordo.DOCUMENT}`
+                    };
+                }
+                if (certs.length > 0) {
+                    certs = certs[0];
+                    files.certs = {
+                        id: certs.ID_ord,
+                        name: certs.DOCUMENT,
+                        link: `/data/certifs_medicale/${userId}/${certs.DOCUMENT}`
+                    };
+                }
                 return {
                     index: insertedNotificationData.idPreCons,
                     name: patientData.nom,
@@ -562,7 +594,7 @@ async function getNotificationFullData(userId) {
                     motif: insertedNotificationData.motif,
                     atcds: insertedNotificationData.atcd,
                     nbJourApporte: insertedNotificationData.nbJourA,
-                    files: ["null"]
+                    files: files
                 }
             } else {
                 throw 'getNotificationFullData() | insertedNotificationData = null';
@@ -1036,7 +1068,7 @@ async function fileSaverWorker(file, patientId, documentType) {
             if (file.size <= 10000000) {
                 const _FILE_PATH = __PATH.join(__dirname, 'data', documentType, patientId);
                 const _FILE_NAME_EXPORT = (documentType == 'ordonnances' ? 'ordo' : 'certM') + `_${Math.floor((Math.random() * 100000) + 1)}${_FILE_EXTENSION}`;
-                console.table([_FILE_NAME_EXPORT, _FILE_EXTENSION]);
+                // console.table([_FILE_NAME_EXPORT, _FILE_EXTENSION]);
                 try {
                     await __FSE.ensureDir(_FILE_PATH);
                     await __FSE.copyFile(file.path, __PATH.join(_FILE_PATH, _FILE_NAME_EXPORT));
@@ -1067,7 +1099,7 @@ __APP.post('/sendNotif', postAuthVerify, async (req, res) => {
     try {
         if (req.body.matricule != null || req.body.matricule != undefined) {
             let exists = await _DB.consultationCheck(req.body.matricule);
-            if (true) {
+            if (!exists) {
                 let listMedecins = await _DB.getToSendToDoctors();
                 if (listMedecins != null) {
                     // let insertRes = await _DB.insertData(new _CLASSES.preConsultation('tempId', data.date, data.motif, data.atcd, data.nbja, false, req.body.matricule));
