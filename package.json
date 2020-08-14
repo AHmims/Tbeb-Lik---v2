@@ -12,10 +12,6 @@
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/AHmims/Tbeb-Lik/issues"
-  },
-  "homepage": "https://github.com/AHmims/Tbeb-Lik#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
