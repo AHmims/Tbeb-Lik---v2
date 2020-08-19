@@ -1,0 +1,26 @@
+<%- include('./partials/feedback') %>
+<form action="/login" method="POST">
+    <table border="1">
+        <tr>
+            <td>Adresse email :</td>
+            <td>
+                <input type="text" name="userEmail" class="" id="" required />
+            </td>
+        </tr>
+        <tr>
+            <td>Mot de passe :</td>
+            <td>
+                <input type="password" name="userPassword" class="" id="" required />
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button type="submit">S'identifier</button>
+            </td>
+        </tr>
+    </table>
+</form>
+<!-- Partials -->
+<%- contentFor('header') %>
+<%- include('./partials/header_standard') %>

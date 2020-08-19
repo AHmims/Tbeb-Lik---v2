@@ -1,89 +1,76 @@
-class medecin {
-    constructor(Matricule_Med, ID_SPEC, ID_ADMIN, NOM_MED, TEL, EMAIL, DISPONIBLE, VILLE, PASSWORD) {
-        this.Matricule_Med = Matricule_Med;
-        this.ID_SPEC = ID_SPEC;
-        this.ID_ADMIN = ID_ADMIN;
-        this.NOM_MED = NOM_MED;
-        this.TEL = TEL;
-        this.EMAIL = EMAIL;
-        this.DISPONIBLE = DISPONIBLE;
-        this.VILLE = VILLE;
-        this.PASSWORD = PASSWORD;
+class client {
+    constructor(clientId, clientName, clientTel, clientEmail, clientDispo, clientPass, clientDateCreation, clientDateTimeZone) {
+        this.clientId = clientId;
+        this.clientName = clientName;
+        this.clientTel = clientTel;
+        this.clientEmail = clientEmail;
+        this.clientDispo = clientDispo;
+        this.clientPass = clientPass;
+        this.clientDateCreation = clientDateCreation;
+        this.clientDateTimeZone = clientDateTimeZone;
     }
 }
 // 
-class patients {
-    constructor(CIN, MATRICULE_PAT, NOM_PAT, Prenom_PAT, PASSWORD, Date_Emb, Tel, ADRESS, Date_Retrait, Direction, Genre) {
-        this.CIN = CIN;
-        this.MATRICULE_PAT = MATRICULE_PAT;
-        this.NOM_PAT = NOM_PAT;
-        this.Prenom_PAT = Prenom_PAT;
-        this.PASSWORD = PASSWORD;
-        this.Date_Emb = Date_Emb;
-        this.Date_Naissence = Date_Naissence;
-        this.Tel = Tel;
-        this.ADRESS = ADRESS;
-        this.Date_Retrait = Date_Retrait;
-        this.Direction = Direction;
-        this.Genre = Genre;
+class visitor {
+    constructor(visitorId, visitorName, visitorEmail, visitorPass, visitorTel, visitorSexe) {
+        this.visitorId = visitorId;
+        this.visitorName = visitorName;
+        this.visitorEmail = visitorEmail;
+        this.visitorPass = visitorPass;
+        this.visitorTel = visitorTel;
+        this.visitorSexe = visitorSexe;
     }
 }
 // 
-class certification_medical {
-    constructor(ID, DOCUMENT, ID_Sender, idPreCons) {
-        this.ID = ID;
-        this.DOCUMENT = DOCUMENT;
-        this.ID_Sender = ID_Sender;
-        this.idPreCons = idPreCons;
-    }
-}
-class ordonnance {
-    constructor(ID_ord, DOCUMENT, ID_Sender, idPreCons) {
-        this.ID_ord = ID_ord;
-        this.DOCUMENT = DOCUMENT;
-        this.ID_Sender = ID_Sender;
-        this.idPreCons = idPreCons;
+class attachment {
+    constructor(attachmentName, attachmentSender, attachmentDateCreation, attachmentDateTimeZone, idPreCons) {
+        this.attachmentName = attachmentName;
+        this.attachmentSender = attachmentSender;
+        this.attachmentDateCreation = attachmentDateCreation;
+        this.attachmentDateTimeZone = attachmentDateTimeZone;
+        this.preConsId = preConsId;
     }
 }
 // 
 class consultation {
-    constructor(JOUR_REPOS, DATE_CONSULTATION, Matricule_Med, commentaire, idPreCons) {
-        this.JOUR_REPOS = JOUR_REPOS;
-        this.DATE_CONSULTATION = DATE_CONSULTATION;
-        this.Matricule_Med = Matricule_Med;
-        this.commentaire = commentaire;
-        this.idPreCons = idPreCons;
+    constructor(consulJR, consulDate, consulTimeZone, consulComment, Matricule_Med, commentaire, idPreCons) {
+        this.consulJR = consulJR;
+        this.consulDate = consulDate;
+        this.consulTimeZone = consulTimeZone;
+        this.consulComment = consulComment;
+        this.clientId = clientId;
+        this.preConsId = preConsId;
     }
 }
 // 
 class preConsultation {
-    constructor(idPreCons, dateCreation, motif, atcd, nbJourA, accepted, MATRICULE_PAT) {
-        this.idPreCons = idPreCons;
-        this.dateCreation = dateCreation;
-        this.motif = motif;
-        this.atcd = atcd;
-        this.nbJourA = nbJourA;
-        this.accepted = accepted;
-        this.MATRICULE_PAT = MATRICULE_PAT;
+    constructor(preConsId, preConsDateCreation, preConsDateTimeZone, preConsDesc, preConsAccepted, visitorId) {
+        this.preConsId = preConsId;
+        this.preConsDateCreation = preConsDateCreation;
+        this.preConsDateTimeZone = preConsDateTimeZone;
+        this.preConsDesc = preConsDesc;
+        this.preConsAccepted = preConsAccepted;
+        this.visitorId = visitorId;
     }
 }
 // 
 class room {
-    constructor(roomId, userPatientMatricule, userMedecinMatricule) {
+    constructor(roomId, roomVisitorId, roomClientId) {
         this.roomId = roomId;
-        this.userPatientMatricule = userPatientMatricule;
-        this.userMedecinMatricule = userMedecinMatricule;
+        this.roomVisitorId = roomVisitorId;
+        this.roomClientId = userMedecinMatricule;
     }
 }
 // 
 class appUser {
-    constructor(userId, userType, socket, online, linkedMedecinMatricule, roomId) {
+    constructor(userId, userType, socket, online, linkToClient, roomId, companyId) {
         this.userId = userId;
         this.userType = userType;
         this.socket = socket;
         this.online = online;
-        this.linkedMedecinMatricule = linkedMedecinMatricule;
+        this.linkToClient = linkToClient;
         this.roomId = roomId;
+        this.companyId = companyId;
     }
     // 
     getStatus() {
@@ -95,32 +82,56 @@ class appUser {
 }
 // 
 class message {
-    constructor(Matricule_emmeter, contenu, roomId, date_envoi, type, id_pieceJointes) {
-        this.Matricule_emmeter = Matricule_emmeter;
-        this.contenu = contenu;
+    constructor(msgSender, msgContent, roomId, msgDate, msgDateTimeZone, msgType, msgFilePath) {
+        this.msgSender = msgSender;
+        this.msgContent = msgContent;
         this.roomId = roomId;
-        this.date_envoi = date_envoi;
-        this.type = type;
-        this.filePath = id_pieceJointes;
+        this.msgDate = msgDate;
+        this.msgDateTimeZone = msgDateTimeZone;
+        this.msgType = msgType;
+        this.msgFilePath = msgFilePath;
     }
 }
 // 
-class medecinInbox {
-    constructor(idPreCons, Matricule_Med) {
-        this.idPreCons = idPreCons;
-        this.Matricule_Med = Matricule_Med;
+class clientInbox {
+    constructor(preConsId, clientId) {
+        this.preConsId = preConsId;
+        this.clientId = clientId;
+    }
+}
+// 
+class companyExpertise {
+    constructor(expertiseId, expertiseName) {
+        this.expertiseId = expertiseId;
+        this.expertiseName = expertiseName;
+    }
+}
+// 
+class appCompany {
+    constructor(companyId, companyName, companyDesc, companyTel, companyEmail, companyFJ, companyAdrs, companyDateCreation, companyDateTimeZone, expertiseId) {
+        this.companyId = companyId;
+        this.companyName = companyName;
+        this.companyDesc = companyDesc;
+        this.companyTel = companyTel;
+        this.companyEmail = companyEmail;
+        this.companyFJ = companyFJ;
+        this.companyAdrs = companyAdrs;
+        this.companyDateCreation = companyDateCreation;
+        this.companyDateTimeZone = companyDateTimeZone;
+        this.expertiseId = expertiseId;
     }
 }
 // 
 module.exports = {
-    medecin,
-    patients,
-    certification_medical,
-    ordonnance,
+    client,
+    visitor,
+    attachment,
     consultation,
     preConsultation,
     room,
     appUser,
     message,
-    medecinInbox
+    clientInbox,
+    companyExpertise,
+    appCompany
 }
