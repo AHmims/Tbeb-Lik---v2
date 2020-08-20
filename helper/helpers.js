@@ -64,11 +64,17 @@ const refCodeExists = async (refCode) => {
     return checkRes; // RETURN clientId & companyId LINKED TO THAT CODE IF EXISTS || ELSE RETURN NULL
 }
 // 
+const genRefCode = () => {
+    const refCodeGen = require('referral-code-generator');
+    return refCodeGen.alphaNumeric('uppercase', 12, 1);
+}
+// 
 module.exports = {
     status,
     response,
     reqBodyTrim,
     userId,
     userExists,
-    refCodeExists
+    refCodeExists,
+    genRefCode
 }

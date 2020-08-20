@@ -12,7 +12,8 @@ const {
     reqBodyTrim: _TRIM,
     userId: _GEN_USER_ID,
     userExists,
-    refCodeExists
+    refCodeExists,
+    genRefCode
 } = require('../helper/helpers');
 const {
     getUtc: _GET_UTC
@@ -182,6 +183,8 @@ router.post('/c-register', isAuth_alt, async (req, res, next) => {
                         if (insertedCompanyId != null) {
                             const appUserInsertRes = await _DB.insertData(new _CLASSES.appUser(userId, 'Client', 'EMPTY', 1, null, null, insertedCompanyId));
                             if (appUserInsertRes > 0) {
+                                // GENERATE UNIQUE REF CODE
+                                await _DB.insertData(new _CLASSES.referral(genRefCode(), _GET_UTC(), timeZone, userId));
                                 // ON SUCCESS AUTO LOGIN
                                 let mod_req = req;
                                 mod_req.body = {

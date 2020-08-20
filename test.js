@@ -12,8 +12,13 @@ console.log(moment(moment.utc(x).toDate()).local().format('YYYY-MM-DD hh:mm:ss')
 // 
 const _db = require('./model/dbQuery');
 const _class = require('./model/classes');
+const refCodeGen = require('referral-code-generator');
 async function test() {
     const retV = await _db.checkRefcode('BQC8S7CQS');
     console.log(retV);
 }
-test();
+async function test2() {
+    console.log(refCodeGen.alphaNumeric('uppercase', 12, 1));
+}
+// test();
+test2();
