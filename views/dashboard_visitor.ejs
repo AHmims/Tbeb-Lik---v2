@@ -2,6 +2,44 @@
     <h5>
         i'm a <strong>Visitor</strong>
     </h5>
+    <!--  -->
+    <div>
+        <h4>Consultation en cours de traitment :</h4>
+        <div>none</div>
+        <div>
+            <span>if none you can fill this form :</span>
+            <table border="1">
+                <tr>
+                    <td>Titre :</td>
+                    <td>
+                        <input type="text" name="conTitle" class="" id="" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Description :</td>
+                    <td>
+                        <textarea name="conDesc" id="" cols="30" rows="10" required></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Ajouter des documents :</td>
+                    <td>
+                        <input type="file" multiple name="conFile" class="" id="">
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <input type="button" value="Envoyer" class="" id="">
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div>
+        <h4>Consultations précédentes :</h4>
+        <div>none</div>
+    </div>
 </div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/public/js/alterEgo/visitor/dashboard.js"></script>
