@@ -13,7 +13,7 @@ console.log(moment(moment.utc(x).toDate()).local().format('YYYY-MM-DD hh:mm:ss')
 const _db = require('./model/dbQuery');
 const _class = require('./model/classes');
 async function test() {
-    const retV = await _db.insertDataWithResponse(new _class.message('BH60', 'slm', 'qkdsh', '2020-01-01 12:00:00', 'qdqs', 'text', 'null'));
+    const retV = await _db.checkRefcode('BQC8S7CQS');
     console.log(retV);
 }
-// test();
+test();
