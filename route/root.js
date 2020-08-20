@@ -4,8 +4,8 @@ const {
     isAuth
 } = require('../config/auth');
 const {
-    data
-} = require('pdfkit/js/reference');
+    getRefCode
+} = require('../helper/helpers');
 
 router.get('/', (req, res) => {
     res.render('index');
@@ -13,15 +13,18 @@ router.get('/', (req, res) => {
 // 
 router.get('/dashboard', isAuth, async (req, res) => {
     // console.log(req.user);
-    const _data = {};
+    let _data = {};
     // 
     if (req.user.userType != 'Visitor') {
-        _data.refCode = '';
+        _data.refCode = await getRefCode(req.user.userId);
+        //_data.inbox = // PRECONSULTATIONS
+        // _data.clients = //CONSULTATIONS
     }
+    // console.log(_data);
     // 
     res.render(req.user.userType == 'Visitor' ? 'dashboard_visitor' : 'dashboard_client', {
         userName: req.user.userName,
-        extra: data
+        extra: _data
     });
 });
 

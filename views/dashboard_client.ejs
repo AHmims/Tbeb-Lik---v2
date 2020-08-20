@@ -2,6 +2,39 @@
     <h6>
         i'm a <strong>Client</strong>
     </h6>
+    <p>
+        <span>Referal CODE :</span>
+        <input type="text" name="refCode" class="" id="" value="<%= extra.refCode %>">
+    </p>
+</div>
+<!-- MAIN AREA -->
+<div>
+    <!-- INCOMING NOTIFS -->
+    <div>
+        <h4>Demandes de consultation</h4>
+        <% if(!extra.inbox){ %>
+        <%- include('./partials/empty') %>
+        <% }else{ %>
+        <% if(extra.inbox.length <= 0){ %>
+        <%- include('./partials/empty') %>
+        <% }else{ %>
+        <h3>Not empty</h3>
+        <% } %>
+        <% } %>
+    </div>
+    <!-- connections -->
+    <div>
+        <h4>Liste de clients</h4>
+        <% if(!extra.clients){ %>
+        <%- include('./partials/empty') %>
+        <% }else{ %>
+        <% if(extra.clients.length <= 0){ %>
+        <%- include('./partials/empty') %>
+        <% }else{ %>
+        <h3>Not empty</h3>
+        <% } %>
+        <% } %>
+    </div>
 </div>
 <!-- Partials -->
 <%- contentFor('header') %>

@@ -1,3 +1,7 @@
+const {
+    client
+} = require('../model/classes');
+
 const status = (status, data) => {
     return {
         status: status,
@@ -69,6 +73,15 @@ const genRefCode = () => {
     return refCodeGen.alphaNumeric('uppercase', 12, 1);
 }
 // 
+const getRefCode = async (clientId, fields = 'code') => {
+    const _DB = require('../model/dbQuery');
+    const refCodeRes = (await _DB.getAllData('referral', `WHERE clientId = '${clientId}'`))[0];
+    if (refCodeRes != null)
+        return fields != 'all' ? refCodeRes.refCode : refCodeRes;
+    return null;
+
+}
+// 
 module.exports = {
     status,
     response,
@@ -76,5 +89,6 @@ module.exports = {
     userId,
     userExists,
     refCodeExists,
-    genRefCode
+    genRefCode,
+    getRefCode
 }
