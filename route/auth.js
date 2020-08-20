@@ -14,6 +14,9 @@ const {
     userExists
 } = require('../helper/helpers');
 const {
+    getUtc: _GET_UTC
+} = require('../helper/date');
+const {
     isAuth_alt,
     isAuth
 } = require('../config/auth');
@@ -118,7 +121,9 @@ router.post('/c-register', isAuth_alt, async (req, res, next) => {
         companyTel,
         companyFJ,
         companyAdrs,
-        companyEXP
+        companyEXP,
+        // 
+        timeZone
     } = _TRIM(req.body);
     // FORM VALIDATION
     const errors = _VALIDATION([{
@@ -156,19 +161,28 @@ router.post('/c-register', isAuth_alt, async (req, res, next) => {
                 const userId = await _GEN_USER_ID('client');
                 if (userId != null) {
                     // Save data in db
-                    const clientInsertRes = await _DB.insertData(new _CLASSES.client(userId, userName, userTel, userEmail, 1, hashRes.data, ));
-                    if (insertRes > 0) {
-                        // ON SUCCESS AUTO LOGIN
-                        let mod_req = req;
-                        mod_req.body = {
-                            userEmail: userEmail,
-                            userPassword: userPass
+                    const clientInsertRes = await _DB.insertData(new _CLASSES.client(userId, userName, userTel, userEmail, 1, hashRes.data, _GET_UTC(), timeZone));
+                    if (clientInsertRes > 0) {
+                        const companyInsertRes = await _DB.insertData(new _CLASSES.appCompany(companyName, companyDesc, companyTel, companyEmail, companyFJ, companyAdrs, _GET_UTC(), timeZone, companyEXP));
+                        if (companyInsertRes > 0) {
+                            // ON SUCCESS AUTO LOGIN
+                            let mod_req = req;
+                            mod_req.body = {
+                                userEmail: userEmail,
+                                userPassword: userPass
+                            }
+                            passport.authenticate('local', {
+                                successRedirect: '/dashboard',
+                                failureRedirect: './login',
+                                failureFlash: false
+                            })(mod_req, res, next);
+                        } else {
+                            await _DB.customDataDelete({
+                                table: 'client',
+                                clientId: userId
+                            });
+                            renderError(["Erreur lors de l'exécution de votre demande"]);
                         }
-                        passport.authenticate('local', {
-                            successRedirect: '/dashboard',
-                            failureRedirect: './login',
-                            failureFlash: false
-                        })(mod_req, res, next);
                     } else renderError(["Erreur lors de l'exécution de votre demande"]);
                 } else renderError(["Erreur lors de l'exécution de votre demande"]);
             } else renderError(["Erreur lors de l'exécution de votre demande"]);

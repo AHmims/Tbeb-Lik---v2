@@ -104,6 +104,14 @@
         </tr>
     </table>
 </form>
+<script src="/public/js/alterEgo/utility.js"></script>
+<script>
+    const TZ_input = document.createElement('input');
+    TZ_input.setAttribute('name', 'timeZone');
+    TZ_input.value = getTimeZone();
+    TZ_input.style.display = 'none';
+    document.querySelector('form').appendChild(TZ_input);
+</script>
 <!-- Partials -->
 <%- contentFor('header') %>
 <%- include('./partials/header_standard') %>

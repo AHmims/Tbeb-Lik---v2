@@ -34,6 +34,7 @@ async function insertData(data) {
         return res[0].affectedRows;
     } catch (err) {
         console.error('error :', err);
+        return -1;
     }
 }
 // GET Count RECORDS
@@ -79,6 +80,21 @@ async function getAllData(tableName, constraint = '') {
         return res[0].length > 0 ? res[0] : null;
     } catch (err) {
         console.error('error :', err);
+        return null;
+    }
+}
+// EXAMPLE OF params = {table : "ss",id : "userId"}
+async function customDataDelete(params, id) {
+    try {
+        let req = `DELETE FROM ${params.table} WHERE ${params.id} = ?`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [id]);
+        cnx.release();
+        // 
+        return res[0].affectedRows;
+    } catch (err) {
+        console.error('error :', err);
+        return -1;
     }
 }
 
@@ -125,5 +141,6 @@ module.exports = {
     insertData,
     getRecordsLength,
     checkEmail,
-    getAllData
+    getAllData,
+    customDataDelete
 }
