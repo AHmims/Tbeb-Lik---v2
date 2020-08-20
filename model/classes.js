@@ -108,8 +108,8 @@ class companyExpertise {
 }
 // 
 class appCompany {
-    constructor(companyId, companyName, companyDesc, companyTel, companyEmail, companyFJ, companyAdrs, companyDateCreation, companyDateTimeZone, expertiseId) {
-        this.companyId = companyId;
+    constructor(companyName, companyDesc, companyTel, companyEmail, companyFJ, companyAdrs, companyDateCreation, companyDateTimeZone, expertiseId) {
+        // this.companyId = companyId;
         this.companyName = companyName;
         this.companyDesc = companyDesc;
         this.companyTel = companyTel;

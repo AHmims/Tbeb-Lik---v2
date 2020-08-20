@@ -4,49 +4,199 @@ const passport = require('passport');
 // 
 const _CLASSES = require('../model/classes');
 const _DB = require('../model/dbQuery');
+const {
+    crypt
+} = require('../helper/crypt');
+const _VALIDATION = require('../helper/validator');
+const {
+    reqBodyTrim: _TRIM,
+    userId: _GEN_USER_ID,
+    userExists
+} = require('../helper/helpers');
+const {
+    isAuth_alt,
+    isAuth
+} = require('../config/auth');
+
 // 
 // GET REQUESTS
-router.get('/login', (req, res) => {
+router.get('/login', isAuth_alt, (req, res) => {
     res.render('login');
 });
-router.get('/c-register', (req, res) => {
-    res.render('signup_client');
+router.get('/c-register', isAuth_alt, async (req, res) => {
+    const expertises = await _DB.getAllData('companyExpertise');
+    res.render('signup_client', {
+        data_expertises: expertises != null ? expertises : []
+    });
 });
-router.get('/v-register', (req, res) => {
+router.get('/v-register', isAuth_alt, (req, res) => {
     res.render('signup_visitor');
 });
-router.get('/logout', (req, res) => {
+router.get('/logout', isAuth, (req, res) => {
     req.logOut();
     req.flash('flash_N_msg', 'Déconnecté');
     res.redirect('/');
 });
 // 
 // POST REQUESTS
-router.post('/register', (req, res) => {
-    console.log(req.body);
-    // 
+router.post('/v-register', isAuth_alt, async (req, res, next) => {
+    // EXTRACT DATA FROM REQYEST BODY
     const {
         userName,
+        userEmail,
+        userTel,
+        userSexe,
         userPass,
         userConPass
-    } = req.body;
-    res.render('register', {
+    } = _TRIM(req.body);
+    // FORM VALIDATION
+    const errors = _VALIDATION([{
+        name: userName
+    }, {
+        email: userEmail
+    }, {
+        phone: userTel
+    }, {
+        sexe: userSexe
+    }, {
+        password: [userPass, userConPass]
+    }]);
+    // 
+    // ON FAIL RENDER THE SAME PAGE WITH SOME PAST USER INSERTED DATA^
+    if (errors.length > 0)
+        renderError(errors);
+    else {
+        if (!await userExists(userEmail)) {
+            // Hash Password
+            const hashRes = await crypt(userPass);
+            if (hashRes.status) {
+                // GENERATE UNIQUE ID
+                const userId = await _GEN_USER_ID('visitor');
+                if (userId != null) {
+                    // Save data in db
+                    const insertRes = await _DB.insertData(new _CLASSES.visitor(userId, userName, userEmail, hashRes.data, userTel, userSexe));
+                    if (insertRes > 0) {
+                        // ON SUCCESS AUTO LOGIN
+                        let mod_req = req;
+                        mod_req.body = {
+                            userEmail: userEmail,
+                            userPassword: userPass
+                        }
+                        passport.authenticate('local', {
+                            successRedirect: '/dashboard',
+                            failureRedirect: './login',
+                            failureFlash: false
+                        })(mod_req, res, next);
+                    } else renderError(["Erreur lors de l'exécution de votre demande"]);
+                } else renderError(["Erreur lors de l'exécution de votre demande"]);
+            } else renderError(["Erreur lors de l'exécution de votre demande"]);
+        } else
+            renderError(["Email exist déja"]);
+    }
+    // 
+    function renderError(paramErrors) {
+        res.render('signup_visitor', {
+            userName,
+            userEmail,
+            userTel,
+            flash_E_array: paramErrors
+        });
+    }
+});
+router.post('/c-register', isAuth_alt, async (req, res, next) => {
+    // EXTRACT DATA FROM REQYEST BODY
+    const {
         userName,
+        userEmail,
+        userTel,
         userPass,
-        userConPass
-    });
-    //maybe redirect on success to login page
+        userConPass,
+        // 
+        companyName,
+        companyDesc,
+        companyEmail,
+        companyTel,
+        companyFJ,
+        companyAdrs,
+        companyEXP
+    } = _TRIM(req.body);
+    // FORM VALIDATION
+    const errors = _VALIDATION([{
+        name: userName
+    }, {
+        email: userEmail
+    }, {
+        phone: userTel
+    }, {
+        password: [userPass, userConPass]
+    }, {
+        email: companyEmail
+    }, {
+        phone: companyTel
+    }, {
+        fj: companyFJ
+    }]);
+    // VALIDATE SOME TEXT INPUTS
+    isText(`Nom d'entreprise`, companyName);
+    isText(`Activité`, companyDesc);
+    isText(`Adresse e-mail d'entreprise`, companyAdrs);
+    // VALIDATE EXPERTISES
+    if ((await _DB.getAllData('companyExpertise', `WHERE expertiseId = ${companyEXP}`)) == null)
+        errors.push(`Domaine d'expertise invalide.`);
+    // 
+    // ON FAIL RENDER THE SAME PAGE WITH SOME PAST USER INSERTED DATA^
+    if (errors.length > 0)
+        renderError(errors);
+    else {
+        if (!await userExists(userEmail)) {
+            // Hash Password
+            const hashRes = await crypt(userPass);
+            if (hashRes.status) {
+                // GENERATE UNIQUE ID
+                const userId = await _GEN_USER_ID('client');
+                if (userId != null) {
+                    // Save data in db
+                    const clientInsertRes = await _DB.insertData(new _CLASSES.client(userId, userName, userTel, userEmail, 1, hashRes.data, ));
+                    if (insertRes > 0) {
+                        // ON SUCCESS AUTO LOGIN
+                        let mod_req = req;
+                        mod_req.body = {
+                            userEmail: userEmail,
+                            userPassword: userPass
+                        }
+                        passport.authenticate('local', {
+                            successRedirect: '/dashboard',
+                            failureRedirect: './login',
+                            failureFlash: false
+                        })(mod_req, res, next);
+                    } else renderError(["Erreur lors de l'exécution de votre demande"]);
+                } else renderError(["Erreur lors de l'exécution de votre demande"]);
+            } else renderError(["Erreur lors de l'exécution de votre demande"]);
+        } else
+            renderError(["Email exist déja"]);
+    }
+    // 
+    function renderError(paramErrors) {
+        res.render('signup_client', {
+            userName,
+            userEmail,
+            userTel,
+            companyName,
+            companyDesc,
+            companyEmail,
+            companyTel,
+            companyFJ,
+            companyAdrs,
+            flash_E_array: paramErrors
+        });
+    }
+    // 
+    function isText(field, str) {
+        if (str.length <= 0)
+            errors.push(`${field} non Valide.`);
+    }
 });
 router.post('/login', (req, res, next) => {
-    // console.log(req.body);
-    // const helpers = require('../helpers/helpers')
-    // helpers.response(res, 400, 'ffffff');
-    // 
-    // 
-    // req.flash('flash_msg', 'test message');
-    // res.redirect('./login');
-    // 
-    // 
     passport.authenticate('local', {
         successRedirect: '/dashboard',
         failureRedirect: './login',

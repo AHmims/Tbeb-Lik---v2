@@ -1,3 +1,59 @@
+<%- include('./partials/feedback') %>
+<form action="/v-register" method="POST">
+    <table border="1">
+        <tr>
+            <td>Nom complet :</td>
+            <td>
+                <input type="text" name="userName" class="" id="" required
+                    value="<%= typeof userName != 'undefined' ? userName : '' %>">
+            </td>
+        </tr>
+        <tr>
+            <td>Adresse e-mail :</td>
+            <td>
+                <input type="text" name="userEmail" class="" id="" required
+                    value="<%= typeof userEmail != 'undefined' ? userEmail : '' %>">
+            </td>
+        </tr>
+        <tr>
+            <td>Numéro de téléphone :</td>
+            <td>
+                <input type="text" name="userTel" class="" id=""
+                    value="<%= typeof userTel != 'undefined' ? userTel : '' %>">
+            </td>
+        </tr>
+        <tr>
+            <td>Sexe :</td>
+            <td>
+                <select name="userSexe" id="" class="">
+                    <option value="null" selected>Choisire</option>
+                    <option value="male">Homme</option>
+                    <option value="female">Femme</option>
+                    <option value="non-binary">Non binaire</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Mot de passe :</td>
+            <td>
+                <input type="password" name="userPass" class="" id="" required>
+            </td>
+        </tr>
+        <tr>
+            <td>Confirmation de mot de passe :</td>
+            <td>
+                <input type="password" name="userConPass" class="" id="" required>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <button type="button">Anuller</button> <!-- redirect to home page-->
+                <button type="submit">S'inscrire</button>
+            </td>
+        </tr>
+    </table>
+</form>
 <!-- Partials -->
 <%- contentFor('header') %>
 <%- include('./partials/header_standard') %>

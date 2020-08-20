@@ -23,8 +23,43 @@ const response = (res, responseCode, data = null) => {
             res.status(responseCode).end();
     }
 }
+// TRIM REQ BODY DATA
+const reqBodyTrim = (bodyObject) => {
+    for (const key in bodyObject) {
+        if (bodyObject.hasOwnProperty(key)) {
+            const keyValue = bodyObject[key];
+            if (Array.isArray(keyValue)) {
+                for (let i = 0; i < keyValue.length; i++) {
+                    bodyObject[key][i] = keyValue[i].trim();
+                }
+            } else bodyObject[key] = keyValue.trim();
+        }
+    }
+    return bodyObject;
+}
+// GENERATE USER ID
+const userId = async (userTable) => {
+    const _DB = require('../model/dbQuery');
+    const recordsCount = await _DB.getRecordsLength(userTable);
+    if (recordsCount != null) {
+        return `${userTable == 'client' ? 'CL' : 'VS'}${recordsCount}`;
+    }
+    // else return null
+}
+// 
+const userExists = async (email) => {
+    const _DB = require('../model/dbQuery');
+    const checkRes = await _DB.checkEmail(email);
+    if (checkRes != null) {
+        return checkRes == 0 ? false : true;
+    }
+    // else return null
+}
 // 
 module.exports = {
     status,
-    response
+    response,
+    reqBodyTrim,
+    userId,
+    userExists
 }

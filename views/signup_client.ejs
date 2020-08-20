@@ -1,3 +1,109 @@
+<%- include('./partials/feedback') %>
+<form action="/c-register" method="POST">
+    <table border="1">
+        <tr>
+            <td colspan="2">Informations personnelles :</td>
+        </tr>
+        <tr>
+            <td>Nom complet :</td>
+            <td>
+                <input type="text" name="userName" class="" id="" required
+                    value="<%= typeof userName != 'undefined' ? userName : '' %>">
+            </td>
+        </tr>
+        <tr>
+            <td>Adresse e-mail :</td>
+            <td>
+                <input type="text" name="userEmail" class="" id="" required
+                    value="<%= typeof userEmail != 'undefined' ? userEmail : '' %>">
+            </td>
+        </tr>
+        <tr>
+            <td>Numéro de téléphone :</td>
+            <td>
+                <input type="text" name="userTel" class="" id=""
+                    value="<%= typeof userTel != 'undefined' ? userTel : '' %>">
+            </td>
+        </tr>
+        <tr>
+            <td>Mot de passe :</td>
+            <td>
+                <input type="password" name="userPass" class="" id="" required>
+            </td>
+        </tr>
+        <tr>
+            <td>Confirmation de mot de passe :</td>
+            <td>
+                <input type="password" name="userConPass" class="" id="" required>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">Informations d'entreprise :</td>
+        </tr>
+        <tr>
+            <td>Nom d'entreprise :</td>
+            <td>
+                <input type="text" name="companyName" class="" id="" required
+                    value="<%= typeof companyName != 'undefined' ? companyName : '' %>">
+            </td>
+        </tr>
+        <tr>
+            <td>Activité :</td>
+            <td>
+                <input type="text" name="companyDesc" class="" id=""
+                    value="<%= typeof companyDesc != 'undefined' ? companyDesc : '' %>">
+            </td>
+        </tr>
+        <tr>
+            <td>Adresse e-mail d'entreprise :</td>
+            <td>
+                <input type="text" name="companyEmail" class="" id="" required
+                    value="<%= typeof companyEmail != 'undefined' ? companyEmail : '' %>">
+            </td>
+        </tr>
+        <tr>
+            <td>Numéro de téléphone d'entreprise :</td>
+            <td>
+                <input type="text" name="companyTel" class="" id="" required
+                    value="<%= typeof companyTel != 'undefined' ? companyTel : '' %>">
+            </td>
+        </tr>
+        <tr>
+            <td>Forme juridique :</td>
+            <td>
+                <input type="text" name="companyFJ" class="" id="" required
+                    value="<%= typeof companyFJ != 'undefined' ? companyFJ : '' %>">
+            </td>
+        </tr>
+        <tr>
+            <td>Adresse :</td>
+            <td>
+                <input type="text" name="companyAdrs" class="" id="" required
+                    value="<%= typeof companyAdrs != 'undefined' ? companyAdrs : '' %>">
+            </td>
+        </tr>
+        <% if(data_expertises.length > 0){ %>
+        <tr>
+            <td>Domaine d'expertise :</td>
+            <td>
+                <select name="companyEXP" class="" id="">
+                    <option value="null">Choisire</option>
+                    <% for(const expertise of data_expertises){ %>
+                    <option value='<%= expertise.expertiseId %>'><%= expertise.expertiseName %></option>
+                    <% } %>
+                </select>
+            </td>
+        </tr>
+        <% }%>
+        <tr>
+            <td></td>
+            <td>
+                <button type="button">Anuller</button> <!-- redirect to home page-->
+                <button type="submit">Créer mon compte !</button>
+            </td>
+        </tr>
+    </table>
+</form>
 <!-- Partials -->
 <%- contentFor('header') %>
 <%- include('./partials/header_standard') %>

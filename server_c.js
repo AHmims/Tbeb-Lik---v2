@@ -47,6 +47,8 @@ __APP.use((req, res, next) => {
     res.locals.flash_E_msg = req.flash('flash_E_msg');
     res.locals.flash_W_msg = req.flash('flash_W_msg');
     res.locals.flash_S_msg = req.flash('flash_S_msg');
+    // ARRAY OF ERRORS
+    res.locals.flash_E_array = req.flash('flash_E_array');
     // PASSPORT GLOBAL VAR
     res.locals.error = req.flash('error');
     // 
