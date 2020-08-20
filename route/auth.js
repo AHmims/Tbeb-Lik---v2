@@ -50,7 +50,8 @@ router.post('/v-register', isAuth_alt, async (req, res, next) => {
         userTel,
         userSexe,
         userPass,
-        userConPass
+        userConPass,
+        inviteLink
     } = _TRIM(req.body);
     // FORM VALIDATION
     const errors = _VALIDATION([{

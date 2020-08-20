@@ -97,6 +97,21 @@ async function customDataDelete(params, id) {
         return -1;
     }
 }
+// CHECK FOR REFCODE EXISTENCE, IF TRUE RETURN CLIENT ASSOCIATED WITH IT
+async function checkRefcode(refCode) {
+    try {
+        let req = "SELECT clientId FROM `referral` WHERE `refCode` = ?",
+            cnx = await db.connect(),
+            res = await cnx.query(req, [refCode]);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0][0].clientId : null;
+    } catch (err) {
+        console.error('error :', err);
+        return null;
+    }
+}
+
 
 //#region HELPER FUNCTIONS
 function getClassValues(data) {
@@ -142,5 +157,6 @@ module.exports = {
     getRecordsLength,
     checkEmail,
     getAllData,
-    customDataDelete
+    customDataDelete,
+    checkRefcode
 }

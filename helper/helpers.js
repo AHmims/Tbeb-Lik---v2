@@ -56,10 +56,20 @@ const userExists = async (email) => {
     // else return null
 }
 // 
+const refCodeExists = async (refCode) => {
+    const _DB = require('../model/dbQuery');
+    const checkRes = await _DB.checkRefcode(refCode);
+    if (checkRes != null) {
+        return checkRes; // RETURN CLIENT_ID LINKED TO THAT CODE
+    }
+    // else return null
+}
+// 
 module.exports = {
     status,
     response,
     reqBodyTrim,
     userId,
-    userExists
+    userExists,
+    refCodeExists
 }

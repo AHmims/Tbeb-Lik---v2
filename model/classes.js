@@ -58,7 +58,7 @@ class room {
     constructor(roomId, roomVisitorId, roomClientId) {
         this.roomId = roomId;
         this.roomVisitorId = roomVisitorId;
-        this.roomClientId = userMedecinMatricule;
+        this.roomClientId = roomClientId;
     }
 }
 // 
@@ -119,6 +119,15 @@ class appCompany {
         this.companyDateCreation = companyDateCreation;
         this.companyDateTimeZone = companyDateTimeZone;
         this.expertiseId = expertiseId;
+    }
+}
+// 
+class referral {
+    constructor(refCode, refDate, refTimeZone, clientId) {
+        this.refCode = refCode;
+        this.refDate = refDate;
+        this.refTimeZone = refTimeZone;
+        this.clientId = clientId;
     }
 }
 // 
