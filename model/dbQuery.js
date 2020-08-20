@@ -132,6 +132,35 @@ async function checkRefcode(refCode) {
         return null;
     }
 }
+// EXAMPLE OF KEY {online : false,socket : 'ssss'} | params = {table : "ss",id : "userId"}
+// ADAPTED
+async function customDataUpdate(keyANDvalue, id, params) {
+    keyANDvalue = getObjectKeysWithValues(keyANDvalue);
+    let strSection = '';
+    keyANDvalue[0].forEach(key => {
+        strSection += `${key} = ?,`
+    });
+    strSection = removeLastChar(strSection);
+    keyANDvalue[1].push(id);
+    // 
+    try {
+        let req = `UPDATE ${params.table} SET ${strSection} WHERE ${params.id} = ?`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, keyANDvalue[1]);
+        cnx.release();
+        // 
+        return res[0].affectedRows > 0 ? true : false;
+    } catch (err) {
+        console.error('error :', err);
+        return false;
+    }
+}
+// 
+
+
+
+
+
 //#region HELPER FUNCTIONS
 function getClassValues(data) {
     let tableName, fieldsNames, fieldsPlaceHolders = '',
@@ -178,5 +207,6 @@ module.exports = {
     getAllData,
     customDataDelete,
     checkRefcode,
-    insertDataWithResponse
+    insertDataWithResponse,
+    customDataUpdate
 }

@@ -65,11 +65,8 @@ __APP.use('/', require('./route/auth'));
 __APP.use('/user', require('./route/user'));
 // 
 // SOCKET
-// NOTIICATIONS SYSTEM NAMESPACE
 __IO.on('connection', socket => {
-    socket.on('disconnect', () => {
-        console.log(`socket OFF`);
-    });
+    require('./config/socket')(socket);
 });
 // 
 //START SERVER

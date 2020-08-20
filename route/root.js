@@ -27,6 +27,7 @@ router.get('/dashboard', isAuth, async (req, res) => {
     // 
     res.render(req.user.userType == 'Visitor' ? 'dashboard_visitor' : 'dashboard_client', {
         userName: req.user.userName,
+        userEmail: req.user.userEmail,
         extra: _data
     });
 });
