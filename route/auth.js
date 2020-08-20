@@ -11,7 +11,8 @@ const _VALIDATION = require('../helper/validator');
 const {
     reqBodyTrim: _TRIM,
     userId: _GEN_USER_ID,
-    userExists
+    userExists,
+    refCodeExists
 } = require('../helper/helpers');
 const {
     getUtc: _GET_UTC
@@ -66,6 +67,10 @@ router.post('/v-register', isAuth_alt, async (req, res, next) => {
         password: [userPass, userConPass]
     }]);
     // 
+    const linkedClient = await refCodeExists(inviteLink);
+    if (linkedClient == null)
+        errors.push(`Lien d'invitation non valide`);
+    // 
     // ON FAIL RENDER THE SAME PAGE WITH SOME PAST USER INSERTED DATA^
     if (errors.length > 0)
         renderError(errors);
@@ -80,17 +85,26 @@ router.post('/v-register', isAuth_alt, async (req, res, next) => {
                     // Save data in db
                     const insertRes = await _DB.insertData(new _CLASSES.visitor(userId, userName, userEmail, hashRes.data, userTel, userSexe));
                     if (insertRes > 0) {
-                        // ON SUCCESS AUTO LOGIN
-                        let mod_req = req;
-                        mod_req.body = {
-                            userEmail: userEmail,
-                            userPassword: userPass
+                        const appUserInsertRes = await _DB.insertData(new _CLASSES.appUser(userId, 'Visitor', 'EMPTY', 1, linkedClient.clientId, 'TEMP', linkedClient.companyId));
+                        if (appUserInsertRes > 0) {
+                            // ON SUCCESS AUTO LOGIN
+                            let mod_req = req;
+                            mod_req.body = {
+                                userEmail: userEmail,
+                                userPassword: userPass
+                            }
+                            passport.authenticate('local', {
+                                successRedirect: '/dashboard',
+                                failureRedirect: './login',
+                                failureFlash: false
+                            })(mod_req, res, next);
+                        } else {
+                            await _DB.customDataDelete({
+                                table: 'visitor',
+                                visitorId: userId
+                            });
+                            renderError(["Erreur lors de l'exécution de votre demande"]);
                         }
-                        passport.authenticate('local', {
-                            successRedirect: '/dashboard',
-                            failureRedirect: './login',
-                            failureFlash: false
-                        })(mod_req, res, next);
                     } else renderError(["Erreur lors de l'exécution de votre demande"]);
                 } else renderError(["Erreur lors de l'exécution de votre demande"]);
             } else renderError(["Erreur lors de l'exécution de votre demande"]);
@@ -164,19 +178,32 @@ router.post('/c-register', isAuth_alt, async (req, res, next) => {
                     // Save data in db
                     const clientInsertRes = await _DB.insertData(new _CLASSES.client(userId, userName, userTel, userEmail, 1, hashRes.data, _GET_UTC(), timeZone));
                     if (clientInsertRes > 0) {
-                        const companyInsertRes = await _DB.insertData(new _CLASSES.appCompany(companyName, companyDesc, companyTel, companyEmail, companyFJ, companyAdrs, _GET_UTC(), timeZone, companyEXP));
-                        if (companyInsertRes > 0) {
-                            // ON SUCCESS AUTO LOGIN
-                            let mod_req = req;
-                            mod_req.body = {
-                                userEmail: userEmail,
-                                userPassword: userPass
+                        const insertedCompanyId = await _DB.insertDataWithResponse(new _CLASSES.appCompany(companyName, companyDesc, companyTel, companyEmail, companyFJ, companyAdrs, _GET_UTC(), timeZone, companyEXP));
+                        if (insertedCompanyId != null) {
+                            const appUserInsertRes = await _DB.insertData(new _CLASSES.appUser(userId, 'Client', 'EMPTY', 1, null, null, insertedCompanyId));
+                            if (appUserInsertRes > 0) {
+                                // ON SUCCESS AUTO LOGIN
+                                let mod_req = req;
+                                mod_req.body = {
+                                    userEmail: userEmail,
+                                    userPassword: userPass
+                                }
+                                passport.authenticate('local', {
+                                    successRedirect: '/dashboard',
+                                    failureRedirect: './login',
+                                    failureFlash: false
+                                })(mod_req, res, next);
+                            } else {
+                                await _DB.customDataDelete({
+                                    table: 'client',
+                                    clientId: userId
+                                });
+                                await _DB.customDataDelete({
+                                    table: 'appCompany',
+                                    companyId: insertedCompanyId
+                                });
+                                renderError(["Erreur lors de l'exécution de votre demande"]);
                             }
-                            passport.authenticate('local', {
-                                successRedirect: '/dashboard',
-                                failureRedirect: './login',
-                                failureFlash: false
-                            })(mod_req, res, next);
                         } else {
                             await _DB.customDataDelete({
                                 table: 'client',

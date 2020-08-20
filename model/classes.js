@@ -142,5 +142,6 @@ module.exports = {
     message,
     clientInbox,
     companyExpertise,
-    appCompany
+    appCompany,
+    referral
 }

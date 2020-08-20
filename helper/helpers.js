@@ -59,10 +59,9 @@ const userExists = async (email) => {
 const refCodeExists = async (refCode) => {
     const _DB = require('../model/dbQuery');
     const checkRes = await _DB.checkRefcode(refCode);
-    if (checkRes != null) {
-        return checkRes; // RETURN CLIENT_ID LINKED TO THAT CODE
-    }
-    // else return null
+    // MAYBE I'LL DO SOMEFUTURE WORK HERE
+    // SUCH AS THE CODE TO BE A LINK AND DECONSTRUCT IT HERE
+    return checkRes; // RETURN clientId & companyId LINKED TO THAT CODE IF EXISTS || ELSE RETURN NULL
 }
 // 
 module.exports = {

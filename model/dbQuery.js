@@ -37,6 +37,27 @@ async function insertData(data) {
         return -1;
     }
 }
+// ONLY ACCEPT A CLASS AS INPUT
+// FOR INSERTING TABLE WITH AUTOINCREMENT
+// RETURN THE AUTOINCREMENTED VALUE AS A RESPONSE
+async function insertDataWithResponse(data) {
+    let {
+        tableName,
+        fieldsNames,
+        fieldsPlaceHolders,
+        values
+    } = getClassValues(data);
+    try {
+        let req = `INSERT INTO ${tableName}(${fieldsNames}) VALUES (${fieldsPlaceHolders})`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, values);
+        cnx.release();
+        return res[0].affectedRows > 0 ? res[0].insertId : null;
+    } catch (err) {
+        console.error('error :', err);
+        return null;
+    }
+}
 // GET Count RECORDS
 // params = {key:'key',value:'value'}
 async function getRecordsLength(tableName, params = null) {
@@ -100,12 +121,12 @@ async function customDataDelete(params, id) {
 // CHECK FOR REFCODE EXISTENCE, IF TRUE RETURN CLIENT ASSOCIATED WITH IT
 async function checkRefcode(refCode) {
     try {
-        let req = "SELECT clientId FROM `referral` WHERE `refCode` = ?",
+        let req = "SELECT ref.clientId, appU.companyId FROM `referral` AS ref, `appUser` AS appU WHERE ref.`refCode` = ? AND ref.clientId = appU.userId",
             cnx = await db.connect(),
             res = await cnx.query(req, [refCode]);
         cnx.release();
         // 
-        return res[0].length > 0 ? res[0][0].clientId : null;
+        return res[0].length > 0 ? res[0][0] : null;
     } catch (err) {
         console.error('error :', err);
         return null;
@@ -158,5 +179,6 @@ module.exports = {
     checkEmail,
     getAllData,
     customDataDelete,
-    checkRefcode
+    checkRefcode,
+    insertDataWithResponse
 }
