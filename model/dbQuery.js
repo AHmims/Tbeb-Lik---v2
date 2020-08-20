@@ -132,8 +132,6 @@ async function checkRefcode(refCode) {
         return null;
     }
 }
-
-
 //#region HELPER FUNCTIONS
 function getClassValues(data) {
     let tableName, fieldsNames, fieldsPlaceHolders = '',

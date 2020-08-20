@@ -20,6 +20,9 @@ router.get('/dashboard', isAuth, async (req, res) => {
         //_data.inbox = // PRECONSULTATIONS
         // _data.clients = //CONSULTATIONS
     }
+    // else{
+    // _data.preCons = //LAST PRECONSULTATION
+    // }
     // console.log(_data);
     // 
     res.render(req.user.userType == 'Visitor' ? 'dashboard_visitor' : 'dashboard_client', {

@@ -63,8 +63,14 @@ __APP.set("layout extractScripts", true)
 __APP.use('/', require('./route/root'));
 __APP.use('/', require('./route/auth'));
 __APP.use('/user', require('./route/user'));
-
 // 
+// SOCKET
+// NOTIICATIONS SYSTEM NAMESPACE
+__IO.on('connection', socket => {
+    socket.on('disconnect', () => {
+        console.log(`socket OFF`);
+    });
+});
 // 
 //START SERVER
 __SERVER.listen(__PORT, '0.0.0.0', () => {
