@@ -10,5 +10,10 @@ module.exports = {
             res.redirect('/dashboard');
         else
             return next();
+    },
+    isAuth_api: (req, res, next) => {
+        if (req.isAuthenticated())
+            return next();
+        require('../helper/helpers').response(res, 401);
     }
 }

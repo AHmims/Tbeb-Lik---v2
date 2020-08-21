@@ -32,11 +32,13 @@ const reqBodyTrim = (bodyObject) => {
     for (const key in bodyObject) {
         if (bodyObject.hasOwnProperty(key)) {
             const keyValue = bodyObject[key];
-            if (Array.isArray(keyValue)) {
-                for (let i = 0; i < keyValue.length; i++) {
-                    bodyObject[key][i] = keyValue[i].trim();
-                }
-            } else bodyObject[key] = keyValue.trim();
+            if (!key.toLowerCase().includes("file")) {
+                if (Array.isArray(keyValue)) {
+                    for (let i = 0; i < keyValue.length; i++) {
+                        bodyObject[key][i] = keyValue[i].trim();
+                    }
+                } else bodyObject[key] = keyValue.trim();
+            }
         }
     }
     return bodyObject;

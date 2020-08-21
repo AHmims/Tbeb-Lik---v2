@@ -11,7 +11,6 @@ const __SERVER = require('http').createServer(__APP);
 const __IO = require('socket.io')(__SERVER);
 const __PATH = require('path');
 const __JWT = require('jsonwebtoken');
-const formData = require('express-form-data');
 
 //IMPORTED MODULES
 // const __PDF = require('./model/savePdf');
@@ -22,11 +21,6 @@ const __PORT = process.env.PORT || 8080;
 //MIDDLEWARES
 // passport config
 require('./config/passport')(__PASSPORT);
-const options = {
-    uploadDir: __PATH.join(__dirname, 'filesTmp'),
-    autoClean: true
-};
-__APP.use('/sendNotif', formData.parse(options));
 __APP.use(__EXPRESS.urlencoded({
     extended: true
 }));
@@ -62,7 +56,7 @@ __APP.set("layout extractScripts", true)
 // Include routes
 __APP.use('/', require('./route/root'));
 __APP.use('/', require('./route/auth'));
-__APP.use('/user', require('./route/user'));
+__APP.use('/api', require('./route/api'));
 // 
 // SOCKET
 __IO.on('connection', socket => {
