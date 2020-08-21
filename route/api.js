@@ -20,7 +20,7 @@ router.post('/test', formData.parse(options), (req, res) => {
             conTitle,
             conDesc
         } = _TRIM(req.body);
-        response(200, {
+        response(res, 200, {
             conTitle,
             conDesc
         });
