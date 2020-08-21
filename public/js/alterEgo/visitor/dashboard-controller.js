@@ -3,7 +3,11 @@ $().ready(() => {
         const conForm = new FormData();
         conForm.append('conTitle', $('#conTitle').val());
         conForm.append('conDesc', $('#conDesc').val());
-        conForm.append('conFile', $('#conFile')[0].files);
+        conForm.append('conTZ', getTimeZone());
+        for (const formFile of $('#conFile')[0].files) {
+            conForm.append('conFile', formFile);
+
+        }
         // console.log($('#conFile')[0].files);
         // console.log(conForm.get('conDesc'));
         try {

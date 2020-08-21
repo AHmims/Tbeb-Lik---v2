@@ -44,10 +44,11 @@ class consultation {
 }
 // 
 class preConsultation {
-    constructor(preConsId, preConsDateCreation, preConsDateTimeZone, preConsDesc, preConsAccepted, visitorId) {
+    constructor(preConsId, preConsDateCreation, preConsDateTimeZone, preConsTitle, preConsDesc, preConsAccepted, visitorId) {
         this.preConsId = preConsId;
         this.preConsDateCreation = preConsDateCreation;
         this.preConsDateTimeZone = preConsDateTimeZone;
+        this.preConsTitle = preConsTitle;
         this.preConsDesc = preConsDesc;
         this.preConsAccepted = preConsAccepted;
         this.visitorId = visitorId;

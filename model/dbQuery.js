@@ -155,7 +155,20 @@ async function customDataUpdate(keyANDvalue, id, params) {
         return false;
     }
 }
-// 
+//Get visitor last inserted precons
+async function visitorLastPrecons(visitorId) {
+    try {
+        let req = `SELECT * FROM preConsultation WHERE preConsAccepted = -1 AND visitorId = ? ORDER BY preConsDateCreation DESC;`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, visitorId);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0][0] : null;
+    } catch (err) {
+        console.error(`error :`, err);
+        return null;
+    }
+}
 
 
 
@@ -208,5 +221,6 @@ module.exports = {
     customDataDelete,
     checkRefcode,
     insertDataWithResponse,
-    customDataUpdate
+    customDataUpdate,
+    visitorLastPrecons
 }

@@ -1,7 +1,3 @@
-const {
-    client
-} = require('../model/classes');
-
 const status = (status, data) => {
     return {
         status: status,
@@ -24,7 +20,7 @@ const response = (res, responseCode, data = null) => {
             res.status(responseCode).json(data);
             break;
         default:
-            res.status(responseCode).end();
+            res.status(responseCode).end(data);
     }
 }
 // TRIM REQ BODY DATA
@@ -76,12 +72,34 @@ const genRefCode = () => {
 }
 // 
 const getRefCode = async (clientId, fields = 'code') => {
-    const _DB = require('../model/dbQuery');
-    const refCodeRes = (await _DB.getAllData('referral', `WHERE clientId = '${clientId}'`))[0];
-    if (refCodeRes != null)
-        return fields != 'all' ? refCodeRes.refCode : refCodeRes;
-    return null;
-
+    try {
+        const _DB = require('../model/dbQuery');
+        const refCodeRes = (await _DB.getAllData('referral', `WHERE clientId = '${clientId}'`))[0];
+        if (refCodeRes != null)
+            return fields != 'all' ? refCodeRes.refCode : refCodeRes;
+        return null;
+    } catch (err) {
+        console.err(err);
+        return null;
+    }
+}
+// 
+const saveAndGetPrecons = async (visitorId, formData) => {
+    try {
+        const _DB = require('../model/dbQuery');
+        const _CLASSES = require('../model/classes');
+        const {
+            getUtc: _GET_UTC
+        } = require('../helper/date');
+        //
+        const insertRes = await _DB.insertData(new _CLASSES.preConsultation('TempId', _GET_UTC(), formData.conTZ, formData.conTitle, formData.conDesc, -1, visitorId));
+        if (insertRes > 0)
+            return await _DB.visitorLastPrecons(visitorId);
+        throw 'Precons not saved';
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
 }
 // 
 module.exports = {
@@ -92,5 +110,6 @@ module.exports = {
     userExists,
     refCodeExists,
     genRefCode,
-    getRefCode
+    getRefCode,
+    saveAndGetPrecons
 }
