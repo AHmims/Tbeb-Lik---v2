@@ -3,6 +3,8 @@ const router = express.Router();
 const formData = require('express-form-data');
 const __PATH = require('path');
 // 
+const _DB = require('../model/dbQuery');
+// 
 const options = {
     uploadDir: __PATH.resolve(__dirname + '/../filesTmp'),
     autoClean: true
@@ -68,6 +70,14 @@ router.post('/savePrecons', formData.parse(options), async (req, res) => {
                         // 
                         if (preConsInsertRes != null) {
                             // UPDATE SAVED FILES WITH PRECONS ID
+                            for (const docData of conDocsData) {
+                                await _DB.customDataUpdate({
+                                    preConsId: preConsInsertRes.preConsId
+                                }, docData.docId, {
+                                    table: 'attachment',
+                                    id: 'attachmentId'
+                                });
+                            }
                             // 
                             response(res, 200, status('sucess', preConsInsertRes));
                         }
@@ -75,7 +85,7 @@ router.post('/savePrecons', formData.parse(options), async (req, res) => {
                     erros.push(`Erreur de server`);
                     // CLEAR DOCUMENTS
                     for (const docData of conDocsData) {
-                        await removeFile(docData.docId, docData.docName);
+                        await removeFile(docData.docId, docData.docName, req.user.userId);
                     }
                 }
             }

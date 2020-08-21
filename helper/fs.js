@@ -1,5 +1,6 @@
 const __FSE = require('fs-extra');
 const __PATH = require('path');
+// 
 const _CLASSES = require('../model/classes');
 const _DB = require('../model/dbQuery');
 const {
@@ -56,8 +57,21 @@ module.exports = {
             retData = 1; //`Erreur de server, veuillez réessayer plus tard.`;
         }
         return retData;
-    }
-    removeFile: async (fileId, fileName) => {
-
+    },
+    removeFile: async (fileId, fileName, userId) => {
+        try {
+            const docDeleteRes = await _DB.customDataDelete({
+                table: 'attachment',
+                id: 'attachmentId'
+            }, fileId);
+            if (docDeleteRes > 0) {
+                await __FSE.remove(__PATH.resolve(__dirname + `/../files/${userId}/${fileName}`));
+                return true;
+            }
+            throw 'Attachment not deleted';
+        } catch (err) {
+            console.error(err);
+            return false;
+        }
     }
 }
