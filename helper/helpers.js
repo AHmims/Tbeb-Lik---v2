@@ -174,7 +174,8 @@ const acceptPrecons = async data => {
         return null;
     }
 }
-async function unlinkMedecinFromRooms(clientId) {
+// 
+const unlinkMedecinFromRooms = async clientId => {
     try {
         return await _DB.customDataUpdate({
             roomClientId: null
@@ -187,6 +188,61 @@ async function unlinkMedecinFromRooms(clientId) {
         return false;
     }
 }
+// 
+async function getNotificationFullData(visitorId) {
+    try {
+        let visitorData = await _DB.getAllData('visitor', `WHERE visitorId = '${visitorId}'`);
+        if (visitorData != null) {
+            let insertedNotificationData = await _DB.getLastInsertedPrecons(visitorId);
+            if (insertedNotificationData != null) {
+                let docs = await _DB.getAllData('attachment', `WHERE preConsId = '${insertedNotificationData.preConsId}'`);
+                if (docs.length > 0) {
+                    for (let i = 0; i < docs.length; i++) {
+                        docs[i] = {
+                            id: i,
+                            name: docs[i].attachmentName,
+                            link: `/files/${visitorId}/${docs[i].attachmentName}`
+                        }
+                    }
+                } else docs = [];
+                return {
+                    index: insertedNotificationData.preConsId,
+                    name: visitorData.visitorName,
+                    date: insertedNotificationData.preConsDateCreation,
+                    TZ: insertedNotificationData.preConsDateTimeZone,
+                    matricule: visitorId,
+                    tel: visitorData.visitorTel,
+                    title: insertedNotificationData.preConsTitle,
+                    desc: insertedNotificationData.preConsDesc,
+                    files: docs
+                }
+            } else throw `LAST INSERTED Notification not found`;
+        } else throw `Visitor Not found`;
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+// 
+const getClientNotifications = async clientId => {
+    try {
+        let notifications = await _DB.getClientPrecons(clientId);
+        let fullNotifications = [];
+        if (notifications != null) {
+            for (const notif of notifications) {
+                const notifFullData = await getNotificationFullData(notif.visitorId);
+                if (notifFullData != null)
+                    fullNotifications.push(notifFullData);
+            }
+        }
+        // 
+        return fullNotifications;
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
+
 
 // 
 // 
@@ -202,5 +258,6 @@ module.exports = {
     saveAndGetPrecons,
     preConsAccepted,
     acceptPrecons,
-    canSendPrecons
+    canSendPrecons,
+    getClientNotifications
 }

@@ -209,11 +209,11 @@ async function getPatientPreConsultationDataById(userId) {
     }
 }
 // ADAPTED
-async function getLastInsertedNotification(userId, accepted = false) {
+async function getLastInsertedNotification(visitorId, accepted = -1) {
     try {
-        let req = `SELECT * FROM preConsultation WHERE accepted = ${accepted} AND LOWER(MATRICULE_PAT) = LOWER(?) ORDER BY dateCreation DESC LIMIT 1`,
+        let req = `SELECT * FROM preConsultation WHERE preConsAccepted = ${accepted} AND LOWER(visitorId) = LOWER(?) ORDER BY preConsDateCreation DESC LIMIT 1`,
             cnx = await db.connect(),
-            res = await cnx.query(req, [userId]);
+            res = await cnx.query(req, visitorId);
         cnx.release();
         // 
         return res[0].length > 0 ? res[0][0] : null;

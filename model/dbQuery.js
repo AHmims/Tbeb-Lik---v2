@@ -218,7 +218,33 @@ async function consultationCheck(visitorId) {
         }
     } else return true;
 }
-
+// GET CLIENTS UN-ACCEPTED NOTIFICATIONS
+async function getClientPrecons(clientId) {
+    try {
+        let req = `SELECT preConsId,visitorId FROM preConsultation WHERE preConsAccepted = -1 AND visitorId IN (SELECT userId FROM appUser WHERE linkToClient = ?)`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, clientId);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0] : null;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// GET A VISITOR LAST INSERTED NOTIFICATION
+async function getLastInsertedPrecons(visitorId, accepted = -1) {
+    try {
+        let req = `SELECT * FROM preConsultation WHERE preConsAccepted = ${accepted} AND LOWER(visitorId) = LOWER(?) ORDER BY preConsDateCreation DESC LIMIT 1`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, visitorId);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0][0] : null;
+    } catch (err) {
+        console.error('error :', err);
+        return null;
+    }
+}
 
 
 
@@ -274,5 +300,7 @@ module.exports = {
     visitorLastPrecons,
     getRoomByNotifId,
     consultationCheck,
-    checkExistence
+    checkExistence,
+    getClientPrecons,
+    getLastInsertedPrecons
 }
