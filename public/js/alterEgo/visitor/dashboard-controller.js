@@ -21,7 +21,7 @@ $().ready(() => {
                     console.log(`!! Waiting !!`);
                 } else {
                     if (reqRes.content != null) {
-                        for (const error of reqRes.content) {
+                        for (const error of reqRes.content.data) {
                             console.log(`ERROR => ${error}`);
                         }
                     } else throw reqRes.code;

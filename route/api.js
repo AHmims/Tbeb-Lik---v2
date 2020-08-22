@@ -15,7 +15,8 @@ const {
     reqBodyTrim: _TRIM,
     saveAndGetPrecons,
     preConsAccepted,
-    acceptPrecons
+    acceptPrecons,
+    canSendPrecons
 } = require('../helper/helpers');
 const {
     commonFileValidator,
@@ -29,7 +30,7 @@ router.post('/savePrecons', formData.parse(options), async (req, res) => {
     try {
         if (req.user.userType == 'Visitor') {
             let erros = [];
-            if ((await _DB.visitorLastPrecons(req.user.userId)) == null) { // CHANGE THIS DB FUNCTION LATER WITH A MORE RELIABLE ONE || CHECK PRECONSULTATION (state = -1 ) AND CONSULTATION AS WELL (NOT FINALIZED YET)
+            if (await canSendPrecons(req.user.userId)) {
                 const {
                     conTitle,
                     conDesc,

@@ -105,6 +105,15 @@ const saveAndGetPrecons = async (visitorId, formData) => {
     }
 }
 // 
+const canSendPrecons = async visitorId => {
+    try {
+        return !(await _DB.consultationCheck(visitorId));
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
+// 
 const preConsAccepted = async notifId => {
     try {
         const queryRes = await _DB.getAllData('preConsultation', `WHERE preConsId = '${notifId}' AND preConsAccepted = -1`);
@@ -192,5 +201,6 @@ module.exports = {
     getRefCode,
     saveAndGetPrecons,
     preConsAccepted,
-    acceptPrecons
+    acceptPrecons,
+    canSendPrecons
 }

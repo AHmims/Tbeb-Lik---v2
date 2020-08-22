@@ -183,6 +183,41 @@ async function getRoomByNotifId(notifId) {
         return null;
     }
 }
+// 
+// RETURN A BOOLEAN FOR EXISTENCE CHECK || params = {table : "tableName",id : "idKey"}
+async function checkExistence(params, id, constraint = '') {
+    try {
+        let req = `SELECT COUNT(${params.id}) AS nb FROM ${params.table} WHERE ${params.id} = ? ${constraint}`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, [id]);
+        cnx.release();
+        // 
+        return res[0][0].nb > 0 ? true : false;
+    } catch (err) {
+        console.error('error :', err);
+    }
+}
+// CHECK IF A VISITOR HAVE AN ONOING CONSULTATION OR PRECONSULTATION TO DETERMINE WETHER HE IS ELIGABLE FOR SENDING A NEW PRECONS
+async function consultationCheck(visitorId) {
+    let table1Check = await checkExistence({
+        table: "preConsultation",
+        id: "visitorId"
+    }, visitorId, 'AND preConsAccepted = -1');
+    // 
+    if (!table1Check) {
+        try {
+            let req = `select count(*) as nb from consultation where consulState <= -1 AND preConsId in (select preConsId from preConsultation where LOWER(visitorId) = LOWER(?))`,
+                cnx = await db.connect(),
+                res = await cnx.query(req, visitorId);
+            cnx.release();
+            // 
+            return res[0][0].nb > 0 ? true : false;
+        } catch (err) {
+            console.error('error :', err);
+            return false;
+        }
+    } else return true;
+}
 
 
 
@@ -238,4 +273,6 @@ module.exports = {
     customDataUpdate,
     visitorLastPrecons,
     getRoomByNotifId,
+    consultationCheck,
+    checkExistence
 }

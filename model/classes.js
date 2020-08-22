@@ -33,8 +33,8 @@ class attachment {
 }
 // 
 class consultation {
-    constructor(consulJR, consulDate, consulTimeZone, consulComment, clientId, preConsId) {
-        this.consulJR = consulJR;
+    constructor(consulState, consulDate, consulTimeZone, consulComment, clientId, preConsId) {
+        this.consulState = consulState;
         this.consulDate = consulDate;
         this.consulTimeZone = consulTimeZone;
         this.consulComment = consulComment;
