@@ -89,8 +89,6 @@ const getRefCode = async (clientId, fields = 'code') => {
 // 
 const saveAndGetPrecons = async (visitorId, formData) => {
     try {
-        //
-        //
         const {
             getUtc: _GET_UTC
         } = require('../helper/date');
@@ -193,6 +191,7 @@ async function getNotificationFullData(visitorId) {
     try {
         let visitorData = await _DB.getAllData('visitor', `WHERE visitorId = '${visitorId}'`);
         if (visitorData != null) {
+            visitorData = visitorData[0];
             let insertedNotificationData = await _DB.getLastInsertedPrecons(visitorId);
             if (insertedNotificationData != null) {
                 let docs = await _DB.getAllData('attachment', `WHERE preConsId = '${insertedNotificationData.preConsId}'`);

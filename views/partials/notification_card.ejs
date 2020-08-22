@@ -1,0 +1,35 @@
+<div id="<%= notif.index %>">
+    <ul>
+        <li>Nom :</li>
+        <li> <%= notif.name %> </li>
+    </ul>
+    <ul>
+        <li>Date d'envoi :</li>
+        <li><%= notif.date %></li>
+    </ul>
+    <ul>
+        <li>Telephone : </li>
+        <li><%= notif.tel %></li>
+    </ul>
+    <ul>
+        <li>Title : </li>
+        <li><%= notif.title %></li>
+    </ul>
+    <ul>
+        <li>Description :</li>
+        <li><%= notif.desc %></li>
+    </ul>
+    <ul>
+        <li>Files : </li>
+        <li>
+            <% for(file of notif.files){ %>
+            <a href="<%= file.link %>"><%= file.name %></a>
+            <% } %>
+        </li>
+    </ul>
+    <!--  -->
+    <div>
+        <input type="button" value="Accept" />
+        <input type="button" value="Refuse" />
+    </div>
+</div>

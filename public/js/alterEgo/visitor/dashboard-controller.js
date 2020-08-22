@@ -20,7 +20,7 @@ $().ready(() => {
                     sendPreCons(reqRes.content);
                     console.log(`!! Waiting !!`);
                 } else {
-                    if (reqRes.content != null) {
+                    if (reqRes.content != null && reqRes.content != 'null') {
                         for (const error of reqRes.content.data) {
                             console.log(`ERROR => ${error}`);
                         }

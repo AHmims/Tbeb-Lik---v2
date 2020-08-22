@@ -18,7 +18,7 @@ router.get('/dashboard', isAuth, async (req, res) => {
     // 
     if (req.user.userType != 'Visitor') {
         _data.refCode = await getRefCode(req.user.userId);
-        _data.inbox = await getClientNotifications(req.user.userId); // PRECONSULTATIONS
+        _data.inbox = await getClientNotifications(req.user.userId) // PRECONSULTATIONS
         // _data.clients = //CONSULTATIONS
     }
     // else{

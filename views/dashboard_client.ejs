@@ -20,7 +20,9 @@
         <% if(extra.inbox.length <= 0){ %>
         <%- include('./partials/empty') %>
         <% }else{ %>
-        <h3>Not empty</h3>
+        <% for(notif of extra.inbox){ %>
+        <%- include('./partials/notification_card', {notif}) %>
+        <% } %>
         <% } %>
         <% } %>
     </div>

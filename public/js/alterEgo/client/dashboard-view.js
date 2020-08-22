@@ -2,23 +2,74 @@ const renderNotification = (root, notificationData) => {
     return new Promise((resolve, reject) => {
         try {
             const boxContainer = make_E('div');
-            for (const key in notificationData) {
-                if (notificationData.hasOwnProperty(key)) {
-                    const value = notificationData[key];
-                    const rowContainer = make_E('div');
-                    rowContainer.appendChild(make_E('span', `${key} : `));
-                    if (Array.isArray(value)) {
-                        const valueArrayCont = make_E('div');
-                        for (const col of value) {
-                            const colElement = make_E('span', col[Object.keys(col)[0]]);
-                            valueArrayCont.appendChild(colElement);
-                        }
-                        rowContainer.appendChild(valueArrayCont);
-                    } else rowContainer.appendChild(make_E('span', value));
-                    // 
-                    boxContainer.appendChild(rowContainer);
-                }
+            // 
+            let _row = make_E('ul');
+            let _col_key = make_E('li', 'Nom :');
+            let _col_value = make_E('li', notificationData.name);
+            _row.appendChild(_col_key);
+            _row.appendChild(_col_value);
+            boxContainer.appendChild(_row);
+            // 
+            _row = make_E('ul');
+            _col_key = make_E('li', `Date d'envoi :`);
+            _col_value = make_E('li', notificationData.preConsDateCreation);
+            _row.appendChild(_col_key);
+            _row.appendChild(_col_value);
+            boxContainer.appendChild(_row);
+            // 
+            _row = make_E('ul');
+            _col_key = make_E('li', `Telephone :`);
+            _col_value = make_E('li', notificationData.tel);
+            _row.appendChild(_col_key);
+            _row.appendChild(_col_value);
+            boxContainer.appendChild(_row);
+            // 
+            _row = make_E('ul');
+            _col_key = make_E('li', `Title :`);
+            _col_value = make_E('li', notificationData.preConsTitle);
+            _row.appendChild(_col_key);
+            _row.appendChild(_col_value);
+            boxContainer.appendChild(_row);
+            // 
+            _row = make_E('ul');
+            _col_key = make_E('li', `Description :`);
+            _col_value = make_E('li', notificationData.preConsDesc);
+            _row.appendChild(_col_key);
+            _row.appendChild(_col_value);
+            boxContainer.appendChild(_row);
+            // 
+            _row = make_E('ul');
+            _col_key = make_E('li', `Files :`);
+            _row.appendChild(_col_key);
+            for (const doc of notificationData.docs) {
+                _col_value = make_E('a', doc.name, {
+                    href: doc.url
+                });
+                _row.appendChild(_col_value);
             }
+            boxContainer.appendChild(_row);
+            // 
+            // 
+            // 
+            // for (const key in notificationData) {
+            //     if (notificationData.hasOwnProperty(key)) {
+            //         const value = notificationData[key];
+            //         const rowContainer = make_E('ul');
+            //         rowContainer.appendChild(make_E('li', `${key} : `));
+            //         if (Array.isArray(value)) {
+            //             const valueArrayCont = make_E('li');
+            //             for (const col of value) {
+            //                 const colElement = make_E('a', col[Object.keys(col)[0]], {
+            //                     href: col[Object.keys(col)[1]]
+            //                 });
+            //                 valueArrayCont.appendChild(colElement);
+            //             }
+            //             rowContainer.appendChild(valueArrayCont);
+            //         } else rowContainer.appendChild(make_E('li', value));
+            //         // 
+            //         boxContainer.appendChild(rowContainer);
+            //     }
+            // }
             let acceptBtn = make_E('input', null, {
                 type: 'button',
                 class: 'btnAccept',

@@ -104,6 +104,11 @@ router.post('/savePrecons', formData.parse(options), async (req, res) => {
                                 }
                                 preConsInsertRes.docs = docsUrls;
                                 // 
+                                let visitorData = await _DB.getAllData('visitor', `WHERE visitorId = '${req.user.userId}'`);
+                                visitorData = visitorData[0];
+                                preConsInsertRes.name = visitorData.visitorName;
+                                preConsInsertRes.tel = visitorData.visitorTel;
+                                // 
                                 response(res, 200, status('sucess', preConsInsertRes));
                             }
                         }
