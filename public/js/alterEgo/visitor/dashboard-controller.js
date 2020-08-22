@@ -15,6 +15,17 @@ $().ready(() => {
             if (reqRes != null) {
                 // LOGIC
                 console.log(reqRes);
+                // 
+                if (reqRes.code == 200) { //success
+                    sendPreCons(reqRes.content);
+                    console.log(`!! Waiting !!`);
+                } else {
+                    if (reqRes.content != null) {
+                        for (const error of reqRes.content) {
+                            console.log(`ERROR => ${error}`);
+                        }
+                    } else throw reqRes.code;
+                }
             }
         } catch (err) {
             console.log(err);

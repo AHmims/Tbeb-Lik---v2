@@ -158,7 +158,7 @@ async function customDataUpdate(keyANDvalue, id, params) {
 //Get visitor last inserted precons
 async function visitorLastPrecons(visitorId) {
     try {
-        let req = `SELECT * FROM preConsultation WHERE preConsAccepted = -1 AND visitorId = ? ORDER BY preConsDateCreation DESC;`,
+        let req = `SELECT preC.*, appU.linkToClient as clientId FROM preConsultation AS preC, appUser AS appU WHERE preC.preConsAccepted = -1 AND preC.visitorId = ? AND preC.visitorId = appU.userId ORDER BY preC.preConsDateCreation DESC;`,
             cnx = await db.connect(),
             res = await cnx.query(req, visitorId);
         cnx.release();

@@ -7,6 +7,14 @@ __GLOBAL_SOCKET.on('connect', () => {
     __GLOBAL_SOCKET.emit('online', _INDEX);
 });
 // 
+const sendPreCons = preCons_object => {
+    try {
+        __GLOBAL_SOCKET.emit('sendNotif', preCons_object);
+    } catch (error) {
+        console.error(err);
+    }
+}
+// 
 __GLOBAL_SOCKET.on('error', (msg) => {
     console.error(msg);
 });
