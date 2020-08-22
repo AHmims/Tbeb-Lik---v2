@@ -36,6 +36,14 @@ router.post('/savePrecons', formData.parse(options), async (req, res) => {
         if (conDesc.length == 0) erros.push('Description invalide');
         // 
         if (erros.length == 0) {
+            if (Object.keys(req.files).length > 0) {
+                if (!Array.isArray(req.files.conFile))
+                    req.files.conFile = [req.files.conFile];
+            } else {
+                req.files = {
+                    conFile: []
+                };
+            }
             // FILES VALIDATION
             for (const conFile of req.files.conFile) {
                 const validationRes = commonFileValidator(conFile);
@@ -46,48 +54,48 @@ router.post('/savePrecons', formData.parse(options), async (req, res) => {
             // GO NEXT
             if (erros.length == 0) {
                 // CHECK IF USER SENT ANY FILES
-                if (Object.keys(req.files).length > 0) {
-                    let conDocsData = [];
-                    let docSavingError = false;
-                    // 
-                    for (const conFile of req.files.conFile) {
-                        const savingRes = await commonFileSaver(conFile, req.user.userId, conTZ);
-                        if (typeof savingRes === 'object') {
-                            conDocsData.push(savingRes); // .docId & docName
-                        } else {
-                            docSavingError = true;
-                            console.log(`api.js | Doc saving error | errorCode => ${savingRes}`);
-                        }
-                    }
-                    // 
-                    if (!docSavingError) {
-                        // SAVE PRECONS
-                        const preConsInsertRes = await saveAndGetPrecons(req.user.userId, {
-                            conTitle,
-                            conDesc,
-                            conTZ
-                        });
-                        // 
-                        if (preConsInsertRes != null) {
-                            // UPDATE SAVED FILES WITH PRECONS ID
-                            for (const docData of conDocsData) {
-                                await _DB.customDataUpdate({
-                                    preConsId: preConsInsertRes.preConsId
-                                }, docData.docId, {
-                                    table: 'attachment',
-                                    id: 'attachmentId'
-                                });
-                            }
-                            // 
-                            response(res, 200, status('sucess', preConsInsertRes));
-                        }
-                    }
-                    erros.push(`Erreur de server`);
-                    // CLEAR DOCUMENTS
-                    for (const docData of conDocsData) {
-                        await removeFile(docData.docId, docData.docName, req.user.userId);
+                // if (Object.keys(req.files).length > 0) {
+                let conDocsData = [];
+                let docSavingError = false;
+                // 
+                for (const conFile of req.files.conFile) {
+                    const savingRes = await commonFileSaver(conFile, req.user.userId, conTZ);
+                    if (typeof savingRes === 'object') {
+                        conDocsData.push(savingRes); // .docId & docName
+                    } else {
+                        docSavingError = true;
+                        console.log(`api.js | Doc saving error | errorCode => ${savingRes}`);
                     }
                 }
+                // 
+                if (!docSavingError) {
+                    // SAVE PRECONS
+                    const preConsInsertRes = await saveAndGetPrecons(req.user.userId, {
+                        conTitle,
+                        conDesc,
+                        conTZ
+                    });
+                    // 
+                    if (preConsInsertRes != null) {
+                        // UPDATE SAVED FILES WITH PRECONS ID
+                        for (const docData of conDocsData) {
+                            await _DB.customDataUpdate({
+                                preConsId: preConsInsertRes.preConsId
+                            }, docData.docId, {
+                                table: 'attachment',
+                                id: 'attachmentId'
+                            });
+                        }
+                        // 
+                        response(res, 200, status('sucess', preConsInsertRes));
+                    }
+                }
+                erros.push(`Erreur de server`);
+                // CLEAR DOCUMENTS
+                for (const docData of conDocsData) {
+                    await removeFile(docData.docId, docData.docName, req.user.userId);
+                }
+                // }
             }
         }
         response(res, 422, status('error', erros));
