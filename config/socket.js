@@ -35,12 +35,12 @@ module.exports = (socket) => {
     // WHEN VISITOR SEND NOTIF TO CLIENT
     socket.on('sendNotif', async notifData => {
         try {
+            // console.log(notifData);
             const clientData = await _DB.getAllData('appUser', `WHERE userId = '${notifData.clientId}'`);
             if (clientData != null) {
-                socket.to(clientData.socket).emit('newNotif', notifData);
-            }
-            throw `Client not found`;
-        } catch (error) {
+                socket.to(clientData[0].socket).emit('newNotif', notifData);
+            } else throw `Client not found`;
+        } catch (err) {
             console.error(err);
             socket.emit('error', err);
         }

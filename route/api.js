@@ -13,7 +13,8 @@ const {
     response,
     status,
     reqBodyTrim: _TRIM,
-    saveAndGetPrecons
+    saveAndGetPrecons,
+    preConsAccepted
 } = require('../helper/helpers');
 const {
     commonFileValidator,
@@ -22,99 +23,127 @@ const {
 } = require('../helper/fs');
 // 
 router.use(require('../config/auth').isAuth_api);
-// 
+// SEND NOTIFICATION
 router.post('/savePrecons', formData.parse(options), async (req, res) => {
     try {
-        let erros = [];
-        if ((await _DB.visitorLastPrecons(req.user.userId)) == null) { // CHANGE THIS DB FUNCTION LATER WITH A MORE RELIABLE ONE || CHECK PRECONSULTATION (state = -1 ) AND CONSULTATION AS WELL (NOT FINALIZED YET)
-            const {
-                conTitle,
-                conDesc,
-                conTZ
-            } = _TRIM(req.body);
-            // 
-            if (conTitle.length == 0) erros.push('Titre invalide');
-            if (conDesc.length == 0) erros.push('Description invalide');
-            // 
-            if (erros.length == 0) {
-                if (Object.keys(req.files).length > 0) {
-                    if (!Array.isArray(req.files.conFile))
-                        req.files.conFile = [req.files.conFile];
-                } else {
-                    req.files = {
-                        conFile: []
-                    };
-                }
-                // FILES VALIDATION
-                for (const conFile of req.files.conFile) {
-                    const validationRes = commonFileValidator(conFile);
-                    if (validationRes != true)
-                        erros.push(validationRes);
-                }
-                // no errors
-                // GO NEXT
+        if (req.user.userType == 'Visitor') {
+            let erros = [];
+            if ((await _DB.visitorLastPrecons(req.user.userId)) == null) { // CHANGE THIS DB FUNCTION LATER WITH A MORE RELIABLE ONE || CHECK PRECONSULTATION (state = -1 ) AND CONSULTATION AS WELL (NOT FINALIZED YET)
+                const {
+                    conTitle,
+                    conDesc,
+                    conTZ
+                } = _TRIM(req.body);
+                // 
+                if (conTitle.length == 0) erros.push('Titre invalide');
+                if (conDesc.length == 0) erros.push('Description invalide');
+                // 
                 if (erros.length == 0) {
-                    // CHECK IF USER SENT ANY FILES
-                    // if (Object.keys(req.files).length > 0) {
-                    let conDocsData = [];
-                    let docSavingError = false;
-                    // 
-                    console.log(req.files.conFile);
+                    if (Object.keys(req.files).length > 0) {
+                        if (!Array.isArray(req.files.conFile))
+                            req.files.conFile = [req.files.conFile];
+                    } else {
+                        req.files = {
+                            conFile: []
+                        };
+                    }
+                    // FILES VALIDATION
                     for (const conFile of req.files.conFile) {
-                        const savingRes = await commonFileSaver(conFile, req.user.userId, conTZ);
-                        // console.log(savingRes);
-                        if (typeof savingRes === 'object') {
-                            conDocsData.push(savingRes); // .docId & docName
-                        } else {
-                            docSavingError = true;
-                            console.log(`api.js | Doc saving error | errorCode => ${savingRes}`);
-                        }
+                        const validationRes = commonFileValidator(conFile);
+                        if (validationRes != true)
+                            erros.push(validationRes);
                     }
-                    // console.log(conDocsData);
-                    // 
-                    if (!docSavingError) {
-                        // SAVE PRECONS
-                        const preConsInsertRes = await saveAndGetPrecons(req.user.userId, {
-                            conTitle,
-                            conDesc,
-                            conTZ
-                        });
+                    // no errors
+                    // GO NEXT
+                    if (erros.length == 0) {
+                        // CHECK IF USER SENT ANY FILES
+                        // if (Object.keys(req.files).length > 0) {
+                        let conDocsData = [];
+                        let docSavingError = false;
                         // 
-                        if (preConsInsertRes != null) {
-                            // UPDATE SAVED FILES WITH PRECONS ID
-                            for (const docData of conDocsData) {
-                                await _DB.customDataUpdate({
-                                    preConsId: preConsInsertRes.preConsId
-                                }, docData.docId, {
-                                    table: 'attachment',
-                                    id: 'attachmentId'
-                                });
+                        // console.log(req.files.conFile);
+                        for (const conFile of req.files.conFile) {
+                            const savingRes = await commonFileSaver(conFile, req.user.userId, conTZ);
+                            // console.log(savingRes);
+                            if (typeof savingRes === 'object') {
+                                conDocsData.push(savingRes); // .docId & docName
+                            } else {
+                                docSavingError = true;
+                                console.log(`api.js | Doc saving error | errorCode => ${savingRes}`);
                             }
+                        }
+                        // console.log(conDocsData);
+                        // 
+                        if (!docSavingError) {
+                            // SAVE PRECONS
+                            const preConsInsertRes = await saveAndGetPrecons(req.user.userId, {
+                                conTitle,
+                                conDesc,
+                                conTZ
+                            });
                             // 
-                            response(res, 200, status('sucess', preConsInsertRes));
+                            if (preConsInsertRes != null) {
+                                // UPDATE SAVED FILES WITH PRECONS ID
+                                for (const docData of conDocsData) {
+                                    await _DB.customDataUpdate({
+                                        preConsId: preConsInsertRes.preConsId
+                                    }, docData.docId, {
+                                        table: 'attachment',
+                                        id: 'attachmentId'
+                                    });
+                                }
+                                // 
+                                let docsUrls = [];
+                                for (const docData of conDocsData) {
+                                    docsUrls.push({
+                                        name: docData.docName,
+                                        url: `/files/${req.user.userId}/${docData.docName}`
+                                    });
+                                }
+                                preConsInsertRes.docs = docsUrls;
+                                // 
+                                response(res, 200, status('sucess', preConsInsertRes));
+                            }
                         }
-                    }
-                    erros.push(`Erreur de server`);
-                    if (docSavingError) {
-                        // CLEAR DOCUMENTS
-                        for (const docData of conDocsData) {
-                            await removeFile(docData.docId, docData.docName, req.user.userId);
+                        erros.push(`Erreur de server`);
+                        if (docSavingError) {
+                            // CLEAR DOCUMENTS
+                            for (const docData of conDocsData) {
+                                await removeFile(docData.docId, docData.docName, req.user.userId);
+                            }
                         }
+                        // }
                     }
-                    // }
                 }
-            }
-        } else erros.push(`Vous avez déjà une demande en cours de traitement.`)
-        response(res, 422, status('error', erros));
-
+            } else erros.push(`Vous avez déjà une demande en cours de traitement.`)
+            response(res, 422, status('error', erros));
+        } else response(res, 401);
     } catch (err) {
         console.error(err);
         response(res, 500);
     }
-    // console.log(req.body);
-    // res.json(req.body);
-    // res.status(500).end();
 });
+// ACCEPT NOTIFICATION
+router.post('/acceptPrecons', async (req, res) => {
+    try {
+        // console.log(req.user);
+        if (req.user.userType != 'Visitor') {
+            let errorMsg = '';
+            // CHECK IF TEH SAID REQUEST IS ACCEPTED OR NOT
+            const preConsStatus = await preConsAccepted(req.body.preConsId); // return true = not accepted || false = accepted || null = server error
+            if (preConsStatus == true) {
+
+            } else
+                errorMsg = preConsStatus == null ? `Server error.` : `Votre demande de consultation est deja acceptée.`;
+            // 
+            response(res, 422, errorMsg);
+        } else response(res, 401);
+    } catch (err) {
+        console.error(err);
+        response(res, 500);
+    }
+});
+
 // 
 
 module.exports = router;

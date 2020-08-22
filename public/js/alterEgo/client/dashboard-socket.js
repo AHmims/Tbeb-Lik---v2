@@ -7,6 +7,12 @@ __GLOBAL_SOCKET.on('connect', () => {
     __GLOBAL_SOCKET.emit('online', _INDEX);
 });
 // 
+__GLOBAL_SOCKET.on('newNotif', async (notifData) => {
+    console.log(notifData);
+    const btnRes = await renderNotification(document.getElementById('clientInbox'), notifData);
+    console.log(btnRes);
+});
+// 
 __GLOBAL_SOCKET.on('error', (msg) => {
     console.error(msg);
 });

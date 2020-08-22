@@ -10,7 +10,9 @@
 <!-- MAIN AREA -->
 <div id="rootElement" data-email="<%= typeof(userEmail) != 'undefined' ? userEmail : '' %>">
     <!-- INCOMING NOTIFS -->
-    <div>
+    <div id="clientInbox">
+        <!--  -->
+        <!--  -->
         <h4>Demandes de consultation</h4>
         <% if(!extra.inbox){ %>
         <%- include('./partials/empty') %>
@@ -37,7 +39,12 @@
     </div>
 </div>
 <script src="/socket.io/socket.io.js"></script>
-<script src="/public/js/alterEgo/client/dashboard.js"></script>
+<script src="/public/js/alterEgo/jquery.ajax.min.js"></script>
+<script src="/public/js/alterEgo/client/dashboard-socket.js"></script>
+<script src="/public/js/alterEgo/client/dashboard-controller.js"></script>
+<script src="/public/js/alterEgo/client/dashboard-view.js"></script>
+<!--  -->
+<script src="/public/js/alterEgo/utility.js"></script>
 <!-- Partials -->
 <%- contentFor('header') %>
 <%- include('./partials/header_client') %>

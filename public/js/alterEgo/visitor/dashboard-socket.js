@@ -10,7 +10,7 @@ __GLOBAL_SOCKET.on('connect', () => {
 const sendPreCons = preCons_object => {
     try {
         __GLOBAL_SOCKET.emit('sendNotif', preCons_object);
-    } catch (error) {
+    } catch (err) {
         console.error(err);
     }
 }
