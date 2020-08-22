@@ -2,15 +2,15 @@ function getTimeZone() {
     return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
 // 
-function sendRequest(url, data) {
+function sendRequest(url, data, type = null) {
     return new Promise((resolve, reject) => {
         try {
             $.ajax({
                 url: url,
                 type: "post",
                 data: data,
-                processData: false,
-                contentType: false
+                processData: type != null ? false : true,
+                contentType: type != null ? false : 'application/x-www-form-urlencoded; charset=UTF-8'
             }).then(resp => {
                 resolve({
                     code: 200,

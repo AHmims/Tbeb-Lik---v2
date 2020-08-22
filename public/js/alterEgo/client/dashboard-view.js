@@ -27,12 +27,19 @@ const renderNotification = (root, notificationData) => {
             acceptBtn.addEventListener('click', async () => {
                 const formRes = await renderConsultationForm(root);
                 console.log(formRes);
-                // const reqRes = await sendRequest(`/api/acceptPrecons`, {
-                //     preConsId: notificationData.preConsId,
-                //     userTZ: getTimeZone()
-                // });
-                // resolve(reqRes);
-                // resolve(true);
+                if (formRes == null || formRes == false)
+                    resolve(formRes);
+                else {
+                    const reqRes = await sendRequest(`/api/acceptPrecons`, {
+                        preConsId: notificationData.preConsId,
+                        conDate: formRes.date,
+                        conCmnt: formRes.comment,
+                        userTZ: getTimeZone()
+                    });
+                    console.log(reqRes);
+                    // resolve(reqRes);
+                    // resolve(true);
+                }
             });
             // 
             let refuseBtn = make_E('input', null, {

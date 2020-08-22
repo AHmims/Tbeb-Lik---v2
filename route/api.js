@@ -14,7 +14,8 @@ const {
     status,
     reqBodyTrim: _TRIM,
     saveAndGetPrecons,
-    preConsAccepted
+    preConsAccepted,
+    acceptPrecons
 } = require('../helper/helpers');
 const {
     commonFileValidator,
@@ -127,12 +128,35 @@ router.post('/savePrecons', formData.parse(options), async (req, res) => {
 router.post('/acceptPrecons', async (req, res) => {
     try {
         // console.log(req.user);
+        // console.log(req.body);
         if (req.user.userType != 'Visitor') {
             let errorMsg = '';
             // CHECK IF TEH SAID REQUEST IS ACCEPTED OR NOT
+            // console.log(req.body);
             const preConsStatus = await preConsAccepted(req.body.preConsId); // return true = not accepted || false = accepted || null = server error
             if (preConsStatus == true) {
-
+                const {
+                    preConsId,
+                    conDate,
+                    conCmnt,
+                    userTZ
+                } = _TRIM(req.body);
+                // 
+                const acceptRes = await acceptPrecons({
+                    preConsId,
+                    conDate,
+                    conCmnt,
+                    userTZ,
+                    conJR: -1,
+                    clientId: req.user.userId
+                });
+                if (acceptRes == true)
+                    response(res, 200, status('sucess', {
+                        preConsId
+                    }));
+                errorMsg = `Error while executing your request.`;
+                // 
+                // console.log(acceptRes);
             } else
                 errorMsg = preConsStatus == null ? `Server error.` : `Votre demande de consultation est deja acceptée.`;
             // 

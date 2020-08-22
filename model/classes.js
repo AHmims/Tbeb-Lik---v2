@@ -33,7 +33,7 @@ class attachment {
 }
 // 
 class consultation {
-    constructor(consulJR, consulDate, consulTimeZone, consulComment, Matricule_Med, commentaire, idPreCons) {
+    constructor(consulJR, consulDate, consulTimeZone, consulComment, clientId, preConsId) {
         this.consulJR = consulJR;
         this.consulDate = consulDate;
         this.consulTimeZone = consulTimeZone;
@@ -86,7 +86,7 @@ class message {
     constructor(msgSender, msgContent, roomId, msgDate, msgDateTimeZone, msgType, msgFilePath) {
         this.msgSender = msgSender;
         this.msgContent = msgContent;
-        this.roomId = roomId;
+        this.roomId = roomId; // CHANGE LINK FROM ROOM TO PRECONSultation
         this.msgDate = msgDate;
         this.msgDateTimeZone = msgDateTimeZone;
         this.msgType = msgType;

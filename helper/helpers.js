@@ -1,3 +1,6 @@
+const _DB = require('../model/dbQuery');
+const _CLASSES = require('../model/classes');
+
 const status = (status, data) => {
     return {
         status: status,
@@ -41,7 +44,7 @@ const reqBodyTrim = (bodyObject) => {
 }
 // GENERATE USER ID
 const userId = async (userTable) => {
-    const _DB = require('../model/dbQuery');
+    //
     const recordsCount = await _DB.getRecordsLength(userTable);
     if (recordsCount != null) {
         return `${userTable == 'client' ? 'CL' : 'VS'}${recordsCount}`;
@@ -50,7 +53,7 @@ const userId = async (userTable) => {
 }
 // 
 const userExists = async (email) => {
-    const _DB = require('../model/dbQuery');
+    //
     const checkRes = await _DB.checkEmail(email);
     if (checkRes != null) {
         return checkRes == 0 ? false : true;
@@ -59,7 +62,7 @@ const userExists = async (email) => {
 }
 // 
 const refCodeExists = async (refCode) => {
-    const _DB = require('../model/dbQuery');
+    //
     const checkRes = await _DB.checkRefcode(refCode);
     // MAYBE I'LL DO SOMEFUTURE WORK HERE
     // SUCH AS THE CODE TO BE A LINK AND DECONSTRUCT IT HERE
@@ -73,7 +76,7 @@ const genRefCode = () => {
 // 
 const getRefCode = async (clientId, fields = 'code') => {
     try {
-        const _DB = require('../model/dbQuery');
+        //
         const refCodeRes = (await _DB.getAllData('referral', `WHERE clientId = '${clientId}'`))[0];
         if (refCodeRes != null)
             return fields != 'all' ? refCodeRes.refCode : refCodeRes;
@@ -86,8 +89,8 @@ const getRefCode = async (clientId, fields = 'code') => {
 // 
 const saveAndGetPrecons = async (visitorId, formData) => {
     try {
-        const _DB = require('../model/dbQuery');
-        const _CLASSES = require('../model/classes');
+        //
+        //
         const {
             getUtc: _GET_UTC
         } = require('../helper/date');
@@ -104,13 +107,78 @@ const saveAndGetPrecons = async (visitorId, formData) => {
 // 
 const preConsAccepted = async notifId => {
     try {
-        const queryRes = await _DB.getAllData('preConsultation', `WHERE preConsId = ${notifId} AND preConsAccepted = -1`);
+        const queryRes = await _DB.getAllData('preConsultation', `WHERE preConsId = '${notifId}' AND preConsAccepted = -1`);
         return queryRes == null ? false : true;
     } catch (err) {
         console.error(err);
         return null;
     }
 }
+// 
+const acceptPrecons = async data => {
+    try {
+        //
+        //
+        let errMsg = '';
+        // 
+        const conInsertRes = await _DB.insertData(new _CLASSES.consultation(data.conJR, data.conDate, data.userTZ, data.conCmnt, data.clientId, data.preConsId));
+        if (conInsertRes > 0) {
+            // UPDATE PRECONSULTATION STATUS
+            const updatePrecons = await _DB.customDataUpdate({
+                preConsAccepted: 1
+            }, data.preConsId, {
+                table: 'preConsultation',
+                id: 'preConsId'
+            });
+            // 
+            if (updatePrecons) {
+                // UNLINK CLIENT FROM OTHER ROOMS
+                const unlinkRes = await unlinkMedecinFromRooms(data.clientId);
+                // if (unlinkRes) {
+                const roomRes = await _DB.getRoomByNotifId(data.preConsId);
+                if (roomRes != null) {
+                    const roomUpdateRes = await _DB.customDataUpdate({
+                        roomClientId: data.clientId
+                    }, roomRes.roomId, {
+                        table: 'room',
+                        id: 'roomId'
+                    });
+                    if (roomUpdateRes) return true;
+                    else errMsg = `room not updated`;
+                } else `Room not found`;
+                // } else errMsg = `Unlinking failed`;
+                await _DB.customDataUpdate({
+                    preConsAccepted: -1
+                }, data.preConsId, {
+                    table: 'preConsultation',
+                    id: 'preConsId'
+                });
+            } else errMsg = `preconsultation not updated`;
+            await _DB.customDataDelete({
+                table: 'consultation',
+                id: 'preConsId'
+            }, data.preConsId);
+        } else errMsg = 'Consultation not inserted';
+        throw errMsg;
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
+async function unlinkMedecinFromRooms(clientId) {
+    try {
+        return await _DB.customDataUpdate({
+            roomClientId: null
+        }, clientId, {
+            table: "room",
+            id: "roomClientId"
+        });
+    } catch (err) {
+        console.log(err);
+        return false;
+    }
+}
+
 // 
 // 
 module.exports = {
@@ -123,5 +191,6 @@ module.exports = {
     genRefCode,
     getRefCode,
     saveAndGetPrecons,
-    preConsAccepted
+    preConsAccepted,
+    acceptPrecons
 }

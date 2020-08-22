@@ -11,7 +11,7 @@ $().ready(() => {
         // console.log($('#conFile')[0].files);
         // console.log(conForm.get('conDesc'));
         try {
-            const reqRes = await sendRequest(`/api/savePrecons`, conForm);
+            const reqRes = await sendRequest(`/api/savePrecons`, conForm, 'form');
             if (reqRes != null) {
                 // LOGIC
                 console.log(reqRes);

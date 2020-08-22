@@ -169,6 +169,20 @@ async function visitorLastPrecons(visitorId) {
         return null;
     }
 }
+// GET ROOM DATA BY preCons_ID
+async function getRoomByNotifId(notifId) {
+    try {
+        let req = `SELECT r.roomId,r.roomVisitorId FROM preConsultation AS p, room AS r WHERE LOWER(p.visitorId) = LOWER(r.roomVisitorId) AND p.preConsId = ?`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, notifId);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0][0] : null;
+    } catch (err) {
+        console.error('error :', err);
+        return null;
+    }
+}
 
 
 
@@ -222,5 +236,6 @@ module.exports = {
     checkRefcode,
     insertDataWithResponse,
     customDataUpdate,
-    visitorLastPrecons
+    visitorLastPrecons,
+    getRoomByNotifId,
 }
