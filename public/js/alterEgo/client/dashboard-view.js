@@ -25,12 +25,14 @@ const renderNotification = (root, notificationData) => {
                 value: 'Accept'
             });
             acceptBtn.addEventListener('click', async () => {
+                const formRes = await renderConsultationForm(root);
+                console.log(formRes);
                 // const reqRes = await sendRequest(`/api/acceptPrecons`, {
                 //     preConsId: notificationData.preConsId,
                 //     userTZ: getTimeZone()
                 // });
                 // resolve(reqRes);
-                resolve(true);
+                // resolve(true);
             });
             // 
             let refuseBtn = make_E('input', null, {
@@ -49,6 +51,62 @@ const renderNotification = (root, notificationData) => {
         } catch (err) {
             console.error(err);
             resolve(null);
+        }
+    });
+}
+// 
+const renderConsultationForm = root => {
+    return new Promise((resolve, reject) => {
+        try {
+            const formContainer = make_E('div');
+            // 
+            let row = make_E('div');
+            const dateLabel = make_E('span', 'Select a date :');
+            const dateInput = make_E('input', null, {
+                type: 'date'
+            });
+            row.appendChild(dateLabel);
+            row.appendChild(dateInput);
+            formContainer.appendChild(row);
+            // 
+            const commentLabel = make_E('span', 'A comment :');
+            const commentInput = make_E('textarea');
+            row = make_E('div');
+            row.appendChild(commentLabel);
+            row.appendChild(commentInput);
+            formContainer.appendChild(row);
+            // 
+            row = make_E('div');
+            const sendbtn = make_E('input', null, {
+                type: 'button',
+                class: 'conFormBtn',
+                value: 'Envoyer'
+            });
+            sendbtn.addEventListener('click', () => {
+                resolve({
+                    date: dateInput.value,
+                    comment: commentInput.value
+                });
+                formContainer.remove();
+            });
+            // 
+            const cancellBtn = make_E('input', null, {
+                type: 'button',
+                value: 'Anuller'
+            });
+            cancellBtn.addEventListener('click', () => {
+                formContainer.remove();
+                resolve(false);
+            });
+            // 
+            row.appendChild(sendbtn);
+            row.appendChild(cancellBtn);
+            // 
+            formContainer.appendChild(row);
+            root.appendChild(formContainer);
+        } catch (err) {
+            console.error(err);
+            return null;
         }
     });
 }
