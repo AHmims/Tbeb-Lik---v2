@@ -1,116 +1,98 @@
-const renderNotification = (root, notificationData) => {
-    return new Promise((resolve, reject) => {
-        try {
-            const boxContainer = make_E('div');
-            // 
-            let _row = make_E('ul');
-            let _col_key = make_E('li', 'Nom :');
-            let _col_value = make_E('li', notificationData.name);
-            _row.appendChild(_col_key);
-            _row.appendChild(_col_value);
-            boxContainer.appendChild(_row);
-            // 
-            _row = make_E('ul');
-            _col_key = make_E('li', `Date d'envoi :`);
-            _col_value = make_E('li', notificationData.preConsDateCreation);
-            _row.appendChild(_col_key);
-            _row.appendChild(_col_value);
-            boxContainer.appendChild(_row);
-            // 
-            _row = make_E('ul');
-            _col_key = make_E('li', `Telephone :`);
-            _col_value = make_E('li', notificationData.tel);
-            _row.appendChild(_col_key);
-            _row.appendChild(_col_value);
-            boxContainer.appendChild(_row);
-            // 
-            _row = make_E('ul');
-            _col_key = make_E('li', `Title :`);
-            _col_value = make_E('li', notificationData.preConsTitle);
-            _row.appendChild(_col_key);
-            _row.appendChild(_col_value);
-            boxContainer.appendChild(_row);
-            // 
-            _row = make_E('ul');
-            _col_key = make_E('li', `Description :`);
-            _col_value = make_E('li', notificationData.preConsDesc);
-            _row.appendChild(_col_key);
-            _row.appendChild(_col_value);
-            boxContainer.appendChild(_row);
-            // 
-            _row = make_E('ul');
-            _col_key = make_E('li', `Files :`);
-            _row.appendChild(_col_key);
-            for (const doc of notificationData.docs) {
-                _col_value = make_E('a', doc.name, {
-                    href: doc.url
-                });
-                _row.appendChild(_col_value);
-            }
-            boxContainer.appendChild(_row);
-            // 
-            // 
-            // 
-            // for (const key in notificationData) {
-            //     if (notificationData.hasOwnProperty(key)) {
-            //         const value = notificationData[key];
-            //         const rowContainer = make_E('ul');
-            //         rowContainer.appendChild(make_E('li', `${key} : `));
-            //         if (Array.isArray(value)) {
-            //             const valueArrayCont = make_E('li');
-            //             for (const col of value) {
-            //                 const colElement = make_E('a', col[Object.keys(col)[0]], {
-            //                     href: col[Object.keys(col)[1]]
-            //                 });
-            //                 valueArrayCont.appendChild(colElement);
-            //             }
-            //             rowContainer.appendChild(valueArrayCont);
-            //         } else rowContainer.appendChild(make_E('li', value));
-            //         // 
-            //         boxContainer.appendChild(rowContainer);
-            //     }
-            // }
-            let acceptBtn = make_E('input', null, {
-                type: 'button',
-                class: 'btnAccept',
-                value: 'Accept'
-            });
-            acceptBtn.addEventListener('click', async () => {
-                const formRes = await renderConsultationForm(root);
-                console.log(formRes);
-                if (formRes == null || formRes == false)
-                    resolve(formRes);
-                else {
-                    const reqRes = await sendRequest(`/api/acceptPrecons`, {
-                        preConsId: notificationData.preConsId,
-                        conDate: formRes.date,
-                        conCmnt: formRes.comment,
-                        userTZ: getTimeZone()
-                    });
-                    console.log(reqRes);
-                    // resolve(reqRes);
-                    // resolve(true);
-                }
-            });
-            // 
-            let refuseBtn = make_E('input', null, {
-                type: 'button',
-                class: 'btnRefuse',
-                value: 'Refuse'
-            })
-            refuseBtn.addEventListener('click', () => {
-                resolve(false)
-            });
-            // 
-            boxContainer.appendChild(acceptBtn);
-            boxContainer.appendChild(refuseBtn);
-            // 
-            root.appendChild(boxContainer);
-        } catch (err) {
-            console.error(err);
-            resolve(null);
-        }
+const renderNotification = (root, notificationData, callback_S, callback_F) => {
+    const boxContainer = make_E('div');
+    // 
+    let _row = make_E('ul');
+    let _col_key = make_E('li', 'Nom :');
+    let _col_value = make_E('li', notificationData.name);
+    _row.appendChild(_col_key);
+    _row.appendChild(_col_value);
+    boxContainer.appendChild(_row);
+    // 
+    _row = make_E('ul');
+    _col_key = make_E('li', `Date d'envoi :`);
+    _col_value = make_E('li', notificationData.preConsDateCreation);
+    _row.appendChild(_col_key);
+    _row.appendChild(_col_value);
+    boxContainer.appendChild(_row);
+    // 
+    _row = make_E('ul');
+    _col_key = make_E('li', `Telephone :`);
+    _col_value = make_E('li', notificationData.tel);
+    _row.appendChild(_col_key);
+    _row.appendChild(_col_value);
+    boxContainer.appendChild(_row);
+    // 
+    _row = make_E('ul');
+    _col_key = make_E('li', `Title :`);
+    _col_value = make_E('li', notificationData.preConsTitle);
+    _row.appendChild(_col_key);
+    _row.appendChild(_col_value);
+    boxContainer.appendChild(_row);
+    // 
+    _row = make_E('ul');
+    _col_key = make_E('li', `Description :`);
+    _col_value = make_E('li', notificationData.preConsDesc);
+    _row.appendChild(_col_key);
+    _row.appendChild(_col_value);
+    boxContainer.appendChild(_row);
+    // 
+    _row = make_E('ul');
+    _col_key = make_E('li', `Files :`);
+    _row.appendChild(_col_key);
+    for (const doc of notificationData.docs) {
+        _col_value = make_E('a', doc.name, {
+            href: doc.url
+        });
+        _row.appendChild(_col_value);
+    }
+    boxContainer.appendChild(_row);
+    // 
+    boxContainer.appendChild(appendBtnSet(notificationData.preConsId, callback_S, callback_F, root));
+    // 
+    root.appendChild(boxContainer);
+}
+// 
+// 
+function appendBtnSet(rootId, callback_S, callback_F, root = document.getElementById('clientInbox')) {
+    const container = make_E('div');
+    let acceptBtn = make_E('input', null, {
+        type: 'button',
+        class: 'btnAccept',
+        value: 'Accept'
     });
+    acceptBtn.addEventListener('click', async () => {
+        const formRes = await renderConsultationForm(root);
+        console.log(formRes);
+        if (formRes == null || formRes == false)
+            resolve(formRes);
+        else {
+            const reqRes = await sendRequest(`/api/acceptPrecons`, {
+                preConsId: rootId,
+                conDate: formRes.date,
+                conCmnt: formRes.comment,
+                userTZ: getTimeZone()
+            });
+            console.log(reqRes);
+            // resolve(reqRes);
+            // resolve(true);
+        }
+        callback_S();
+    });
+    // 
+    let refuseBtn = make_E('input', null, {
+        type: 'button',
+        class: 'btnRefuse',
+        value: 'Refuse'
+    })
+    refuseBtn.addEventListener('click', () => {
+        // resolve(false)
+        callback_F();
+    });
+    // 
+    container.appendChild(acceptBtn);
+    container.appendChild(refuseBtn);
+    // 
+    return container;
 }
 // 
 const renderConsultationForm = root => {

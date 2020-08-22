@@ -65,4 +65,8 @@ module.exports = (socket) => {
             socket.emit('error', err);
         }
     });
+    // 
+    socket.on('error', () => {
+        socket.emitt('error');
+    });
 }

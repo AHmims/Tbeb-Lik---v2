@@ -195,7 +195,7 @@ async function getNotificationFullData(visitorId) {
             let insertedNotificationData = await _DB.getLastInsertedPrecons(visitorId);
             if (insertedNotificationData != null) {
                 let docs = await _DB.getAllData('attachment', `WHERE preConsId = '${insertedNotificationData.preConsId}'`);
-                if (docs.length > 0) {
+                if (docs != null) {
                     for (let i = 0; i < docs.length; i++) {
                         docs[i] = {
                             id: i,
