@@ -34,13 +34,20 @@ function sendRequest(url, data, successCB, failCB) {
                 processData: false,
                 contentType: false
             }).then(resp => {
-                resolve(resp);
+                resolve({
+                    code: 200,
+                    content: resp
+                });
             }).fail(resp => {
-                resolve(errorhandler(resp.status));
+                // resolve(errorhandler(resp.status));
+                resolve({
+                    code: resp.status,
+                    content: resp.responseText != '' ? JSON.parse(resp.responseText) : null
+                });
             });
         } catch (err) {
             console.error(err);
-            resolve(errorhandler(null));
+            resolve(null);
         }
     });
 }

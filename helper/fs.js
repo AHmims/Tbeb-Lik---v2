@@ -24,7 +24,7 @@ module.exports = {
                     return true;
                 return `la taille de ${_FILE_NAME} à dépasse 10mb.`;
             }
-            return `L'extension de ${_FILE_NAME} n'est supporté.`;
+            return `L'extension de ${_FILE_NAME} n'est pas supporté.`;
         }
         return `Fichier non trouvée.`;
     },
@@ -54,6 +54,7 @@ module.exports = {
             } else retData = 0; // `Erreur de server, veuillez réessayer plus tard.`;
             // 
         } catch (err) {
+            console.log(err);
             retData = 1; //`Erreur de server, veuillez réessayer plus tard.`;
         }
         return retData;

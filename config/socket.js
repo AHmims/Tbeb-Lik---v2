@@ -45,7 +45,7 @@ module.exports = (socket) => {
                 if (updateRes)
                     socket.emit('success', 'Successfully disconnected');
                 else throw 'Error while initializing, please refreash the page and try again.';
-            } else throw 'Email is not valid';
+            } //else throw 'Email is not valid';
         } catch (err) {
             console.error(err);
             socket.emit('error', err);

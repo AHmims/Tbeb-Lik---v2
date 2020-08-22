@@ -58,8 +58,10 @@ router.post('/savePrecons', formData.parse(options), async (req, res) => {
                 let conDocsData = [];
                 let docSavingError = false;
                 // 
+                console.log(req.files.conFile);
                 for (const conFile of req.files.conFile) {
                     const savingRes = await commonFileSaver(conFile, req.user.userId, conTZ);
+                    // console.log(savingRes);
                     if (typeof savingRes === 'object') {
                         conDocsData.push(savingRes); // .docId & docName
                     } else {
@@ -67,6 +69,7 @@ router.post('/savePrecons', formData.parse(options), async (req, res) => {
                         console.log(`api.js | Doc saving error | errorCode => ${savingRes}`);
                     }
                 }
+                // console.log(conDocsData);
                 // 
                 if (!docSavingError) {
                     // SAVE PRECONS
@@ -91,9 +94,11 @@ router.post('/savePrecons', formData.parse(options), async (req, res) => {
                     }
                 }
                 erros.push(`Erreur de server`);
-                // CLEAR DOCUMENTS
-                for (const docData of conDocsData) {
-                    await removeFile(docData.docId, docData.docName, req.user.userId);
+                if (docSavingError) {
+                    // CLEAR DOCUMENTS
+                    for (const docData of conDocsData) {
+                        await removeFile(docData.docId, docData.docName, req.user.userId);
+                    }
                 }
                 // }
             }

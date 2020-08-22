@@ -23,7 +23,7 @@ class visitor {
 }
 // 
 class attachment {
-    constructor(attachmentName, attachmentSender, attachmentDateCreation, attachmentDateTimeZone, idPreCons) {
+    constructor(attachmentName, attachmentSender, attachmentDateCreation, attachmentDateTimeZone, preConsId) {
         this.attachmentName = attachmentName;
         this.attachmentSender = attachmentSender;
         this.attachmentDateCreation = attachmentDateCreation;
