@@ -213,7 +213,8 @@ async function getNotificationFullData(visitorId) {
                     tel: visitorData.visitorTel,
                     title: insertedNotificationData.preConsTitle,
                     desc: insertedNotificationData.preConsDesc,
-                    files: docs
+                    files: docs,
+                    visitorId: visitorData.visitorId
                 }
             } else throw `LAST INSERTED Notification not found`;
         } else throw `Visitor Not found`;
@@ -241,7 +242,40 @@ const getClientNotifications = async clientId => {
         return null;
     }
 }
-
+// 
+const getConsultations = async clientId => {
+    try {
+        const consultations = await _DB.getClientConsultations(clientId);
+        if (consultations != null) {
+            for (let i = 0; i < consultations.length; i++) {
+                const docs = await _DB.getAllData('attachment', `WHERE preConsId = '${consultations[i].preConsId}'`);
+                consultations.docs = docs != null ? docs : [];
+            }
+            // 
+            return consultations;
+        }
+        throw `Nothing was found`
+    } catch (err) {
+        console.error(err);
+        return [];
+    }
+}
+// 
+const getConsultation = async notifId => {
+    try {
+        let consultation = await _DB.getClientConsultation(notifId);
+        if (consultation != null) {
+            consultation = consultation[i];
+            const docs = await _DB.getAllData('attachment', `WHERE preConsId = '${consultation.preConsId}'`);
+            consultation.docs = docs != null ? docs : [];
+            return consultations;
+        }
+        throw `Consultation not found`;
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
 
 // 
 // 
@@ -258,5 +292,7 @@ module.exports = {
     preConsAccepted,
     acceptPrecons,
     canSendPrecons,
-    getClientNotifications
+    getClientNotifications,
+    getConsultations,
+    getConsultation
 }

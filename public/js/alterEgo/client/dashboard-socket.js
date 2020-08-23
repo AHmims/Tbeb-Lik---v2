@@ -17,6 +17,12 @@ __GLOBAL_SOCKET.on('newNotif', notifData => {
     });
 });
 // 
+// 
+const _SOCKET_ACCEPT_NOTIFICATION = (notifId, visitorId) => {
+    __GLOBAL_SOCKET.emit('acceptNotif', notifId, visitorId);
+}
+// 
+// 
 __GLOBAL_SOCKET.on('error', (msg = 'null') => {
     console.error(msg);
 });

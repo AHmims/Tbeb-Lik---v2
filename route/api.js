@@ -108,6 +108,7 @@ router.post('/savePrecons', formData.parse(options), async (req, res) => {
                                 visitorData = visitorData[0];
                                 preConsInsertRes.name = visitorData.visitorName;
                                 preConsInsertRes.tel = visitorData.visitorTel;
+                                preConsInsertRes.visitorId = visitorData.visitorId;
                                 // 
                                 response(res, 200, status('sucess', preConsInsertRes));
                             }
@@ -148,21 +149,24 @@ router.post('/acceptPrecons', async (req, res) => {
                     userTZ
                 } = _TRIM(req.body);
                 // 
-                const acceptRes = await acceptPrecons({
-                    preConsId,
-                    conDate,
-                    conCmnt,
-                    userTZ,
-                    conJR: -1,
-                    clientId: req.user.userId
-                });
-                if (acceptRes == true)
-                    response(res, 200, status('sucess', {
-                        preConsId
-                    }));
-                errorMsg = `Error while executing your request.`;
-                // 
-                // console.log(acceptRes);
+                if (conDate != '') {
+                    // 
+                    const acceptRes = await acceptPrecons({
+                        preConsId,
+                        conDate,
+                        conCmnt,
+                        userTZ,
+                        conJR: -1,
+                        clientId: req.user.userId
+                    });
+                    if (acceptRes == true)
+                        response(res, 200, status('sucess', {
+                            preConsId
+                        }));
+                    errorMsg = `Error while executing your request.`;
+                    // 
+                    // console.log(acceptRes);
+                } else errorMsg = `Champ date ne peut pas etre vide`;
             } else
                 errorMsg = preConsStatus == null ? `Server error.` : `Votre demande de consultation est deja acceptée.`;
             // 

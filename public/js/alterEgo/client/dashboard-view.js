@@ -1,7 +1,9 @@
-const renderNotification = (root, notificationData, callback_S, callback_F) => {
+const renderNotification = (root, notificationData, callback_S, callback_R) => {
     const boxContainer = make_E('div');
     // 
-    let _row = make_E('ul');
+    let _row = make_E('ul', null, {
+        id: notificationData.visitorId
+    });
     let _col_key = make_E('li', 'Nom :');
     let _col_value = make_E('li', notificationData.name);
     _row.appendChild(_col_key);
@@ -47,13 +49,13 @@ const renderNotification = (root, notificationData, callback_S, callback_F) => {
     }
     boxContainer.appendChild(_row);
     // 
-    boxContainer.appendChild(appendBtnSet(notificationData.preConsId, callback_S, callback_F, root));
+    boxContainer.appendChild(appendBtnSet(notificationData.preConsId, notificationData.visitorId, callback_S, callback_R, root));
     // 
     root.appendChild(boxContainer);
 }
 // 
 // 
-function appendBtnSet(rootId, callback_S, callback_F, root = document.getElementById('clientInbox')) {
+function appendBtnSet(rootId, visitorId, callback_S, callback_R, root = document.getElementById('clientInbox')) {
     const container = make_E('div');
     let acceptBtn = make_E('input', null, {
         type: 'button',
@@ -62,9 +64,9 @@ function appendBtnSet(rootId, callback_S, callback_F, root = document.getElement
     });
     acceptBtn.addEventListener('click', async () => {
         const formRes = await renderConsultationForm(root);
-        console.log(formRes);
+        // console.log(formRes);
         if (formRes == null || formRes == false)
-            resolve(formRes);
+            console.error(formRes);
         else {
             const reqRes = await sendRequest(`/api/acceptPrecons`, {
                 preConsId: rootId,
@@ -72,11 +74,13 @@ function appendBtnSet(rootId, callback_S, callback_F, root = document.getElement
                 conCmnt: formRes.comment,
                 userTZ: getTimeZone()
             });
-            console.log(reqRes);
-            // resolve(reqRes);
-            // resolve(true);
+            // 
+            if (reqRes.code == 200) {
+                document.getElementById(rootId).remove();
+                // 
+                callback_S(rootId, visitorId);
+            } else console.error('Verifer les champs entrée et réessayez.');
         }
-        callback_S();
     });
     // 
     let refuseBtn = make_E('input', null, {
@@ -86,7 +90,7 @@ function appendBtnSet(rootId, callback_S, callback_F, root = document.getElement
     })
     refuseBtn.addEventListener('click', () => {
         // resolve(false)
-        callback_F();
+        callback_R();
     });
     // 
     container.appendChild(acceptBtn);

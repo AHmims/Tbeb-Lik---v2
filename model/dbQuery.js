@@ -245,6 +245,34 @@ async function getLastInsertedPrecons(visitorId, accepted = -1) {
         return null;
     }
 }
+// GET CLIENT CONSULTATIONS
+async function getClientConsultations(clientId) {
+    try {
+        let req = `select p.preConsId, vis.visitorName as nom, p.preConsDateCreation, p.preConsDateTimeZone, c.consulDate, c.consulTimeZone, c.consulState, p.visitorId, au.roomId from visitor as vis, preConsultation as p, consultation as c,appUser as au where p.preConsId = c.preConsId and LOWER(c.clientId) = LOWER(?) and p.preConsAccepted = true and LOWER(vis.visitorId) = LOWER(p.visitorId) and LOWER(au.userId) = LOWER(p.visitorId) ORDER BY consulState ASC,consulDate DESC`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, clientId);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0] : null;
+    } catch (err) {
+        console.error('error :', err);
+        return null;
+    }
+}
+// GET CONSULTATION DATA
+async function getConsultation(notifId) {
+    try {
+        let req = `select p.preConsId, vis.visitorName as nom, p.preConsDateCreation, p.preConsDateTimeZone, c.consulDate, c.consulTimeZone, c.consulState, p.visitorId, au.roomId from visitor as vis, preConsultation as p, consultation as c,appUser as au where p.preConsId = c.preConsId and p.preConsId = ? and p.preConsAccepted = true and LOWER(vis.visitorId) = LOWER(p.visitorId) and LOWER(au.userId) = LOWER(p.visitorId) ORDER BY consulState ASC,consulDate DESC`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, notifId);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0] : null;
+    } catch (err) {
+        console.error('error :', err);
+        return null;
+    }
+}
 
 
 
@@ -302,5 +330,7 @@ module.exports = {
     consultationCheck,
     checkExistence,
     getClientPrecons,
-    getLastInsertedPrecons
+    getLastInsertedPrecons,
+    getClientConsultations,
+    getConsultation
 }
