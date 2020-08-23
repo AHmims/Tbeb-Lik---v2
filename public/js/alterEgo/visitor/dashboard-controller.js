@@ -33,5 +33,14 @@ $().ready(() => {
         }
 
     });
+    // 
+    $('#cancelPrecons').click(async () => {
+        // SEND POST REQUEST TO UPDATE DB
+        const response = await sendRequest(`/api/cancelPrecons`, {});
+        console.log(response);
+        if (response.code == 200) {
+            cancelPrecons
+        }
+    });
 });
 // 

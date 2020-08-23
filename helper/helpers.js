@@ -105,7 +105,10 @@ const saveAndGetPrecons = async (visitorId, formData) => {
 // 
 const canSendPrecons = async visitorId => {
     try {
-        return !(await _DB.consultationCheck(visitorId));
+        const res = await _DB.consultationCheck(visitorId);
+        if (res == true || res == false)
+            return !res;
+        else return null;
     } catch (err) {
         console.error(err);
         return null;
@@ -263,12 +266,11 @@ const getConsultations = async clientId => {
 // 
 const getConsultation = async notifId => {
     try {
-        let consultation = await _DB.getClientConsultation(notifId);
+        let consultation = await _DB.getConsultation(notifId);
         if (consultation != null) {
-            consultation = consultation[i];
             const docs = await _DB.getAllData('attachment', `WHERE preConsId = '${consultation.preConsId}'`);
             consultation.docs = docs != null ? docs : [];
-            return consultations;
+            return consultation;
         }
         throw `Consultation not found`;
     } catch (err) {
@@ -276,7 +278,56 @@ const getConsultation = async notifId => {
         return null;
     }
 }
+// 
+const visitorCurrentConsultation = async visitorId => {
+    try {
+        let notifData = await _DB.getAllData('preConsultation', `WHERE visitorId = '${visitorId}' AND preConsAccepted = 1 AND preConsId IN (SELECT preConsId FROM consultation WHERE consulState = -1)`);
+        if (notifData != null) {
+            notifData = notifData[0];
+            return await getConsultation(notifData.preConsId);
+        }
+        throw `NOTIFICATION NOT FOUND`;
 
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
+// 
+const cancelPrecons = async visitorId => {
+    try {
+        // CHECK IF VISITOR CAN CANCEL // IF YES RETURN NOTIFICATION DATA
+        let notifData = await _DB.getAllData('preConsultation', `WHERE visitorId = '${visitorId}' AND preConsAccepted = -1`);
+        if (notifData != null) {
+            notifData = notifData[0];
+            // 
+            const deleteRes = await _DB.customDataDelete({
+                table: 'preConsultation',
+                id: 'preConsId'
+            }, notifData.preConsId);
+            // 
+            if (deleteRes > 0) {
+                const preConsFiles = await _DB.getAllData('attachment', `WHERE preConsId = '${notifData.preConsId}'`);
+                if (preConsFiles != null) {
+                    const {
+                        removeFile
+                    } = require('../helper/fs');
+                    // 
+                    for (const doc of preConsFiles) {
+                        await removeFile(doc.attachmentId, doc.attachmentName, visitorId);
+                    }
+                }
+                return status(true, notifData.preConsId);
+            }
+            // 
+            throw `Demande non supprimer merci de rafraichir la page et réessayer.`;
+        }
+        throw `Votre demande de consultation a été déja acceptée ou bien est deja suprimée.`;
+    } catch (err) {
+        console.error(err);
+        return status(false, err);
+    }
+}
 // 
 // 
 module.exports = {
@@ -294,5 +345,7 @@ module.exports = {
     canSendPrecons,
     getClientNotifications,
     getConsultations,
-    getConsultation
+    getConsultation,
+    visitorCurrentConsultation,
+    cancelPrecons
 }

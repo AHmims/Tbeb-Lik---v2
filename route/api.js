@@ -16,7 +16,9 @@ const {
     saveAndGetPrecons,
     preConsAccepted,
     acceptPrecons,
-    canSendPrecons
+    canSendPrecons,
+    getConsultation,
+    cancelPrecons
 } = require('../helper/helpers');
 const {
     commonFileValidator,
@@ -30,7 +32,10 @@ router.post('/savePrecons', formData.parse(options), async (req, res) => {
     try {
         if (req.user.userType == 'Visitor') {
             let erros = [];
-            if (await canSendPrecons(req.user.userId)) {
+            // 
+            const canSendCheck = await canSendPrecons(req.user.userId);
+            // 
+            if (canSendCheck == true || canSendCheck == null) {
                 const {
                     conTitle,
                     conDesc,
@@ -110,7 +115,7 @@ router.post('/savePrecons', formData.parse(options), async (req, res) => {
                                 preConsInsertRes.tel = visitorData.visitorTel;
                                 preConsInsertRes.visitorId = visitorData.visitorId;
                                 // 
-                                response(res, 200, status('sucess', preConsInsertRes));
+                                response(res, 200, status('success', preConsInsertRes));
                             }
                         }
                         erros.push(`Erreur de server`);
@@ -160,8 +165,9 @@ router.post('/acceptPrecons', async (req, res) => {
                         clientId: req.user.userId
                     });
                     if (acceptRes == true)
-                        response(res, 200, status('sucess', {
-                            preConsId
+                        response(res, 200, status('success', {
+                            preConsId,
+                            data: await getConsultation(preConsId)
                         }));
                     errorMsg = `Error while executing your request.`;
                     // 
@@ -177,7 +183,20 @@ router.post('/acceptPrecons', async (req, res) => {
         response(res, 500);
     }
 });
-
+// CANCEL PRECONS
+router.post('/cancelPrecons', async (req, res) => {
+    try {
+        if (req.user.userType == 'Visitor') {
+            const cancelRes = await cancelPrecons(req.res.userId);
+            if (cancelRes.status)
+                response(res, 200, status(`success`, cancelRes.data));
+            response(res, 422, status('error', cancelRes.data));
+        } else response(res, 401);
+    } catch (err) {
+        console.error(err);
+        response(res, 500);
+    }
+});
 // 
 
 module.exports = router;

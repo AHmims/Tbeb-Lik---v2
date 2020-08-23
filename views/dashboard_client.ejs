@@ -27,7 +27,7 @@
         <% } %>
     </div>
     <!-- connections -->
-    <div>
+    <div id="clientConsul">
         <h4>Liste de clients</h4>
         <% if(!extra.clients){ %>
         <%- include('./partials/empty') %>
@@ -35,7 +35,9 @@
         <% if(extra.clients.length <= 0){ %>
         <%- include('./partials/empty') %>
         <% }else{ %>
-        <h3>Not empty</h3>
+        <% for(var i=0;i < extra.clients.length;i++){ %>
+        <%- include('./partials/consultation_card', {consultation : extra.clients[i]}) %>
+        <% } %>
         <% } %>
         <% } %>
     </div>

@@ -1,0 +1,24 @@
+<div>
+    <ul>
+        <li><%= consultation.nom %></li>
+    </ul>
+    <u>
+        <li><%= consultation.preConsDateCreation %></li>
+    </u>
+    <ul>
+        <li><%= consultation.preConsTitle %></li>
+    </ul>
+    <ul>
+        <li><%= consultation.preConsDesc %></li>
+    </ul>
+    <% if(consultation.docs && consultation.docs.length > 0){ %>
+    <ul>
+        <li>
+            <% for(doc of consultation.docs){ %>
+            <a href="/files/<%= consultation.visitorId %>/<%= doc.name %>"><%= doc.name %></a>
+            <% } %>
+        </li>
+    </ul>
+    <% } %>
+    <a href="/chat/<%= consultation.preConsId %>">Contacter</a>
+</div>

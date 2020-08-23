@@ -14,6 +14,10 @@ const sendPreCons = preCons_object => {
         console.error(err);
     }
 }
+const cancelPrecons = notifId => {
+    __GLOBAL_SOCKET.emit('cancelNotif', notifId);
+}
+// 
 // 
 __GLOBAL_SOCKET.on('error', (msg) => {
     console.error(msg);

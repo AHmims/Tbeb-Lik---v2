@@ -1,5 +1,8 @@
 const renderNotification = (root, notificationData, callback_S, callback_R) => {
-    const boxContainer = make_E('div');
+    const boxContainer = make_E('div', null, {
+        id: notificationData.preConsId,
+        class: 'notif_box'
+    });
     // 
     let _row = make_E('ul', null, {
         id: notificationData.visitorId
@@ -74,9 +77,12 @@ function appendBtnSet(rootId, visitorId, callback_S, callback_R, root = document
                 conCmnt: formRes.comment,
                 userTZ: getTimeZone()
             });
+            console.log(reqRes);
             // 
             if (reqRes.code == 200) {
                 document.getElementById(rootId).remove();
+                // 
+                renderConsultation(reqRes.content.data);
                 // 
                 callback_S(rootId, visitorId);
             } else console.error('Verifer les champs entrée et réessayez.');
@@ -153,4 +159,49 @@ const renderConsultationForm = root => {
             return null;
         }
     });
+}
+// 
+const renderConsultation = data => {
+    const container = make_E('div');
+    // 
+    let row = make_E('ul', null, {
+        class: 'consul_box',
+        data_id: data.preConsId
+    });
+    let col_value = make_E('li', data.name);
+    row.appendChild(col_value);
+    container.appendChild(row);
+    // 
+    row = make_E('ul');
+    col_value = make_E('li', data.preConsDateCreation);
+    row.appendChild(col_value);
+    container.appendChild(row);
+    // 
+    row = make_E('ul');
+    col_value = make_E('li', data.preConsTitle);
+    row.appendChild(col_value);
+    container.appendChild(row);
+    // 
+    row = make_E('ul');
+    col_value = make_E('li', data.preConsDesc);
+    row.appendChild(col_value);
+    container.appendChild(row);
+    // 
+    row = make_E('ul');
+    let col_cont = make_E('li');
+    for (const doc of data.docs) {
+        col_value = make_E('a', doc.attachmentName, {
+            href: `/files/${data.visitorId}/${doc.attachmentName}`
+        });
+        col_cont.appendChild(col_value);
+    }
+    row.appendChild(col_cont);
+    container.appendChild(row);
+    // 
+    let btn = make_E('a', 'Contacter', {
+        href: `/chat/${data.preConsId}`
+    });
+    container.appendChild(btn);
+    // 
+    document.getElementById('clientConsul').appendChild(container);
 }

@@ -14,5 +14,9 @@ $().ready(() => {
 });
 // 
 function acceptNotification(notifId, visitorId) {
-    _SOCKET_ACCEPT_NOTIFICATION(notifId, visitorId);
+    // const consulElement = await sendRequest(`/api/acceptPrecons`, {
+    //     preConsId: rootId
+    // });
+    // // 
+    // _SOCKET_ACCEPT_NOTIFICATION(notifId, visitorId);
 }

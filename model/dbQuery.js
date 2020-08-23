@@ -105,11 +105,11 @@ async function getAllData(tableName, constraint = '') {
     }
 }
 // EXAMPLE OF params = {table : "ss",id : "userId"}
-async function customDataDelete(params, id) {
+async function customDataDelete(params, id, constraint = '') {
     try {
-        let req = `DELETE FROM ${params.table} WHERE ${params.id} = ?`,
+        let req = `DELETE FROM ${params.table} WHERE ${params.id} = ? ${constraint}`,
             cnx = await db.connect(),
-            res = await cnx.query(req, [id]);
+            res = await cnx.query(req, id);
         cnx.release();
         // 
         return res[0].affectedRows;
@@ -189,12 +189,13 @@ async function checkExistence(params, id, constraint = '') {
     try {
         let req = `SELECT COUNT(${params.id}) AS nb FROM ${params.table} WHERE ${params.id} = ? ${constraint}`,
             cnx = await db.connect(),
-            res = await cnx.query(req, [id]);
+            res = await cnx.query(req, id);
         cnx.release();
         // 
         return res[0][0].nb > 0 ? true : false;
     } catch (err) {
         console.error('error :', err);
+        return false;
     }
 }
 // CHECK IF A VISITOR HAVE AN ONOING CONSULTATION OR PRECONSULTATION TO DETERMINE WETHER HE IS ELIGABLE FOR SENDING A NEW PRECONS
@@ -216,7 +217,7 @@ async function consultationCheck(visitorId) {
             console.error('error :', err);
             return false;
         }
-    } else return true;
+    } else return null;
 }
 // GET CLIENTS UN-ACCEPTED NOTIFICATIONS
 async function getClientPrecons(clientId) {
@@ -248,7 +249,7 @@ async function getLastInsertedPrecons(visitorId, accepted = -1) {
 // GET CLIENT CONSULTATIONS
 async function getClientConsultations(clientId) {
     try {
-        let req = `select p.preConsId, vis.visitorName as nom, p.preConsDateCreation, p.preConsDateTimeZone, c.consulDate, c.consulTimeZone, c.consulState, p.visitorId, au.roomId from visitor as vis, preConsultation as p, consultation as c,appUser as au where p.preConsId = c.preConsId and LOWER(c.clientId) = LOWER(?) and p.preConsAccepted = true and LOWER(vis.visitorId) = LOWER(p.visitorId) and LOWER(au.userId) = LOWER(p.visitorId) ORDER BY consulState ASC,consulDate DESC`,
+        let req = `select p.preConsId, p.preConsTitle, p.preConsDesc, vis.visitorName as nom, p.preConsDateCreation, p.preConsDateTimeZone, c.consulDate, c.consulTimeZone, c.consulState, p.visitorId, au.roomId from visitor as vis, preConsultation as p, consultation as c,appUser as au where p.preConsId = c.preConsId and LOWER(c.clientId) = LOWER(?) and p.preConsAccepted = true and LOWER(vis.visitorId) = LOWER(p.visitorId) and LOWER(au.userId) = LOWER(p.visitorId) ORDER BY consulState ASC,consulDate DESC`,
             cnx = await db.connect(),
             res = await cnx.query(req, clientId);
         cnx.release();
@@ -262,12 +263,12 @@ async function getClientConsultations(clientId) {
 // GET CONSULTATION DATA
 async function getConsultation(notifId) {
     try {
-        let req = `select p.preConsId, vis.visitorName as nom, p.preConsDateCreation, p.preConsDateTimeZone, c.consulDate, c.consulTimeZone, c.consulState, p.visitorId, au.roomId from visitor as vis, preConsultation as p, consultation as c,appUser as au where p.preConsId = c.preConsId and p.preConsId = ? and p.preConsAccepted = true and LOWER(vis.visitorId) = LOWER(p.visitorId) and LOWER(au.userId) = LOWER(p.visitorId) ORDER BY consulState ASC,consulDate DESC`,
+        let req = `select p.preConsId, p.preConsTitle, p.preConsDesc, vis.visitorName as nom, p.preConsDateCreation, p.preConsDateTimeZone, c.consulDate, c.consulTimeZone, c.consulState, p.visitorId, au.roomId from visitor as vis, preConsultation as p, consultation as c,appUser as au where p.preConsId = c.preConsId and p.preConsId = ? and p.preConsAccepted = true and LOWER(vis.visitorId) = LOWER(p.visitorId) and LOWER(au.userId) = LOWER(p.visitorId) ORDER BY consulState ASC,consulDate DESC`,
             cnx = await db.connect(),
             res = await cnx.query(req, notifId);
         cnx.release();
         // 
-        return res[0].length > 0 ? res[0] : null;
+        return res[0].length > 0 ? res[0][0] : null;
     } catch (err) {
         console.error('error :', err);
         return null;
