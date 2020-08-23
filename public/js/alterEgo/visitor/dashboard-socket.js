@@ -14,8 +14,8 @@ const sendPreCons = preCons_object => {
         console.error(err);
     }
 }
-const cancelPrecons = notifId => {
-    __GLOBAL_SOCKET.emit('cancelNotif', notifId);
+const cancelPrecons = (notifId, visitorId) => {
+    __GLOBAL_SOCKET.emit('cancelNotif', notifId, visitorId);
 }
 // 
 // 

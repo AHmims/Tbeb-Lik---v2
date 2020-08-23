@@ -1,7 +1,10 @@
 const _CLASSES = require('../model/classes');
 const _DB = require('../model/dbQuery');
+const {
+    clientDataFromVisitor
+} = require('../helper/helpers');
 
-module.exports = (socket) => {
+module.exports = socket => {
     // WHEN A USER CONNECTS
     socket.on('online', async userEmail => {
         try {
@@ -44,6 +47,14 @@ module.exports = (socket) => {
             console.error(err);
             socket.emit('error', err);
         }
+    });
+    // WHEN VISITOR CANCEL NOTIF
+    socket.on('cancelNotif', async (notifId, visitorId) => {
+        let clientData = await clientDataFromVisitor(visitorId);
+        if (clientData != null) {
+            clientData = clientData[0];
+            socket.to(clientData.socket).emit('cancelNotif', notifId);
+        } else socket.emit('error', `Client not found`);
     });
     // WHEN A USER DISCONNECYS
     socket.on('disconnect', async () => {

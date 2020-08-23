@@ -20,3 +20,8 @@ function acceptNotification(notifId, visitorId) {
     // // 
     // _SOCKET_ACCEPT_NOTIFICATION(notifId, visitorId);
 }
+
+function remove_precons(notifId) {
+    if (document.getElementById(notifId))
+        document.getElementById(notifId).remove();
+}

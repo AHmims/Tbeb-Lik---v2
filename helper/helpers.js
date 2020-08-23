@@ -257,7 +257,8 @@ const getConsultations = async clientId => {
             // 
             return consultations;
         }
-        throw `Nothing was found`
+        // throw `Nothing was found`
+        return [];
     } catch (err) {
         console.error(err);
         return [];
@@ -311,7 +312,7 @@ const cancelPrecons = async visitorId => {
                 if (preConsFiles != null) {
                     const {
                         removeFile
-                    } = require('../helper/fs');
+                    } = require('./fs');
                     // 
                     for (const doc of preConsFiles) {
                         await removeFile(doc.attachmentId, doc.attachmentName, visitorId);
@@ -324,8 +325,17 @@ const cancelPrecons = async visitorId => {
         }
         throw `Votre demande de consultation a été déja acceptée ou bien est deja suprimée.`;
     } catch (err) {
-        console.error(err);
+        console.error(visitorId, err);
         return status(false, err);
+    }
+}
+// 
+const clientDataFromVisitor = async visitorId => {
+    try {
+        return await _DB.getAllData('appUser', `WHERE userId IN (SELECT linkToClient FROM appUser WHERE userId = '${visitorId}')`);
+    } catch (err) {
+        console.error(err);
+        return null;
     }
 }
 // 
@@ -347,5 +357,6 @@ module.exports = {
     getConsultations,
     getConsultation,
     visitorCurrentConsultation,
-    cancelPrecons
+    cancelPrecons,
+    clientDataFromVisitor
 }

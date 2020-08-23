@@ -39,8 +39,19 @@ $().ready(() => {
         const response = await sendRequest(`/api/cancelPrecons`, {});
         console.log(response);
         if (response.code == 200) {
-            cancelPrecons
+            remove_onHold();
+            display_preconsForm();
+            // 
+            cancelPrecons(response.content.notifId, response.content.userId);
         }
     });
 });
 // 
+function remove_onHold() {
+    if (document.getElementById('preConsStatus'))
+        document.getElementById('preConsStatus').remove();
+}
+// 
+function display_preconsForm() {
+
+}

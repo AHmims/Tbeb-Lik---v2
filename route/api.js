@@ -187,9 +187,12 @@ router.post('/acceptPrecons', async (req, res) => {
 router.post('/cancelPrecons', async (req, res) => {
     try {
         if (req.user.userType == 'Visitor') {
-            const cancelRes = await cancelPrecons(req.res.userId);
+            const cancelRes = await cancelPrecons(req.user.userId);
             if (cancelRes.status)
-                response(res, 200, status(`success`, cancelRes.data));
+                response(res, 200, status(`success`, {
+                    notifId: cancelRes.data,
+                    userId: req.user.userId
+                }));
             response(res, 422, status('error', cancelRes.data));
         } else response(res, 401);
     } catch (err) {

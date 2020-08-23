@@ -16,6 +16,9 @@ __GLOBAL_SOCKET.on('newNotif', notifData => {
         __GLOBAL_SOCKET.emit('error');
     });
 });
+__GLOBAL_SOCKET.on('cancelNotif', notifId => {
+    remove_precons(notifId);
+});
 // 
 // 
 const _SOCKET_ACCEPT_NOTIFICATION = (notifId, visitorId) => {
@@ -23,9 +26,9 @@ const _SOCKET_ACCEPT_NOTIFICATION = (notifId, visitorId) => {
 }
 // 
 // 
-__GLOBAL_SOCKET.on('error', (msg = 'null') => {
+__GLOBAL_SOCKET.on('error', (msg = 'no message provided') => {
     console.error(msg);
 });
-__GLOBAL_SOCKET.on('success', (msg) => {
+__GLOBAL_SOCKET.on('success', (msg = 'no message provided') => {
     console.log(msg);
 });
