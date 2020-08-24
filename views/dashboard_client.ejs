@@ -27,20 +27,39 @@
         <% } %>
     </div>
     <!-- connections -->
-    <div id="clientConsul">
-        <h4>Liste de clients</h4>
-        <% if(!extra.clients){ %>
+    <!-- <div id="clientConsul"> -->
+    <% if(!extra.clients){ %>
+    <div id="activeConsul">
+        <h4>Consultations active :</h4>
         <%- include('./partials/empty') %>
-        <% }else{ %>
-        <% if(extra.clients.length <= 0){ %>
+    </div>
+    <% }else{ %>
+    <% if(extra.clients.length <= 0){ %>
+    <div id="historyConsul">
+        <h4>Hisotrique de consultations :</h4>
         <%- include('./partials/empty') %>
-        <% }else{ %>
+    </div>
+    <% }else{ %>
+    <div id="activeConsul">
+        <h4>Consultations active :</h4>
         <% for(var i=0;i < extra.clients.length;i++){ %>
+        <% if(extra.clients[i].consulState == -1){ %>
         <%- include('./partials/consultation_card', {consultation : extra.clients[i]}) %>
-        <% } %>
-        <% } %>
+        <% }%>
         <% } %>
     </div>
+    <div id="historyConsul">
+        <h4>Hisotrique de consultations :</h4>
+        <h4>Consultations active :</h4>
+        <% for(var i=0;i < extra.clients.length;i++){ %>
+        <% if(extra.clients[i].consulState != -1){ %>
+        <%- include('./partials/history', {consultation : extra.clients[i]}) %>
+        <% }%>
+        <% } %>
+    </div>
+    <% } %>
+    <% } %>
+    <!-- </div> -->
 </div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/public/js/alterEgo/jquery.ajax.min.js"></script>
