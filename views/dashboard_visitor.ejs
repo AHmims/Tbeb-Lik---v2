@@ -47,7 +47,9 @@
     <% } %>
     <div id="pastCons">
         <h4>Consultations précédentes :</h4>
-        <div>none</div>
+        <% for(var i=0;i < extra.history.length ; i++){ %>
+        <%- include('./partials/history', {consultation : extra.history[i]}) %>
+        <% } %>
     </div>
 </div>
 <script src="/socket.io/socket.io.js"></script>

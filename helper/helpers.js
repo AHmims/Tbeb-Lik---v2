@@ -355,6 +355,26 @@ const clientDataFromVisitor = async visitorId => {
     }
 }
 // 
+const getVisitorConsultations = async visitorId => {
+    try {
+        const consultations = await _DB.getVisitorConsHistory(visitorId);
+        if (consultations != null) {
+            for (let i = 0; i < consultations.length; i++) {
+                const docs = await _DB.getAllData('attachment', `WHERE preConsId = '${consultations[i].preConsId}'`);
+                consultations[i].docs = docs != null ? docs : [];
+            }
+            // 
+            return consultations;
+        }
+        // throw `Nothing was found`
+        return [];
+
+    } catch (err) {
+        console.error(err);
+        return [];
+    }
+}
+// 
 // 
 // 
 module.exports = {
@@ -376,5 +396,6 @@ module.exports = {
     visitorCurrentConsultation,
     cancelPrecons,
     clientDataFromVisitor,
-    getRefusedPrecons
+    getRefusedPrecons,
+    getVisitorConsultations
 }

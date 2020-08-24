@@ -10,6 +10,10 @@ __GLOBAL_SOCKET.on('acceptNotif', (notifId, notifData) => {
     remove_onHold();
     display_consultation(notifData);
 });
+__GLOBAL_SOCKET.on('refuseNotif', (notifId, notifData) => {
+    remove_onHold();
+    display_past_consultation(notifData);
+});
 // 
 const socket_sendPreCons = preCons_object => {
     try {

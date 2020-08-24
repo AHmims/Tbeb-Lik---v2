@@ -273,7 +273,20 @@ async function getConsultation(notifId) {
         return null;
     }
 }
-
+// 
+async function getVisitorConsHistory(visitorId) {
+    try {
+        let req = `SELECT * FROM preConsultation WHERE visitorId = ? AND preConsAccepted <> -1 AND preConsId NOT IN (SELECT preConsId FROM consultation WHERE consulState = -1)`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, visitorId);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0] : null;
+    } catch (err) {
+        console.error('error :', err);
+        return null;
+    }
+}
 
 
 
@@ -332,5 +345,6 @@ module.exports = {
     getClientPrecons,
     getLastInsertedPrecons,
     getClientConsultations,
-    getConsultation
+    getConsultation,
+    getVisitorConsHistory
 }

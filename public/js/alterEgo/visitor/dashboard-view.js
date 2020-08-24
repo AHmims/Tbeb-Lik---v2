@@ -86,6 +86,15 @@ function render_preconsForm() {
     return container;
 }
 // 
+function render_cons_container() {
+    const container = make_E('div', null, {
+        id: 'activeCons'
+    });
+    const title = make_E('h4', `Consultations en cours : `);
+    container.appendChild(title);
+    return container;
+}
+// 
 function render_consultation(data) {
     console.log(data);
     const container = make_E('div');
@@ -131,5 +140,14 @@ function render_consultation(data) {
     });
     container.appendChild(btn);
     // 
+    return container;
+}
+// 
+function render_pastCons_container() {
+    const container = make_E('div', null, {
+        id: 'pastCons'
+    });
+    const title = make_E('h4', `Consultations précédentes :`);
+    container.appendChild(title);
     return container;
 }

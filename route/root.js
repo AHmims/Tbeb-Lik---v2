@@ -8,7 +8,8 @@ const {
     getClientNotifications,
     getConsultations,
     canSendPrecons,
-    visitorCurrentConsultation
+    visitorCurrentConsultation,
+    getVisitorConsultations
 } = require('../helper/helpers');
 
 router.get('/', (req, res) => {
@@ -28,6 +29,7 @@ router.get('/dashboard', isAuth, async (req, res) => {
         if (_data.ongoing == false) {
             _data.consul = await visitorCurrentConsultation(req.user.userId);
         }
+        _data.history = await getVisitorConsultations(req.user.userId);
     }
     // console.log(_data);
 

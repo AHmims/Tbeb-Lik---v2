@@ -76,5 +76,13 @@ function display_preconsForm() {
 }
 
 function display_consultation(notifData) {
-    document.getElementById('rootElement').appendChild(render_consultation(notifData));
+    if (!document.getElementById('activeCons'))
+        document.getElementById('rootElement').appendChild(render_cons_container());
+    document.getElementById('activeCons').appendChild(render_consultation(notifData));
+}
+
+function display_past_consultation(notifData) {
+    if (!document.getElementById('pastCons'))
+        document.getElementById('rootElement').appendChild(render_pastCons_container());
+    document.getElementById('pastCons').appendChild(render_consultation(notifData));
 }
