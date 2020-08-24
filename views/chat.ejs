@@ -1,6 +1,9 @@
 <div id="rootElement" data-email="<%= typeof(userEmail) != 'undefined' ? userEmail : '' %>">
     <div id="chatingSection">
         <table id="chatMessages" border="1">
+            <% for(var i = 0;i < messages.length; i++){ %>
+            <%- include('./partials/message',{message : messages[i]}) %>
+            <% } %>
         </table>
         <input type="text" id="msgInput">
         <input type="button" value="Send" id="msgSend">

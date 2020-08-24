@@ -1,0 +1,8 @@
+<tr>
+    <td colspan="<%= !message.my_msg ? '2': '1' %>">
+        <%= !message.my_msg ? message.msgContent : '' %>
+    </td>
+    <td colspan="<%= message.my_msg ? '2': '1' %>">
+        <%= message.my_msg ? message.msgContent : '' %>
+    </td>
+</tr>

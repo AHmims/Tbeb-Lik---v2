@@ -273,7 +273,7 @@ async function getConsultation(notifId) {
         return null;
     }
 }
-// 
+// GET NON ACTIVE VISITOR CONSULTATIONS / PRECONSULTATIONS
 async function getVisitorConsHistory(visitorId) {
     try {
         let req = `SELECT * FROM preConsultation WHERE visitorId = ? AND preConsAccepted <> -1 AND preConsId NOT IN (SELECT preConsId FROM consultation WHERE consulState = -1)`,
@@ -287,7 +287,20 @@ async function getVisitorConsHistory(visitorId) {
         return null;
     }
 }
-
+// GET MESSAGES BY NOTIFICATIONID
+async function getMessages(userId, notifId) {
+    try {
+        let req = "SELECT *, (msgSender = ?) AS my_msg FROM `message` WHERE preConsId = ?",
+            cnx = await db.connect(),
+            res = await cnx.query(req, [userId, notifId]);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0] : [];
+    } catch (err) {
+        console.error('error :', err);
+        return [];
+    }
+}
 
 
 //#region HELPER FUNCTIONS
@@ -346,5 +359,6 @@ module.exports = {
     getLastInsertedPrecons,
     getClientConsultations,
     getConsultation,
-    getVisitorConsHistory
+    getVisitorConsHistory,
+    getMessages
 }
