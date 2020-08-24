@@ -94,9 +94,17 @@ function appendBtnSet(rootId, visitorId, callback_S, callback_R, root = document
         class: 'btnRefuse',
         value: 'Refuse'
     })
-    refuseBtn.addEventListener('click', () => {
+    refuseBtn.addEventListener('click', async () => {
         // resolve(false)
-        callback_R();
+        const reqRes = await sendRequest(`/api/refusePrecons`, {
+            preConsId: rootId
+        });
+        console.log(reqRes);
+        if (reqRes.code == 200) {
+            document.getElementById(rootId).remove();
+            // 
+            callback_R(rootId, visitorId, reqRes.content.data);
+        } else console.error('Server ERROR.');
     });
     // 
     container.appendChild(acceptBtn);

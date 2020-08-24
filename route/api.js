@@ -18,7 +18,8 @@ const {
     acceptPrecons,
     canSendPrecons,
     getConsultation,
-    cancelPrecons
+    cancelPrecons,
+    getRefusedPrecons
 } = require('../helper/helpers');
 const {
     commonFileValidator,
@@ -183,6 +184,43 @@ router.post('/acceptPrecons', async (req, res) => {
         response(res, 500);
     }
 });
+// REFUSE NOTIFICATION
+router.post('/refusePrecons', async (req, res) => {
+    try {
+        if (req.user.userType != 'Visitor') {
+            let errorMsg = '';
+            // CHECK IF TEH SAID REQUEST IS ACCEPTED OR NOT
+            const preConsStatus = await preConsAccepted(req.body.preConsId); // return true = not accepted || false = accepted || null = server error
+            if (preConsStatus == true) {
+                const {
+                    preConsId
+                } = req.body;
+                // 
+                // 
+                const refuseRes = await _DB.customDataUpdate({
+                    preConsAccepted: 0
+                }, preConsId, {
+                    table: 'preConsultation',
+                    id: 'preConsId'
+                })
+                if (refuseRes == true)
+                    response(res, 200, status('success', {
+                        preConsId,
+                        data: await getRefusedPrecons(preConsId)
+                    }));
+                errorMsg = `Error while executing your request.`;
+                // 
+            } else
+                errorMsg = preConsStatus == null ? `Server error.` : `Demande de consultation est deja acceptée.`;
+            // 
+            response(res, 422, errorMsg);
+        } else response(res, 401);
+    } catch (err) {
+        console.error(err);
+        response(res, 500);
+    }
+});
+
 // CANCEL PRECONS
 router.post('/cancelPrecons', async (req, res) => {
     try {

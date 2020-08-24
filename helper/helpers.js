@@ -280,6 +280,22 @@ const getConsultation = async notifId => {
     }
 }
 // 
+const getRefusedPrecons = async notifId => {
+    try {
+        let consultation = await _DB.getAllData('preConsultation', `WHERE preConsId = '${notifId}'`);
+        if (consultation != null) {
+            consultation = consultation[0];
+            const docs = await _DB.getAllData('attachment', `WHERE preConsId = '${consultation.preConsId}'`);
+            consultation.docs = docs != null ? docs : [];
+            return consultation;
+        }
+        throw `Consultation not found`;
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
+// 
 const visitorCurrentConsultation = async visitorId => {
     try {
         let notifData = await _DB.getAllData('preConsultation', `WHERE visitorId = '${visitorId}' AND preConsAccepted = 1 AND preConsId IN (SELECT preConsId FROM consultation WHERE consulState = -1)`);
@@ -358,5 +374,6 @@ module.exports = {
     getConsultation,
     visitorCurrentConsultation,
     cancelPrecons,
-    clientDataFromVisitor
+    clientDataFromVisitor,
+    getRefusedPrecons
 }

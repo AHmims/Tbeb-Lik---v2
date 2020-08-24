@@ -7,14 +7,14 @@ __GLOBAL_SOCKET.on('connect', () => {
     __GLOBAL_SOCKET.emit('online', _INDEX);
 });
 // 
-const sendPreCons = preCons_object => {
+const socket_sendPreCons = preCons_object => {
     try {
         __GLOBAL_SOCKET.emit('sendNotif', preCons_object);
     } catch (err) {
         console.error(err);
     }
 }
-const cancelPrecons = (notifId, visitorId) => {
+const socket_cancelPrecons = (notifId, visitorId) => {
     __GLOBAL_SOCKET.emit('cancelNotif', notifId, visitorId);
 }
 // 
