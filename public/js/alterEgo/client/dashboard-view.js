@@ -84,7 +84,7 @@ function appendBtnSet(rootId, visitorId, callback_S, callback_R, root = document
                 // 
                 renderConsultation(reqRes.content.data);
                 // 
-                callback_S(rootId, visitorId);
+                callback_S(rootId, visitorId, reqRes.content.data);
             } else console.error('Verifer les champs entrée et réessayez.');
         }
     });
@@ -176,7 +176,7 @@ const renderConsultation = data => {
         class: 'consul_box',
         data_id: data.preConsId
     });
-    let col_value = make_E('li', data.name);
+    let col_value = make_E('li', data.nom);
     row.appendChild(col_value);
     container.appendChild(row);
     // 

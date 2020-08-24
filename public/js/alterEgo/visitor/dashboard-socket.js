@@ -6,6 +6,10 @@ __GLOBAL_SOCKET.on('connect', () => {
     console.log('socket on');
     __GLOBAL_SOCKET.emit('online', _INDEX);
 });
+__GLOBAL_SOCKET.on('acceptNotif', (notifId, notifData) => {
+    remove_onHold();
+    display_consultation(notifData);
+});
 // 
 const socket_sendPreCons = preCons_object => {
     try {

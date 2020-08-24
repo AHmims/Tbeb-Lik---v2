@@ -15,7 +15,7 @@
     <ul>
         <li>
             <% for(doc of consultation.docs){ %>
-            <a href="/files/<%= consultation.visitorId %>/<%= doc.name %>"><%= doc.name %></a>
+            <a href="/files/<%= consultation.visitorId %>/<%= doc.attachmentName %>"><%= doc.attachmentName %></a>
             <% } %>
         </li>
     </ul>

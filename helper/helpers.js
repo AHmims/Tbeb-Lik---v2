@@ -252,7 +252,7 @@ const getConsultations = async clientId => {
         if (consultations != null) {
             for (let i = 0; i < consultations.length; i++) {
                 const docs = await _DB.getAllData('attachment', `WHERE preConsId = '${consultations[i].preConsId}'`);
-                consultations.docs = docs != null ? docs : [];
+                consultations[i].docs = docs != null ? docs : [];
             }
             // 
             return consultations;
@@ -354,6 +354,7 @@ const clientDataFromVisitor = async visitorId => {
         return null;
     }
 }
+// 
 // 
 // 
 module.exports = {

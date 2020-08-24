@@ -56,6 +56,14 @@ module.exports = socket => {
             socket.to(clientData.socket).emit('cancelNotif', notifId);
         } else socket.emit('error', `Client not found`);
     });
+    // WHEN A CLIENT ACCEPTS THE NOTIFICATION
+    socket.on('acceptNotif', async (notifId, visitorId, notifData) => {
+        let visitorData = await _DB.getAllData(`appUser`, `WHERE userId = '${visitorId}'`);
+        if (visitorData != null) {
+            visitorData = visitorData[0];
+            socket.to(visitorData.socket).emit('acceptNotif', notifId, notifData);
+        } else socket.emit('error', `Visitor not found`);
+    });
     // WHEN A USER DISCONNECYS
     socket.on('disconnect', async () => {
         // console.log(`socket OFF | ${socket.userId}`);

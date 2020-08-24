@@ -85,3 +85,49 @@ function render_preconsForm() {
     container.appendChild(table);
     return container;
 }
+// 
+function render_consultation(data) {
+    console.log(data);
+    const container = make_E('div');
+    // 
+    let row = make_E('ul', null, {
+        class: 'consul_box',
+        data_id: data.preConsId
+    });
+    let col_value = make_E('li', data.nom);
+    row.appendChild(col_value);
+    container.appendChild(row);
+    // 
+    row = make_E('ul');
+    col_value = make_E('li', data.preConsDateCreation);
+    row.appendChild(col_value);
+    container.appendChild(row);
+    // 
+    row = make_E('ul');
+    col_value = make_E('li', data.preConsTitle);
+    row.appendChild(col_value);
+    container.appendChild(row);
+    // 
+    row = make_E('ul');
+    col_value = make_E('li', data.preConsDesc);
+    row.appendChild(col_value);
+    container.appendChild(row);
+    // 
+    row = make_E('ul');
+    let col_cont = make_E('li');
+    for (const doc of data.docs) {
+        col_value = make_E('a', doc.attachmentName, {
+            href: `/files/${data.visitorId}/${doc.attachmentName}`
+        });
+        col_cont.appendChild(col_value);
+    }
+    row.appendChild(col_cont);
+    container.appendChild(row);
+    // 
+    let btn = make_E('a', 'Contacter', {
+        href: `/chat/${data.preConsId}`
+    });
+    container.appendChild(btn);
+    // 
+    return container;
+}

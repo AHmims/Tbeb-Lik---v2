@@ -75,6 +75,6 @@ function display_preconsForm() {
     document.getElementById('rootElement').appendChild(render_preconsForm());
 }
 
-function display_consultation() {
-
+function display_consultation(notifData) {
+    document.getElementById('rootElement').appendChild(render_consultation(notifData));
 }

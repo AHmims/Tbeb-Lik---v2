@@ -9,12 +9,12 @@ __GLOBAL_SOCKET.on('connect', () => {
 // 
 __GLOBAL_SOCKET.on('newNotif', notifData => {
     console.log(notifData);
-    renderNotification(document.getElementById('clientInbox'), notifData, (notifId, visitorId) => {
-        console.log('Success');
-        _SOCKET_ACCEPT_NOTIFICATION(notifId, visitorId);
-    }, (notifId, visitorId, notifData) => {
+    renderNotification(document.getElementById('clientInbox'), notifData, (notifId, visitorId, ret_notif_data) => {
+        console.log('Accept');
+        _SOCKET_ACCEPT_NOTIFICATION(notifId, visitorId, ret_notif_data);
+    }, (notifId, visitorId, ret_notif_data) => {
         console.log('Refuse');
-        _SOCKET_REFUSE_NOTIFICATION(notifId, visitorId, notifData);
+        _SOCKET_REFUSE_NOTIFICATION(notifId, visitorId, ret_notif_data);
         // __GLOBAL_SOCKET.emit('error');
     });
 });
@@ -23,8 +23,8 @@ __GLOBAL_SOCKET.on('cancelNotif', notifId => {
 });
 // 
 // 
-const _SOCKET_ACCEPT_NOTIFICATION = (notifId, visitorId) => {
-    __GLOBAL_SOCKET.emit('acceptNotif', notifId, visitorId);
+const _SOCKET_ACCEPT_NOTIFICATION = (notifId, visitorId, notifData) => {
+    __GLOBAL_SOCKET.emit('acceptNotif', notifId, visitorId, notifData);
 }
 const _SOCKET_REFUSE_NOTIFICATION = (notifId, visitorId, notifData) => {
     __GLOBAL_SOCKET.emit('refuseNotif', notifId, visitorId, notifData);
