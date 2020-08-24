@@ -181,7 +181,7 @@ const renderConsultation = data => {
     container.appendChild(row);
     // 
     row = make_E('ul');
-    col_value = make_E('li', data.preConsDateCreation);
+    col_value = make_E('li', data.consulDate);
     row.appendChild(col_value);
     container.appendChild(row);
     // 
@@ -195,16 +195,18 @@ const renderConsultation = data => {
     row.appendChild(col_value);
     container.appendChild(row);
     // 
-    row = make_E('ul');
-    let col_cont = make_E('li');
-    for (const doc of data.docs) {
-        col_value = make_E('a', doc.attachmentName, {
-            href: `/files/${data.visitorId}/${doc.attachmentName}`
-        });
-        col_cont.appendChild(col_value);
+    if (data.docs.length > 0) {
+        row = make_E('ul');
+        let col_cont = make_E('li');
+        for (const doc of data.docs) {
+            col_value = make_E('a', doc.attachmentName, {
+                href: `/files/${data.visitorId}/${doc.attachmentName}`
+            });
+            col_cont.appendChild(col_value);
+        }
+        row.appendChild(col_cont);
+        container.appendChild(row);
     }
-    row.appendChild(col_cont);
-    container.appendChild(row);
     // 
     let btn = make_E('a', 'Contacter', {
         href: `/chat/${data.preConsId}`
