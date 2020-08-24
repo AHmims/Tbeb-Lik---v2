@@ -375,6 +375,43 @@ const getVisitorConsultations = async visitorId => {
     }
 }
 // 
+const getPreconsForCurrentUser = async (userId, userType) => {
+    try {
+        let visitorId = userId;
+        if (userType != 'Visitor') {
+            const roomData = await _DB.getAllData('room', `WHERE roomClientId = '${userId}'`);
+            if (roomData != null)
+                visitorId = roomData[0].roomVisitorId;
+            else throw `Room not found for Client : ${userId}`;
+        }
+        // 
+        const notifData = await _DB.getAllData('preConsultation', `WHERE visitorId = '${visitorId}' AND preConsAccepted = 1 AND preConsId IN (SELECT preConsId FROM consultation WHERE consulState = -1)`);
+        if (notifData != null)
+            return consData[0].preConsId;
+        else throw `Consultation not found for visitor : ${visitorId}`;
+
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
+// 
+const sendAndGetMessage = async msgClassObject => {
+    try {
+        const msgRes = await _DB.insertDataWithResponse(msgClassObject);
+        if (msgRes != null) {
+            const msgData = _DB.getAllData('message', `WHERE msgId = '${msgRes}'`);
+            if (msgData != null)
+                return msgData[0];
+            throw `Message not found`;
+        }
+        throw `Message not inserted`;
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
+// 
 // 
 // 
 module.exports = {
@@ -397,5 +434,7 @@ module.exports = {
     cancelPrecons,
     clientDataFromVisitor,
     getRefusedPrecons,
-    getVisitorConsultations
+    getVisitorConsultations,
+    getPreconsForCurrentUser,
+    sendAndGetMessage
 }

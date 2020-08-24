@@ -47,7 +47,7 @@ function errorhandler(err) {
     }
     return null;
 }
-// 
+// MAKE AN ELEMENT AND RETURN IT
 function make_E(elem_type, text = null, attribs = null) {
     try {
         const retElement = document.createElement(elem_type);
@@ -69,4 +69,9 @@ function make_E(elem_type, text = null, attribs = null) {
         console.error(err);
         return null;
     }
+}
+// 
+function getNotifId() {
+    const urlData = window.location.href.split('/');
+    return urlData[urlData.length - 1];
 }

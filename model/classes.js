@@ -83,14 +83,14 @@ class appUser {
 }
 // 
 class message {
-    constructor(msgSender, msgContent, roomId, msgDate, msgDateTimeZone, msgType, msgFilePath) {
+    constructor(msgSender, msgContent, msgDate, msgDateTimeZone, msgType, msgFilePath, preConsId) {
         this.msgSender = msgSender;
         this.msgContent = msgContent;
-        this.roomId = roomId; // CHANGE LINK FROM ROOM TO PRECONSultation
         this.msgDate = msgDate;
         this.msgDateTimeZone = msgDateTimeZone;
         this.msgType = msgType;
         this.msgFilePath = msgFilePath;
+        this.preConsId = preConsId;
     }
 }
 // 

@@ -3,6 +3,7 @@ const router = express.Router();
 const formData = require('express-form-data');
 const __PATH = require('path');
 // 
+const _CLASSES = require('../model/classes');
 const _DB = require('../model/dbQuery');
 // 
 const options = {
@@ -19,13 +20,19 @@ const {
     canSendPrecons,
     getConsultation,
     cancelPrecons,
-    getRefusedPrecons
+    getRefusedPrecons,
+    saveAndGetPrecons,
+    getPreconsForCurrentUser,
+    sendAndGetMessage
 } = require('../helper/helpers');
 const {
     commonFileValidator,
     commonFileSaver,
     removeFile
 } = require('../helper/fs');
+const {
+    getUtc
+} = require('../helper/date');
 // 
 router.use(require('../config/auth').isAuth_api);
 // SEND NOTIFICATION
@@ -220,7 +227,6 @@ router.post('/refusePrecons', async (req, res) => {
         response(res, 500);
     }
 });
-
 // CANCEL PRECONS
 router.post('/cancelPrecons', async (req, res) => {
     try {
@@ -233,6 +239,32 @@ router.post('/cancelPrecons', async (req, res) => {
                 }));
             response(res, 422, status('error', cancelRes.data));
         } else response(res, 401);
+    } catch (err) {
+        console.error(err);
+        response(res, 500);
+    }
+});
+// NEW MESSAGE
+router.post('/newTextMessage', async (req, res) => {
+    try {
+        let errorMsg = '';
+        // 
+        const {
+            msgContent,
+            userTZ
+        } = _TRIM(req.body);
+        // 
+        if (msgContent.length <= 0) errorMsg = `Message can't be empty`;
+        if (msgContent == '') {
+            const preCons = await getPreconsForCurrentUser(req.user.userId, req.user.userType);
+            if (preCons != null) {
+                const msgRes = await sendAndGetMessage(new _CLASSES.message(req.user.userId, msgContent, getUtc(), userTZ, 'text', null, preCons));
+                if (msgRes != null) {
+                    response(res, 200, status('success', msgRes));
+                } else errorMsg = `Error while saving message`;
+            } else errorMsg = `Consultation non trouvée`;
+        }
+        response(res, 422, status('error', errorMsg));
     } catch (err) {
         console.error(err);
         response(res, 500);

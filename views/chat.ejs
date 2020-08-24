@@ -1,0 +1,24 @@
+<div id="rootElement" data-email="<%= typeof(userEmail) != 'undefined' ? userEmail : '' %>">
+    <div id="chatingSection">
+        <table id="chatMessages" border="1">
+        </table>
+        <input type="text" id="msgInput">
+        <input type="button" value="Send" id="msgSend">
+    </div>
+</div>
+<!--  -->
+<script src="/socket.io/socket.io.js"></script>
+<script src="/public/js/alterEgo/jquery.ajax.min.js"></script>
+<script src="/public/js/alterEgo/<%= userType %>/chat-socket.js"></script>
+<script src="/public/js/alterEgo/<%= userType %>/chat-controller.js"></script>
+<script src="/public/js/alterEgo/<%= userType %>/chat-view.js"></script>
+<!--  -->
+<script src="/public/js/alterEgo/chat_common/chat_socket.js"></script>
+<script src="/public/js/alterEgo/chat_common/chat_controller.js"></script>
+<script src="/public/js/alterEgo/chat_common/chat_view.js"></script>
+<!--  -->
+<script src="/public/js/alterEgo/utility.js"></script>
+<!--  -->
+<%- contentFor('header') %>
+<% var url = userType == `visitor` ? `header_visitor` : `header_client`%>
+<%- include('./partials/' + url) %>

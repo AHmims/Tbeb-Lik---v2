@@ -57,6 +57,7 @@ __APP.set("layout extractScripts", true)
 __APP.use('/', require('./route/root'));
 __APP.use('/', require('./route/auth'));
 __APP.use('/api', require('./route/api'));
+__APP.use('/chat', require('./route/chat'));
 // 
 // SOCKET
 __IO.on('connection', socket => {
