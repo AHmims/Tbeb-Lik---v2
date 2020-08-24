@@ -21,7 +21,6 @@ const {
     getConsultation,
     cancelPrecons,
     getRefusedPrecons,
-    saveAndGetPrecons,
     getPreconsForCurrentUser,
     sendAndGetMessage
 } = require('../helper/helpers');
@@ -255,7 +254,7 @@ router.post('/newTextMessage', async (req, res) => {
         } = _TRIM(req.body);
         // 
         if (msgContent.length <= 0) errorMsg = `Message can't be empty`;
-        if (msgContent == '') {
+        if (errorMsg == '') {
             const preCons = await getPreconsForCurrentUser(req.user.userId, req.user.userType);
             if (preCons != null) {
                 const msgRes = await sendAndGetMessage(new _CLASSES.message(req.user.userId, msgContent, getUtc(), userTZ, 'text', null, preCons));

@@ -8,7 +8,7 @@ $().ready(() => {
     // 
 });
 // 
-function chat_sendMessage() {
+async function chat_sendMessage() {
     const msgContent = $('#msgInput').val();
     let msgError = true;
     let msgData = {

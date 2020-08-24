@@ -387,7 +387,7 @@ const getPreconsForCurrentUser = async (userId, userType) => {
         // 
         const notifData = await _DB.getAllData('preConsultation', `WHERE visitorId = '${visitorId}' AND preConsAccepted = 1 AND preConsId IN (SELECT preConsId FROM consultation WHERE consulState = -1)`);
         if (notifData != null)
-            return consData[0].preConsId;
+            return notifData[0].preConsId;
         else throw `Consultation not found for visitor : ${visitorId}`;
 
     } catch (err) {
@@ -400,7 +400,7 @@ const sendAndGetMessage = async msgClassObject => {
     try {
         const msgRes = await _DB.insertDataWithResponse(msgClassObject);
         if (msgRes != null) {
-            const msgData = _DB.getAllData('message', `WHERE msgId = '${msgRes}'`);
+            const msgData = await _DB.getAllData('message', `WHERE msgId = '${msgRes}'`);
             if (msgData != null)
                 return msgData[0];
             throw `Message not found`;
