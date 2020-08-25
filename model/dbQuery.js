@@ -301,7 +301,20 @@ async function getMessages(userId, notifId) {
         return [];
     }
 }
-
+// GET ROOMID BY USER
+async function getRoomIdByUser(userId) {
+    try {
+        let req = "SELECT roomId FROM room WHERE (roomVisitorId = ? OR roomClientId = ?);",
+            cnx = await db.connect(),
+            res = await cnx.query(req, [userId, userId]);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0][0].roomId : null;
+    } catch (err) {
+        console.error(`error :`, err);
+        return null;
+    }
+}
 
 //#region HELPER FUNCTIONS
 function getClassValues(data) {
@@ -360,5 +373,6 @@ module.exports = {
     getClientConsultations,
     getConsultation,
     getVisitorConsHistory,
-    getMessages
+    getMessages,
+    getRoomIdByUser
 }

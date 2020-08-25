@@ -93,6 +93,7 @@ module.exports = socket => {
                     id: "roomId"
                 });
                 // 
+                socket.join(roomData.roomId);
                 socket.emit('success', clientLinkRes);
             } else throw `Room not found`;
             // } else throw `Client not found`;
@@ -114,6 +115,43 @@ module.exports = socket => {
             socket.emit('error', err);
         }
     });
+    // 
+    // VIDEO FUNCTIONS
+    // VIDEO
+    socket.on('liveStreamInitFail', async () => {
+        try {
+            let roomId = await _DB.getRoomIdByUser(socket.userId);
+            if (roomId != null)
+                socket.to(roomId).emit('patientLinkFailed');
+            else throw 'Room not found';
+        } catch (err) {
+            socket.emit('error', err);
+        }
+    });
+    // 
+    socket.on('liveStreamLink', async (data) => {
+        try {
+            let roomId = await _DB.getRoomIdByUser(socket.userId);
+            if (roomId != null)
+                socket.to(roomId).emit('liveStreamDataFlux', data);
+            else throw 'Room not found';
+
+        } catch (err) {
+            socket.emit('error', err);
+        }
+    });
+    // 
+    socket.on('endCall', async () => {
+        try {
+            let roomId = await _DB.getRoomIdByUser(socket.userId);
+            if (roomId != null)
+                socket.to(roomId).emit('liveStreamTerminated');
+            else throw 'Room not found';
+        } catch (err) {
+            socket.emit('error', err);
+        }
+    });
+
     // WHEN A USER DISCONNECYS
     socket.on('disconnect', async () => {
         // console.log(`socket OFF | ${socket.userId}`);
@@ -135,6 +173,7 @@ module.exports = socket => {
         }
     });
     // 
+    // WHEN THERE IS AN ERROR
     socket.on('error', (errMsg = null) => {
         socket.emit('error', errMsg);
     });

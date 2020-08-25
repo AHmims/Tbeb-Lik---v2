@@ -8,6 +8,24 @@
         <input type="text" id="msgInput">
         <input type="button" value="Send" id="msgSend">
     </div>
+    <div id="videoConfSection">
+        <div>
+            <span>
+                <p>Host video</p>
+                <video id="hostVideo" autoplay controls class="videoCorrection"></video>
+            </span>
+            <span>
+                <p>Remote video</p>
+                <video id="remoteVideo" autoplay controls class="videoCorrection"></video>
+            </span>
+        </div>
+        <% if(userType != 'visitor'){ %>
+        <input type="button" value="Call" id="initCall">
+        <% } %>
+        <input type="button" value="Hangup" id="endCall">
+        <input type="button" value="Toggle Cam" id="toggleCam">
+        <input type="button" value="Toggle Mic" id="toggleMic">
+    </div>
 </div>
 <!--  -->
 <script src="/socket.io/socket.io.js"></script>
@@ -19,6 +37,9 @@
 <script src="/public/js/alterEgo/chat_common/chat_socket.js"></script>
 <script src="/public/js/alterEgo/chat_common/chat_controller.js"></script>
 <script src="/public/js/alterEgo/chat_common/chat_view.js"></script>
+<!--  -->
+<script src="/public/js/alterEgo/simplepeer.min.js"></script>
+<script src="/public/js/alterEgo/adapter-latest.js"></script>
 <!--  -->
 <script src="/public/js/alterEgo/utility.js"></script>
 <!--  -->

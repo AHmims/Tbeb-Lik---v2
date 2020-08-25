@@ -6,6 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server_c.js",
+    "secure": "node server_c_https.js",
     "test": "node test.js"
   },
   "repository": {

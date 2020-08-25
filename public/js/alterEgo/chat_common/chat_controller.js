@@ -1,11 +1,23 @@
 $().ready(() => {
-    // 
+    // TEXT MESSAGES
     $('#msgSend').click(chat_sendMessage);
     $('#msgInput').on('keyup', (e) => {
         if (e.key === "Enter")
             chat_sendMessage();
     });
-    // 
+    // VIDEO CHAT
+    $('#initCall').click(async () => {
+        await streaminit();
+    });
+    $('#endCall').click(() => {
+        endCall();
+    });
+    $('#toggleCam').click(() => {
+        camControll();
+    });
+    $('#toggleMic').click(() => {
+        micControll();
+    });
 });
 // 
 async function chat_sendMessage() {

@@ -19,7 +19,7 @@ let stream = null;
 __GLOBAL_SOCKET.on('liveStreamDataFlux', async (offer) => {
     // let status = ;
     // if (confirm('Votre medecin est entrain de vous appelle.')) {
-    let btnRes = await toastConfirm(`Votre medecin est entrain de vous appelle.`);
+    let btnRes = await toastConfirm(`Votre medecin est entrain de vous appellez.`);
     if (btnRes) {
         videoChatIconsControlls();
         showVideoBox();
