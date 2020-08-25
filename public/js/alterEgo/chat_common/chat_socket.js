@@ -5,5 +5,6 @@ __CHAT_SOCKET.on('newMsg', msgData => {
 });
 // 
 const sendMessage = msgData => {
-    __CHAT_SOCKET.emit('newMsg', msgData);
+    const urlArray = window.location.href.split('/');
+    __CHAT_SOCKET.emit('newMsg', msgData, urlArray[urlArray.length - 1].split('?')[0]);
 }

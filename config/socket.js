@@ -28,6 +28,7 @@ module.exports = socket => {
                         } else throw 'Error while initializing';
                     }
                     socket.userId = userId;
+                    socket.userType = userData.userType;
                     socket.emit('success', 'Initialized successfully');
                 } else throw 'Error while initializing, please refreash the page and try again.';
             } else throw 'Email is not valid';
@@ -77,33 +78,44 @@ module.exports = socket => {
     socket.on('joinChat', async (userEmail, notifId) => {
         // const clientData =
         try {
-            const clientData = await _DB.getUserAuthData('email', userEmail);
-            if (clientData != null) {
-                const unlinkRes = await unlinkClientFromRooms(clientData.userId);
+            // const clientData = await _DB.getUserAuthData('email', userEmail);
+            // if (clientData != null) {
+            const unlinkRes = await unlinkClientFromRooms(socket.userId);
+            // 
+            let roomData = await _DB.getAllData('room', `WHERE roomVisitorId IN (SELECT visitorId FROM preConsultation WHERE preConsId = '${notifId}')`);
+            if (roomData != null) {
+                roomData = roomData[0];
                 // 
-                let roomData = await _DB.getAllData('room', `WHERE roomVisitorId IN (SELECT visitorId FROM preConsultation WHERE preConsId = '${notifId}')`);
-                if (roomData != null) {
-                    roomData = roomData[0];
-                    // 
-                    let clientLinkRes = await _DB.customDataUpdate({
-                        roomClientId: clientData.userId
-                    }, roomData.roomId, {
-                        table: "room",
-                        id: "roomId"
-                    });
-                    // 
-                    socket.emit('success', clientLinkRes);
-                }
-                throw `Room not found`;
-            } else throw `Client not found`;
+                let clientLinkRes = await _DB.customDataUpdate({
+                    roomClientId: socket.userId
+                }, roomData.roomId, {
+                    table: "room",
+                    id: "roomId"
+                });
+                // 
+                socket.emit('success', clientLinkRes);
+            }
+            throw `Room not found`;
+            // } else throw `Client not found`;
         } catch (err) {
             console.error(err);
             socket.emit('error', err);
         }
     });
     // WHEN A USER SENDS A NEW MESSAGE
-    socket.on('newMsg', async msgData => {
-        // socket.to(other).emit('newMsg',msgData)
+    socket.on('newMsg', async (msgData, notifId) => {
+        try {
+
+            const reqParams = socket.userType == 'Visitor' ? ['clientId', 'consultation'] : ['visitorId', 'preConsultation'];
+            const userData = await _DB.getAllData('appUser', `WHERE userId IN (SELECT ${reqParams[0]} FROM ${reqParams[1]} WHERE preConsId = '${notifId}')`);
+            if (userData != null) {
+                socket.to(userData[0].socket).emit('newMsg', msgData)
+            }
+            throw `User not found`;
+        } catch (err) {
+            console.error(err);
+            socket.emit('error', err);
+        }
     });
     // WHEN A USER DISCONNECYS
     socket.on('disconnect', async () => {
