@@ -15,9 +15,12 @@ async function chat_sendMessage() {
         msgContent: msgContent
     };
     // 
+    const urlArray = window.location.href.split('/');
+    // 
     const reqRes = await sendRequest(`/api/newTextMessage`, {
         msgContent: msgContent,
-        userTZ: getTimeZone()
+        userTZ: getTimeZone(),
+        preConsId: urlArray[urlArray.length - 1].split('?')[0]
     });
     console.log(reqRes);
     if (reqRes.code == 200) {

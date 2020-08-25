@@ -250,12 +250,14 @@ router.post('/newTextMessage', async (req, res) => {
         // 
         const {
             msgContent,
-            userTZ
+            userTZ,
+            preConsId
         } = _TRIM(req.body);
         // 
         if (msgContent.length <= 0) errorMsg = `Message can't be empty`;
         if (errorMsg == '') {
-            const preCons = await getPreconsForCurrentUser(req.user.userId, req.user.userType);
+            // const preCons = await getPreconsForCurrentUser(req.user.userId, req.user.userType); //USE THIS IF THE ABILITY TO SEND MESSAGES FROM PAST CONVERSATION IS GOING TO BE DISABLED
+            const preCons = preConsId;
             if (preCons != null) {
                 const msgRes = await sendAndGetMessage(new _CLASSES.message(req.user.userId, msgContent, getUtc(), userTZ, 'text', null, preCons));
                 if (msgRes != null) {

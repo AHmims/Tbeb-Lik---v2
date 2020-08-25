@@ -412,6 +412,16 @@ const sendAndGetMessage = async msgClassObject => {
     }
 }
 // 
+const canAccessChatRoute = async (userId, userType, notifId) => {
+    try {
+        const notifData = await _DB.getAllData('preConsultation', `WHERE preConsId = '${notifId}' AND visitorId ${(userType == 'Visitor' ? "= '"+ userId +"'" :"IN (SELECT userId FROM appUser WHERE linkToClient = '"+ userId +"')")}`);
+        return notifData != null ? true : false;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+}
+// 
 // 
 // 
 module.exports = {
@@ -436,5 +446,6 @@ module.exports = {
     getRefusedPrecons,
     getVisitorConsultations,
     getPreconsForCurrentUser,
-    sendAndGetMessage
+    sendAndGetMessage,
+    canAccessChatRoute
 }
