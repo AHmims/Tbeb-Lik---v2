@@ -5,6 +5,9 @@ document.getElementById('rootElement').removeAttribute('data-email');
 __GLOBAL_SOCKET.on('connect', () => {
     console.log('socket on');
     __GLOBAL_SOCKET.emit('online', _INDEX);
+    // 
+    const urlArray = window.location.href.split('/');
+    __GLOBAL_SOCKET.emit('joinChat', _INDEX, urlArray[urlArray.length - 1].split('?')[0])
 });
 // 
 // 

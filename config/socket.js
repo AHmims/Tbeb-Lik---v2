@@ -1,7 +1,8 @@
 const _CLASSES = require('../model/classes');
 const _DB = require('../model/dbQuery');
 const {
-    clientDataFromVisitor
+    clientDataFromVisitor,
+    unlinkClientFromRooms
 } = require('../helper/helpers');
 
 module.exports = socket => {
@@ -71,6 +72,38 @@ module.exports = socket => {
             visitorData = visitorData[0];
             socket.to(visitorData.socket).emit('refuseNotif', notifId, notifData);
         } else socket.emit('error', `Visitor not found`);
+    });
+    // CLIENT JOINS CHAT
+    socket.on('joinChat', async (userEmail, notifId) => {
+        // const clientData =
+        try {
+            const clientData = await _DB.getUserAuthData('email', userEmail);
+            if (clientData != null) {
+                const unlinkRes = await unlinkClientFromRooms(clientData.userId);
+                // 
+                let roomData = await _DB.getAllData('room', `WHERE roomVisitorId IN (SELECT visitorId FROM preConsultation WHERE preConsId = '${notifId}')`);
+                if (roomData != null) {
+                    roomData = roomData[0];
+                    // 
+                    let clientLinkRes = await _DB.customDataUpdate({
+                        roomClientId: clientData.userId
+                    }, roomData.roomId, {
+                        table: "room",
+                        id: "roomId"
+                    });
+                    // 
+                    socket.emit('success', clientLinkRes);
+                }
+                throw `Room not found`;
+            } else throw `Client not found`;
+        } catch (err) {
+            console.error(err);
+            socket.emit('error', err);
+        }
+    });
+    // WHEN A USER SENDS A NEW MESSAGE
+    socket.on('newMsg', async msgData => {
+        // socket.to(other).emit('newMsg',msgData)
     });
     // WHEN A USER DISCONNECYS
     socket.on('disconnect', async () => {

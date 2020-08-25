@@ -143,7 +143,7 @@ const acceptPrecons = async data => {
             // 
             if (updatePrecons) {
                 // UNLINK CLIENT FROM OTHER ROOMS
-                const unlinkRes = await unlinkMedecinFromRooms(data.clientId);
+                const unlinkRes = await unlinkClientFromRooms(data.clientId);
                 // if (unlinkRes) {
                 const roomRes = await _DB.getRoomByNotifId(data.preConsId);
                 if (roomRes != null) {
@@ -176,7 +176,7 @@ const acceptPrecons = async data => {
     }
 }
 // 
-const unlinkMedecinFromRooms = async clientId => {
+const unlinkClientFromRooms = async clientId => {
     try {
         return await _DB.customDataUpdate({
             roomClientId: null
@@ -447,5 +447,6 @@ module.exports = {
     getVisitorConsultations,
     getPreconsForCurrentUser,
     sendAndGetMessage,
-    canAccessChatRoute
+    canAccessChatRoute,
+    unlinkClientFromRooms
 }
