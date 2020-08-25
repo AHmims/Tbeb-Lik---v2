@@ -94,8 +94,7 @@ module.exports = socket => {
                 });
                 // 
                 socket.emit('success', clientLinkRes);
-            }
-            throw `Room not found`;
+            } else throw `Room not found`;
             // } else throw `Client not found`;
         } catch (err) {
             console.error(err);
@@ -105,13 +104,11 @@ module.exports = socket => {
     // WHEN A USER SENDS A NEW MESSAGE
     socket.on('newMsg', async (msgData, notifId) => {
         try {
-
             const reqParams = socket.userType == 'Visitor' ? ['clientId', 'consultation'] : ['visitorId', 'preConsultation'];
             const userData = await _DB.getAllData('appUser', `WHERE userId IN (SELECT ${reqParams[0]} FROM ${reqParams[1]} WHERE preConsId = '${notifId}')`);
             if (userData != null) {
                 socket.to(userData[0].socket).emit('newMsg', msgData)
-            }
-            throw `User not found`;
+            } else throw `User not found`;
         } catch (err) {
             console.error(err);
             socket.emit('error', err);
@@ -138,7 +135,7 @@ module.exports = socket => {
         }
     });
     // 
-    socket.on('error', () => {
-        socket.emitt('error');
+    socket.on('error', (errMsg = null) => {
+        socket.emit('error', errMsg);
     });
 }

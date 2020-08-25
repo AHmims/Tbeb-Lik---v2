@@ -26,6 +26,7 @@ async function chat_sendMessage() {
     if (reqRes.code == 200) {
         msgError = false;
         msgData = reqRes.content;
+        sendMessage(reqRes.content);
     }
     chat_newMessage(msgData, false, msgError);
     // 
