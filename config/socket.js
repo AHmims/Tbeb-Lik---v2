@@ -24,7 +24,8 @@ module.exports = socket => {
                     if (userData.userType == 'Visitor') {
                         const appUserData = await _DB.getAllData('appUser', `WHERE userId = '${userId}'`);
                         if (appUserData != null) {
-                            socket.join(appUserData.roomId);
+                            socket.leaveAll();
+                            socket.join(appUserData[0].roomId);
                         } else throw 'Error while initializing';
                     }
                     socket.userId = userId;

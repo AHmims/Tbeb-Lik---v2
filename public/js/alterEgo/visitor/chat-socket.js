@@ -20,6 +20,7 @@ __GLOBAL_SOCKET.on('success', (msg = 'no message provided') => {
 let __PEER;
 let stream = null;
 __GLOBAL_SOCKET.on('liveStreamDataFlux', async offer => {
+    console.log(offer);
     // let status = ;
     // if (confirm('Votre medecin est entrain de vous appelle.')) {
     // let btnRes = await toastConfirm(`Votre medecin est entrain de vous appellez.`);

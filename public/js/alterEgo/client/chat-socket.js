@@ -53,7 +53,7 @@ async function streaminit() {
     // 
     __PEER.on('signal', async data => {
         if (!ready) {
-            await __GLOBAL_SOCKET.emit('liveStreamLink', data);
+            __GLOBAL_SOCKET.emit('liveStreamLink', data);
             console.log('streaminit() / signal() | ready | data => ', data);
         } else console.log('streaminit() / signal() | notReady | data => ', data);
     });
@@ -99,6 +99,7 @@ function camControll() {
 // 
 __GLOBAL_SOCKET.on('liveStreamDataFlux', answer => {
     ready = true;
+    console.log(answer);
     __PEER.signal(answer);
 });
 // 
