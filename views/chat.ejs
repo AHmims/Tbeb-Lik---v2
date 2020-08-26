@@ -26,6 +26,13 @@
         <input type="button" value="Toggle Cam" id="toggleCam">
         <input type="button" value="Toggle Mic" id="toggleMic">
     </div>
+    <!--  -->
+    <% if(userType != 'visitor'){ %>
+    <div>
+        <textarea id="conComment" cols="30" rows="10"></textarea>
+        <input type="button" value="Conclurer" id="btnEnd" />
+    </div>
+    <% } %>
 </div>
 <!--  -->
 <script src="/socket.io/socket.io.js"></script>

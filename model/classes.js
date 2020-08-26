@@ -33,13 +33,15 @@ class attachment {
 }
 // 
 class consultation {
-    constructor(consulState, consulDate, consulTimeZone, consulComment, clientId, preConsId) {
+    constructor(consulState, consulDate, consulTimeZone, consulComment, clientId, preConsId, finalisationDate = null, rapportLink = null) {
         this.consulState = consulState;
         this.consulDate = consulDate;
         this.consulTimeZone = consulTimeZone;
         this.consulComment = consulComment;
         this.clientId = clientId;
         this.preConsId = preConsId;
+        this.finalisationDate = finalisationDate;
+        this.rapportLink = rapportLink;
     }
 }
 // 

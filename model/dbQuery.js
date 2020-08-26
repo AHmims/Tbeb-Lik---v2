@@ -304,12 +304,26 @@ async function getMessages(userId, notifId) {
 // GET ROOMID BY USER
 async function getRoomIdByUser(userId) {
     try {
-        let req = "SELECT roomId FROM room WHERE (roomVisitorId = ? OR roomClientId = ?);",
+        let req = "SELECT roomId FROM room WHERE (roomVisitorId = ? OR roomClientId = ?)",
             cnx = await db.connect(),
             res = await cnx.query(req, [userId, userId]);
         cnx.release();
         // 
         return res[0].length > 0 ? res[0][0].roomId : null;
+    } catch (err) {
+        console.error(`error :`, err);
+        return null;
+    }
+}
+// THE NUMBER OF THE GIVEN CLIENT FINISHED CONSULTATIONS
+async function getClientFinishedConsultationsCount(clientId) {
+    try {
+        let req = "SELECT COUNT(*) as cons_count FROM consultation WHERE clientId = ? AND consulState <> '-1'",
+            cnx = await db.connect(),
+            res = await cnx.query(req, clientId);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0][0].cons_count : null;
     } catch (err) {
         console.error(`error :`, err);
         return null;
@@ -374,5 +388,6 @@ module.exports = {
     getConsultation,
     getVisitorConsHistory,
     getMessages,
-    getRoomIdByUser
+    getRoomIdByUser,
+    getClientFinishedConsultationsCount
 }

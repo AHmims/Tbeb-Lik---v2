@@ -243,7 +243,7 @@ router.post('/cancelPrecons', async (req, res) => {
         response(res, 500);
     }
 });
-// NEW MESSAGE
+// NEW TEXT MESSAGE
 router.post('/newTextMessage', async (req, res) => {
     try {
         let errorMsg = '';
@@ -271,6 +271,60 @@ router.post('/newTextMessage', async (req, res) => {
         response(res, 500);
     }
 });
+// END CONSULTATION
+router.post('/finalizeConsultation', async (req, res) => {
+    try {
+        if (req.user.userType != 'Visitor') {
+            let error_msg = '';
+            const {
+                conComment,
+                preConsId
+            } = _TRIM(req.body);
+            // 
+            const consCount = await _DB.getClientFinishedConsultationsCount(req.user.userId);
+            if (consCount != null) {
+                // const updateRes = await _DB.customDataUpdate({
+                //     consulComment: conComment,
+                //     consulState: 1,
+                //     finalisationDate: getUtc(),
+                //     rapportLink: `Rapport_${consCount + 1}`
+                // }, preConsId, {
+                //     table: 'consultation',
+                //     id: 'preConsId'
+                // });
+                // 
+                // if (updateRes) {
+                // GENERATE PDF
+                const __PDF = require('../model/savePdf');
+                // 
+                const _consultation = await _DB.getAllData(`preConsultation`, `WHERE preConsId = '${preConsId}'`);
+                const _visitor = await _DB.getAllData('visitor', `WHERE visitorId = '${_consultation[0].visitorId}'`);
+                const _company = await _DB.getAllData('appCompany', `WHERE companyId IN (SELECT companyId FROM appUser WHERE userId = '${req.user.userId}')`);
+                // 
+                const reportGenRes = await __PDF.makeReport({
+                    iteration: consCount,
+                    client: req.user.userId,
+                    comment: conComment,
+                    consultation: _consultation[0],
+                    visitor: _visitor[0],
+                    client: {
+                        name: req.user.userName,
+                        email: req.user.userEmail
+                    },
+                    company: _company
+                });
+
+
+                // } else error_msg = `Consultation not updated`;
+            } else error_msg = `Error while getting counsultations count`;
+            response(res, 422, status('error', `Server Error, Consultation not concluded`));
+        } else response(res, 401);
+    } catch (err) {
+        console.error(err);
+        response(res, 500);
+    }
+});
+
 // 
 
 module.exports = router;
