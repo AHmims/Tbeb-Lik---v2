@@ -280,46 +280,57 @@ router.post('/finalizeConsultation', async (req, res) => {
                 conComment,
                 preConsId
             } = _TRIM(req.body);
-            // 
-            const consCount = await _DB.getClientFinishedConsultationsCount(req.user.userId);
-            if (consCount != null) {
-                // GENERATE PDF
-                const __PDF = require('../model/savePdf');
+            //CHECK IF CONSULTATIONS IS ALREADY CONCLUDED 
+            const checkRes = await _DB.checkExistence({
+                table: 'consultation',
+                id: 'preConsId'
+            }, preConsId, `AND consulState = -1`);
+            if (checkRes) {
                 // 
-                const _consultation = await _DB.getAllData(`preConsultation`, `WHERE preConsId = '${preConsId}'`);
-                const _visitor = await _DB.getAllData('visitor', `WHERE visitorId = '${_consultation[0].visitorId}'`);
-                const _company = await _DB.getAllData('appCompany', `WHERE companyId IN (SELECT companyId FROM appUser WHERE userId = '${req.user.userId}')`);
-                // 
-                const reportGenRes = await __PDF.makeReport({
-                    iteration: consCount,
-                    client: req.user.userId,
-                    comment: conComment,
-                    consultation: _consultation[0],
-                    visitor: _visitor[0],
-                    client: {
-                        id: req.user.userId,
-                        name: req.user.userName,
-                        email: req.user.userEmail
-                    },
-                    company: _company[0]
-                });
-                // 
-                if (reportGenRes.status) {
-                    const updateRes = await _DB.customDataUpdate({
-                        consulComment: conComment,
-                        consulState: 1,
-                        finalisationDate: getUtc(),
-                        rapportLink: reportGenRes.downloadLink
-                    }, preConsId, {
-                        table: 'consultation',
-                        id: 'preConsId'
+                const consCount = await _DB.getClientFinishedConsultationsCount(req.user.userId);
+                if (consCount != null) {
+                    // GENERATE PDF
+                    const __PDF = require('../model/savePdf');
+                    // 
+                    const _consultation = await _DB.getAllData(`preConsultation`, `WHERE preConsId = '${preConsId}'`);
+                    const _visitor = await _DB.getAllData('visitor', `WHERE visitorId = '${_consultation[0].visitorId}'`);
+                    const _company = await _DB.getAllData('appCompany', `WHERE companyId IN (SELECT companyId FROM appUser WHERE userId = '${req.user.userId}')`);
+                    // 
+                    const reportGenRes = await __PDF.makeReport({
+                        iteration: consCount,
+                        client: req.user.userId,
+                        comment: conComment,
+                        consultation: _consultation[0],
+                        visitor: _visitor[0],
+                        client: {
+                            id: req.user.userId,
+                            name: req.user.userName,
+                            email: req.user.userEmail
+                        },
+                        company: _company[0]
                     });
                     // 
-                    if (updateRes) {
-                        response(res, 200, status(`success`, reportGenRes.downloadLink));
-                    } else error_msg = `Consultation not updated`;
-                } else error_msg = `ERROR while generating report`;
-            } else error_msg = `Error while getting counsultations count`;
+                    if (reportGenRes.status) {
+                        const updateRes = await _DB.customDataUpdate({
+                            consulComment: conComment,
+                            consulState: 1,
+                            finalisationDate: getUtc(),
+                            rapportLink: reportGenRes.downloadLink
+                        }, preConsId, {
+                            table: 'consultation',
+                            id: 'preConsId'
+                        });
+                        // 
+                        if (updateRes) {
+                            // I COULD DELETE THE GENERATED REPORT, BUT
+                            // IF UPDATE FAILED THEN THAT MEANS THE NEXT REPORT NAME WILL BE THE SAME
+                            // AS THE PREVIOUS ONE, THERFOR THE FILE WILL BE OVERWRITEN \._./
+                            // 
+                            response(res, 200, status(`success`, reportGenRes.downloadLink));
+                        } else error_msg = `Consultation not updated`;
+                    } else error_msg = `ERROR while generating report`;
+                } else error_msg = `Error while getting counsultations count`;
+            } else error_msg `Consultaion already concluded`;
             response(res, 422, status('error', error_msg));
         } else response(res, 401);
     } catch (err) {
