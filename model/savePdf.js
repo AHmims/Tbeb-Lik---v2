@@ -1,87 +1,65 @@
 const fse = require('fs-extra');
 const PDFDocument = require("pdfkit");
 const path = require('path');
+const {
+    getUtc,
+    fromUtcToTimeZone
+} = require('../helper/date');
+
 // 
-const dataTemplate = {
-    mle: "FST56OP",
-    nom: "ali",
-    prenom: "hmims",
-    direction: "DOKALA",
-    nbrJA: "12",
-    nbrJV: "20",
-    visaM: "UYUYUYUYUYUY"
-}
-// 
-async function makeDoc(data) {
+async function makeReport(data) {
+    // console.log(data);
     try {
-        const retData = await getFileName(data.mle);
+        const retData = await getFileName(data.client.id, data.iteration);
         const __FILEPATH = retData.__FILENAME;
+        // 
         // 
         let document = new PDFDocument({
             margin: 50
         });
         // HEADER
-        document.image(path.join(__dirname, '../', 'serialisationResources', 'logo.png'), 50, 40, {
+        document.image(path.join(__dirname, '../', 'serialisationResources', 'logo_2.png'), 50, 40, {
                 height: 50
             }).fontSize(10)
-            .text(`${new Date().toGMTString()}`, 200, 60, {
+            .text(fromUtcToTimeZone(data.consultation.preConsDateTimeZone, getUtc()), 200, 60, {
                 align: "right"
             })
-            .text(`${data.mle}`, 200, 75, {
+            .text(`${data.client.name}`, 200, 75, {
                 align: "right"
             })
-            .text(`${data.nom} ${data.prenom.toUpperCase()}`, 200, 90, {
+            .text(`${data.client.email}`, 200, 90, {
                 align: "right"
             })
             .moveDown();
-        // CONTENT
+        // PRE-HEADER
+        document.fontSize(12)
+            .text('Entreprise :', 50, 120)
+            .text(data.company.companyName, 125, 120)
+            .text('Téléphone :', 50, 140)
+            .text(data.company.companyTel, 125, 140)
+            .text('Email : ', 50, 160)
+            .text(data.company.companyEmail, 125, 160)
+            .text('Adresse :', 50, 180)
+            .text(data.company.companyAdrs, 125, 180);
+        // generateHr(document, 200);
+
+        // HEADER
         document.fontSize(20)
             .font('Helvetica')
-            .text('Rapport', 50, 150, {});
-        generateHr(document, 180);
+            .text('Rapport', 50, 230, {});
+        generateHr(document, 250);
+        // // CONTENT
         document.fontSize(12)
-            .text('Nom :', 50, 200, {
-                align: "left"
-            })
-            .text('Matricule :', 50, 220, {
-                align: "left"
-            })
-            .text('Direction :', 50, 240, {
-                align: "left"
-            })
-            .text('Nombre de jour du RM :', 50, 260, {
-                align: "left"
-            });
-        generateHr(document, 280);
-
-        document.text('Nombre de jour validée :', 300, 300, {
-                align: "left"
-            })
-            .text('Visa de Medecin :', 300, 320, {
-                align: "left"
-            });
-        // FILL DATA
-        let fillData = [
-            `${data.nom} ${data.prenom.toUpperCase()}`,
-            data.mle,
-            data.direction,
-            data.nbrJA
-        ]
-        let startPos = 200;
-        fillData.forEach(element => {
-            document.text(element, 200, startPos, {
-                align: "left"
-            });
-            startPos += 20;
-        });
-        // 
-        document.text(data.nbrJV, 400, 300, {
-                align: "right"
-            })
-            .text(data.visaM, 400, 320, {
-                align: "right"
-            }).moveDown();
-        // 
+            .text('Nom :', 50, 270)
+            .text(data.visitor.visitorName, 200, 270)
+            .text('Téléphone :', 50, 290)
+            .text(data.visitor.visitorTel, 200, 290)
+            .text('Sujet de consultation :', 50, 310)
+            .text(data.consultation.preConsTitle, 200, 310)
+            .text(`Commentaires sur le cas :`, 50, 330)
+            .text(data.comment, 200, 330);
+        generateHr(document, 360);
+        // GENERATE THE PDF
         await savePdfToFile(document, __FILEPATH);
         // 
         return {
@@ -98,102 +76,15 @@ async function makeDoc(data) {
         };
     }
 }
-async function makeReport(data) {
-    console.log(data);
-    /* try {
-        const retData = await getFileName(data.mle);
-        const __FILEPATH = retData.__FILENAME;
-        // 
-        let document = new PDFDocument({
-            margin: 50
-        });
-        // HEADER
-        document.image(path.join(__dirname, '../', 'serialisationResources', 'logo.png'), 50, 40, {
-                height: 50
-            }).fontSize(10)
-            .text(`${new Date().toGMTString()}`, 200, 60, {
-                align: "right"
-            })
-            .text(`${data.mle}`, 200, 75, {
-                align: "right"
-            })
-            .text(`${data.nom} ${data.prenom.toUpperCase()}`, 200, 90, {
-                align: "right"
-            })
-            .moveDown();
-        // CONTENT
-        document.fontSize(20)
-            .font('Helvetica')
-            .text('Rapport', 50, 150, {});
-        generateHr(document, 180);
-        document.fontSize(12)
-            .text('Nom :', 50, 200, {
-                align: "left"
-            })
-            .text('Matricule :', 50, 220, {
-                align: "left"
-            })
-            .text('Direction :', 50, 240, {
-                align: "left"
-            })
-            .text('Nombre de jour du RM :', 50, 260, {
-                align: "left"
-            });
-        generateHr(document, 280);
-
-        document.text('Nombre de jour validée :', 300, 300, {
-                align: "left"
-            })
-            .text('Visa de Medecin :', 300, 320, {
-                align: "left"
-            });
-        // FILL DATA
-        let fillData = [
-            `${data.nom} ${data.prenom.toUpperCase()}`,
-            data.mle,
-            data.direction,
-            data.nbrJA
-        ]
-        let startPos = 200;
-        fillData.forEach(element => {
-            document.text(element, 200, startPos, {
-                align: "left"
-            });
-            startPos += 20;
-        });
-        // 
-        document.text(data.nbrJV, 400, 300, {
-                align: "right"
-            })
-            .text(data.visaM, 400, 320, {
-                align: "right"
-            }).moveDown();
-        // 
-        await savePdfToFile(document, __FILEPATH);
-        // 
-        return {
-            status: true,
-            filename: retData.minFileName,
-            downloadLink: retData.__FILENAME
-        };
-        // });
-    } catch (err) {
-        console.log(err);
-        return {
-            status: false,
-            filename: null
-        };
-    }*/
-}
 // 
-async function getFileName(matricule) {
-    const __PATH = `data/rapports`;
+async function getFileName(clientId, consNb) {
+    const __PATH = `files/rapports`;
     await fse.ensureDir(__PATH);
-    const __PATH_YEARLY = __PATH + `/${new Date().getFullYear()}`;
-    await fse.ensureDir(__PATH_YEARLY);
-    const __USERPATH = __PATH_YEARLY + `/${matricule}`;
+    // const __PATH_YEARLY = __PATH + `/${new Date().getFullYear()}`;
+    // await fse.ensureDir(__PATH_YEARLY);
+    const __USERPATH = __PATH + `/${clientId}`;
     await fse.ensureDir(__USERPATH);
-    const nbRapports = (await fse.readdir(__USERPATH)).length + 1;
+    const nbRapports = consNb + 1;
     const __FILENAME = __USERPATH + `/RAPP${nbRapports}.pdf`;
     // 
     return {
@@ -235,6 +126,5 @@ function savePdfToFile(pdf, fileName) {
 }
 // 
 module.exports = {
-    makeDoc,
     makeReport
-}
+};

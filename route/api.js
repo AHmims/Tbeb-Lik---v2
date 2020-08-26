@@ -283,17 +283,6 @@ router.post('/finalizeConsultation', async (req, res) => {
             // 
             const consCount = await _DB.getClientFinishedConsultationsCount(req.user.userId);
             if (consCount != null) {
-                // const updateRes = await _DB.customDataUpdate({
-                //     consulComment: conComment,
-                //     consulState: 1,
-                //     finalisationDate: getUtc(),
-                //     rapportLink: `Rapport_${consCount + 1}`
-                // }, preConsId, {
-                //     table: 'consultation',
-                //     id: 'preConsId'
-                // });
-                // 
-                // if (updateRes) {
                 // GENERATE PDF
                 const __PDF = require('../model/savePdf');
                 // 
@@ -308,16 +297,30 @@ router.post('/finalizeConsultation', async (req, res) => {
                     consultation: _consultation[0],
                     visitor: _visitor[0],
                     client: {
+                        id: req.user.userId,
                         name: req.user.userName,
                         email: req.user.userEmail
                     },
-                    company: _company
+                    company: _company[0]
                 });
-
-
-                // } else error_msg = `Consultation not updated`;
+                // 
+                if (reportGenRes.status) {
+                    const updateRes = await _DB.customDataUpdate({
+                        consulComment: conComment,
+                        consulState: 1,
+                        finalisationDate: getUtc(),
+                        rapportLink: reportGenRes.downloadLink
+                    }, preConsId, {
+                        table: 'consultation',
+                        id: 'preConsId'
+                    });
+                    // 
+                    if (updateRes) {
+                        response(res, 200, status(`success`, reportGenRes.downloadLink));
+                    } else error_msg = `Consultation not updated`;
+                } else error_msg = `ERROR while generating report`;
             } else error_msg = `Error while getting counsultations count`;
-            response(res, 422, status('error', `Server Error, Consultation not concluded`));
+            response(res, 422, status('error', error_msg));
         } else response(res, 401);
     } catch (err) {
         console.error(err);

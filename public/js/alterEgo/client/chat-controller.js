@@ -8,8 +8,8 @@ $().ready(() => {
         console.log(reqRes);
         // 
         if (reqRes.code == 200) {
-
-        }
+            alert(`REPORT GENERATED => ${reqRes.content}`);
+        } else console.error(reqRes.content);
     });
 });
 // 
