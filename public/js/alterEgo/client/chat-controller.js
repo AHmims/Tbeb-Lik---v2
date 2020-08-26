@@ -9,16 +9,16 @@ $().ready(() => {
         // 
         if (reqRes.code == 200) {
             const urlArray = window.location.href.split('/');
-            const reqRes = await sendRequest(`/api/newTextMessage`, {
+            const msgReqRes = await sendRequest(`/api/newTextMessage`, {
                 msgContent: `Rapport`,
                 userTZ: getTimeZone(),
                 preConsId: urlArray[urlArray.length - 1].split('?')[0],
                 msgType: 'report',
                 msgPath: reqRes.content
             });
-            if (reqRes.code == 200) {
-                sendMessage(reqRes.content);
-                chat_newMessage(reqRes.content, false);
+            if (msgReqRes.code == 200) {
+                sendMessage(msgReqRes.content);
+                chat_newMessage(msgReqRes.content, false);
             }
             alert(`REPORT GENERATED => ${reqRes.content}`);
         } else console.error(reqRes.content);
