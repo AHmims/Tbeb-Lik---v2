@@ -213,5 +213,5 @@ const renderConsultation = data => {
     });
     container.appendChild(btn);
     // 
-    document.getElementById('clientConsul').appendChild(container);
+    document.getElementById('activeConsul').appendChild(container);
 }

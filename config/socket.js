@@ -24,7 +24,7 @@ module.exports = socket => {
                     if (userData.userType == 'Visitor') {
                         const appUserData = await _DB.getAllData('appUser', `WHERE userId = '${userId}'`);
                         if (appUserData != null) {
-                            socket.leaveAll();
+                            // socket.leaveAll();
                             socket.join(appUserData[0].roomId);
                         } else throw 'Error while initializing';
                     }
@@ -108,8 +108,11 @@ module.exports = socket => {
         try {
             const reqParams = socket.userType == 'Visitor' ? ['clientId', 'consultation'] : ['visitorId', 'preConsultation'];
             const userData = await _DB.getAllData('appUser', `WHERE userId IN (SELECT ${reqParams[0]} FROM ${reqParams[1]} WHERE preConsId = '${notifId}')`);
+            // let roomId = await _DB.getRoomIdByUser(socket.userId);
             if (userData != null) {
+                // if (roomId != null) {
                 socket.to(userData[0].socket).emit('newMsg', msgData)
+                // socket.to(roomId).emit('newMsg', msgData)
             } else throw `User not found`;
         } catch (err) {
             console.error(err);

@@ -1,8 +1,20 @@
 <tr>
     <td colspan="<%= !message.my_msg ? '2': '1' %>">
-        <%= !message.my_msg ? message.msgContent : '' %>
+        <% if(!message.my_msg){ %>
+        <% if(message.msgType != 'text'){ %>
+        <a href="<%= message.msgFilePath %>"><%= message.msgContent %></a>
+        <% }else{ %>
+        <span><%= message.msgContent %></span>
+        <% } %>
+        <% } %>
     </td>
     <td colspan="<%= message.my_msg ? '2': '1' %>">
-        <%= message.my_msg ? message.msgContent : '' %>
+        <% if(message.my_msg){ %>
+        <% if(message.msgType != 'text'){ %>
+        <a href="<%= message.msgFilePath %>"><%= message.msgContent %></a>
+        <% }else{ %>
+        <span><%= message.msgContent %></span>
+        <% } %>
+        <% } %>
     </td>
 </tr>

@@ -243,7 +243,7 @@ router.post('/cancelPrecons', async (req, res) => {
         response(res, 500);
     }
 });
-// NEW TEXT MESSAGE
+// NEW TEXT MESSAGE && REPORT
 router.post('/newTextMessage', async (req, res) => {
     try {
         let errorMsg = '';
@@ -254,12 +254,15 @@ router.post('/newTextMessage', async (req, res) => {
             preConsId
         } = _TRIM(req.body);
         // 
+        const msg_type = req.body.msgType ? req.body.msgType : 'text';
+        const msg_filePath = req.body.msgPath ? req.body.msgPath : null;
+        // 
         if (msgContent.length <= 0) errorMsg = `Message can't be empty`;
         if (errorMsg == '') {
             // const preCons = await getPreconsForCurrentUser(req.user.userId, req.user.userType); //USE THIS IF THE ABILITY TO SEND MESSAGES FROM PAST CONVERSATION IS GOING TO BE DISABLED
             const preCons = preConsId;
             if (preCons != null) {
-                const msgRes = await sendAndGetMessage(new _CLASSES.message(req.user.userId, msgContent, getUtc(), userTZ, 'text', null, preCons));
+                const msgRes = await sendAndGetMessage(new _CLASSES.message(req.user.userId, msgContent, getUtc(), userTZ, msg_type, msg_filePath, preCons));
                 if (msgRes != null) {
                     response(res, 200, status('success', msgRes));
                 } else errorMsg = `Error while saving message`;
@@ -330,7 +333,7 @@ router.post('/finalizeConsultation', async (req, res) => {
                         } else error_msg = `Consultation not updated`;
                     } else error_msg = `ERROR while generating report`;
                 } else error_msg = `Error while getting counsultations count`;
-            } else error_msg `Consultaion already concluded`;
+            } else error_msg = `Consultaion already concluded`;
             response(res, 422, status('error', error_msg));
         } else response(res, 401);
     } catch (err) {

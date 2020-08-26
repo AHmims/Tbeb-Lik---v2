@@ -24,7 +24,8 @@ async function chat_sendMessage() {
     const msgContent = $('#msgInput').val();
     let msgError = true;
     let msgData = {
-        msgContent: msgContent
+        msgContent: msgContent,
+        msgType: 'text'
     };
     // 
     const urlArray = window.location.href.split('/');
