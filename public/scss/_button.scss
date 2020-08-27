@@ -1,0 +1,45 @@
+@use 'colors';
+
+@mixin main() {
+    background: colors.$accent;
+    color: white;
+    border-radius: 6px;
+    transition: background 150ms ease-in-out;
+
+    &:hover {
+        background: colors.$accent-200;
+    }
+
+    &:active {
+        outline: none;
+        background: colors.$accent-dark;
+        box-shadow: 0px 0px 0px 3px colors.$accent-100;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0px 0px 0px 3px colors.$accent-100, inset 0px 0px 0px 1px colors.$accent-dark;
+    }
+}
+
+@mixin sec() {
+    background: colors.$grey-100;
+    color: colors.$grey-500;
+    border-radius: 6px;
+    transition: background 150ms ease-in-out;
+
+    &:hover {
+        background: colors.$grey-50;
+    }
+
+    &:active {
+        outline: none;
+        // background: colors.$grey-400;
+        box-shadow: 0px 0px 0px 3px colors.$grey-200;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0px 0px 0px 3px colors.$grey-200, inset 0px 0px 0px 1px colors.$grey-400;
+    }
+}

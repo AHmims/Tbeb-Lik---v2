@@ -1,0 +1,215 @@
+.nb_container {
+  width: 100%;
+}
+.nb_container .nb_inner_container {
+  height: 80px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+}
+.nb_container .nb_inner_container:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: #f1f1f2;
+  bottom: 0;
+  left: 0;
+  border-radius: 99px;
+}
+.nb_container .nb_inner_container .nb_links_container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.nb_container .nb_inner_container .nb_links_container > *:not(:last-child) {
+  margin: 0 10px;
+}
+.nb_container .nb_inner_container .nb_links_container .nb_link {
+  font-size: 16px;
+  font-weight: 500;
+  color: #0d0c22;
+  padding: 4px 8px;
+  border-radius: 5px;
+  transition: background 100ms ease-in-out;
+}
+.nb_container .nb_inner_container .nb_links_container .nb_link:hover {
+  background: #f7f7f8;
+}
+.nb_container .nb_inner_container .nb_links_container .vertical_sep {
+  width: 2px;
+  height: 20px;
+  margin: 0 5px;
+  border-radius: 999px;
+  background: #ebebec;
+}
+.nb_container .nb_inner_container .nb_links_container .nb_signup {
+  padding: 10px 18px;
+  /* font-size: 18px; */
+  background: #2855bd;
+  color: white;
+  border-radius: 6px;
+  transition: background 150ms ease-in-out;
+}
+.nb_container .nb_inner_container .nb_links_container .nb_signup:hover {
+  background: #2d5ed2;
+}
+.nb_container .nb_inner_container .nb_links_container .nb_signup:active {
+  outline: none;
+  background: #244ba8;
+  box-shadow: 0px 0px 0px 3px #d5dff6;
+}
+.nb_container .nb_inner_container .nb_links_container .nb_signup:focus {
+  outline: none;
+  box-shadow: 0px 0px 0px 3px #d5dff6, inset 0px 0px 0px 1px #244ba8;
+}
+@media (max-width: 575px) {
+  .nb_container .nb_inner_container {
+    box-sizing: border-box;
+    padding: 0 10px;
+  }
+  .nb_container .nb_inner_container .nb_links_container {
+    display: none;
+  }
+  .nb_container .nb_inner_container .nb_menu_btn {
+    display: block;
+  }
+}
+.nb_container .nb_menu_btn {
+  display: none;
+  background: 0;
+  padding: 10px;
+  height: fit-content;
+  border-radius: 8px;
+  border: none;
+  color: #676878;
+  transition: background 150ms ease-in-out;
+  cursor: pointer;
+}
+.nb_container .nb_menu_btn svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+  fill: red;
+}
+.nb_container .nb_menu_btn:hover {
+  background: #f7f7f8;
+}
+.nb_container .nb_mobile_container {
+  box-sizing: border-box;
+  padding: 8px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
+.nb_container .nb_mobile_container .nb_mobile_content {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 15px 10px;
+  position: relative;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #f1f1f2;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_top > a {
+  margin-left: 8px;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_top .nb_menu_btn {
+  display: block;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content {
+  margin-top: 15px;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_link {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 8px;
+  border-radius: 5px;
+  transition: background 100ms ease-in-out;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_link svg {
+  width: 24px;
+  height: 24px;
+  color: #260453;
+  margin-right: 8px;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_link .nb_m_link_text {
+  font-size: 18px;
+  font-weight: 500;
+  color: #0d0c22;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_link:hover {
+  background: #f7f7f8;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .horizontal_sep {
+  width: 100%;
+  height: 2px;
+  margin: 10px 0;
+  border-radius: 99px;
+  background: #f7f7f8;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container > *:not(:last-child) {
+  margin-bottom: 8px;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container .nb_m_link_btn {
+  box-sizing: border-box;
+  font-size: 18px;
+  font-weight: 500;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container .nb_signup {
+  background: #2855bd;
+  color: white;
+  border-radius: 6px;
+  transition: background 150ms ease-in-out;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container .nb_signup:hover {
+  background: #2d5ed2;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container .nb_signup:active {
+  outline: none;
+  background: #244ba8;
+  box-shadow: 0px 0px 0px 3px #d5dff6;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container .nb_signup:focus {
+  outline: none;
+  box-shadow: 0px 0px 0px 3px #d5dff6, inset 0px 0px 0px 1px #244ba8;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container .nb_login {
+  background: #f7f7f8;
+  color: #676878;
+  border-radius: 6px;
+  transition: background 150ms ease-in-out;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container .nb_login:hover {
+  background: #fafafb;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container .nb_login:active {
+  outline: none;
+  box-shadow: 0px 0px 0px 3px #f1f1f2;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container .nb_login:focus {
+  outline: none;
+  box-shadow: 0px 0px 0px 3px #f1f1f2, inset 0px 0px 0px 1px #d2d6db;
+}
+
+/*# sourceMappingURL=navbar.css.map */
