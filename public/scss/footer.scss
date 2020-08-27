@@ -47,6 +47,13 @@
             @media (max-width: 767px) {
                 width: 320px;
             }
+
+            //XS
+            @media (max-width: 320px) {
+                width: 100%;
+                box-sizing: border-box;
+                padding: 0 5px;
+            }
         }
 
         .ft-footerSeparator-cntr {

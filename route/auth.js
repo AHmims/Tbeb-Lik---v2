@@ -221,7 +221,8 @@ router.post('/c-register', isAuth_alt, async (req, res, next) => {
             renderError(["Email exist déja"]);
     }
     // 
-    function renderError(paramErrors) {
+    async function renderError(paramErrors) {
+        const expertises = await _DB.getAllData('companyExpertise');
         res.render('signup_client', {
             userName,
             userEmail,
@@ -232,7 +233,8 @@ router.post('/c-register', isAuth_alt, async (req, res, next) => {
             companyTel,
             companyFJ,
             companyAdrs,
-            flash_E_array: paramErrors
+            flash_E_array: paramErrors,
+            data_expertises: expertises != null ? expertises : []
         });
     }
     // 

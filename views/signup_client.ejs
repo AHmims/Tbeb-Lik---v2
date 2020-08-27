@@ -1,109 +1,117 @@
-<%- include('./partials/feedback') %>
-<form action="/c-register" method="POST">
-    <table border="1">
-        <tr>
-            <td colspan="2">Informations personnelles :</td>
-        </tr>
-        <tr>
-            <td>Nom complet :</td>
-            <td>
-                <input type="text" name="userName" class="" id="" required
-                    value="<%= typeof userName != 'undefined' ? userName : '' %>">
-            </td>
-        </tr>
-        <tr>
-            <td>Adresse e-mail :</td>
-            <td>
-                <input type="text" name="userEmail" class="" id="" required
-                    value="<%= typeof userEmail != 'undefined' ? userEmail : '' %>">
-            </td>
-        </tr>
-        <tr>
-            <td>Numéro de téléphone :</td>
-            <td>
-                <input type="text" name="userTel" class="" id=""
-                    value="<%= typeof userTel != 'undefined' ? userTel : '' %>">
-            </td>
-        </tr>
-        <tr>
-            <td>Mot de passe :</td>
-            <td>
-                <input type="password" name="userPass" class="" id="" required>
-            </td>
-        </tr>
-        <tr>
-            <td>Confirmation de mot de passe :</td>
-            <td>
-                <input type="password" name="userConPass" class="" id="" required>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">Informations d'entreprise :</td>
-        </tr>
-        <tr>
-            <td>Nom d'entreprise :</td>
-            <td>
-                <input type="text" name="companyName" class="" id="" required
-                    value="<%= typeof companyName != 'undefined' ? companyName : '' %>">
-            </td>
-        </tr>
-        <tr>
-            <td>Activité :</td>
-            <td>
-                <input type="text" name="companyDesc" class="" id=""
-                    value="<%= typeof companyDesc != 'undefined' ? companyDesc : '' %>">
-            </td>
-        </tr>
-        <tr>
-            <td>Adresse e-mail d'entreprise :</td>
-            <td>
-                <input type="text" name="companyEmail" class="" id="" required
-                    value="<%= typeof companyEmail != 'undefined' ? companyEmail : '' %>">
-            </td>
-        </tr>
-        <tr>
-            <td>Numéro de téléphone d'entreprise :</td>
-            <td>
-                <input type="text" name="companyTel" class="" id="" required
-                    value="<%= typeof companyTel != 'undefined' ? companyTel : '' %>">
-            </td>
-        </tr>
-        <tr>
-            <td>Forme juridique :</td>
-            <td>
-                <input type="text" name="companyFJ" class="" id="" required
-                    value="<%= typeof companyFJ != 'undefined' ? companyFJ : '' %>">
-            </td>
-        </tr>
-        <tr>
-            <td>Adresse :</td>
-            <td>
-                <input type="text" name="companyAdrs" class="" id="" required
-                    value="<%= typeof companyAdrs != 'undefined' ? companyAdrs : '' %>">
-            </td>
-        </tr>
-        <% if(data_expertises.length > 0){ %>
-        <tr>
-            <td>Domaine d'expertise :</td>
-            <td>
-                <select name="companyEXP" class="" id="">
-                    <option value="null">Choisire</option>
-                    <% for(const expertise of data_expertises){ %>
-                    <option value='<%= expertise.expertiseId %>'><%= expertise.expertiseName %></option>
-                    <% } %>
-                </select>
-            </td>
-        </tr>
-        <% }%>
-        <tr>
-            <td></td>
-            <td>
-                <button type="button">Anuller</button> <!-- redirect to home page-->
-                <button type="submit">Créer mon compte !</button>
-            </td>
-        </tr>
-    </table>
-</form>
+<div class="auth_container">
+    <div class="auth_inner_container container-custom">
+        <div class="auth_feedback_cont">
+            <%- include('./partials/feedback') %>
+        </div>
+        <form action="/c-register" method="POST" class="auth_form">
+            <p class="auth_form_title">Créer votre compte Entreprise</p>
+            <p class="auth_form_title">Informations personnelles :</p>
+            <div class="auth_form_row">
+                <label for="auth_name" class="auth_row_label">Nom complet :</label>
+                <div class="auth_row_input_cont">
+                    <input type="text" name="userName" class="auth_row_input" id="auth_name" required
+                        value="<%= typeof userName != 'undefined' ? userName : '' %>">
+                </div>
+            </div>
+            <div class="auth_form_row">
+                <label for="auth_email" class="auth_row_label">Adresse e-mail :</label>
+                <div class="auth_row_input_cont">
+                    <input type="text" name="userEmail" class="auth_row_input" id="auth_email" required
+                        value="<%= typeof userEmail != 'undefined' ? userEmail : '' %>">
+                </div>
+            </div>
+            <div class="auth_form_row">
+                <label for="auth_tel" class="auth_row_label">Numéro de téléphone :</label>
+                <div class="auth_row_input_cont">
+                    <input type="text" name="userTel" class="auth_row_input" id="auth_tel"
+                        value="<%= typeof userTel != 'undefined' ? userTel : '' %>">
+                </div>
+            </div>
+            <div class="auth_form_row">
+                <label for="auth_pass" class="auth_row_label">Mot de passe :</label>
+                <div class="auth_row_input_cont">
+                    <input type="password" name="userPass" class="auth_row_input" id="auth_pass" required>
+                </div>
+            </div>
+            <div class="auth_form_row">
+                <label for="auth_conpass" class="auth_row_label">Confirmation de mot de passe :</label>
+                <div class="auth_row_input_cont">
+                    <input type="password" name="userConPass" class="auth_row_input" id="auth_conpass" required>
+                </div>
+            </div>
+            <p class="auth_form_title">Informations d'entreprise :</p>
+            <div class="auth_form_row">
+                <label for="auth_com_name" class="auth_row_label">Nom d'entreprise :</label>
+                <div class="auth_row_input_cont">
+                    <input type="text" name="companyName" class="auth_row_input" id="auth_com_name" required
+                        value="<%= typeof companyName != 'undefined' ? companyName : '' %>">
+                </div>
+            </div>
+            <div class="auth_form_row">
+                <label for="auth_com_desc" class="auth_row_label">Activité :</label>
+                <div class="auth_row_input_cont">
+                    <input type="text" name="companyDesc" class="auth_row_input" id="auth_com_desc"
+                        value="<%= typeof companyDesc != 'undefined' ? companyDesc : '' %>">
+                </div>
+            </div>
+            <div class="auth_form_row">
+                <label for="auth_com_email" class="auth_row_label">Adresse e-mail d'entreprise :</label>
+                <div class="auth_row_input_cont">
+                    <input type="text" name="companyEmail" class="auth_row_input" id="auth_com_email" required
+                        value="<%= typeof companyEmail != 'undefined' ? companyEmail : '' %>">
+                </div>
+            </div>
+            <div class="auth_form_row">
+                <label for="auth_com_tel" class="auth_row_label">Numéro de téléphone d'entreprise :</label>
+                <div class="auth_row_input_cont">
+                    <input type="text" name="companyTel" class="auth_row_input" id="auth_com_tel" required
+                        value="<%= typeof companyTel != 'undefined' ? companyTel : '' %>">
+                </div>
+            </div>
+            <div class="auth_form_row">
+                <label for="auth_com_fr" class="auth_row_label">Forme juridique :</label>
+                <div class="auth_row_input_cont">
+                    <input type="text" name="companyFJ" class="auth_row_input" id="auth_com_fr" required
+                        value="<%= typeof companyFJ != 'undefined' ? companyFJ : '' %>">
+                </div>
+            </div>
+            <div class="auth_form_row">
+                <label for="auth_com_adrs" class="auth_row_label">Adresse :</label>
+                <div class="auth_row_input_cont">
+                    <input type="text" name="companyAdrs" class="auth_row_input" id="auth_com_adrs" required
+                        value="<%= typeof companyAdrs != 'undefined' ? companyAdrs : '' %>">
+                </div>
+            </div>
+            <% if(typeof data_expertises != 'undefined'){ %>
+            <div class="auth_form_row">
+                <label for="auth_com_expr" class="auth_row_label">Domaine d'expertise :</label>
+                <div class="auth_row_input_cont">
+                    <select name="companyEXP" class="auth_row_input auth_row_select" id="auth_com_expr">
+                        <option value="null">Choisire</option>
+                        <% for(const expertise of data_expertises){ %>
+                        <option value='<%= expertise.expertiseId %>'><%= expertise.expertiseName %></option>
+                        <% } %>
+                    </select>
+                </div>
+            </div>
+            <% }%>
+            <div class="auth_form_row">
+                <label for="auth_pass" class="auth_row_label">Mot de passe :</label>
+                <div class="auth_row_input_cont">
+                    <input type="password" name="userPassword" class="auth_row_input" id="auth_pass" required />
+                </div>
+            </div>
+            <div class="auth_form_row auth_form_btns_cont">
+                <button type="submit" class="auth_form_btn auth_form_btn_main">Créer mon compte !</button>
+                <a href="/" class="auth_form_btn auth_form_btn_sec">Anuller</a>
+            </div>
+            <div class="auth_horizontal_sep">
+                <p class="auth_sep_text">Vous étes déjà inscrit ?</p>
+            </div>
+            <a href="/login" class="auth_form_btn auth_form_btn_alt">S'identifier</a>
+        </form>
+    </div>
+</div>
 <script src="/public/js/alterEgo/utility.js"></script>
 <script>
     const TZ_input = document.createElement('input');
@@ -112,6 +120,9 @@
     TZ_input.style.display = 'none';
     document.querySelector('form').appendChild(TZ_input);
 </script>
+
+<%- contentFor('css') %>
+<link rel="stylesheet" href="/public/css/alterego/auth.css" />
 <!-- Partials -->
 <%- contentFor('header') %>
 <%- include('./partials/header_standard') %>

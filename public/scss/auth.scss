@@ -1,0 +1,190 @@
+@use 'common';
+@use 'colors';
+@use 'fonts';
+@use 'utility';
+@use 'button';
+
+// 
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+// 
+.auth_container {
+    width: 100%;
+    flex: 1;
+
+    .auth_inner_container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+
+        @media (max-width: 320px) {
+            position: initial;
+        }
+
+        //XS
+        @media (max-width: 575px) {
+            box-sizing: border-box;
+            padding: 0 10px;
+        }
+
+        .auth_feedback_cont {
+            // position: absolute;
+            max-width: 400px;
+            width: 400px;
+            height: fit-content;
+            top: 10px;
+            display: flex;
+            flex-direction: column;
+            margin: 10px 0;
+
+            @media (max-width: 320px) {
+                top: initial;
+                bottom: 10px;
+            }
+
+            // &>div {
+            //     @include utility.spacing-B(10px);
+            // }
+
+            @media (max-width: 420px) {
+                width: 100%;
+                padding: 0 10px;
+                box-sizing: border-box;
+            }
+        }
+
+        .auth_form {
+            max-width: 400px;
+            width: 400px;
+            // margin-bottom: 25px;
+            margin: 25px 0;
+
+            .auth_form_title {
+                color: colors.$grey-600;
+                font-size: 20px;
+                margin: 0;
+                text-align: center;
+                margin-bottom: 25px;
+            }
+
+            .auth_form_row {
+                @include utility.spacing-B(14px);
+
+                .auth_row_label {
+                    font-size: 16px;
+                    color: colors.$black;
+                }
+
+                .auth_row_input_cont {
+                    margin-top: 5px;
+
+                    .auth_row_input {
+                        width: 100%;
+                        // height: 38px;
+                        box-sizing: border-box;
+                        padding: 6px 12px;
+                        font-size: 14px;
+                        border-radius: 6px;
+                        background: white;
+                        border: 1px solid colors.$grey-400;
+                        transition: 150ms ease-in-out;
+
+                        &:focus {
+                            outline: 0;
+                            box-shadow: 0 0 0 3px #a4cafe73;
+                            border-color: #68a6fd73;
+                        }
+                    }
+
+                    .auth_row_select {
+                        -webkit-appearance: none;
+                        -moz-appearance: none;
+                        -ms-appearance: none;
+                        -o-appearance: none;
+                        appearance: none;
+                        background: url("/public/icon/alterego/selectBG.svg") no-repeat right 12px center;
+                        // background-image: url();
+                    }
+                }
+            }
+
+            .auth_form_btns_cont {
+                &>* {
+                    @include utility.spacing-B(10px);
+                }
+            }
+
+            // 
+            .auth_form_btn {
+                width: 100%;
+                box-sizing: border-box;
+                padding: 10px;
+                border: 0;
+                font-size: 14px;
+                display: block;
+                text-align: center;
+                letter-spacing: 0.5px;
+                border-radius: 8px !important;
+            }
+
+            .auth_form_btn_main {
+                @include button.main();
+            }
+
+            .auth_form_btn_sec {
+                @include button.sec();
+            }
+
+            .auth_form_btn_alt {
+                @include button.alt();
+                font-weight: 500;
+                padding: 8px;
+            }
+
+            // 
+            .auth_horizontal_sep {
+                width: 100%;
+                position: relative;
+                margin-bottom: 10px;
+
+
+                .auth_sep_text {
+                    margin: 0;
+                    font-size: 14px;
+                    color: colors.$grey-600;
+                    background: white;
+                    width: fit-content;
+                    margin: 0 auto;
+                    padding: 0 10px;
+                    text-align: center;
+                }
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    width: 100%;
+                    height: 1px;
+                    background: colors.$grey-400;
+                    top: 50%;
+                    left: 0;
+                    z-index: -1;
+                }
+            }
+
+            // 
+            @media (max-width: 420px) {
+                width: 100%;
+                // padding: 0 10px;
+                // box-sizing: border-box;
+            }
+
+        }
+
+    }
+}

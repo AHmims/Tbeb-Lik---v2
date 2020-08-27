@@ -1,0 +1,42 @@
+@use 'colors';
+@use 'utility';
+
+// 
+.feedback_container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    color: colors.$black;
+
+    &>* {
+        margin-left: 15px;
+        position: relative;
+
+        &:after {
+            content: "";
+            display: block;
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            position: absolute;
+            left: -14px;
+            top: 6px;
+        }
+    }
+}
+
+.feedback_error {
+    background: colors.$red-100;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.12), inset 0px 0px 0px 2px colors.$red-200;
+
+    &>* {
+        &:after {
+            background: colors.$red-200;
+        }
+    }
+}

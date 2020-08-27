@@ -57,4 +57,160 @@ a:active {
   text-decoration: none;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+.ind_container {
+  width: 100%;
+  flex: 1;
+}
+.ind_container .ind_inner_container {
+  box-sizing: border-box;
+  padding: 30px 0;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+}
+.ind_container .ind_inner_container .ind_content {
+  flex: 0.6;
+  margin-right: 40px;
+}
+.ind_container .ind_inner_container .ind_content .ind_title {
+  font-size: 36px;
+  margin: 0;
+  font-weight: 500;
+  color: #0d0c22;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.ind_container .ind_inner_container .ind_content .ind_title > span {
+  line-height: 1;
+}
+.ind_container .ind_inner_container .ind_content .ind_title .ind_title_colored {
+  color: #2855bd;
+}
+.ind_container .ind_inner_container .ind_content .ind_desc {
+  font-size: 18px;
+  margin: 20px 0;
+  color: #676878;
+}
+.ind_container .ind_inner_container .ind_content .ind_btns_desc {
+  color: #585863;
+}
+.ind_container .ind_inner_container .ind_content .ind_btns_cont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15px;
+}
+.ind_container .ind_inner_container .ind_content .ind_btns_cont > * {
+  font-size: 20px;
+  font-weight: 500;
+  padding: 14px 24px;
+  border-radius: 8px !important;
+  line-height: 1;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+.ind_container .ind_inner_container .ind_content .ind_btns_cont > *:not(:last-child) {
+  margin-right: 10px;
+}
+.ind_container .ind_inner_container .ind_content .ind_btns_cont .ind_btn_sec {
+  background: #f7f7f8;
+  color: #676878;
+  border-radius: 6px;
+  transition: background 150ms ease-in-out;
+}
+.ind_container .ind_inner_container .ind_content .ind_btns_cont .ind_btn_sec:hover {
+  background: #fafafb;
+}
+.ind_container .ind_inner_container .ind_content .ind_btns_cont .ind_btn_sec:active {
+  outline: none;
+  box-shadow: 0px 0px 0px 3px #f1f1f2;
+}
+.ind_container .ind_inner_container .ind_content .ind_btns_cont .ind_btn_sec:focus {
+  outline: none;
+  box-shadow: 0px 0px 0px 3px #f1f1f2, inset 0px 0px 0px 1px #d2d6db;
+}
+.ind_container .ind_inner_container .ind_content .ind_btns_cont .ind_btn_main {
+  background: #2855bd;
+  color: white;
+  border-radius: 6px;
+  transition: background 150ms ease-in-out;
+  cursor: pointer;
+}
+.ind_container .ind_inner_container .ind_content .ind_btns_cont .ind_btn_main:hover {
+  background: #2d5ed2;
+}
+.ind_container .ind_inner_container .ind_content .ind_btns_cont .ind_btn_main:active {
+  outline: none;
+  background: #244ba8;
+  box-shadow: 0px 0px 0px 3px #d5dff6;
+}
+.ind_container .ind_inner_container .ind_content .ind_btns_cont .ind_btn_main:focus {
+  outline: none;
+  box-shadow: 0px 0px 0px 3px #d5dff6, inset 0px 0px 0px 1px #244ba8;
+}
+.ind_container .ind_inner_container .ind_image {
+  flex: 0.4;
+  display: flex;
+  justify-content: flex-end;
+}
+.ind_container .ind_inner_container .ind_image img {
+  height: 530px;
+  width: 380px;
+  object-fit: cover;
+  border-radius: 5px;
+}
+@media (max-width: 991px) {
+  .ind_container .ind_inner_container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .ind_container .ind_inner_container .ind_content {
+    margin-right: 0;
+    margin-bottom: 30px;
+    flex: 1;
+  }
+  .ind_container .ind_inner_container .ind_image {
+    flex: 1;
+  }
+  .ind_container .ind_inner_container .ind_image img {
+    width: 100%;
+    height: 200px;
+    object-position: 50% 70%;
+  }
+}
+@media (max-width: 767px) {
+  .ind_container .ind_inner_container .ind_content .ind_title,
+.ind_container .ind_inner_container .ind_content .ind_desc,
+.ind_container .ind_inner_container .ind_content .ind_btns_desc {
+    text-align: center;
+    align-items: center;
+  }
+  .ind_container .ind_inner_container .ind_content .ind_btns_desc {
+    display: block;
+  }
+  .ind_container .ind_inner_container .ind_content .ind_btns_cont {
+    justify-content: center;
+  }
+}
+@media (max-width: 575px) {
+  .ind_container .ind_inner_container {
+    box-sizing: border-box;
+    padding: 20px 10px;
+  }
+  .ind_container .ind_inner_container .ind_content .ind_title {
+    font-size: 28px;
+  }
+  .ind_container .ind_inner_container .ind_content .ind_title .ind_title_colored {
+    font-size: 34px;
+  }
+  .ind_container .ind_inner_container .ind_content .ind_desc {
+    font-size: 16px;
+  }
+}
+
 /*# sourceMappingURL=index.css.map */

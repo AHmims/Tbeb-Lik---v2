@@ -52,6 +52,7 @@
   color: white;
   border-radius: 6px;
   transition: background 150ms ease-in-out;
+  cursor: pointer;
 }
 .nb_container .nb_inner_container .nb_links_container .nb_signup:hover {
   background: #2d5ed2;
@@ -105,6 +106,7 @@
   top: 0;
   left: 0;
   display: none;
+  z-index: 1;
 }
 .nb_container .nb_mobile_container .nb_mobile_content {
   width: 100%;
@@ -181,6 +183,7 @@
   color: white;
   border-radius: 6px;
   transition: background 150ms ease-in-out;
+  cursor: pointer;
 }
 .nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container .nb_signup:hover {
   background: #2d5ed2;

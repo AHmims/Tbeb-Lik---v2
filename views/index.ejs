@@ -1,12 +1,28 @@
-<h1 style="text-align: center;">
-    Home page
-    <br>
-    <a href="/login">_Identification_</a>
-    <br>
-    <a href="/v-register">_Inscription Visiteur [commencer une consultation]_</a>
-    <br>
-    <a href="/c-register">_Inscription Client [Bussnise owner]_</a>
-</h1>
+<div class="ind_container">
+    <div class="ind_inner_container container-custom">
+        <div class="ind_content">
+            <h1 class="ind_title">
+                <span>La consultation en tout temps</span>
+                <span class="ind_title_colored">En tout lieu</span>
+            </h1>
+            <p class="ind_desc">
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam excepturi similique ut ea dolores
+                nesciunt quam hic alias laudantium natus, porro consequuntur explicabo consectetur accusamus molestias
+                obcaecati, expedita ex praesentium.
+            </p>
+            <span class="ind_btns_desc">Créez un compte en tant qu'un :</span>
+            <div class="ind_btns_cont">
+                <a href="/c-register" class="ind_btn_main">Entreprise</a>
+                <a href="/v-register" class="ind_btn_sec">Client</a>
+            </div>
+        </div>
+        <div class="ind_image">
+            <img src="/public/img/alterego/hero_1.png" alt="">
+            <!-- <img src="/public/img/alterego/hero_2.png" alt=""> -->
+            <!-- <img src="/public/img/alterego/hero_3.png" alt=""> -->
+        </div>
+    </div>
+</div>
 <!-- CSS -->
 <%- contentFor('css') %>
 <link rel="stylesheet" href="/public/css/alterego/index.css" />

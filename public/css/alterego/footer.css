@@ -34,6 +34,13 @@
     width: 320px;
   }
 }
+@media (max-width: 320px) {
+  .ft_container .ft_inner_container .ft-desc {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 5px;
+  }
+}
 @media (max-width: 767px) {
   .ft_container .ft_inner_container .ft-footerSeparator-cntr {
     display: flex;
