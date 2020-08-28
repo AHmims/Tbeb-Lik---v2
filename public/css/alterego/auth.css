@@ -107,6 +107,54 @@ body {
     box-sizing: border-box;
   }
 }
+.auth_container .auth_inner_container .auth_register_switch_cont {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 200px;
+}
+.auth_container .auth_inner_container .auth_register_switch_cont .auth_register_option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  width: 85px;
+  height: 100px;
+  transition: background 150ms ease-in-out;
+}
+.auth_container .auth_inner_container .auth_register_switch_cont .auth_register_option:hover {
+  background: rgba(213, 223, 246, 0.3);
+}
+.auth_container .auth_inner_container .auth_register_switch_cont .auth_register_option:hover .auth_register_option_text {
+  color: #2d5ed2;
+}
+.auth_container .auth_inner_container .auth_register_switch_cont .auth_register_option .auth_register_option_icon {
+  width: 50px;
+  height: 50px;
+  background: #d5dff6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+}
+.auth_container .auth_inner_container .auth_register_switch_cont .auth_register_option .auth_register_option_icon svg {
+  width: 28px;
+  height: 28px;
+  color: #2d5ed2;
+}
+.auth_container .auth_inner_container .auth_register_switch_cont .auth_register_option .auth_register_option_text {
+  margin-top: 5px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #585863;
+}
+.auth_container .auth_inner_container .auth_register_switch_cont .auth_register_option_active {
+  background: rgba(213, 223, 246, 0.3);
+}
+.auth_container .auth_inner_container .auth_register_switch_cont .auth_register_option_active .auth_register_option_text {
+  color: #2d5ed2;
+}
 .auth_container .auth_inner_container .auth_form {
   max-width: 400px;
   width: 400px;
