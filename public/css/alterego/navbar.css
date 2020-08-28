@@ -9,6 +9,14 @@
   justify-content: space-between;
   position: relative;
 }
+@media (min-width: 576px) and (max-width: 767px) {
+  .nb_container .nb_inner_container .nb_links_container .nb_user_cont .nb_user_name {
+    display: none;
+  }
+  .nb_container .nb_inner_container .nb_links_container .nb_logout_cont .nb_logout_text {
+    display: none;
+  }
+}
 .nb_container .nb_inner_container:after {
   content: "";
   position: absolute;
@@ -53,6 +61,7 @@
   border-radius: 6px;
   transition: background 150ms ease-in-out;
   cursor: pointer;
+  user-select: none;
 }
 .nb_container .nb_inner_container .nb_links_container .nb_signup:hover {
   background: #2d5ed2;
@@ -184,6 +193,7 @@
   border-radius: 6px;
   transition: background 150ms ease-in-out;
   cursor: pointer;
+  user-select: none;
 }
 .nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container .nb_signup:hover {
   background: #2d5ed2;
@@ -202,6 +212,7 @@
   color: #676878;
   border-radius: 6px;
   transition: background 150ms ease-in-out;
+  user-select: none;
 }
 .nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container .nb_login:hover {
   background: #fafafb;
@@ -213,6 +224,85 @@
 .nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container .nb_login:focus {
   outline: none;
   box-shadow: 0px 0px 0px 3px #f1f1f2, inset 0px 0px 0px 1px #d2d6db;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container .nb_logout {
+  background: #ff6868;
+  color: white;
+  border-radius: 6px;
+  transition: background 150ms ease-in-out;
+  cursor: pointer;
+  user-select: none;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container .nb_logout:active {
+  outline: none;
+  background: #d74949;
+  box-shadow: 0px 0px 0px 3px #ffb1b1;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container .nb_logout:focus {
+  outline: none;
+  box-shadow: 0px 0px 0px 3px #ffb1b1, inset 0px 0px 0px 1px #d74949;
+}
+.nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container .nb_logout svg {
+  width: 22px;
+  height: 22px;
+  color: white;
+  margin-right: 5px;
+}
+.nb_container .nb_user_cont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.nb_container .nb_user_cont .nb_user_img {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: #ebebec;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nb_container .nb_user_cont .nb_user_img svg {
+  width: 20px;
+  height: 20px;
+  color: #676878;
+}
+.nb_container .nb_user_cont .nb_user_name {
+  font-size: 16px;
+  font-weight: 500;
+  color: #0d0c22;
+  margin-left: 6px;
+  user-select: none;
+}
+.nb_container .nb_logout_cont {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 150ms ease-in-out;
+}
+.nb_container .nb_logout_cont:hover {
+  background: #ffb1b1;
+}
+.nb_container .nb_logout_cont .nb_logout_icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.nb_container .nb_logout_cont .nb_logout_icon svg {
+  width: 20px;
+  height: 20px;
+  color: #ff6868;
+}
+.nb_container .nb_logout_cont .nb_logout_text {
+  font-size: 16px;
+  font-weight: 500;
+  color: #0d0c22;
+  margin-left: 6px;
+  user-select: none;
+  line-height: 1;
 }
 
 /*# sourceMappingURL=navbar.css.map */

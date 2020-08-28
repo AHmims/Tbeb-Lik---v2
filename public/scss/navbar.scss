@@ -17,6 +17,24 @@
         justify-content: space-between;
         position: relative;
 
+        //SM
+        @media (min-width: 576px) and (max-width: 767px) {
+            .nb_links_container {
+                .nb_user_cont {
+                    .nb_user_name {
+                        display: none;
+                    }
+                }
+
+                .nb_logout_cont {
+                    .nb_logout_text {
+                        display: none;
+                    }
+                }
+            }
+        }
+
+
         &:after {
             content: '';
             position: absolute;
@@ -213,8 +231,91 @@
                     .nb_login {
                         @include button.sec();
                     }
+
+                    .nb_logout {
+                        @include button.red();
+
+                        svg {
+                            width: 22px;
+                            height: 22px;
+                            color: white;
+                            margin-right: 5px;
+                        }
+                    }
                 }
             }
         }
+    }
+
+    // USERS NAVBAR
+    .nb_user_cont {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        .nb_user_img {
+            width: 40px;
+            height: 40px;
+            border-radius: 999px;
+            background: colors.$grey-300;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            svg {
+                width: 20px;
+                height: 20px;
+                color: colors.$grey-500;
+            }
+        }
+
+        .nb_user_name {
+            font-size: 16px;
+            font-weight: 500;
+            color: colors.$black;
+            margin-left: 6px;
+            user-select: none;
+        }
+    }
+
+    .nb_logout_cont {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 10px;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background 150ms ease-in-out;
+
+        &:hover {
+            background: colors.$red-100;
+        }
+
+
+        .nb_logout_icon {
+            // width: 30px;
+            // height: 0px;
+            // border-radius: 999px;
+            // background: colors.$red-100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            svg {
+                width: 20px;
+                height: 20px;
+                color: colors.$red;
+            }
+        }
+
+        .nb_logout_text {
+            font-size: 16px;
+            font-weight: 500;
+            color: colors.$black;
+            margin-left: 6px;
+            user-select: none;
+            line-height: 1;
+        }
+
     }
 }

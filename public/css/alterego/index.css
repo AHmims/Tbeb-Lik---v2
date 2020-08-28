@@ -122,6 +122,7 @@ body {
   color: #676878;
   border-radius: 6px;
   transition: background 150ms ease-in-out;
+  user-select: none;
 }
 .ind_container .ind_inner_container .ind_content .ind_btns_cont .ind_btn_sec:hover {
   background: #fafafb;
@@ -140,6 +141,7 @@ body {
   border-radius: 6px;
   transition: background 150ms ease-in-out;
   cursor: pointer;
+  user-select: none;
 }
 .ind_container .ind_inner_container .ind_content .ind_btns_cont .ind_btn_main:hover {
   background: #2d5ed2;

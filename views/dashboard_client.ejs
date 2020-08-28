@@ -1,31 +1,53 @@
-<div>
-    <h6>
-        i'm a <strong>Client</strong>
-    </h6>
-    <p>
-        <span>Referal CODE :</span>
-        <input type="text" name="refCode" class="" id="" value="<%= extra.refCode %>">
-    </p>
-</div>
-<!-- MAIN AREA -->
-<div id="rootElement" data-email="<%= typeof(userEmail) != 'undefined' ? userEmail : '' %>">
-    <!-- INCOMING NOTIFS -->
-    <div id="clientInbox">
+<div class="db_container" id="rootElement" data-email="<%= typeof(userEmail) != 'undefined' ? userEmail : '' %>">
+    <div class="db_inner_container container-custom">
+        <div class="mg-banner">
+            <div class="mg-benner-content">
+                <div class="mg-banner-content-main">
+                    <h1 class="mg-banner-title">Invitez vos clients</h1>
+                    <h3 class="mg-banner-sub-title">Vous pouvez inviter un nombre illimité de clients</h3>
+                    <div class="mg-banner-ref">
+                        <input class="mg-banner-ref-code" id="refCode" type="text" value="<%= extra.refCode %>">
+                        <button class="mg-banner-ref-share" id="refBtn_share">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M12.5861 4.58568C12.7706 4.39465 12.9913 4.24229 13.2353 4.13747C13.4793 4.03265 13.7417 3.97748 14.0073 3.97517C14.2728 3.97287 14.5362 4.02347 14.782 4.12403C15.0278 4.22459 15.2511 4.3731 15.4389 4.56089C15.6267 4.74867 15.7752 4.97197 15.8757 5.21777C15.9763 5.46356 16.0269 5.72692 16.0246 5.99248C16.0223 6.25804 15.9671 6.52048 15.8623 6.76448C15.7575 7.00849 15.6051 7.22918 15.4141 7.41368L12.4141 10.4137C12.039 10.7886 11.5304 10.9992 11.0001 10.9992C10.4698 10.9992 9.96114 10.7886 9.58608 10.4137C9.39748 10.2315 9.14488 10.1307 8.88268 10.133C8.62048 10.1353 8.36967 10.2404 8.18426 10.4259C7.99885 10.6113 7.89368 10.8621 7.89141 11.1243C7.88913 11.3865 7.98992 11.6391 8.17208 11.8277C8.92219 12.5776 9.93942 12.9988 11.0001 12.9988C12.0607 12.9988 13.078 12.5776 13.8281 11.8277L16.8281 8.82768C17.5567 8.07327 17.9599 7.06286 17.9508 6.01407C17.9417 4.96528 17.521 3.96203 16.7794 3.2204C16.0377 2.47877 15.0345 2.05809 13.9857 2.04898C12.9369 2.03987 11.9265 2.44304 11.1721 3.17168L9.67208 4.67168C9.57657 4.76392 9.50039 4.87427 9.44798 4.99627C9.39557 5.11827 9.36798 5.2495 9.36683 5.38227C9.36568 5.51505 9.39098 5.64673 9.44126 5.76963C9.49154 5.89253 9.56579 6.00418 9.65969 6.09807C9.75358 6.19196 9.86523 6.26622 9.98813 6.3165C10.111 6.36678 10.2427 6.39208 10.3755 6.39093C10.5083 6.38977 10.6395 6.36219 10.7615 6.30978C10.8835 6.25737 10.9938 6.18119 11.0861 6.08568L12.5861 4.58568ZM7.58608 9.58568C7.96114 9.21073 8.46975 9.0001 9.00008 9.0001C9.53041 9.0001 10.039 9.21073 10.4141 9.58568C10.5063 9.68119 10.6167 9.75737 10.7387 9.80978C10.8607 9.86219 10.9919 9.88977 11.1247 9.89093C11.2575 9.89208 11.3891 9.86678 11.512 9.8165C11.6349 9.76622 11.7466 9.69196 11.8405 9.59807C11.9344 9.50418 12.0086 9.39253 12.0589 9.26963C12.1092 9.14673 12.1345 9.01505 12.1333 8.88227C12.1322 8.7495 12.1046 8.61828 12.0522 8.49627C11.9998 8.37427 11.9236 8.26392 11.8281 8.17168C11.078 7.42179 10.0607 7.00053 9.00008 7.00053C7.93942 7.00053 6.92219 7.42179 6.17208 8.17168L3.17208 11.1717C2.79004 11.5407 2.48531 11.982 2.27568 12.4701C2.06604 12.9581 1.95569 13.483 1.95108 14.0141C1.94646 14.5452 2.04767 15.0719 2.24879 15.5635C2.44992 16.0551 2.74693 16.5017 3.1225 16.8773C3.49807 17.2528 3.94468 17.5498 4.43626 17.751C4.92785 17.9521 5.45457 18.0533 5.98569 18.0487C6.5168 18.0441 7.04168 17.9337 7.5297 17.7241C8.01771 17.5144 8.45909 17.2097 8.82808 16.8277L10.3281 15.3277C10.4236 15.2354 10.4998 15.1251 10.5522 15.0031C10.6046 14.8811 10.6322 14.7499 10.6333 14.6171C10.6345 14.4843 10.6092 14.3526 10.5589 14.2297C10.5086 14.1068 10.4344 13.9952 10.3405 13.9013C10.2466 13.8074 10.1349 13.7331 10.012 13.6829C9.88914 13.6326 9.75746 13.6073 9.62468 13.6084C9.4919 13.6096 9.36068 13.6372 9.23868 13.6896C9.11667 13.742 9.00633 13.8182 8.91408 13.9137L7.41408 15.4137C7.22959 15.6047 7.0089 15.7571 6.76489 15.8619C6.52088 15.9667 6.25844 16.0219 5.99288 16.0242C5.72732 16.0265 5.46397 15.9759 5.21817 15.8753C4.97238 15.7748 4.74908 15.6263 4.56129 15.4385C4.37351 15.2507 4.225 15.0274 4.12444 14.7816C4.02388 14.5358 3.97327 14.2724 3.97558 14.0069C3.97789 13.7413 4.03306 13.4789 4.13788 13.2349C4.2427 12.9909 4.39506 12.7702 4.58608 12.5857L7.58608 9.58568Z"
+                                    fill="white"></path>
+                            </svg>
+                            <span class="mg-banner-ref-share-text">Partager</span>
+                        </button>
+                    </div>
+                </div>
+                <a href="#" class="mg-banner-more">* Le lien d'invitation n'expire jamais</a>
+            </div>
+        </div>
         <!--  -->
-        <!--  -->
-        <h4>Demandes de consultation</h4>
-        <% if(!extra.inbox){ %>
-        <%- include('./partials/empty') %>
-        <% }else{ %>
-        <% if(extra.inbox.length <= 0){ %>
-        <%- include('./partials/empty') %>
-        <% }else{ %>
-        <% for(notif of extra.inbox){ %>
-        <%- include('./partials/notification_card', {notif}) %>
-        <% } %>
-        <% } %>
-        <% } %>
+        <div class="db_section" id="clientInbox">
+            <!--  -->
+            <!--  -->
+            <h1 class="db_section_title">Demandes de consultation</h1>
+            <% if(!extra.inbox){ %>
+            <%- include('./partials/empty') %>
+            <% }else{ %>
+            <% if(extra.inbox.length <= 0){ %>
+            <%- include('./partials/empty') %>
+            <% }else{ %>
+            <% for(notif of extra.inbox){ %>
+            <%- include('./partials/notification_card', {notif}) %>
+            <% } %>
+            <% } %>
+            <% } %>
+        </div>
     </div>
+</div>
+
+
+
+<!--  -->
+<!--  -->
+<!-- MAIN AREA -->
+<div>
+    <!-- INCOMING NOTIFS -->
     <!-- connections -->
     <!-- <div id="clientConsul"> -->
     <% if(!extra.clients){ %>
@@ -67,7 +89,12 @@
 <script src="/public/js/alterEgo/client/dashboard-controller.js"></script>
 <script src="/public/js/alterEgo/client/dashboard-view.js"></script>
 <!--  -->
+
 <script src="/public/js/alterEgo/utility.js"></script>
+<!--  -->
+<%- contentFor('css') %>
+<link rel="stylesheet" href="/public/css/alterego/dashboard.css" />
+<link rel="stylesheet" href="/public/css/alterego/dashboard_client.css" />
 <!-- Partials -->
 <%- contentFor('header') %>
 <%- include('./partials/header_client') %>

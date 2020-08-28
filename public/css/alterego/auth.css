@@ -220,6 +220,7 @@ body {
   border-radius: 6px;
   transition: background 150ms ease-in-out;
   cursor: pointer;
+  user-select: none;
 }
 .auth_container .auth_inner_container .auth_form .auth_form_btn_main:hover {
   background: #2d5ed2;
@@ -238,6 +239,7 @@ body {
   color: #676878;
   border-radius: 6px;
   transition: background 150ms ease-in-out;
+  user-select: none;
 }
 .auth_container .auth_inner_container .auth_form .auth_form_btn_sec:hover {
   background: #fafafb;
@@ -256,6 +258,7 @@ body {
   border: 1px solid #d2d6db;
   border-radius: 6px;
   transition: all 150ms ease-in-out;
+  user-select: none;
   font-weight: 500;
   padding: 8px;
 }
