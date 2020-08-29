@@ -95,6 +95,7 @@
   background-color: #F6F9FC;
   display: flex;
   align-items: center;
+  user-select: none;
 }
 .notif_box .notif_box_files_cont .notif_box_file:not(:last-child),
 .cons_box .notif_box_files_cont .notif_box_file:not(:last-child),

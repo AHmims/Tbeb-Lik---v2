@@ -5,7 +5,12 @@
             <% if(extra.ongoing == null){ %>
             <div id="preConsStatus">
                 <h4>Veuillez patienter, votre demande est en attente d'être prise en charge</h4>
-                <input type="button" value="Anuller" id="cancelPrecons" />
+                <button id="cancelPrecons">
+                    <svg class="animated_loading" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" />
+                    </svg>
+                    <span>Anuller</span>
+                </button>
             </div>
             <% }else if(extra.ongoing == true){ %>
             <div class="db_v_preConsForm" id="preConsForm">
@@ -18,7 +23,7 @@
                         </div>
                         <div class="db_v_preCons_form_row">
                             <label for="conFile" class="db_v_preCons_form_label">Ajouter des documents :</label>
-                            <input type="file" class="db_v_preCons_input" multiple name="conFile" id="conFile" class="">
+                            <input type="file" class="db_v_preCons_input" multiple name="conFile" id="conFile">
                         </div>
                     </div>
                     <div class="db_v_preCons_form_col">
@@ -42,24 +47,29 @@
             </div>
             <% } %>
         </div>
-        <% }else{ %>
+        <% }%>
         <div class="db_v_state_container" id="db_v_state_container" style="display: none;"></div>
-        <% if(extra.consul != null){ %>
         <div class="db_section" id="activeCons">
             <h4 class="db_section_title">Consultations en cours : </h4>
+            <% if(extra.consul != null){ %>
             <div id="activeCons_container">
                 <%- include('./partials/consultation_card', {consultation : extra.consul}) %>
             </div>
+            <% }else{ %>
+            <%- include('./partials/empty') %>
+            <% } %>
         </div>
-        <% } %>
-        <% } %>
         <div class="db_section" id="pastCons">
             <h4 class="db_section_title">Consultations précédentes :</h4>
+            <% if(extra.history.length > 0){ %>
             <div id="pastCons_container">
                 <% for(var i=0;i < extra.history.length ; i++){ %>
                 <%- include('./partials/history', {consultation : extra.history[i]}) %>
                 <% } %>
             </div>
+            <% }else{ %>
+            <%- include('./partials/empty') %>
+            <% } %>
         </div>
     </div>
 </div>

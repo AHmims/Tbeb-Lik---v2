@@ -1,9 +1,13 @@
-<div class="history_box">
+<div class="history_box <%= consultation.preConsAccepted == 0 ? 'history_box_error' : '' %>">
     <!-- <span class="notif_box_user"><%= consultation.nom %></span> -->
     <!-- <span class="notif_box_tel"><%= consultation.tel %></span> -->
     <!-- <div class="notif_box_sep"></div> -->
     <span class="notif_box_title"><%= consultation.preConsTitle %></span>
+    <% if(consultation.preConsAccepted != 0){ %>
     <span class="notif_box_date"><%= consultation.consulDate %></span>
+    <% }else{ %>
+    <span class="notif_box_date"><%= consultation.preConsDateCreation %></span>
+    <% } %>
     <div class="notif_box_desc"><%= consultation.preConsDesc %></div>
     <!-- <div class="notif_box_desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia obcaecati
         voluptates,
@@ -21,7 +25,9 @@
         <% } %>
     </div>
     <% } %>
+    <% if(consultation.preConsAccepted != 0){ %>
     <div class="notif_box_btns_cont">
         <a href="/chat/<%= consultation.preConsId %>" class="notif_box_btnAlt">Reviser</a>
     </div>
+    <% } %>
 </div>

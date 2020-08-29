@@ -3,12 +3,16 @@ function render_onHold() {
         id: 'preConsStatus'
     });
     const title = make_E('h4', `Veuillez patienter, votre demande est en attente d'être prise en charge`);
-    const btn = make_E('input', null, {
-        type: 'button',
-        value: 'Anuller',
+    const btn = make_E('button', null, {
         id: 'cancelPrecons',
         onclick: `listener_cancelPrecons()`
     });
+    const svg_loader = `<svg class="animated_loading" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="45" />
+    </svg>`;
+    const btn_text = make_E('span', 'Anuller');
+    btn.innerHTML = svg_loader;
+    btn.appendChild(btn_text);
     // 
     container.appendChild(title);
     container.appendChild(btn);
@@ -17,137 +21,238 @@ function render_onHold() {
 // 
 function render_preconsForm() {
     const container = make_E('div', null, {
-        id: 'preConsForm'
-    });
-    const table = make_E('table', null, {
-        border: "1"
+        id: 'preConsForm',
+        class: 'db_v_preConsForm'
     });
     // 
-    let row = make_E('tr');
-    let col_key = make_E('td', `Titre :`);
-    let col_value = make_E('td');
-    let col_input = make_E('input', null, {
+    const container_title = make_E('h1', `Remplir le formulaire pour envoyer un demande de consultation`);
+    container.appendChild(container_title);
+    // 
+    const container_form = make_E('div', null, {
+        class: 'db_v_preConsForm_form'
+    });
+    // 
+    let container_form_col = make_E('div', null, {
+        class: 'db_v_preCons_form_col'
+    });
+    // 
+    let container_form_row = make_E('div', null, {
+        class: 'db_v_preCons_form_row'
+    });
+    let form_label = make_E('label', `Titre :`, {
+        for: 'conTitle',
+        class: 'db_v_preCons_form_label'
+    });
+    let form_input = make_E('input', null, {
         type: 'text',
-        class: '',
+        class: 'db_v_preCons_input',
         id: 'conTitle',
         required: true
     });
-    col_value.appendChild(col_input);
-    row.appendChild(col_key);
-    row.appendChild(col_value);
-    table.appendChild(row);
+    container_form_row.appendChild(form_label);
+    container_form_row.appendChild(form_input);
+    container_form_col.appendChild(container_form_row);
     // 
-    row = make_E('tr');
-    col_key = make_E('td', `Description :`);
-    col_value = make_E('td');
-    col_input = make_E('textarea', null, {
-        cols: '30',
-        rows: '10',
-        class: '',
+    container_form_row = make_E('div', null, {
+        class: 'db_v_preCons_form_row'
+    });
+    form_label = make_E('label', `Ajouter des documents : :`, {
+        for: 'conFile',
+        class: 'db_v_preCons_form_label'
+    });
+    form_input = make_E('input', null, {
+        type: 'file',
+        class: 'db_v_preCons_input',
+        id: 'conFile',
+        multiple: true,
+        name: 'conFile'
+    });
+    container_form_row.appendChild(form_label);
+    container_form_row.appendChild(form_input);
+    container_form_col.appendChild(container_form_row);
+    // 
+    container_form.appendChild(container_form_col);
+    // 
+    container_form_col = make_E('div', null, {
+        class: 'db_v_preCons_form_col'
+    });
+    // 
+    container_form_row = make_E('div', null, {
+        class: 'db_v_preCons_form_row'
+    });
+    form_label = make_E('label', `Description :`, {
+        for: 'conDesc',
+        class: 'db_v_preCons_form_label'
+    });
+    form_input = make_E('textarea', null, {
+        class: 'db_v_preCons_input',
+        cols: 30,
+        rows: 10,
         id: 'conDesc',
         required: true
     });
-    col_value.appendChild(col_input);
-    row.appendChild(col_key);
-    row.appendChild(col_value);
-    table.appendChild(row);
+    container_form_row.appendChild(form_label);
+    container_form_row.appendChild(form_input);
+    container_form_col.appendChild(container_form_row);
     // 
-    row = make_E('tr');
-    col_key = make_E('td', `Ajouter des documents :`);
-    col_value = make_E('td');
-    col_input = make_E('input', null, {
-        type: 'file',
-        multiple: true,
-        class: '',
-        name: 'conFile',
-        id: 'conFile'
+    container_form_row = make_E('div', null, {
+        class: 'db_v_preCons_form_btnsCont'
     });
-    col_value.appendChild(col_input);
-    row.appendChild(col_key);
-    row.appendChild(col_value);
-    table.appendChild(row);
-    // 
-    row = make_E('tr');
-    col_key = make_E('td');
-    col_value = make_E('td');
-    col_input = make_E('input', null, {
-        type: 'button',
-        value: 'Envoyer',
-        class: '',
+    let container_form_btn = make_E('button', null, {
         id: 'sendForm',
+        class: 'db_v_preCons_form_btn',
         onclick: `listener_sendForm()`
     });
-    col_value.appendChild(col_input);
-    row.appendChild(col_key);
-    row.appendChild(col_value);
-    table.appendChild(row);
+    let form_btn_text = make_E('span', `Envoyer votre demande de consultation`);
+    let form_btn_icon = `<svg viewBox="0 0 20 20" fill="currentColor" class="chevron-right w-6 h-6">
+    <path fill-rule="evenodd"
+        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+        clip-rule="evenodd"></path>
+    </svg>`;
+    container_form_btn.appendChild(form_btn_text);
+    container_form_btn.innerHTML += form_btn_icon;
+    container_form_row.appendChild(container_form_btn);
+    container_form_col.appendChild(container_form_row);
     // 
-    container.appendChild(table);
+    container_form.appendChild(container_form_col);
+    // 
+    container.appendChild(container_form);
+    // 
     return container;
 }
 // 
 function render_cons_container() {
     const container = make_E('div', null, {
-        id: 'activeCons'
+        id: 'activeCons_container'
     });
-    const title = make_E('h4', `Consultations en cours : `);
-    container.appendChild(title);
     return container;
 }
 // 
 function render_consultation(data) {
     console.log(data);
-    const container = make_E('div');
-    // 
-    let row = make_E('ul', null, {
-        class: 'consul_box',
-        data_id: data.preConsId
+    const container = make_E('div', null, {
+        class: 'history_box'
     });
-    let col_value = make_E('li', data.nom);
-    row.appendChild(col_value);
+    // 
+    let row = make_E('span', data.preConsTitle, {
+        class: 'notif_box_title'
+    });
     container.appendChild(row);
     // 
-    row = make_E('ul');
-    col_value = make_E('li', data.consulDate);
-    row.appendChild(col_value);
+    row = make_E('span', data.consulDate, {
+        class: 'notif_box_date'
+    });
     container.appendChild(row);
     // 
-    row = make_E('ul');
-    col_value = make_E('li', data.preConsTitle);
-    row.appendChild(col_value);
-    container.appendChild(row);
-    // 
-    row = make_E('ul');
-    col_value = make_E('li', data.preConsDesc);
-    row.appendChild(col_value);
+    row = make_E('span', data.preConsDesc, {
+        class: 'notif_box_desc'
+    });
     container.appendChild(row);
     // 
     if (data.docs.length > 0) {
-        row = make_E('ul');
-        let col_cont = make_E('li');
+        row = make_E('div', null, {
+            class: 'notif_box_files_cont'
+        });
         for (const doc of data.docs) {
-            col_value = make_E('a', doc.attachmentName, {
-                href: `/files/${data.visitorId}/${doc.attachmentName}`
+            let doc_link = make_E('a', null, {
+                href: `/files/${data.visitorId}/${doc.attachmentName}`,
+                target: '_blank',
+                class: 'notif_box_file'
             });
-            col_cont.appendChild(col_value);
+            let doc_icon = `<svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>`;
+            let doc_name = doc.attachmentName;
+            // 
+            doc_link.innerHTML = doc_icon;
+            doc_link.innerHTML += doc_name;
+            // 
+            row.appendChild(doc_link);
         }
-        row.appendChild(col_cont);
         container.appendChild(row);
     }
     // 
+    let btns_cont = make_E('div', null, {
+        class: 'notif_box_btns_cont'
+    })
     let btn = make_E('a', 'Contacter', {
-        href: `/chat/${data.preConsId}`
+        href: `/chat/${data.preConsId}`,
+        class: 'notif_box_btnAccept'
     });
-    container.appendChild(btn);
+    btns_cont.appendChild(btn);
+    container.appendChild(btns_cont);
+    // 
+    return container;
+
+}
+// 
+function render_pastConsultation(data) {
+    console.log(data);
+    let containerClass = 'history_box';
+    if (data.preConsAccepted == 0)
+        containerClass += ' history_box_error';
+    const container = make_E('div', null, {
+        class: containerClass
+    });
+    // 
+    let row = make_E('span', data.preConsTitle, {
+        class: 'notif_box_title'
+    });
+    container.appendChild(row);
+    // 
+    row = make_E('span', data.preConsDateCreation, {
+        class: 'notif_box_date'
+    });
+    container.appendChild(row);
+    // 
+    row = make_E('span', data.preConsDesc, {
+        class: 'notif_box_desc'
+    });
+    container.appendChild(row);
+    // 
+    if (data.docs.length > 0) {
+        row = make_E('div', null, {
+            class: 'notif_box_files_cont'
+        });
+        for (const doc of data.docs) {
+            let doc_link = make_E('a', null, {
+                href: `/files/${data.visitorId}/${doc.attachmentName}`,
+                target: '_blank',
+                class: 'notif_box_file'
+            });
+            let doc_icon = `<svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>`;
+            let doc_name = doc.attachmentName;
+            // 
+            doc_link.innerHTML = doc_icon;
+            doc_link.innerHTML += doc_name;
+            // 
+            row.appendChild(doc_link);
+        }
+        container.appendChild(row);
+    }
+    // 
+    if (data.preConsAccepted != 0) {
+        let btns_cont = make_E('div', null, {
+            class: 'notif_box_btns_cont'
+        })
+        let btn = make_E('a', 'Reviser', {
+            href: `/chat/${data.preConsId}`,
+            class: 'notif_box_btnAlt'
+        });
+        btns_cont.appendChild(btn);
+        container.appendChild(btns_cont);
+    }
     // 
     return container;
 }
 // 
 function render_pastCons_container() {
     const container = make_E('div', null, {
-        id: 'pastCons'
+        id: 'pastCons_container'
     });
-    const title = make_E('h4', `Consultations précédentes :`);
-    container.appendChild(title);
     return container;
 }

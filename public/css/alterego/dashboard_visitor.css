@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&display=swap");
 .db_v_state_container {
   width: 100%;
@@ -21,6 +22,11 @@
   display: flex;
   flex-direction: row;
 }
+@media (max-width: 991px) {
+  .db_v_state_container .db_v_preConsForm .db_v_preConsForm_form {
+    flex-direction: column;
+  }
+}
 .db_v_state_container .db_v_preConsForm .db_v_preConsForm_form .db_v_preCons_form_col {
   display: flex;
   flex: 1;
@@ -32,6 +38,11 @@
 }
 .db_v_state_container .db_v_preConsForm .db_v_preConsForm_form .db_v_preCons_form_col:last-child {
   margin-left: 15px;
+}
+@media (max-width: 991px) {
+  .db_v_state_container .db_v_preConsForm .db_v_preConsForm_form .db_v_preCons_form_col {
+    margin: 0 !important;
+  }
 }
 .db_v_state_container .db_v_preConsForm .db_v_preConsForm_form .db_v_preCons_form_col .db_v_preCons_form_row {
   width: 100%;
@@ -92,6 +103,91 @@
   width: 20px;
   height: 20px;
 }
+.db_v_state_container #preConsStatus {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.db_v_state_container #preConsStatus h4 {
+  color: #0d0c22;
+  font-size: 26px;
+  margin: 0;
+  margin-bottom: 15px;
+}
+.db_v_state_container #preConsStatus #cancelPrecons {
+  background: #ff6868;
+  color: white;
+  border-radius: 6px;
+  transition: background 150ms ease-in-out;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  width: 112px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+}
+.db_v_state_container #preConsStatus #cancelPrecons:active {
+  outline: none;
+  background: #d74949;
+  box-shadow: 0px 0px 0px 3px #ffb1b1;
+}
+.db_v_state_container #preConsStatus #cancelPrecons:focus {
+  outline: none;
+  box-shadow: 0px 0px 0px 3px #ffb1b1, inset 0px 0px 0px 1px #d74949;
+}
+.db_v_state_container #preConsStatus #cancelPrecons:hover .animated_loading {
+  display: none;
+}
+.db_v_state_container #preConsStatus #cancelPrecons:hover span {
+  display: block;
+}
+.db_v_state_container #preConsStatus #cancelPrecons .animated_loading {
+  margin: 10px 0;
+  animation: 2s linear infinite svg-animation;
+  width: 20px;
+}
+@keyframes svg-animation {
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(360deg);
+  }
+}
+.db_v_state_container #preConsStatus #cancelPrecons .animated_loading circle {
+  animation: 1.4s ease-in-out infinite both circle-animation;
+  display: block;
+  fill: transparent;
+  stroke: white;
+  stroke-linecap: round;
+  stroke-dasharray: 283;
+  stroke-dashoffset: 280;
+  stroke-width: 10px;
+  transform-origin: 50% 50%;
+}
+@keyframes circle-animation {
+  0%, 25% {
+    stroke-dashoffset: 280;
+    transform: rotate(0);
+  }
+  50%, 75% {
+    stroke-dashoffset: 75;
+    transform: rotate(45deg);
+  }
+  100% {
+    stroke-dashoffset: 280;
+    transform: rotate(360deg);
+  }
+}
+.db_v_state_container #preConsStatus #cancelPrecons span {
+  display: none;
+  font-weight: 600;
+  font-size: 16px;
+}
 
 #pastCons_container,
 #activeCons_container {
@@ -112,6 +208,23 @@
 #activeCons_container {
     grid-template-columns: repeat(1, 1fr);
   }
+}
+
+.history_box_error {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), inset 0px 0px 0px 3px #ff6868 !important;
+}
+.history_box_error:after {
+  content: "Refusé";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  box-sizing: border-box;
+  padding: 6px 12px;
+  border-radius: 10px 0;
+  color: white;
+  font-weight: 500;
+  font-size: 12px;
+  background: #ff6868;
 }
 
 /*# sourceMappingURL=dashboard_visitor.css.map */

@@ -52,6 +52,13 @@ async function listener_cancelPrecons() {
     }
 }
 // 
+function removeEmptyHolder(containerId) {
+    const element = document.querySelector(`#${containerId} .empty_banner`);
+    if (element != null)
+        element.remove();
+}
+
+
 function hide_state_container() {
     document.getElementById('db_v_state_container').style.display = 'none';
 }
@@ -85,13 +92,15 @@ function display_preconsForm() {
 }
 
 function display_consultation(notifData) {
-    if (!document.getElementById('activeCons'))
-        document.getElementById('rootElement').appendChild(render_cons_container());
-    document.getElementById('activeCons').appendChild(render_consultation(notifData));
+    removeEmptyHolder('activeCons');
+    if (!document.getElementById('activeCons_container'))
+        document.getElementById('activeCons').appendChild(render_cons_container());
+    document.getElementById('activeCons_container').insertBefore(render_consultation(notifData), document.getElementById('activeCons_container').firstChild);
 }
 
 function display_past_consultation(notifData) {
-    if (!document.getElementById('pastCons'))
-        document.getElementById('rootElement').appendChild(render_pastCons_container());
-    document.getElementById('pastCons').appendChild(render_consultation(notifData));
+    removeEmptyHolder('pastCons');
+    if (!document.getElementById('pastCons_container'))
+        document.getElementById('pastCons').appendChild(render_pastCons_container());
+    document.getElementById('pastCons_container').insertBefore(render_pastConsultation(notifData), document.getElementById('pastCons_container').firstChild);
 }

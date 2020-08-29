@@ -279,6 +279,11 @@ const getConsultation = async notifId => {
         if (consultation != null) {
             const docs = await _DB.getAllData('attachment', `WHERE preConsId = '${consultation.preConsId}'`);
             consultation.docs = docs != null ? docs : [];
+            const {
+                fromUtcToTimeZone
+            } = require('./date');
+            consultation.consulDate = fromUtcToTimeZone(consultation.preConsDateTimeZone, consultation.consulDate);
+            consultation.preConsDateCreation = fromUtcToTimeZone(consultation.preConsDateTimeZone, consultation.preConsDateCreation);
             return consultation;
         }
         throw `Consultation not found`;
@@ -370,6 +375,13 @@ const getVisitorConsultations = async visitorId => {
             for (let i = 0; i < consultations.length; i++) {
                 const docs = await _DB.getAllData('attachment', `WHERE preConsId = '${consultations[i].preConsId}'`);
                 consultations[i].docs = docs != null ? docs : [];
+                // 
+                const {
+                    fromUtcToTimeZone
+                } = require('./date');
+                consultations[i].preConsDateCreation = fromUtcToTimeZone(consultations[i].preConsDateTimeZone, consultations[i].preConsDateCreation);
+                if (consultations[i].preConsAccepted != 0)
+                    consultations[i].consulDate = fromUtcToTimeZone(consultations[i].preConsDateTimeZone, consultations[i].consulDate);
             }
             // 
             return consultations;

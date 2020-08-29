@@ -276,7 +276,7 @@ async function getConsultation(notifId) {
 // GET NON ACTIVE VISITOR CONSULTATIONS / PRECONSULTATIONS
 async function getVisitorConsHistory(visitorId) {
     try {
-        let req = `SELECT * FROM preConsultation WHERE visitorId = ? AND preConsAccepted <> -1 AND preConsId NOT IN (SELECT preConsId FROM consultation WHERE consulState = -1)`,
+        let req = `SELECT pre.*, con.consulDate FROM preConsultation as pre  LEFT JOIN consultation con ON pre.preConsId = con.preConsId WHERE pre.visitorId = ? AND pre.preConsAccepted <> -1 AND pre.preConsId NOT IN (SELECT preConsId FROM consultation WHERE consulState = -1) ORDER BY pre.preConsDateCreation DESC`,
             cnx = await db.connect(),
             res = await cnx.query(req, visitorId);
         cnx.release();
