@@ -1,0 +1,117 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,500;0,700;0,900;1,400&display=swap");
+.db_v_state_container {
+  width: 100%;
+  border: 1px solid #ebebec;
+  border-radius: 20px;
+  box-sizing: border-box;
+  padding: 20px;
+}
+.db_v_state_container .db_v_preConsForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.db_v_state_container .db_v_preConsForm h1 {
+  color: #0d0c22;
+  font-size: 26px;
+  margin: 0;
+  margin-bottom: 15px;
+}
+.db_v_state_container .db_v_preConsForm .db_v_preConsForm_form {
+  display: flex;
+  flex-direction: row;
+}
+.db_v_state_container .db_v_preConsForm .db_v_preConsForm_form .db_v_preCons_form_col {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.db_v_state_container .db_v_preConsForm .db_v_preConsForm_form .db_v_preCons_form_col:first-child {
+  margin-right: 15px;
+}
+.db_v_state_container .db_v_preConsForm .db_v_preConsForm_form .db_v_preCons_form_col:last-child {
+  margin-left: 15px;
+}
+.db_v_state_container .db_v_preConsForm .db_v_preConsForm_form .db_v_preCons_form_col .db_v_preCons_form_row {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: #0d0c22;
+  margin-bottom: 20px;
+}
+.db_v_state_container .db_v_preConsForm .db_v_preConsForm_form .db_v_preCons_form_col .db_v_preCons_form_row .db_v_preCons_form_label {
+  margin-bottom: 5px;
+}
+.db_v_state_container .db_v_preConsForm .db_v_preConsForm_form .db_v_preCons_form_col .db_v_preCons_form_row .db_v_preCons_input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 6px 12px;
+  font-size: 14px;
+  border-radius: 6px;
+  background: white;
+  border: 1px solid #d2d6db;
+  transition: 150ms ease-in-out;
+}
+.db_v_state_container .db_v_preConsForm .db_v_preConsForm_form .db_v_preCons_form_col .db_v_preCons_form_row .db_v_preCons_input:focus {
+  outline: 0;
+  box-shadow: 0 0 0 3px #a4cafe73;
+  border-color: #68a6fd73;
+}
+.db_v_state_container .db_v_preConsForm .db_v_preConsForm_form .db_v_preCons_form_col .db_v_preCons_form_btnsCont {
+  align-self: flex-end;
+}
+.db_v_state_container .db_v_preConsForm .db_v_preConsForm_form .db_v_preCons_form_col .db_v_preCons_form_btnsCont .db_v_preCons_form_btn {
+  background: #2855bd;
+  color: white;
+  border-radius: 6px;
+  transition: background 150ms ease-in-out;
+  cursor: pointer;
+  user-select: none;
+  border: none;
+  padding: 12px 30px;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+}
+.db_v_state_container .db_v_preConsForm .db_v_preConsForm_form .db_v_preCons_form_col .db_v_preCons_form_btnsCont .db_v_preCons_form_btn:hover {
+  background: #2d5ed2;
+}
+.db_v_state_container .db_v_preConsForm .db_v_preConsForm_form .db_v_preCons_form_col .db_v_preCons_form_btnsCont .db_v_preCons_form_btn:active {
+  outline: none;
+  background: #244ba8;
+  box-shadow: 0px 0px 0px 3px #d5dff6;
+}
+.db_v_state_container .db_v_preConsForm .db_v_preConsForm_form .db_v_preCons_form_col .db_v_preCons_form_btnsCont .db_v_preCons_form_btn:focus {
+  outline: none;
+  box-shadow: 0px 0px 0px 3px #d5dff6, inset 0px 0px 0px 1px #244ba8;
+}
+.db_v_state_container .db_v_preConsForm .db_v_preConsForm_form .db_v_preCons_form_col .db_v_preCons_form_btnsCont .db_v_preCons_form_btn svg {
+  margin-left: 5px;
+  width: 20px;
+  height: 20px;
+}
+
+#pastCons_container,
+#activeCons_container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 10px;
+  row-gap: 10px;
+}
+@media (min-width: 768px) and (max-width: 991px) {
+  #pastCons_container,
+#activeCons_container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 767px) {
+  #pastCons_container,
+#activeCons_container {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+/*# sourceMappingURL=dashboard_visitor.css.map */

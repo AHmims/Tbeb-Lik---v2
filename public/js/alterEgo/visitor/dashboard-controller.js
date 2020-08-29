@@ -54,12 +54,12 @@ async function listener_cancelPrecons() {
 // 
 function remove_onHold() {
     if (document.getElementById('preConsStatus'))
-        document.getElementById('preConsStatus').remove();
+        document.getElementById('db_v_state_container').innerHTML = '';
 }
 
 function remove_preconsForm() {
     if (document.getElementById('preConsForm'))
-        document.getElementById('preConsForm').remove();
+        document.getElementById('db_v_state_container').innerHTML = '';
 }
 
 /* function remove_consultation() {
@@ -68,11 +68,11 @@ function remove_preconsForm() {
 } */
 // 
 function display_onHold() {
-    document.getElementById('rootElement').appendChild(render_onHold());
+    document.getElementById('db_v_state_container').appendChild(render_onHold());
 }
 
 function display_preconsForm() {
-    document.getElementById('rootElement').appendChild(render_preconsForm());
+    document.getElementById('db_v_state_container').appendChild(render_preconsForm());
 }
 
 function display_consultation(notifData) {

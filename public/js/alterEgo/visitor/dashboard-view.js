@@ -2,7 +2,7 @@ function render_onHold() {
     const container = make_E('div', null, {
         id: 'preConsStatus'
     });
-    const title = make_E('h4', 'Vous aves une consultation en cours de traitment');
+    const title = make_E('h4', `Veuillez patienter, votre demande est en attente d'être prise en charge`);
     const btn = make_E('input', null, {
         type: 'button',
         value: 'Anuller',
