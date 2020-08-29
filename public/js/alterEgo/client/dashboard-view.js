@@ -261,5 +261,14 @@ const renderConsultation = data => {
     btns_cont.appendChild(btn);
     container.appendChild(btns_cont);
     // 
-    document.getElementById('db_c_cons').appendChild(container);
+    if (document.getElementById('db_c_cons'))
+        document.getElementById('db_c_cons').appendChild(container);
+    else {
+        const cons_container = make_E('div', null, {
+            id: 'db_c_cons',
+            class: 'db_c_cons'
+        });
+        cons_container.appendChild(container);
+        document.getElementById('activeConsul').appendChild(cons_container);
+    }
 }

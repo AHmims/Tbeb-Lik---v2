@@ -8,6 +8,7 @@ __GLOBAL_SOCKET.on('connect', () => {
 });
 __GLOBAL_SOCKET.on('acceptNotif', (notifId, notifData) => {
     remove_onHold();
+    hide_state_container();
     display_consultation(notifData);
 });
 __GLOBAL_SOCKET.on('refuseNotif', (notifId, notifData) => {

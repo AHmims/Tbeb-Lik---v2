@@ -19,6 +19,10 @@
   user-select: none;
 }
 
+.notif_box {
+  min-height: 270px;
+}
+
 .notif_box,
 .cons_box,
 .history_box {
@@ -177,6 +181,12 @@
 .history_box .notif_box_btns_cont .notif_box_btnRefuse:focus {
   outline: none;
   box-shadow: 0px 0px 0px 3px #f1f1f2, inset 0px 0px 0px 1px #d2d6db;
+}
+.notif_box .notif_box_btns_cont .notif_box_btnAlt,
+.cons_box .notif_box_btns_cont .notif_box_btnAlt,
+.history_box .notif_box_btns_cont .notif_box_btnAlt {
+  background: #d5dff6;
+  color: #2855bd;
 }
 .notif_box .notif_box_form,
 .cons_box .notif_box_form,

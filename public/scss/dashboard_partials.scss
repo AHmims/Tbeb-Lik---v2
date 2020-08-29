@@ -26,6 +26,10 @@
 }
 
 // NOTIFICATION CARD
+.notif_box {
+    min-height: 270px;
+}
+
 .notif_box,
 .cons_box,
 .history_box {
@@ -121,6 +125,11 @@
 
         .notif_box_btnRefuse {
             @include button.sec();
+        }
+
+        .notif_box_btnAlt {
+            background: colors.$accent-100;
+            color: colors.$accent;
         }
     }
 

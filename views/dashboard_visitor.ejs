@@ -1,5 +1,6 @@
 <div class="db_container" id="rootElement" data-email="<%= typeof(userEmail) != 'undefined' ? userEmail : '' %>">
     <div class="db_inner_container container-custom">
+        <% if(extra.ongoing != false){ %>
         <div class="db_v_state_container" id="db_v_state_container">
             <% if(extra.ongoing == null){ %>
             <div id="preConsStatus">
@@ -41,7 +42,8 @@
             </div>
             <% } %>
         </div>
-        <% if(extra.ongoing == false){ %>
+        <% }else{ %>
+        <div class="db_v_state_container" id="db_v_state_container" style="display: none;"></div>
         <% if(extra.consul != null){ %>
         <div class="db_section" id="activeCons">
             <h4 class="db_section_title">Consultations en cours : </h4>

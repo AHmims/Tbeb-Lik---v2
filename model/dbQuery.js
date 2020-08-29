@@ -262,7 +262,7 @@ async function getClientConsultations(clientId) {
 // GET CONSULTATION DATA
 async function getConsultation(notifId) {
     try {
-        let req = `select p.preConsId, p.preConsTitle, p.preConsDesc, vis.visitorTel as tel vis.visitorName as nom, p.preConsDateCreation, p.preConsDateTimeZone, c.consulDate, c.consulTimeZone, c.consulState, p.visitorId, au.roomId from visitor as vis, preConsultation as p, consultation as c,appUser as au where p.preConsId = c.preConsId and p.preConsId = ? and LOWER(vis.visitorId) = LOWER(p.visitorId) and LOWER(au.userId) = LOWER(p.visitorId) ORDER BY consulState ASC,consulDate DESC`,
+        let req = `select p.preConsId, p.preConsTitle, p.preConsDesc, vis.visitorTel as tel, vis.visitorName as nom, p.preConsDateCreation, p.preConsDateTimeZone, c.consulDate, c.consulTimeZone, c.consulState, p.visitorId, au.roomId from visitor as vis, preConsultation as p, consultation as c,appUser as au where p.preConsId = c.preConsId and p.preConsId = ? and LOWER(vis.visitorId) = LOWER(p.visitorId) and LOWER(au.userId) = LOWER(p.visitorId) ORDER BY consulState ASC,consulDate DESC`,
             cnx = await db.connect(),
             res = await cnx.query(req, notifId);
         cnx.release();

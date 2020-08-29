@@ -52,6 +52,10 @@ async function listener_cancelPrecons() {
     }
 }
 // 
+function hide_state_container() {
+    document.getElementById('db_v_state_container').style.display = 'none';
+}
+
 function remove_onHold() {
     if (document.getElementById('preConsStatus'))
         document.getElementById('db_v_state_container').innerHTML = '';
@@ -67,11 +71,16 @@ function remove_preconsForm() {
         document.getElementById('activeCons').remove();
 } */
 // 
+function display_state_container() {
+    document.getElementById('db_v_state_container').style.display = 'block';
+}
+
 function display_onHold() {
     document.getElementById('db_v_state_container').appendChild(render_onHold());
 }
 
 function display_preconsForm() {
+    display_state_container();
     document.getElementById('db_v_state_container').appendChild(render_preconsForm());
 }
 
