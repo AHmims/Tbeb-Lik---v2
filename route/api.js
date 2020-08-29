@@ -121,6 +121,10 @@ router.post('/savePrecons', formData.parse(options), async (req, res) => {
                                 preConsInsertRes.name = visitorData.visitorName;
                                 preConsInsertRes.tel = visitorData.visitorTel;
                                 preConsInsertRes.visitorId = visitorData.visitorId;
+                                const {
+                                    fromUtcToTimeZone
+                                } = require('../helper/date');
+                                preConsInsertRes.preConsDateCreation = fromUtcToTimeZone(preConsInsertRes.preConsDateTimeZone, preConsInsertRes.preConsDateCreation);
                                 // 
                                 response(res, 200, status('success', preConsInsertRes));
                             }

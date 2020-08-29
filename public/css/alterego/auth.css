@@ -240,6 +240,7 @@ body {
   border-radius: 6px;
   transition: background 150ms ease-in-out;
   user-select: none;
+  cursor: pointer;
 }
 .auth_container .auth_inner_container .auth_form .auth_form_btn_sec:hover {
   background: #fafafb;
@@ -259,6 +260,7 @@ body {
   border-radius: 6px;
   transition: all 150ms ease-in-out;
   user-select: none;
+  cursor: pointer;
   font-weight: 500;
   padding: 8px;
 }

@@ -23,8 +23,6 @@
         </div>
         <!--  -->
         <div class="db_section" id="clientInbox">
-            <!--  -->
-            <!--  -->
             <h1 class="db_section_title">Demandes de consultation</h1>
             <% if(!extra.inbox){ %>
             <%- include('./partials/empty') %>
@@ -32,69 +30,76 @@
             <% if(extra.inbox.length <= 0){ %>
             <%- include('./partials/empty') %>
             <% }else{ %>
-            <% for(notif of extra.inbox){ %>
-            <%- include('./partials/notification_card', {notif}) %>
-            <% } %>
+            <div class="db_c_inbox" id="db_c_inbox">
+                <% for(notif of extra.inbox){ %>
+                <%- include('./partials/notification_card', {notif}) %>
+                <% } %>
+            </div>
             <% } %>
             <% } %>
         </div>
+        <!--  -->
+        <% if((extra.clients.length <= 0)){ %>
+        <div class="db_section" id="activeConsul">
+            <h1 class="db_section_title">Consultations active</h1>
+            <%- include('./partials/empty') %>
+        </div>
+        <div id="historyConsul">
+            <h1 class="db_section_title">Hisotrique de consultations</h1>
+            <%- include('./partials/empty') %>
+        </div>
+        <% }else{ %>
+        <% if((extra.clients.filter(client => client.consulState == -1)).length == 0){ %>
+        <div class="db_section" id="activeConsul">
+            <h1 class="db_section_title">Consultations active</h1>
+            <%- include('./partials/empty') %>
+        </div>
+        <% }else{ %>
+        <div class="db_section" id="activeConsul">
+            <h1 class="db_section_title">Consultations active</h1>
+            <div class="db_c_cons" id="db_c_cons">
+                <% for(var i=0;i < extra.clients.length;i++){ %>
+                <% if(extra.clients[i].consulState == -1){ %>
+                <%- include('./partials/consultation_card', {consultation : extra.clients[i]}) %>
+                <% }%>
+                <% } %>
+            </div>
+        </div>
+        <% }if((extra.clients.filter(client => client.consulState != -1)).length == 0){ %>
+        <div id="historyConsul">
+            <h1 class="db_section_title">Hisotrique de consultations</h1>
+            <%- include('./partials/empty') %>
+        </div>
+        <% }else{ %>
+        <div class="db_section" id="historyConsul">
+            <h1 class="db_section_title">Hisotrique de consultations</h1>
+            <div class="db_c_history">
+                <% for(var i=0;i < extra.clients.length;i++){ %>
+                <% if(extra.clients[i].consulState != -1){ %>
+                <%- include('./partials/history', {consultation : extra.clients[i]}) %>
+                <% }%>
+                <% } %>
+            </div>
+        </div>
+        <% } %>
+        <% } %>
     </div>
 </div>
 
 
 
-<!--  -->
-<!--  -->
-<!-- MAIN AREA -->
-<div>
-    <!-- INCOMING NOTIFS -->
-    <!-- connections -->
-    <!-- <div id="clientConsul"> -->
-    <% if(!extra.clients){ %>
-    <div id="activeConsul">
-        <h4>Consultations active :</h4>
-        <%- include('./partials/empty') %>
-    </div>
-    <% }else{ %>
-    <% if(extra.clients.length <= 0){ %>
-    <div id="historyConsul">
-        <h4>Hisotrique de consultations :</h4>
-        <%- include('./partials/empty') %>
-    </div>
-    <% }else{ %>
-    <div id="activeConsul">
-        <h4>Consultations active :</h4>
-        <% for(var i=0;i < extra.clients.length;i++){ %>
-        <% if(extra.clients[i].consulState == -1){ %>
-        <%- include('./partials/consultation_card', {consultation : extra.clients[i]}) %>
-        <% }%>
-        <% } %>
-    </div>
-    <div id="historyConsul">
-        <h4>Hisotrique de consultations :</h4>
-        <h4>Consultations active :</h4>
-        <% for(var i=0;i < extra.clients.length;i++){ %>
-        <% if(extra.clients[i].consulState != -1){ %>
-        <%- include('./partials/history', {consultation : extra.clients[i]}) %>
-        <% }%>
-        <% } %>
-    </div>
-    <% } %>
-    <% } %>
-    <!-- </div> -->
-</div>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/public/js/alterEgo/jquery.ajax.min.js"></script>
 <script src="/public/js/alterEgo/client/dashboard-socket.js"></script>
 <script src="/public/js/alterEgo/client/dashboard-controller.js"></script>
 <script src="/public/js/alterEgo/client/dashboard-view.js"></script>
 <!--  -->
-
 <script src="/public/js/alterEgo/utility.js"></script>
 <!--  -->
 <%- contentFor('css') %>
 <link rel="stylesheet" href="/public/css/alterego/dashboard.css" />
 <link rel="stylesheet" href="/public/css/alterego/dashboard_client.css" />
+<link rel="stylesheet" href="/public/css/alterego/dashboard_partials.css" />
 <!-- Partials -->
 <%- contentFor('header') %>
 <%- include('./partials/header_client') %>

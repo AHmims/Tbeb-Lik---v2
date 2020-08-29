@@ -207,10 +207,14 @@ async function getNotificationFullData(visitorId) {
                         }
                     }
                 } else docs = [];
+                const {
+                    fromUtcToTimeZone
+                } = require('./date');
                 return {
                     index: insertedNotificationData.preConsId,
                     name: visitorData.visitorName,
-                    date: insertedNotificationData.preConsDateCreation,
+                    // date: insertedNotificationData.preConsDateCreation,
+                    date: fromUtcToTimeZone(insertedNotificationData.preConsDateTimeZone, insertedNotificationData.preConsDateCreation),
                     TZ: insertedNotificationData.preConsDateTimeZone,
                     matricule: visitorId,
                     tel: visitorData.visitorTel,
@@ -253,6 +257,10 @@ const getConsultations = async clientId => {
             for (let i = 0; i < consultations.length; i++) {
                 const docs = await _DB.getAllData('attachment', `WHERE preConsId = '${consultations[i].preConsId}'`);
                 consultations[i].docs = docs != null ? docs : [];
+                const {
+                    fromUtcToTimeZone
+                } = require('./date');
+                consultations[i].consulDate = fromUtcToTimeZone(consultations[i].preConsDateTimeZone, consultations[i].consulDate);
             }
             // 
             return consultations;

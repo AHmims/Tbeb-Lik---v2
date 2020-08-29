@@ -1,30 +1,24 @@
 <div id="<%= notif.index %>" class="notif_box">
-    <ul id="<%= notif.visitorId %>" class="notif_box_user">
-        <li>Nom :</li>
-        <li> <%= notif.name %> </li>
-    </ul>
-    <ul>
-        <li>Date d'envoi :</li>
-        <li><%= notif.date %></li>
-    </ul>
-    <ul>
-        <li>Telephone : </li>
-        <li><%= notif.tel %></li>
-    </ul>
-    <ul>
-        <li>Title : </li>
-        <li><%= notif.title %></li>
-    </ul>
-    <ul>
-        <li>Description :</li>
-        <li><%= notif.desc %></li>
-    </ul>
-    <ul>
-        <li>Files : </li>
-        <li>
-            <% for(file of notif.files){ %>
-            <a href="<%= file.link %>"><%= file.name %></a>
-            <% } %>
-        </li>
-    </ul>
+    <span id="<%= notif.visitorId %>" class="notif_box_user"><%= notif.name %></span>
+    <span class="notif_box_tel"><%= notif.tel %></span>
+    <span class="notif_box_date"><%= notif.date %></span>
+    <div class="notif_box_sep"></div>
+    <span class="notif_box_title"><%= notif.title %></span>
+    <div class="notif_box_desc"><%= notif.desc %></div>
+    <!-- <div class="notif_box_desc" id="notifBB">Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia obcaecati
+        voluptates,
+        suscipit ipsum nisi rem provident atque dolorem quod reiciendis.</div> -->
+    <% if(notif.files.length > 0){ %>
+    <div class="notif_box_files_cont">
+        <% for(file of notif.files){ %>
+        <a href="<%= file.link %>" target="_blank" class="notif_box_file">
+            <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>
+            <%= file.name %>
+        </a>
+        <% } %>
+    </div>
+    <% } %>
 </div>

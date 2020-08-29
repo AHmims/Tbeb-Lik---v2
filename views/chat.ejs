@@ -50,6 +50,9 @@
 <!--  -->
 <script src="/public/js/alterEgo/utility.js"></script>
 <!--  -->
+<%- contentFor('css') %>
+<link rel="stylesheet" href="/public/css/alterego/dashboard.css" />
+<!--  -->
 <%- contentFor('header') %>
 <% var url = userType == `visitor` ? `header_visitor` : `header_client`%>
 <%- include('./partials/' + url) %>

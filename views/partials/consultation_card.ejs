@@ -1,24 +1,27 @@
-<div>
-    <ul>
-        <li><%= consultation.nom %></li>
-    </ul>
-    <u>
-        <li><%= consultation.consulDate %></li>
-    </u>
-    <ul>
-        <li><%= consultation.preConsTitle %></li>
-    </ul>
-    <ul>
-        <li><%= consultation.preConsDesc %></li>
-    </ul>
+<div class="cons_box">
+    <span class="notif_box_user"><%= consultation.nom %></span>
+    <span class="notif_box_tel"><%= consultation.tel %></span>
+    <span class="notif_box_date"><%= consultation.consulDate %></span>
+    <div class="notif_box_sep"></div>
+    <span class="notif_box_title"><%= consultation.preConsTitle %></span>
+    <div class="notif_box_desc"><%= consultation.preConsDesc %></div>
+    <!-- <div class="notif_box_desc">Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia obcaecati
+        voluptates,
+        suscipit ipsum nisi rem provident atque dolorem quod reiciendis.</div> -->
     <% if(consultation.docs && consultation.docs.length > 0){ %>
-    <ul>
-        <li>
-            <% for(doc of consultation.docs){ %>
-            <a href="/files/<%= consultation.visitorId %>/<%= doc.attachmentName %>"><%= doc.attachmentName %></a>
-            <% } %>
-        </li>
-    </ul>
+    <div class="notif_box_files_cont">
+        <% for(doc of consultation.docs){ %>
+        <a href="/files/<%= consultation.visitorId %>/<%= doc.attachmentName %>" target="_blank" class="notif_box_file">
+            <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path>
+            </svg>
+            <%= doc.attachmentName %>
+        </a>
+        <% } %>
+    </div>
     <% } %>
-    <a href="/chat/<%= consultation.preConsId %>">Contacter</a>
+    <div class="notif_box_btns_cont">
+        <a href="/chat/<%= consultation.preConsId %>" class="notif_box_btnAccept">Contacter</a>
+    </div>
 </div>

@@ -123,6 +123,7 @@ body {
   border-radius: 6px;
   transition: background 150ms ease-in-out;
   user-select: none;
+  cursor: pointer;
 }
 .ind_container .ind_inner_container .ind_content .ind_btns_cont .ind_btn_sec:hover {
   background: #fafafb;

@@ -1,0 +1,197 @@
+@use 'colors';
+@use 'utility';
+@use 'button';
+
+// REFCODE BANNER
+.empty_banner {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 15px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid colors.$grey-300;
+    background: colors.$grey-50;
+    border-radius: 10px;
+
+    span {
+        font-style: normal;
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 21px;
+        color: colors.$black;
+        margin-top: 5px;
+        user-select: none;
+    }
+}
+
+// NOTIFICATION CARD
+.notif_box,
+.cons_box,
+.history_box {
+    // width: 100%;
+    // height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    box-sizing: border-box;
+    padding: 15px;
+    border-radius: 10px;
+    background: white;
+    border: 1px solid colors.$grey-200;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .05);
+    color: colors.$black;
+    position: relative;
+
+    .notif_box_user {
+        font-weight: 700;
+        font-size: 20px;
+    }
+
+    .notif_box_tel,
+    .notif_box_date {
+        font-size: 16px;
+        color: colors.$grey-600;
+    }
+
+    .notif_box_sep {
+        width: 100%;
+        height: 1px;
+        background: colors.$grey-400;
+        margin: 10px 0;
+    }
+
+    .notif_box_title {
+        font-size: 18px;
+        font-weight: 700;
+    }
+
+    .notif_box_desc {
+        height: 45px;
+        overflow: hidden;
+        margin-bottom: 5px;
+        color: colors.$grey-600;
+    }
+
+    .notif_box_files_cont {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        flex-wrap: wrap;
+
+        .notif_box_file {
+            @include utility.spacing-R(8px);
+            padding: 3px 10px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 99px;
+            color: #b1c5d9;
+            border: 1px solid #C5D7EA;
+            background-color: #F6F9FC;
+            display: flex;
+            align-items: center;
+
+            svg {
+                margin-right: 5px;
+                height: 15px;
+            }
+        }
+    }
+
+    .notif_box_btns_cont {
+        margin-top: 15px;
+        width: 100%;
+        flex: 1;
+        display: flex;
+        flex-direction: row-reverse;
+        align-items: flex-end;
+
+        &>* {
+            border: none;
+            padding: 8px 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 10px !important;
+        }
+
+        .notif_box_btnAccept {
+            @include button.main();
+            margin-left: 10px;
+        }
+
+        .notif_box_btnRefuse {
+            @include button.sec();
+        }
+    }
+
+    // 
+    // FORM
+    .notif_box_form {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.9);
+        top: 0;
+        left: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 15px;
+        border-radius: 10px;
+        backdrop-filter: blur(2px);
+
+        &>div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 320px;
+            color: colors.$black;
+
+            @include utility.spacing-B(10px);
+
+            &>* {
+                width: 100%;
+
+                &:first-child {
+                    margin-bottom: 5px;
+                }
+            }
+
+            input[type="datetime-local"],
+            textarea {
+                box-sizing: border-box;
+                background: white;
+                border: 1px solid colors.$grey-400;
+                border-radius: 6px;
+                padding: 5px;
+
+                &:focus {
+                    outline: 0;
+                    box-shadow: 0 0 0 3px #a4cafe73;
+                    border-color: #68a6fd73;
+                }
+            }
+
+            textarea {
+                height: 55px;
+            }
+
+            .notif_box_form_btn {
+                border: none;
+                padding: 8px;
+                font-size: 14px;
+            }
+
+            .notif_box_form_btnM {
+                @include button.main();
+            }
+
+            .notif_box_form_btnA {
+                @include button.alt();
+            }
+
+        }
+    }
+}

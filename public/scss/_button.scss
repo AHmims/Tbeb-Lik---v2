@@ -30,6 +30,7 @@
     border-radius: 6px;
     transition: background 150ms ease-in-out;
     user-select: none;
+    cursor: pointer;
 
     &:hover {
         background: colors.$grey-50;
@@ -54,6 +55,7 @@
     border-radius: 6px;
     transition: all 150ms ease-in-out;
     user-select: none;
+    cursor: pointer;
 
     &:hover {
         border-color: colors.$grey-600;

@@ -75,3 +75,19 @@ function getNotifId() {
     const urlData = window.location.href.split('/');
     return urlData[urlData.length - 1];
 }
+// 
+function makeEmptyContainer() {
+    const container = make_E('div', null, {
+        class: 'empty_banner'
+    });
+    const img = make_E('img', null, {
+        src: '/public/icon/alterego/sad_face.svg',
+        alt: 'sad_face'
+    });
+    const txt = make_E('span', 'Liste vide');
+    // 
+    container.appendChild(img);
+    container.appendChild(txt);
+    // 
+    return container;
+}

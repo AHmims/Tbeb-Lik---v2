@@ -12,6 +12,7 @@ __GLOBAL_SOCKET.on('acceptNotif', (notifId, notifData) => {
 });
 __GLOBAL_SOCKET.on('refuseNotif', (notifId, notifData) => {
     remove_onHold();
+    display_preconsForm();
     display_past_consultation(notifData);
 });
 // 

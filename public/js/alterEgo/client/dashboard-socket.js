@@ -9,11 +9,16 @@ __GLOBAL_SOCKET.on('connect', () => {
 // 
 __GLOBAL_SOCKET.on('newNotif', notifData => {
     console.log(notifData);
+    // 
+    removeEmptyHolder('clientInbox');
+    // 
     renderNotification(document.getElementById('clientInbox'), notifData, (notifId, visitorId, ret_notif_data) => {
         console.log('Accept');
+        inboxContainerController();
         _SOCKET_ACCEPT_NOTIFICATION(notifId, visitorId, ret_notif_data);
     }, (notifId, visitorId, ret_notif_data) => {
         console.log('Refuse');
+        inboxContainerController();
         _SOCKET_REFUSE_NOTIFICATION(notifId, visitorId, ret_notif_data);
         // __GLOBAL_SOCKET.emit('error');
     });

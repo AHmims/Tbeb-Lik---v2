@@ -213,6 +213,7 @@
   border-radius: 6px;
   transition: background 150ms ease-in-out;
   user-select: none;
+  cursor: pointer;
 }
 .nb_container .nb_mobile_container .nb_mobile_content .nb_content .nb_m_btns_container .nb_login:hover {
   background: #fafafb;
