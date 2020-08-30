@@ -12,7 +12,7 @@
 
 var _adapter_factory = require('./adapter_factory.js');
 
-var adapter = (0, _adapter_factory.adapterFactory)({ window: window });
+var adapter = (0, _adapter_factory.adapterFactory)({ window: typeof window === 'undefined' ? undefined : window });
 module.exports = adapter; // this is the difference from adapter_core.
 
 },{"./adapter_factory.js":2}],2:[function(require,module,exports){
@@ -128,6 +128,7 @@ function adapterFactory() {
       firefoxShim.shimReceiverGetStats(window);
       firefoxShim.shimRTCDataChannel(window);
       firefoxShim.shimAddTransceiver(window);
+      firefoxShim.shimGetParameters(window);
       firefoxShim.shimCreateOffer(window);
       firefoxShim.shimCreateAnswer(window);
 
@@ -189,7 +190,6 @@ function adapterFactory() {
 // Browser shims.
 
 },{"./chrome/chrome_shim":3,"./common_shim":6,"./edge/edge_shim":7,"./firefox/firefox_shim":11,"./safari/safari_shim":14,"./utils":15}],3:[function(require,module,exports){
-
 /*
  *  Copyright (c) 2016 The WebRTC project authors. All Rights Reserved.
  *
@@ -947,11 +947,15 @@ function shimPeerConnection(window) {
   };
 }
 
+// Attempt to fix ONN in plan-b mode.
 function fixNegotiationNeeded(window) {
+  var browserDetails = utils.detectBrowser(window);
   utils.wrapPeerConnectionEvent(window, 'negotiationneeded', function (e) {
     var pc = e.target;
-    if (pc.signalingState !== 'stable') {
-      return;
+    if (browserDetails.version < 72 || pc.getConfiguration && pc.getConfiguration().sdpSemantics === 'plan-b') {
+      if (pc.signalingState !== 'stable') {
+        return;
+      }
     }
     return e;
   });
@@ -1542,12 +1546,15 @@ function shimConnectionState(window) {
 }
 
 function removeAllowExtmapMixed(window) {
-  /* remove a=extmap-allow-mixed for Chrome < M71 */
+  /* remove a=extmap-allow-mixed for webrtc.org < M71 */
   if (!window.RTCPeerConnection) {
     return;
   }
   var browserDetails = utils.detectBrowser(window);
   if (browserDetails.browser === 'chrome' && browserDetails.version >= 71) {
+    return;
+  }
+  if (browserDetails.browser === 'safari' && browserDetails.version >= 605) {
     return;
   }
   var nativeSRD = window.RTCPeerConnection.prototype.setRemoteDescription;
@@ -1850,6 +1857,7 @@ exports.shimReceiverGetStats = shimReceiverGetStats;
 exports.shimRemoveStream = shimRemoveStream;
 exports.shimRTCDataChannel = shimRTCDataChannel;
 exports.shimAddTransceiver = shimAddTransceiver;
+exports.shimGetParameters = shimGetParameters;
 exports.shimCreateOffer = shimCreateOffer;
 exports.shimCreateAnswer = shimCreateAnswer;
 
@@ -2085,12 +2093,35 @@ function shimAddTransceiver(window) {
         var sender = transceiver.sender;
 
         var params = sender.getParameters();
-        if (!('encodings' in params)) {
+        if (!('encodings' in params) ||
+        // Avoid being fooled by patched getParameters() below.
+        params.encodings.length === 1 && Object.keys(params.encodings[0]).length === 0) {
           params.encodings = initParameters.sendEncodings;
-          this.setParametersPromises.push(sender.setParameters(params).catch(function () {}));
+          sender.sendEncodings = initParameters.sendEncodings;
+          this.setParametersPromises.push(sender.setParameters(params).then(function () {
+            delete sender.sendEncodings;
+          }).catch(function () {
+            delete sender.sendEncodings;
+          }));
         }
       }
       return transceiver;
+    };
+  }
+}
+
+function shimGetParameters(window) {
+  if (!((typeof window === 'undefined' ? 'undefined' : _typeof(window)) === 'object' && window.RTCRtpSender)) {
+    return;
+  }
+  var origGetParameters = window.RTCRtpSender.prototype.getParameters;
+  if (origGetParameters) {
+    window.RTCRtpSender.prototype.getParameters = function getParameters() {
+      var params = origGetParameters.apply(this, arguments);
+      if (!('encodings' in params)) {
+        params.encodings = [].concat(this.sendEncodings || [{}]);
+      }
+      return params;
     };
   }
 }
@@ -2516,6 +2547,9 @@ function shimConstraints(constraints) {
 }
 
 function shimRTCIceServerUrls(window) {
+  if (!window.RTCPeerConnection) {
+    return;
+  }
   // migrate from non-spec RTCIceServer.url to RTCIceServer.urls
   var OrigPeerConnection = window.RTCPeerConnection;
   window.RTCPeerConnection = function RTCPeerConnection(pcConfig, pcConstraints) {
@@ -2539,7 +2573,7 @@ function shimRTCIceServerUrls(window) {
   };
   window.RTCPeerConnection.prototype = OrigPeerConnection.prototype;
   // wrap static methods. Currently just generateCertificate.
-  if ('generateCertificate' in window.RTCPeerConnection) {
+  if ('generateCertificate' in OrigPeerConnection) {
     Object.defineProperty(window.RTCPeerConnection, 'generateCertificate', {
       get: function get() {
         return OrigPeerConnection.generateCertificate;
@@ -2686,21 +2720,37 @@ function wrapPeerConnectionEvent(window, eventNameToWrap, wrapper) {
     var wrappedCallback = function wrappedCallback(e) {
       var modifiedEvent = wrapper(e);
       if (modifiedEvent) {
-        cb(modifiedEvent);
+        if (cb.handleEvent) {
+          cb.handleEvent(modifiedEvent);
+        } else {
+          cb(modifiedEvent);
+        }
       }
     };
     this._eventMap = this._eventMap || {};
-    this._eventMap[cb] = wrappedCallback;
+    if (!this._eventMap[eventNameToWrap]) {
+      this._eventMap[eventNameToWrap] = new Map();
+    }
+    this._eventMap[eventNameToWrap].set(cb, wrappedCallback);
     return nativeAddEventListener.apply(this, [nativeEventName, wrappedCallback]);
   };
 
   var nativeRemoveEventListener = proto.removeEventListener;
   proto.removeEventListener = function (nativeEventName, cb) {
-    if (nativeEventName !== eventNameToWrap || !this._eventMap || !this._eventMap[cb]) {
+    if (nativeEventName !== eventNameToWrap || !this._eventMap || !this._eventMap[eventNameToWrap]) {
       return nativeRemoveEventListener.apply(this, arguments);
     }
-    var unwrappedCb = this._eventMap[cb];
-    delete this._eventMap[cb];
+    if (!this._eventMap[eventNameToWrap].has(cb)) {
+      return nativeRemoveEventListener.apply(this, arguments);
+    }
+    var unwrappedCb = this._eventMap[eventNameToWrap].get(cb);
+    this._eventMap[eventNameToWrap].delete(cb);
+    if (this._eventMap[eventNameToWrap].size === 0) {
+      delete this._eventMap[eventNameToWrap];
+    }
+    if (Object.keys(this._eventMap).length === 0) {
+      delete this._eventMap;
+    }
     return nativeRemoveEventListener.apply(this, [nativeEventName, unwrappedCb]);
   };
 
@@ -2771,10 +2821,7 @@ function deprecated(oldMethod, newMethod) {
  *     properties.
  */
 function detectBrowser(window) {
-  var navigator = window.navigator;
-
   // Returned result object.
-
   var result = { browser: null, version: null };
 
   // Fail early if it's not a browser
@@ -2782,6 +2829,9 @@ function detectBrowser(window) {
     result.browser = 'Not a browser.';
     return result;
   }
+
+  var navigator = window.navigator;
+
 
   if (navigator.mozGetUserMedia) {
     // Firefox.

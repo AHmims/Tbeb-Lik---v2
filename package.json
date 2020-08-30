@@ -7,8 +7,8 @@
     "start": "node server.js",
     "dev": "node server_c.js",
     "secure": "node server_c_https.js",
-    "sass": "sass --watch ./public/scss:./public/css/alterego",
-    "prefix": "postcss ./public/css/alterego/*.css --use autoprefixer -d ./public/css/alterego/css-prefixed",
+    "sass": "sass --watch ./public/scss:./public/css",
+    "prefix": "postcss ./public/css/*.css --use autoprefixer -d ./public/css/css-prefixed",
     "test": "node test.js"
   },
   "repository": {

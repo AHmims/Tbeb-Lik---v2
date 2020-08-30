@@ -300,6 +300,10 @@ const getRefusedPrecons = async notifId => {
             consultation = consultation[0];
             const docs = await _DB.getAllData('attachment', `WHERE preConsId = '${consultation.preConsId}'`);
             consultation.docs = docs != null ? docs : [];
+            const {
+                fromUtcToTimeZone
+            } = require('./date');
+            consultation.preConsDateCreation = fromUtcToTimeZone(consultation.preConsDateTimeZone, consultation.preConsDateCreation);
             return consultation;
         }
         throw `Consultation not found`;

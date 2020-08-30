@@ -11,7 +11,7 @@
     border-radius: 20px;
     background-color: colors.$grey-100;
     overflow: hidden;
-    background-image: url('/img/alterego/banner_1_1.svg');
+    background-image: url('/img/banner_1_1.svg');
     background-repeat: no-repeat;
     background-position: right;
     box-sizing: border-box;
@@ -19,13 +19,13 @@
     margin-bottom: 50px;
 
     // @media (min-width: 992px) and (max-width: 1199px) {
-    //     background-image: url('/img/alterego/ass_1_2.png');
+    //     background-image: url('/img/ass_1_2.png');
     // }
 
     @media (min-width: 576px) and (max-width: 991px) {}
 
     @media (min-width: 768px) and (max-width: 991px) {
-        background-image: url('/img/alterego/banner_1_2.svg');
+        background-image: url('/img/banner_1_2.svg');
         background-position: bottom right;
     }
 
@@ -40,7 +40,7 @@
     }
 
     // @media (max-width: 575px) {
-    //     // background-image: url('/img/alterego/ass_1_4.png');
+    //     // background-image: url('/img/ass_1_4.png');
     //     height: 300px;
     //     padding: 20px;
     //     padding-bottom: 70px;

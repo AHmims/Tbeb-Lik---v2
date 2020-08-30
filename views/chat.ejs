@@ -1,11 +1,11 @@
 <div class="chat_container" id="rootElement" data-email="<%= typeof(userEmail) != 'undefined' ? userEmail : '' %>">
     <div class="chat_inner_container container-custom">
-        <div id="videoConfSection" data-visible='false' data-poster='true'>
+        <div id="videoConfSection" data-visible='false' data-poster='false'>
             <video id="remoteVideo" width="300" autoplay no-controls class="videoCorrection"></video>
             <div class="video_poster" id="remote_video_poster"></div>
             <div class="host_video_cont">
-                <video id="hostVideo" width="300" autoplay no-controls class="videoCorrection"></video>
-                <div class="video_poster" id="host_video_poster"></div>
+                <video id="hostVideo" width="300" muted autoplay no-controls class="videoCorrection"></video>
+                <div class="video_poster hide_me" id="host_video_poster"></div>
             </div>
             <div class="videoChat_controls_cont">
                 <button class="vChat_control" id="endCall">
@@ -19,16 +19,16 @@
                     </svg>
                 </button>
                 <button class="vChat_control" id="toggleCam" data-on="true">
-                    <img src="/public/icon/alterego/cam_on.svg" />
+                    <img src="/public/icon/cam_on.svg" />
                 </button>
                 <button class="vChat_control" id="toggleMic" data-on="true">
-                    <img src="/public/icon/alterego/mic_on.svg" />
+                    <img src="/public/icon/mic_on.svg" />
                 </button>
             </div>
         </div>
         <div id="chatingSection">
             <div class="innerChat_section" id="dest_section">
-                <img src="/public/img/alterego/test_img.jpg" alt="user_image" class="chating_des_userImage">
+                <img src="/public/img/test_img.jpg" alt="user_image" class="chating_des_userImage">
                 <div class="chatting_des_infos">
                     <span class="chatting_des_name"><%= destinatorUserData.user_name %></span>
                     <span class="chatting_des_tel">0<%= destinatorUserData.user_tel %></span>
@@ -84,22 +84,22 @@
 </div>
 <!--  -->
 <script src="/socket.io/socket.io.js"></script>
-<script src="/public/js/alterEgo/jquery.ajax.min.js"></script>
-<script src="/public/js/alterEgo/<%= userType %>/chat-socket.js"></script>
-<script src="/public/js/alterEgo/<%= userType %>/chat-controller.js"></script>
-<script src="/public/js/alterEgo/<%= userType %>/chat-view.js"></script>
+<script src="/public/js/jquery.ajax.min.js"></script>
+<script src="/public/js/<%= userType %>/chat-socket.js"></script>
+<script src="/public/js/<%= userType %>/chat-controller.js"></script>
+<script src="/public/js/<%= userType %>/chat-view.js"></script>
 <!--  -->
-<script src="/public/js/alterEgo/chat_common/chat_socket.js"></script>
-<script src="/public/js/alterEgo/chat_common/chat_controller.js"></script>
-<script src="/public/js/alterEgo/chat_common/chat_view.js"></script>
+<script src="/public/js/chat_common/chat_socket.js"></script>
+<script src="/public/js/chat_common/chat_controller.js"></script>
+<script src="/public/js/chat_common/chat_view.js"></script>
 <!--  -->
-<script src="/public/js/alterEgo/simplepeer.min.js"></script>
-<script src="/public/js/alterEgo/adapter-latest.js"></script>
+<script src="/public/js/simplepeer.min.js"></script>
+<script src="/public/js/adapter-latest.js"></script>
 <!--  -->
-<script src="/public/js/alterEgo/utility.js"></script>
+<script src="/public/js/utility.js"></script>
 <!--  -->
 <%- contentFor('css') %>
-<link rel="stylesheet" href="/public/css/alterego/chat.css" />
+<link rel="stylesheet" href="/public/css/css-prefixed/chat.css" />
 <!--  -->
 <%- contentFor('header') %>
 <% var url = userType == `visitor` ? `header_visitor` : `header_client`%>

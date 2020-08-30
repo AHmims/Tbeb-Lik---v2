@@ -119,12 +119,6 @@
                 </div>
             </div>
             <% }%>
-            <div class="auth_form_row">
-                <label for="auth_pass" class="auth_row_label">Mot de passe :</label>
-                <div class="auth_row_input_cont">
-                    <input type="password" name="userPassword" class="auth_row_input" id="auth_pass" required />
-                </div>
-            </div>
             <div class="auth_form_row auth_form_btns_cont">
                 <button type="submit" class="auth_form_btn auth_form_btn_main">Créer mon compte !</button>
                 <a href="/" class="auth_form_btn auth_form_btn_sec">Anuller</a>
@@ -136,7 +130,7 @@
         </form>
     </div>
 </div>
-<script src="/public/js/alterEgo/utility.js"></script>
+<script src="/public/js/utility.js"></script>
 <script>
     const TZ_input = document.createElement('input');
     TZ_input.setAttribute('name', 'timeZone');
@@ -146,7 +140,7 @@
 </script>
 
 <%- contentFor('css') %>
-<link rel="stylesheet" href="/public/css/alterego/auth.css" />
+<link rel="stylesheet" href="/public/css/css-prefixed/auth.css" />
 <!-- Partials -->
 <%- contentFor('header') %>
 <%- include('./partials/header_standard') %>
