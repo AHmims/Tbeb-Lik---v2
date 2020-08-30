@@ -5,7 +5,8 @@ $().ready(() => {
             video_container_display_controller();
             await streaminit();
         } else {
-            console.warn('Video chat is already on');
+            // console.warn('Video chat is already on');
+            await logWarningActive(`L'appel vidéo est déjà en cours`);
         }
     });
     // 
@@ -21,7 +22,7 @@ $().ready(() => {
                     conComment: click_res.content,
                     preConsId: urlArray[urlArray.length - 1].split('?')[0]
                 });
-                console.log(reqRes);
+                // console.log(reqRes);
                 // 
                 if (reqRes.code == 200) {
                     const urlArray = window.location.href.split('/');
@@ -35,9 +36,17 @@ $().ready(() => {
                     if (msgReqRes.code == 200) {
                         sendMessage(msgReqRes.content);
                         chat_newMessage(msgReqRes.content, false);
-                    }
-                    alert(`REPORT GENERATED => ${reqRes.content}`);
-                } else console.error(reqRes.content);
+                    } else if (msgReqRes.code == 422)
+                        await logErrorActive(msgReqRes.content);
+                    else
+                        logServerError();
+
+                    // alert(`REPORT GENERATED => ${reqRes.content}`);
+                    await logToastActive(`le rapport a été généré et envoyé à votre client`);
+                } else if (reqRes.code == 422)
+                    await logErrorActive(reqRes.content);
+                else
+                    logServerError();
             }
         } else {
             document.getElementById('endGame_container').remove();

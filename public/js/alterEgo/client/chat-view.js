@@ -19,10 +19,13 @@ async function render_end_game() {
             class: 'endGame_btn',
             id: 'btnEnd'
         });
-        btn_main.addEventListener('click', () => {
-            resolve({
-                content: txtArea.value
-            });
+        btn_main.addEventListener('click', async () => {
+            if (await toastConfirmWarning())
+                resolve({
+                    content: txtArea.value
+                });
+            else
+                resolve(false);
             container.remove();
         });
         // 

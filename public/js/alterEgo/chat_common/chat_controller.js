@@ -45,7 +45,10 @@ async function chat_sendMessage() {
         msgError = false;
         msgData = reqRes.content;
         sendMessage(reqRes.content);
-    }
+    } else if (reqRes.code == 422)
+        await logError(reqRes.content);
+    else
+        logServerError();
     chat_newMessage(msgData, false, msgError);
     // 
     $('#msgInput').val('');

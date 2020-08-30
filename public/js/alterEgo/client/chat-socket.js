@@ -11,13 +11,21 @@ __GLOBAL_SOCKET.on('connect', () => {
 });
 // 
 // 
-__GLOBAL_SOCKET.on('error', (msg = 'no message provided') => {
-    console.error(msg);
+__GLOBAL_SOCKET.on('error', async (msg = '') => {
+    // console.error(msg);
+    if (msg != '')
+        await logError(msg);
+    else
+        await logServerError();
+
 });
-__GLOBAL_SOCKET.on('success', (msg = 'no message provided') => {
-    console.log(msg);
-});
-// 
+__GLOBAL_SOCKET.on('success', async (msg = '') => {
+    // console.log(msg);
+    if (msg != '')
+        await logSuccess(msg);
+    // else
+    //     await logServerError();
+}); // 
 // 
 // VIDEO CHAT
 let __PEER;
