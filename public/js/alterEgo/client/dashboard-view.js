@@ -73,7 +73,6 @@ const renderNotification = (root, notificationData, callback_S, callback_R) => {
     }
 }
 // 
-// 
 function appendBtnSet(rootId, visitorId, callback_S, callback_R, root = document.getElementById('clientInbox')) {
     const container = make_E('div', null, {
         class: 'notif_box_btns_cont'
@@ -87,7 +86,8 @@ function appendBtnSet(rootId, visitorId, callback_S, callback_R, root = document
         const formRes = await renderConsultationForm(visitorId);
         // console.log(formRes);
         if (formRes == null || formRes == false)
-            console.error(formRes);
+            logError(`Erreur lors de l'exécution de votre demande`);
+        // console.error(formRes);
         else {
             const reqRes = await sendRequest(`/api/acceptPrecons`, {
                 preConsId: rootId,
@@ -105,7 +105,13 @@ function appendBtnSet(rootId, visitorId, callback_S, callback_R, root = document
                 renderConsultation(reqRes.content.data);
                 // 
                 callback_S(rootId, visitorId, reqRes.content.data);
-            } else console.error('Verifer les champs entrée et réessayez.');
+            } else {
+                if (reqRes.code == 422)
+                    await logErrorActive(reqRes.content)
+                else
+                    await logServerError();
+            }
+            // console.error('Verifer les champs entrée et réessayez.');
         }
     });
     // 
@@ -124,7 +130,9 @@ function appendBtnSet(rootId, visitorId, callback_S, callback_R, root = document
             document.getElementById(rootId).remove();
             // 
             callback_R(rootId, visitorId, reqRes.content.data);
-        } else console.error('Server ERROR.');
+        } else if (reqRes.code == 422)
+            await logErrorActive(reqRes.content);
+        else await logServerError();
     });
     // 
     container.appendChild(acceptBtn);
@@ -187,6 +195,7 @@ const renderConsultationForm = root => {
             document.getElementById(root).parentElement.appendChild(formContainer);
         } catch (err) {
             console.error(err);
+            // logError(err);
             return null;
         }
     });

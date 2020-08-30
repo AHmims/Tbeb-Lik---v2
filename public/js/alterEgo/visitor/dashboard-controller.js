@@ -19,36 +19,44 @@ async function listener_sendForm() {
         const reqRes = await sendRequest(`/api/savePrecons`, conForm, 'form');
         if (reqRes != null) {
             // LOGIC
-            console.log(reqRes);
+            // console.log(reqRes);
             // 
             if (reqRes.code == 200) { //success
                 socket_sendPreCons(reqRes.content);
                 remove_preconsForm();
                 display_onHold();
-                console.log(`!! Waiting !!`);
+                // console.log(`!! Waiting !!`);
             } else {
                 if (reqRes.content != null && reqRes.content != 'null') {
                     for (const error of reqRes.content.data) {
-                        console.log(`ERROR => ${error}`);
+                        // console.log(`ERROR => ${error}`);
+                        logError(error);
                     }
                 } else throw reqRes.code;
             }
+        } else {
+            logServerError();
         }
     } catch (err) {
-        console.log(err);
-        errorhandler(null);
+        logServerError();
+        // console.log(err);
+        // errorhandler(null);
     }
 }
 
 async function listener_cancelPrecons() {
-    // SEND POST REQUEST TO UPDATE DB
-    const response = await sendRequest(`/api/cancelPrecons`, {});
-    console.log(response);
-    if (response.code == 200) {
-        remove_onHold();
-        display_preconsForm();
-        // 
-        socket_cancelPrecons(response.content.notifId, response.content.userId);
+    if (await toastConfirmWarning()) {
+        // SEND POST REQUEST TO UPDATE DB
+        const response = await sendRequest(`/api/cancelPrecons`, {});
+        // console.log(response);
+        if (response.code == 200) {
+            remove_onHold();
+            display_preconsForm();
+            // 
+            socket_cancelPrecons(response.content.notifId, response.content.userId);
+        } else {
+            logErrorActive(response.content);
+        }
     }
 }
 // 

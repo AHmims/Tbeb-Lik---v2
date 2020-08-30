@@ -2,8 +2,8 @@ function getTimeZone() {
     return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
 // 
-function sendRequest(url, data, type = null) {
-    return new Promise((resolve, reject) => {
+async function sendRequest(url, data, type = null) {
+    return new Promise(async (resolve, reject) => {
         try {
             $.ajax({
                 url: url,
@@ -24,13 +24,14 @@ function sendRequest(url, data, type = null) {
                 });
             });
         } catch (err) {
-            console.error(err);
+            // console.error(err);
+            await logError(err);
             resolve(null);
         }
     });
 }
 // FOR REQUESTS
-function errorhandler(err) {
+async function errorhandler(err) {
     switch (err) {
         case 400:
         case 401:
@@ -39,16 +40,18 @@ function errorhandler(err) {
         case 405:
         case 422:
         case 500:
-            console.error(err);
+            // console.error(err);
+            await logError(err);
             break;
         default:
-            console.error('error while executing your request');
+            // console.error('error while executing your request');
+            await logServerError();
             break;
     }
     return null;
 }
 // MAKE AN ELEMENT AND RETURN IT
-function make_E(elem_type, text = null, attribs = null) {
+async function make_E(elem_type, text = null, attribs = null) {
     try {
         const retElement = document.createElement(elem_type);
         if (attribs != null) {
@@ -66,7 +69,8 @@ function make_E(elem_type, text = null, attribs = null) {
         // 
         return retElement;
     } catch (err) {
-        console.error(err);
+        // console.error(err);
+        await logError(err);
         return null;
     }
 }

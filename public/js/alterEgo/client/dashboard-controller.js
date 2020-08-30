@@ -7,11 +7,11 @@ $().ready(() => {
         const _VISITOR_ID = document.getElementsByClassName('notif_box_user')[i].getAttribute('id');
         // 
         const btnSet = appendBtnSet(_BOX_ID, _VISITOR_ID, (notifId, visitorId, notifData) => {
-            console.log('Accept');
+            // console.log('Accept');
             inboxContainerController();
             _SOCKET_ACCEPT_NOTIFICATION(notifId, visitorId, notifData);
         }, (notifId, visitorId, notifData) => {
-            console.log('Refuse');
+            // console.log('Refuse');
             inboxContainerController();
             _SOCKET_REFUSE_NOTIFICATION(notifId, visitorId, notifData);
         });
@@ -24,14 +24,6 @@ function removeEmptyHolder(containerId) {
     const element = document.querySelector(`#${containerId} .empty_banner`);
     if (element != null)
         element.remove();
-}
-
-function acceptNotification(notifId, visitorId) {
-    // const consulElement = await sendRequest(`/api/acceptPrecons`, {
-    //     preConsId: rootId
-    // });
-    // // 
-    // _SOCKET_ACCEPT_NOTIFICATION(notifId, visitorId);
 }
 
 function remove_precons(notifId) {
@@ -68,7 +60,6 @@ const share_ref = () => {
                 ref_code.blur();
                 success();
             }
-
         });
     }
     // 
