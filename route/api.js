@@ -180,12 +180,12 @@ router.post('/acceptPrecons', async (req, res) => {
                             preConsId,
                             data: await getConsultation(preConsId)
                         }));
-                    errorMsg = `Error while executing your request.`;
+                    errorMsg = `Erreur lors de l'exécution de votre demande`;
                     // 
                     // console.log(acceptRes);
                 } else errorMsg = `Champ date ne peut pas etre vide`;
             } else
-                errorMsg = preConsStatus == null ? `Server error.` : `Votre demande de consultation est deja acceptée.`;
+                errorMsg = preConsStatus == null ? `Erreur de serveur.` : `Votre demande de consultation est deja acceptée.`;
             // 
             response(res, 422, errorMsg);
         } else response(res, 401);
@@ -218,10 +218,10 @@ router.post('/refusePrecons', async (req, res) => {
                         preConsId,
                         data: await getRefusedPrecons(preConsId)
                     }));
-                errorMsg = `Error while executing your request.`;
+                errorMsg = `Erreur lors de l'exécution de votre demande`;
                 // 
             } else
-                errorMsg = preConsStatus == null ? `Server error.` : `Demande de consultation est deja acceptée.`;
+                errorMsg = preConsStatus == null ? `Erreur de serveur` : `Demande de consultation est deja acceptée.`;
             // 
             response(res, 422, errorMsg);
         } else response(res, 401);
@@ -261,7 +261,7 @@ router.post('/newTextMessage', async (req, res) => {
         const msg_type = req.body.msgType ? req.body.msgType : 'text';
         const msg_filePath = req.body.msgPath ? req.body.msgPath : null;
         // 
-        if (msgContent.length <= 0) errorMsg = `Message can't be empty`;
+        if (msgContent.length <= 0) errorMsg = `Le message ne peut pas être vide`;
         if (errorMsg == '') {
             // const preCons = await getPreconsForCurrentUser(req.user.userId, req.user.userType); //USE THIS IF THE ABILITY TO SEND MESSAGES FROM PAST CONVERSATION IS GOING TO BE DISABLED
             const preCons = preConsId;
@@ -269,8 +269,8 @@ router.post('/newTextMessage', async (req, res) => {
                 const msgRes = await sendAndGetMessage(new _CLASSES.message(req.user.userId, msgContent, getUtc(), userTZ, msg_type, msg_filePath, preCons));
                 if (msgRes != null) {
                     response(res, 200, status('success', msgRes));
-                } else errorMsg = `Error while saving message`;
-            } else errorMsg = `Consultation non trouvée`;
+                } else errorMsg = `Erreur lors de l'enregistrement de votre message`;
+            } else errorMsg = `Consultation introuvable`;
         }
         response(res, 422, status('error', errorMsg));
     } catch (err) {
@@ -334,10 +334,10 @@ router.post('/finalizeConsultation', async (req, res) => {
                             // AS THE PREVIOUS ONE, THERFOR THE FILE WILL BE OVERWRITEN \._./
                             // 
                             response(res, 200, status(`success`, reportGenRes.downloadLink));
-                        } else error_msg = `Consultation not updated`;
-                    } else error_msg = `ERROR while generating report`;
-                } else error_msg = `Error while getting counsultations count`;
-            } else error_msg = `Consultaion already concluded`;
+                        } else error_msg = `Erreur lors de l'exécution de votre demande`; //`Consultation not updated`;
+                    } else error_msg = `Erreur lors de la génération du rapport`;
+                } else error_msg = `Erreur lors de l'exécution de votre demande`; //`Error while getting counsultations count`;
+            } else error_msg = `Consultation déjà concluré`;
             response(res, 422, status('error', error_msg));
         } else response(res, 401);
     } catch (err) {
