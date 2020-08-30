@@ -441,6 +441,15 @@ const canAccessChatRoute = async (userId, userType, notifId) => {
         return false;
     }
 }
+// 
+const destinatorUserData = async (userId, userType, notifId) => {
+    try {
+        return await _DB.destinatorUserNameTel(userType, notifId);
+    } catch (err) {
+        console.error(err);
+        return null;
+    }
+}
 // // 
 // 
 // 
@@ -468,5 +477,6 @@ module.exports = {
     getPreconsForCurrentUser,
     sendAndGetMessage,
     canAccessChatRoute,
-    unlinkClientFromRooms
+    unlinkClientFromRooms,
+    destinatorUserData
 }

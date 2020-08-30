@@ -1,21 +1,26 @@
 $().ready(() => {
+    scrollDown();
     // TEXT MESSAGES
     $('#msgSend').click(chat_sendMessage);
     $('#msgInput').on('keyup', (e) => {
         if (e.key === "Enter")
             chat_sendMessage();
     });
-    // VIDEO CHAT
-    $('#initCall').click(async () => {
-        await streaminit();
-    });
     $('#endCall').click(() => {
         endCall();
     });
-    $('#toggleCam').click(() => {
+    $('#toggleCam').click(function () {
+        let img_path = `/public/icon/alterego/cam_${$(this).attr('data-on') != "true" ? 'on' : 'off'}.svg`;
+        document.getElementById('toggleCam').children[0].setAttribute('src', img_path);
+        $(this).attr('data-on', $(this).attr('data-on') == "true" ? "false" : "true");
+        // 
         camControll();
     });
-    $('#toggleMic').click(() => {
+    $('#toggleMic').click(function () {
+        let img_path = `/public/icon/alterego/mic_${$(this).attr('data-on') != "true" ? 'on' : 'off'}.svg`;
+        document.getElementById('toggleMic').children[0].setAttribute('src', img_path);
+        $(this).attr('data-on', $(this).attr('data-on') == "true" ? "false" : "true");
+        // 
         micControll();
     });
 });
@@ -49,4 +54,10 @@ async function chat_sendMessage() {
 function chat_newMessage(msgData, incoming, msgError = false) {
     // incoming == true => Message recieved | ELSE | Message sent
     document.getElementById('chatMessages').appendChild(renderMessage(msgData, incoming, msgError));
+    scrollDown();
+}
+// 
+function scrollDown() {
+    let cont = document.getElementById('chatMessages');
+    cont.scrollTo(0, cont.scrollHeight);
 }

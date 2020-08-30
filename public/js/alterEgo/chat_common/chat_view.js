@@ -1,28 +1,17 @@
 function renderMessage(msgData, incoming, error = false) {
-    const row = make_E('tr', null, {
-        id: msgData.msgId ? msgData.msgId : '',
-        class: error ? 'msgError' : ''
+    const row = make_E('div', null, {
+        id: `msg_${msgData.msgId}`,
+        class: `msg_row ${error ? 'msgError' : ''} ${incoming ? 'msg_row_remote' : 'msg_row_host'}`
     });
     // 
     const txtElem = make_E(msgData.msgType == 'text' ? 'span' : 'a', msgData.msgContent, msgData.msgType != 'text' ? {
-        href: `/${msgData.msgFilePath}`
-    } : {});
-    // 
-    const received_MSG = make_E('td', null, {
-        colspan: incoming ? '2' : '1'
-    });
-    const sent_MSG = make_E('td', null, {
-        colspan: !incoming ? '2' : '1'
+        href: `/${msgData.msgFilePath}`,
+        class: 'msg_content msg_content_link'
+    } : {
+        class: 'msg_content msg_content_text'
     });
     // 
-    if (incoming)
-        received_MSG.appendChild(txtElem);
-    else
-        sent_MSG.appendChild(txtElem);
-    // 
-    // 
-    row.appendChild(received_MSG);
-    row.appendChild(sent_MSG);
+    row.appendChild(txtElem);
     // 
     return row;
 }

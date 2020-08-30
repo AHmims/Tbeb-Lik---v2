@@ -329,7 +329,22 @@ async function getClientFinishedConsultationsCount(clientId) {
         return null;
     }
 }
-
+// 
+async function destinatorUserNameTel(userType, notifId) {
+    const reqParams = userType == 'Visitor' ? ['clientId', 'consultation', 'client', 'clientName', 'clientTel'] : ['visitorId', 'preConsultation', 'visitor', 'visitorName', 'visitorTel'];
+    try {
+        let req = `SELECT ${reqParams[3]} as user_name, ${reqParams[4]} as user_tel FROM ${reqParams[2]} WHERE ${reqParams[0]} IN (SELECT ${reqParams[0]} FROM ${reqParams[1]} WHERE preConsId = ?)`,
+            cnx = await db.connect(),
+            res = await cnx.query(req, notifId);
+        cnx.release();
+        // 
+        return res[0].length > 0 ? res[0][0] : null;
+    } catch (err) {
+        console.error(`error :`, err);
+        return null;
+    }
+}
+// 
 //#region HELPER FUNCTIONS
 function getClassValues(data) {
     let tableName, fieldsNames, fieldsPlaceHolders = '',
@@ -389,5 +404,6 @@ module.exports = {
     getVisitorConsHistory,
     getMessages,
     getRoomIdByUser,
-    getClientFinishedConsultationsCount
+    getClientFinishedConsultationsCount,
+    destinatorUserNameTel
 }

@@ -1,30 +1,93 @@
-<div id="rootElement" data-email="<%= typeof(userEmail) != 'undefined' ? userEmail : '' %>">
-    <div id="chatingSection">
-        <table id="chatMessages" border="1">
-            <% for(var i = 0;i < messages.length; i++){ %>
-            <%- include('./partials/message',{message : messages[i]}) %>
-            <% } %>
-        </table>
-        <input type="text" id="msgInput">
-        <input type="button" value="Send" id="msgSend">
-    </div>
-    <div id="videoConfSection">
-        <div>
-            <span>
-                <p>Host video</p>
+<div class="chat_container" id="rootElement" data-email="<%= typeof(userEmail) != 'undefined' ? userEmail : '' %>">
+    <div class="chat_inner_container container-custom">
+        <div id="videoConfSection">
+            <video id="remoteVideo" width="300" autoplay controls class="videoCorrection"></video>
+            <div class="video_poster" id="remote_video_poster"></div>
+            <div class="host_video_cont">
                 <video id="hostVideo" width="300" autoplay controls class="videoCorrection"></video>
-            </span>
-            <span>
-                <p>Remote video</p>
-                <video id="remoteVideo" width="300" autoplay controls class="videoCorrection"></video>
-            </span>
+                <div class="video_poster" id="host_video_poster"></div>
+            </div>
+            <div class="videoChat_controls_cont">
+                <button class="vChat_control" id="endCall">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M2.39999 3.60002C2.39999 3.28176 2.52642 2.97654 2.75147 2.7515C2.97651 2.52645 3.28173 2.40002 3.59999 2.40002H6.18359C6.46764 2.40016 6.74243 2.50104 6.95909 2.68474C7.17574 2.86843 7.32021 3.12302 7.36679 3.40322L8.25479 8.72522C8.29722 8.97869 8.25716 9.23907 8.14051 9.46806C8.02386 9.69705 7.83677 9.88254 7.60679 9.99723L5.74919 10.9248C6.41532 12.5756 7.40739 14.0752 8.66612 15.3339C9.92486 16.5926 11.4244 17.5847 13.0752 18.2508L14.004 16.3932C14.1186 16.1635 14.3039 15.9765 14.5327 15.8599C14.7614 15.7433 15.0215 15.7031 15.2748 15.7452L20.5968 16.6332C20.877 16.6798 21.1316 16.8243 21.3153 17.0409C21.499 17.2576 21.5999 17.5324 21.6 17.8164V20.4C21.6 20.7183 21.4736 21.0235 21.2485 21.2486C21.0235 21.4736 20.7183 21.6 20.4 21.6H18C9.38399 21.6 2.39999 14.616 2.39999 6.00002V3.60002Z"
+                            fill="white" />
+                        <path
+                            d="M20.0484 3.95162C20.2734 4.17666 20.3997 4.48183 20.3997 4.80002C20.3997 5.11822 20.2734 5.42339 20.0484 5.64842L18.4968 7.20002L20.0484 8.75162C20.267 8.97795 20.3879 9.28107 20.3852 9.59571C20.3825 9.91034 20.2563 10.2113 20.0338 10.4338C19.8113 10.6563 19.5103 10.7825 19.1957 10.7852C18.881 10.788 18.5779 10.667 18.3516 10.4484L16.8 8.89682L15.2484 10.4484C15.1377 10.563 15.0053 10.6545 14.8589 10.7173C14.7125 10.7802 14.555 10.8133 14.3957 10.8147C14.2363 10.8161 14.0783 10.7857 13.9308 10.7254C13.7834 10.6651 13.6494 10.576 13.5367 10.4633C13.424 10.3506 13.3349 10.2166 13.2746 10.0692C13.2143 9.92169 13.1839 9.76368 13.1853 9.60434C13.1867 9.44501 13.2198 9.28754 13.2827 9.14114C13.3456 8.99473 13.437 8.86232 13.5516 8.75162L15.1032 7.20002L13.5516 5.64842C13.333 5.4221 13.212 5.11898 13.2148 4.80434C13.2175 4.48971 13.3437 4.18873 13.5662 3.96624C13.7887 3.74375 14.0897 3.61755 14.4043 3.61482C14.7189 3.61208 15.0221 3.73303 15.2484 3.95162L16.8 5.50322L18.3516 3.95162C18.5766 3.72666 18.8818 3.60028 19.2 3.60028C19.5182 3.60028 19.8234 3.72666 20.0484 3.95162Z"
+                            fill="white" />
+                    </svg>
+                </button>
+                <button class="vChat_control" id="toggleCam" data-on="true">
+                    <img src="/public/icon/alterego/cam_on.svg" />
+                </button>
+                <button class="vChat_control" id="toggleMic" data-on="true">
+                    <img src="/public/icon/alterego/mic_on.svg" />
+                </button>
+            </div>
         </div>
-        <% if(userType != 'visitor'){ %>
-        <input type="button" value="Call" id="initCall">
-        <% } %>
-        <input type="button" value="Hangup" id="endCall">
-        <input type="button" value="Toggle Cam" id="toggleCam">
-        <input type="button" value="Toggle Mic" id="toggleMic">
+        <div id="chatingSection">
+            <div class="innerChat_section" id="dest_section">
+                <img src="/public/img/alterego/test_img.jpg" alt="user_image" class="chating_des_userImage">
+                <div class="chatting_des_infos">
+                    <span class="chatting_des_name"><%= destinatorUserData.user_name %></span>
+                    <span class="chatting_des_tel"><%= destinatorUserData.user_tel %></span>
+                </div>
+                <% if(userType != 'visitor'){ %>
+                <div class="chat_top_bar">
+                    <button id="chat_top_menu_btn">
+                        <svg viewBox="0 0 20 20" fill="currentColor" class="dots-vertical w-6 h-6">
+                            <path
+                                d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z">
+                            </path>
+                        </svg>
+                    </button>
+                    <div class="chat_top_options_cont hide_me" id="chat_top_options_cont">
+                        <button class="chat_top_btn" id="show_conc_form">
+                            <svg viewBox="0 0 20 20" fill="currentColor" class="archive w-6 h-6">
+                                <path d="M4 3a2 2 0 100 4h12a2 2 0 100-4H4z"></path>
+                                <path fill-rule="evenodd"
+                                    d="M3 8h14v7a2 2 0 01-2 2H5a2 2 0 01-2-2V8zm5 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            <span class="chat_top_btn_text">Conlcurer</span>
+                        </button>
+                        <button class="chat_top_btn" id="initCall">
+                            <svg viewBox="0 0 20 20" fill="currentColor" class="phone w-6 h-6">
+                                <path
+                                    d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z">
+                                </path>
+                            </svg>
+                            <span class="chat_top_btn_text">Apeller</span>
+                        </button>
+                    </div>
+                </div>
+                <% } %>
+            </div>
+            <div class="innerChat_section" id="chatMessages">
+                <% for(var i = 0;i < messages.length; i++){ %>
+                <%- include('./partials/message',{message : messages[i]}) %>
+                <% } %>
+            </div>
+            <div class="innerChat_section" id="chatControls">
+                <input type="text" id="msgInput" placeholder="Votre message text...">
+                <button id="msgSend">
+                    <svg viewBox="0 0 20 20" fill="currentColor" class="paper-airplane w-6 h-6">
+                        <path
+                            d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<% if(userType != 'visitor'){ %>
+<input type="button" value="Call" id="initCall">
+<% } %>
+
+<div>
+    <div id="chatingSection">
     </div>
     <!--  -->
     <% if(userType != 'visitor'){ %>
@@ -51,7 +114,7 @@
 <script src="/public/js/alterEgo/utility.js"></script>
 <!--  -->
 <%- contentFor('css') %>
-<link rel="stylesheet" href="/public/css/alterego/dashboard.css" />
+<link rel="stylesheet" href="/public/css/alterego/chat.css" />
 <!--  -->
 <%- contentFor('header') %>
 <% var url = userType == `visitor` ? `header_visitor` : `header_client`%>
