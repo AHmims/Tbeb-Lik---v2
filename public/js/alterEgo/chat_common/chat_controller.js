@@ -61,3 +61,23 @@ function scrollDown() {
     let cont = document.getElementById('chatMessages');
     cont.scrollTo(0, cont.scrollHeight);
 }
+// 
+// 
+function video_container_display_controller() {
+    const videoChat_container = document.getElementById('videoConfSection');
+    // 
+    videoChat_container.style.display = videoChat_container.getAttribute('data-visible') == 'false' ? 'block' : 'none';
+    // 
+    videoChat_container.setAttribute('data-visible', videoChat_container.getAttribute('data-visible') == 'false' ? 'true' : 'false');
+}
+// 
+function video_container_posters_controller() {
+    const visible = document.getElementById('videoConfSection').getAttribute('data-poster') == 'true' ? true : false;
+    let posters = document.getElementsByClassName('video_poster');
+    // 
+    for (let i = 0; i < posters.length; i++) {
+        visible ? posters[i].classList.add('hide_me') : posters[i].classList.remove('hide_me');
+    }
+    // 
+    document.getElementById('videoConfSection').setAttribute('data-poster', !visible);
+}

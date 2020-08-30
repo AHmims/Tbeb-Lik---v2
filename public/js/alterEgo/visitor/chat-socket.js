@@ -26,57 +26,72 @@ __GLOBAL_SOCKET.on('liveStreamDataFlux', async offer => {
     // let btnRes = await toastConfirm(`Votre medecin est entrain de vous appellez.`);
     // if (btnRes) {
     // videoChatIconsControlls();
-    // showVideoBox();
-    // 
-    stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true
-    });
-    // 
-    document.getElementById('hostVideo').srcObject = stream;
-    // 
-    __PEER = new SimplePeer({
-        initiator: false,
-        stream: stream,
-        iceTransportPolicy: 'relay',
-        trickle: false,
-        config: {
-            iceServers: [{
-                urls: ["stun:eu-turn1.xirsys.com"]
-            }, {
-                username: "ihySyqDUKfNLk7-RgdPz97TucUIdJxVOJtuKg8BhhisaLp9KRMz08AQ8jRhjbXfLAAAAAF7Vm31uaW9jZQ==",
-                credential: "fa34f73c-a466-11ea-a913-0242ac140004",
-                urls: ["turn:eu-turn1.xirsys.com:80?transport=udp", "turn:eu-turn1.xirsys.com:3478?transport=udp", "turn:eu-turn1.xirsys.com:80?transport=tcp", "turn:eu-turn1.xirsys.com:3478?transport=tcp", "turns:eu-turn1.xirsys.com:443?transport=tcp", "turns:eu-turn1.xirsys.com:5349?transport=tcp"]
-            }]
-        }
-    })
-    // 
-    // 
-    __PEER.on('stream', stream => {
-        console.log('liveStreamDataFlux() / stream() | stream => ', stream);
-        document.getElementById('remoteVideo').srcObject = stream;
+    try {
+        video_container_display_controller();
+        // showVideoBox();
         // 
-        // controllPosters("none");
-        // document.getElementById('remoteVideoPoster').style.display = "none";
-        // document.getElementById('hostVideoPoster').style.display = "none";
-        // document.getElementById('remoteVideoPoster').style.display = "none";
-        // console.log('Stream()');
-    });
-    // 
-    __PEER.on('signal', data => {
-        // console.log('signal()');
-        console.log('liveStreamDataFlux() / signal() | ready | data => ', data);
-        __GLOBAL_SOCKET.emit('liveStreamLink', data);
-    });
-    // 
-    console.log('liveStreamDataFlux() | offre => ', offer);
-    __PEER.signal(offer);
-    // } else {
-    //     __GLOBAL_SOCKET.emit('liveStreamInitFail');
-    // }
+        stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true
+        });
+        // 
+        document.getElementById('hostVideo').srcObject = stream;
+        // 
+        __PEER = new SimplePeer({
+            initiator: false,
+            stream: stream,
+            iceTransportPolicy: 'relay',
+            trickle: false,
+            config: {
+                iceServers: [{
+                    urls: ["stun:eu-turn1.xirsys.com"]
+                }, {
+                    username: "ihySyqDUKfNLk7-RgdPz97TucUIdJxVOJtuKg8BhhisaLp9KRMz08AQ8jRhjbXfLAAAAAF7Vm31uaW9jZQ==",
+                    credential: "fa34f73c-a466-11ea-a913-0242ac140004",
+                    urls: ["turn:eu-turn1.xirsys.com:80?transport=udp", "turn:eu-turn1.xirsys.com:3478?transport=udp", "turn:eu-turn1.xirsys.com:80?transport=tcp", "turn:eu-turn1.xirsys.com:3478?transport=tcp", "turns:eu-turn1.xirsys.com:443?transport=tcp", "turns:eu-turn1.xirsys.com:5349?transport=tcp"]
+                }]
+            }
+        });
+        // 
+        // 
+        __PEER.on('stream', stream => {
+            console.log('liveStreamDataFlux() / stream() | stream => ', stream);
+            document.getElementById('remoteVideo').srcObject = stream;
+            // 
+            // controllPosters("none");
+            // document.getElementById('remoteVideoPoster').style.display = "none";
+            // document.getElementById('hostVideoPoster').style.display = "none";
+            // document.getElementById('remoteVideoPoster').style.display = "none";
+            // console.log('Stream()');
+            video_container_posters_controller();
+        });
+        // 
+        __PEER.on('signal', data => {
+            // console.log('signal()');
+            console.log('liveStreamDataFlux() / signal() | ready | data => ', data);
+            __GLOBAL_SOCKET.emit('liveStreamLink', data);
+        });
+        // 
+        __PEER.on('error', (err) => {
+            clear_videoChat();
+        });
+        // 
+        console.log('liveStreamDataFlux() | offre => ', offer);
+        __PEER.signal(offer);
+        // } else {
+        //     __GLOBAL_SOCKET.emit('liveStreamInitFail');
+        // }
+    } catch (err) {
+        console.error(err);
+        clear_videoChat();
+    }
 });
 // 
 __GLOBAL_SOCKET.on('liveStreamTerminated', () => {
+    clear_videoChat();
+});
+// 
+function clear_videoChat() {
     if (__PEER != null) {
         __PEER = null;
         document.getElementById('hostVideo').srcObject = null;
@@ -89,12 +104,12 @@ __GLOBAL_SOCKET.on('liveStreamTerminated', () => {
         // controllPosters("flex");
         // 
         // hideVideoBox();
-
+        video_container_posters_controller();
+        video_container_display_controller();
         // document.getElementById('remoteVideoPoster').style.display = "flex";
         // document.getElementById('hostVideoPoster').style.display = "flex";
     }
-});
-
+}
 // 
 // 
 function endCall() {
@@ -112,8 +127,10 @@ function endCall() {
         // controllPosters("flex");
         // 
         // hideVideoBox();
-
         // document.getElementById('remoteVideoPoster').style.display = "flex";
+        video_container_posters_controller();
+        video_container_display_controller();
+
     }
 }
 

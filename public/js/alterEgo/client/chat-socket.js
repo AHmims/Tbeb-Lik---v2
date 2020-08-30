@@ -24,49 +24,59 @@ let __PEER;
 let ready = false;
 let stream = null;
 async function streaminit() {
-    ready = false;
-    // 
-    stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true
-    });
-    // 
-    document.getElementById('hostVideo').srcObject = stream;
-    console.log('streaminit() | stream => ', stream);
-    // 
-    __PEER = new SimplePeer({
-        initiator: true,
-        stream: stream,
-        iceTransportPolicy: 'relay',
-        trickle: false,
-        config: {
-            iceServers: [{
-                urls: ["stun:eu-turn1.xirsys.com"]
-            }, {
-                username: "ihySyqDUKfNLk7-RgdPz97TucUIdJxVOJtuKg8BhhisaLp9KRMz08AQ8jRhjbXfLAAAAAF7Vm31uaW9jZQ==",
-                credential: "fa34f73c-a466-11ea-a913-0242ac140004",
-                urls: ["turn:eu-turn1.xirsys.com:80?transport=udp", "turn:eu-turn1.xirsys.com:3478?transport=udp", "turn:eu-turn1.xirsys.com:80?transport=tcp", "turn:eu-turn1.xirsys.com:3478?transport=tcp", "turns:eu-turn1.xirsys.com:443?transport=tcp", "turns:eu-turn1.xirsys.com:5349?transport=tcp"]
-            }]
-        }
-    });
-    console.log('streaminit() | peer => ', __PEER);
-    // 
-    __PEER.on('signal', async data => {
-        if (!ready) {
-            __GLOBAL_SOCKET.emit('liveStreamLink', data);
-            console.log('streaminit() / signal() | ready | data => ', data);
-        } else console.log('streaminit() / signal() | notReady | data => ', data);
-    });
-    // 
-    __PEER.on('stream', stream => {
-        // console.log('stream()');
-        console.log('streaminit() / stream() | stream => ', stream);
-        document.getElementById('remoteVideo').srcObject = stream;
+    try {
+        ready = false;
         // 
-        // controllPosters("none");
-        // document.getElementById('remoteVideoPoster').style.display = "none";
-    });
-    // 
+        stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true
+        });
+        // 
+        document.getElementById('hostVideo').srcObject = stream;
+        console.log('streaminit() | stream => ', stream);
+        // 
+        __PEER = new SimplePeer({
+            initiator: true,
+            stream: stream,
+            iceTransportPolicy: 'relay',
+            trickle: false,
+            config: {
+                iceServers: [{
+                    urls: ["stun:eu-turn1.xirsys.com"]
+                }, {
+                    username: "ihySyqDUKfNLk7-RgdPz97TucUIdJxVOJtuKg8BhhisaLp9KRMz08AQ8jRhjbXfLAAAAAF7Vm31uaW9jZQ==",
+                    credential: "fa34f73c-a466-11ea-a913-0242ac140004",
+                    urls: ["turn:eu-turn1.xirsys.com:80?transport=udp", "turn:eu-turn1.xirsys.com:3478?transport=udp", "turn:eu-turn1.xirsys.com:80?transport=tcp", "turn:eu-turn1.xirsys.com:3478?transport=tcp", "turns:eu-turn1.xirsys.com:443?transport=tcp", "turns:eu-turn1.xirsys.com:5349?transport=tcp"]
+                }]
+            }
+        });
+        console.log('streaminit() | peer => ', __PEER);
+        // 
+        __PEER.on('signal', async data => {
+            if (!ready) {
+                __GLOBAL_SOCKET.emit('liveStreamLink', data);
+                console.log('streaminit() / signal() | ready | data => ', data);
+            } else console.log('streaminit() / signal() | notReady | data => ', data);
+        });
+        // 
+        __PEER.on('error', (err) => {
+            clear_videoChat();
+        });
+        // 
+        __PEER.on('stream', stream => {
+            // console.log('stream()');
+            console.log('streaminit() / stream() | stream => ', stream);
+            document.getElementById('remoteVideo').srcObject = stream;
+            // 
+            video_container_posters_controller();
+            // controllPosters("none");
+            // document.getElementById('remoteVideoPoster').style.display = "none";
+        });
+        // 
+    } catch (err) {
+        console.error(err);
+        clear_videoChat();
+    }
 }
 
 function endCall() {
@@ -107,10 +117,15 @@ __GLOBAL_SOCKET.on('patientLinkFailed', () => {
     __PEER.destroy();
     document.getElementById('hostVideo').srcObject = null;
     // 
+    video_container_posters_controller();
     // controllPosters("flex");
 });
 // 
 __GLOBAL_SOCKET.on('liveStreamTerminated', () => {
+    clear_videoChat();
+});
+// 
+function clear_videoChat() {
     if (__PEER != null) {
         __PEER = null;
         document.getElementById('hostVideo').srcObject = null;
@@ -120,10 +135,13 @@ __GLOBAL_SOCKET.on('liveStreamTerminated', () => {
             track.stop();
         });
         // 
+        video_container_posters_controller();
+        video_container_display_controller();
         // controllPosters("flex");
         // 
         // document.getElementById('videoSection').style.display = "none";
         // document.getElementById('remoteVideoPoster').style.display = "flex";
     }
-});
+}
+
 // 

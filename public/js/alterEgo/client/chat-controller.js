@@ -1,42 +1,47 @@
 $().ready(() => {
-    document.addEventListener('click', (e) => {
-        console.log(e.target);
-    });
-    // 
-    $('#btnEnd').click(async () => {
-        const urlArray = window.location.href.split('/');
-        const reqRes = await sendRequest(`/api/finalizeConsultation`, {
-            conComment: $('#conComment').val(),
-            preConsId: urlArray[urlArray.length - 1].split('?')[0]
-        });
-        console.log(reqRes);
-        // 
-        if (reqRes.code == 200) {
-            const urlArray = window.location.href.split('/');
-            const msgReqRes = await sendRequest(`/api/newTextMessage`, {
-                msgContent: `Rapport`,
-                userTZ: getTimeZone(),
-                preConsId: urlArray[urlArray.length - 1].split('?')[0],
-                msgType: 'report',
-                msgPath: reqRes.content
-            });
-            if (msgReqRes.code == 200) {
-                sendMessage(msgReqRes.content);
-                chat_newMessage(msgReqRes.content, false);
-            }
-            alert(`REPORT GENERATED => ${reqRes.content}`);
-        } else console.error(reqRes.content);
-    });
     // VIDEO CHAT
     $('#initCall').click(async () => {
-        await streaminit();
+        if (__PEER == null) {
+            video_container_display_controller();
+            await streaminit();
+        } else {
+            console.warn('Video chat is already on');
+        }
     });
     // 
     $('#chat_top_menu_btn').click(mobile_funcs_menu_controller);
     // 
-    $('#show_conc_form').click(() => {
+    $('#show_conc_form').click(async () => {
         mobile_funcs_menu_controller();
-
+        if (!document.getElementById('endGame_container')) {
+            const click_res = await render_end_game();
+            if (click_res != false) {
+                const urlArray = window.location.href.split('/');
+                const reqRes = await sendRequest(`/api/finalizeConsultation`, {
+                    conComment: click_res.content,
+                    preConsId: urlArray[urlArray.length - 1].split('?')[0]
+                });
+                console.log(reqRes);
+                // 
+                if (reqRes.code == 200) {
+                    const urlArray = window.location.href.split('/');
+                    const msgReqRes = await sendRequest(`/api/newTextMessage`, {
+                        msgContent: `Rapport`,
+                        userTZ: getTimeZone(),
+                        preConsId: urlArray[urlArray.length - 1].split('?')[0],
+                        msgType: 'report',
+                        msgPath: reqRes.content
+                    });
+                    if (msgReqRes.code == 200) {
+                        sendMessage(msgReqRes.content);
+                        chat_newMessage(msgReqRes.content, false);
+                    }
+                    alert(`REPORT GENERATED => ${reqRes.content}`);
+                } else console.error(reqRes.content);
+            }
+        } else {
+            document.getElementById('endGame_container').remove();
+        }
     });
 });
 // 

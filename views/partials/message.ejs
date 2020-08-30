@@ -1,6 +1,6 @@
 <div id="msg_<%= message.msgId %>" class="msg_row <%= message.my_msg ? 'msg_row_host' : 'msg_row_remote' %>">
     <% if(message.msgType != 'text'){ %>
-    <a href="<%= message.msgFilePath %>" class="msg_content msg_content_link"><%= message.msgContent %></a>
+    <a href="/<%= message.msgFilePath %>" class="msg_content msg_content_link"><%= message.msgContent %></a>
     <% }else{ %>
     <span class="msg_content msg_content_text"><%= message.msgContent %></span>
     <% } %>

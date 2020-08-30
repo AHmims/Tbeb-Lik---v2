@@ -13,7 +13,10 @@ const {
 } = require('../helper/helpers');
 
 router.get('/', (req, res) => {
-    res.render('index');
+    if (!req.isAuthenticated())
+        res.render('index');
+    else
+        res.redirect('/dashboard');
 });
 // 
 router.get('/dashboard', isAuth, async (req, res) => {

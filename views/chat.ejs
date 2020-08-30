@@ -1,10 +1,10 @@
 <div class="chat_container" id="rootElement" data-email="<%= typeof(userEmail) != 'undefined' ? userEmail : '' %>">
     <div class="chat_inner_container container-custom">
-        <div id="videoConfSection">
-            <video id="remoteVideo" width="300" autoplay controls class="videoCorrection"></video>
+        <div id="videoConfSection" data-visible='false' data-poster='true'>
+            <video id="remoteVideo" width="300" autoplay no-controls class="videoCorrection"></video>
             <div class="video_poster" id="remote_video_poster"></div>
             <div class="host_video_cont">
-                <video id="hostVideo" width="300" autoplay controls class="videoCorrection"></video>
+                <video id="hostVideo" width="300" autoplay no-controls class="videoCorrection"></video>
                 <div class="video_poster" id="host_video_poster"></div>
             </div>
             <div class="videoChat_controls_cont">
@@ -31,7 +31,7 @@
                 <img src="/public/img/alterego/test_img.jpg" alt="user_image" class="chating_des_userImage">
                 <div class="chatting_des_infos">
                     <span class="chatting_des_name"><%= destinatorUserData.user_name %></span>
-                    <span class="chatting_des_tel"><%= destinatorUserData.user_tel %></span>
+                    <span class="chatting_des_tel">0<%= destinatorUserData.user_tel %></span>
                 </div>
                 <% if(userType != 'visitor'){ %>
                 <div class="chat_top_bar">
@@ -82,21 +82,6 @@
         </div>
     </div>
 </div>
-<% if(userType != 'visitor'){ %>
-<input type="button" value="Call" id="initCall">
-<% } %>
-
-<div>
-    <div id="chatingSection">
-    </div>
-    <!--  -->
-    <% if(userType != 'visitor'){ %>
-    <div>
-        <textarea id="conComment" cols="30" rows="10"></textarea>
-        <input type="button" value="Conclurer" id="btnEnd" />
-    </div>
-    <% } %>
-</div>
 <!--  -->
 <script src="/socket.io/socket.io.js"></script>
 <script src="/public/js/alterEgo/jquery.ajax.min.js"></script>
@@ -109,7 +94,7 @@
 <script src="/public/js/alterEgo/chat_common/chat_view.js"></script>
 <!--  -->
 <script src="/public/js/alterEgo/simplepeer.min.js"></script>
-<script src="/public/js/alterEgo/adapter-latest.js"></script>
+<!-- <script src="/public/js/alterEgo/adapter-latest.js"></script> -->
 <!--  -->
 <script src="/public/js/alterEgo/utility.js"></script>
 <!--  -->
