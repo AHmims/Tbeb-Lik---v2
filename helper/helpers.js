@@ -454,6 +454,21 @@ const destinatorUserData = async (userId, userType, notifId) => {
         return null;
     }
 }
+// 
+const chatDateConstraint = async notifId => {
+    try {
+        const consData = await _DB.getAllData('consultation', `WHERE preConsId = '${notifId}'`);
+        if (consData != null) {
+            const {
+                getUtc
+            } = require('./date');
+            return getUtc() - consData[0].consulDate >= 0;
+        } else throw `chatDateConstraint() | Consultation not found`;
+    } catch (err) {
+        console.error(err);
+        return false;
+    }
+}
 // // 
 // 
 // 
@@ -482,5 +497,6 @@ module.exports = {
     sendAndGetMessage,
     canAccessChatRoute,
     unlinkClientFromRooms,
-    destinatorUserData
+    destinatorUserData,
+    chatDateConstraint
 }

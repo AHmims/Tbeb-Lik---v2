@@ -10,12 +10,7 @@ const __SESSION = require('express-session');
 const __SERVER = require('http').createServer(__APP);
 const __IO = require('socket.io')(__SERVER);
 const __PATH = require('path');
-const __JWT = require('jsonwebtoken');
 
-//IMPORTED MODULES
-// const __PDF = require('./model/savePdf');
-const _CLASSES = require('./model/classes');
-const _DB = require('./model/dbOperations');
 //GLOBAL VARIABLES
 const __PORT = process.env.PORT || 8080;
 //MIDDLEWARES

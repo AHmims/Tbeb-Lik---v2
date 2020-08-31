@@ -38,3 +38,30 @@
         }
     }
 }
+
+// 
+.body_feedback {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 50px;
+    animation: 5s linear 1 feedBack_hide forwards;
+
+    &>* {
+        max-width: 300px;
+    }
+
+    @keyframes feedBack_hide {
+        75% {
+            opacity: 1;
+        }
+
+        100% {
+            opacity: 0;
+            // display: none;
+        }
+    }
+
+}
