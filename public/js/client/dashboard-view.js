@@ -85,10 +85,10 @@ function appendBtnSet(rootId, visitorId, callback_S, callback_R, root = document
     acceptBtn.addEventListener('click', async () => {
         const formRes = await renderConsultationForm(visitorId);
         // console.log(formRes);
-        if (formRes == null || formRes == false)
+        if (formRes == null)
             logError(`Erreur lors de l'exécution de votre demande`);
         // console.error(formRes);
-        else {
+        else if (formRes != null && formRes != false) {
             const reqRes = await sendRequest(`/api/acceptPrecons`, {
                 preConsId: rootId,
                 conDate: formRes.date,
