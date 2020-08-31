@@ -183,7 +183,7 @@ const renderConsultationForm = root => {
             const cancellBtn = make_E('input', null, {
                 type: 'button',
                 class: 'notif_box_form_btn notif_box_form_btnA',
-                value: 'Anuller'
+                value: 'Annuler'
             });
             cancellBtn.addEventListener('click', () => {
                 formContainer.remove();

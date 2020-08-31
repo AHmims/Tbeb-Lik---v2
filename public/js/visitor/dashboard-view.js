@@ -10,7 +10,7 @@ function render_onHold() {
     const svg_loader = `<svg class="animated_loading" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
     <circle cx="50" cy="50" r="45" />
     </svg>`;
-    const btn_text = make_E('span', 'Anuller');
+    const btn_text = make_E('span', 'Annuler');
     btn.innerHTML = svg_loader;
     btn.appendChild(btn_text);
     // 

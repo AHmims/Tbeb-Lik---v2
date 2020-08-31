@@ -31,7 +31,7 @@ async function render_end_game() {
         // 
         const btn_sec = make_E('input', null, {
             type: 'button',
-            value: 'Anuller',
+            value: 'Annuler',
             class: 'endGame_btn',
             id: 'btn_dont_End'
         });
