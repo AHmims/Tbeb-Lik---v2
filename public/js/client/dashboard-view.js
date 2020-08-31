@@ -151,7 +151,7 @@ const renderConsultationForm = root => {
             });
             // 
             let row = make_E('div');
-            const dateLabel = make_E('span', 'Select a date :');
+            const dateLabel = make_E('span', 'Sélectionnez une date :');
             const dateInput = make_E('input', null, {
                 type: 'datetime-local'
             });
@@ -159,7 +159,7 @@ const renderConsultationForm = root => {
             row.appendChild(dateInput);
             formContainer.appendChild(row);
             // 
-            const commentLabel = make_E('span', 'A comment :');
+            const commentLabel = make_E('span', 'Un commentaire :');
             const commentInput = make_E('textarea');
             row = make_E('div');
             row.appendChild(commentLabel);
