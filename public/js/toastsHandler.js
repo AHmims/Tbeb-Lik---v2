@@ -108,3 +108,38 @@ async function logToast(text) {
     }
     return await toast(params);
 }
+async function logToastActive(text) {
+    var params = {
+        content: text,
+        type: "normal",
+        behavior: {
+            type: "normal"
+        },
+        duration: "active"
+    }
+    return await toast(params);
+}
+// 
+async function logErrorActive(text) {
+    var params = {
+        content: text,
+        type: "error",
+        behavior: {
+            type: "normal"
+        },
+        duration: "active"
+    }
+    return await toast(params);
+}
+// 
+async function logWarningActive(text) {
+    var params = {
+        content: text,
+        type: "warning",
+        behavior: {
+            type: "normal"
+        },
+        duration: "active"
+    }
+    return await toast(params);
+}

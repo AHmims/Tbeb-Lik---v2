@@ -1,0 +1,564 @@
+@use 'common';
+@use 'colors';
+@use 'fonts';
+@use 'utility';
+@use 'button';
+
+// 
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+// 
+.chat_container {
+    width: 100%;
+    flex: 1;
+
+    .chat_inner_container {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 20px 0;
+
+        @media (max-width: 575px) {
+            padding: 15px 10px;
+        }
+
+        #videoConfSection {
+            width: 100%;
+            max-height: 690px;
+            // height: 600px;
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            position: relative;
+            display: none;
+
+            @media (min-width: 768px) and (max-width: 991px) {
+                height: 450px;
+            }
+
+            @media (min-width: 576px) and (max-width: 767px) {
+                height: 350px;
+            }
+
+            @media (max-width: 575px) {
+                height: 460px;
+            }
+
+            .videoCorrection {
+                transform: scaleX(-1);
+                position: relative;
+                z-index: -1;
+                object-fit: cover;
+            }
+
+            #remoteVideo {
+                width: 100%;
+                height: 100%;
+                border-radius: 20px;
+                overflow: hidden;
+                box-sizing: border-box;
+                border: 1px solid colors.$grey-400;
+
+            }
+
+            .video_poster {
+                width: 100%;
+                height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                z-index: 1;
+                background-position: center;
+                background-repeat: no-repeat;
+                border-radius: 20px;
+                background-image: url('/icon/vChat_avatar.svg');
+            }
+
+            #remote_video_poster {
+                background-color: colors.$grey-200;
+
+                @media (max-width: 991px) {
+                    background-size: 180px;
+                }
+
+                @media (max-width: 767px) {
+                    background-size: 120px;
+                }
+            }
+
+            // 
+            .host_video_cont {
+                width: 300px;
+                height: 200px;
+                box-sizing: border-box;
+                border-radius: 20px;
+                overflow: hidden;
+                border: 1px solid colors.$grey-400;
+                position: absolute;
+                bottom: 35px;
+                right: 35px;
+                z-index: 2;
+
+                @media (max-width: 991px) {
+                    right: 15px;
+                    bottom: 15px;
+                    width: 150px;
+                    height: 150px;
+                    border-radius: 999px;
+                }
+
+                @media (max-width: 767px) {
+                    height: 100px;
+                    width: 100px;
+                }
+
+                @media (max-width: 575px) {
+                    width: 75px;
+                    height: 75px;
+                }
+
+                #hostVideo {
+                    width: 100%;
+                    height: 100%;
+                    border-radius: 20px;
+                    overflow: hidden;
+                }
+
+                #host_video_poster {
+                    background-color: colors.$grey-300;
+                    background-size: 98px;
+                    z-index: 3;
+
+                    @media (max-width: 767px) {
+                        background-size: 50px;
+                    }
+                }
+            }
+
+            // 
+            .videoChat_controls_cont {
+                position: absolute;
+                z-index: 2;
+                left: 35px;
+                bottom: 35px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                @media (max-width: 991px) {
+                    left: 15px;
+                    bottom: 15px;
+                }
+
+                .vChat_control {
+                    width: 60px;
+                    height: 60px;
+                    user-select: none;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: rgba(13, 12, 34, 0.1);
+                    transition: background 100ms ease-in-out;
+                    border: none;
+                    border-radius: 999px;
+                    @include utility.spacing-R(15px);
+
+                    @media (max-width: 575px) {
+                        width: 46px;
+                        height: 46px;
+                        @include utility.spacing-R(5px);
+
+                        img,
+                        svg {
+                            width: 18px;
+                            height: 18px;
+                        }
+                    }
+
+                    &:hover {
+                        background: rgba(13, 12, 34, 0.3);
+                    }
+                }
+
+                #endCall {
+                    background: colors.$red;
+
+                    &:hover {
+                        background: colors.$red-200;
+                    }
+                }
+            }
+
+            // 
+            .hide_me {
+                display: none !important;
+            }
+        }
+
+        // 
+        #chatingSection {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+
+            .innerChat_section {
+                width: 100%;
+                box-sizing: border-box;
+                border-radius: 20px;
+                border: 1px solid colors.$grey-300;
+                margin-bottom: 10px;
+            }
+
+            #dest_section {
+                padding: 10px;
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+
+                .chating_des_userImage {
+                    width: 45px;
+                    height: 45px;
+                    border-radius: 999px;
+                    object-fit: cover;
+                    margin-right: 10px;
+                }
+
+                .chatting_des_infos {
+                    display: flex;
+                    flex-direction: column;
+
+                    .chatting_des_name {
+                        color: colors.$black;
+                        font-size: 18px;
+                        font-weight: 500;
+                        letter-spacing: 0.75px;
+                    }
+
+                    .chatting_des_tel {
+                        color: colors.$grey-600;
+                        font-size: 14px;
+                        font-weight: 400;
+                    }
+                }
+
+                .chat_top_bar {
+                    margin-left: auto;
+                    position: relative;
+                    // display: flex;
+                    // flex-direction: row;
+
+                    #chat_top_menu_btn {
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 10px;
+                        border: none;
+                        background: none;
+                        display: none;
+                        padding: 8px;
+                        cursor: pointer;
+                        outline: none;
+                        transition: background 100ms ease-in-out;
+
+                        svg {
+                            display: block;
+                            width: 24px;
+                            color: colors.$grey-600;
+                        }
+
+                        &:hover {
+                            background: colors.$grey-200;
+                        }
+
+                        @media (max-width: 450px) {
+                            display: flex;
+                        }
+                    }
+
+                    .chat_top_options_cont {
+                        display: flex;
+                        flex-direction: row;
+                        // display: none;
+
+                        .chat_top_btn {
+                            border: none;
+                            padding: 0;
+                            width: 45px;
+                            height: 45px;
+                            border-radius: 999px;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            background: colors.$grey-200;
+                            cursor: pointer;
+                            color: colors.$grey-600;
+                            transition: all 150ms ease-in-out;
+                            @include utility.spacing-R(10px);
+                            outline: none;
+
+                            &:hover {
+                                width: 125px;
+
+                                .chat_top_btn_text {
+                                    display: block;
+                                }
+                            }
+
+                            &:active {
+                                color: colors.$grey-500;
+                                background: colors.$grey-100;
+                            }
+
+                            svg {
+                                display: block;
+                                width: 24px;
+                            }
+
+                            .chat_top_btn_text {
+                                margin-left: 5px;
+                                font-size: 16px;
+                                font-weight: 500;
+                                display: none;
+                            }
+                        }
+
+                        @media (max-width: 450px) {
+                            position: absolute;
+                            // bottom: -115px;
+                            top: 58px;
+                            box-sizing: border-box;
+                            padding: 5px;
+                            border-radius: 10px;
+                            right: -10px;
+                            flex-direction: column-reverse;
+                            width: 150px;
+                            background: white;
+                            border: 1px solid colors.$grey-300;
+                            z-index: 10;
+                            box-shadow: 0 2px 5px -2px rgba(0, 0, 0, 0.1), 0 4px 9px -2px rgba(0, 0, 0, 0.05);
+
+                            .chat_top_btn {
+                                width: fit-content;
+                                border-radius: 10px;
+                                padding-left: 5px;
+                                padding-right: 5px;
+                                margin: 0;
+                                background: white;
+                                width: 100%;
+
+                                &:last-child {
+                                    margin-bottom: 5px;
+                                }
+
+                                &:hover {
+                                    width: 100%;
+                                    background: colors.$grey-200;
+                                }
+
+                                .chat_top_btn_text {
+                                    display: block;
+                                }
+                            }
+                        }
+                    }
+
+                    .hide_me {
+                        display: flex;
+
+                        @media (max-width: 450px) {
+                            display: none;
+                        }
+                    }
+                }
+            }
+
+            #chatMessages {
+                height: 600px;
+                padding: 20px;
+                overflow-y: auto;
+                // position: relative;
+
+                // 
+                // 
+
+                .msg_row {
+                    display: flex;
+                    flex-direction: row;
+                    @include utility.spacing-B(6px);
+
+                    .msg_content {
+                        max-width: 700px;
+                        padding: 10px 16px;
+                        border-radius: 22px;
+                        background: white;
+                        color: colors.$grey-600;
+                    }
+
+                    .msg_content_link {
+                        // text-decoration: underline;
+                        padding-right: 40px;
+                        position: relative;
+                        display: flex;
+                        align-items: center;
+
+                        &:after {
+                            content: url("data:image/svg+xml;utf8,<svg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'><path fill-rule='evenodd' clip-rule='evenodd' d='M3 17C3 16.7348 3.10536 16.4804 3.29289 16.2929C3.48043 16.1054 3.73478 16 4 16H16C16.2652 16 16.5196 16.1054 16.7071 16.2929C16.8946 16.4804 17 16.7348 17 17C17 17.2652 16.8946 17.5196 16.7071 17.7071C16.5196 17.8946 16.2652 18 16 18H4C3.73478 18 3.48043 17.8946 3.29289 17.7071C3.10536 17.5196 3 17.2652 3 17ZM6.293 9.293C6.48053 9.10553 6.73484 9.00021 7 9.00021C7.26516 9.00021 7.51947 9.10553 7.707 9.293L9 10.586V3C9 2.73478 9.10536 2.48043 9.29289 2.29289C9.48043 2.10536 9.73478 2 10 2C10.2652 2 10.5196 2.10536 10.7071 2.29289C10.8946 2.48043 11 2.73478 11 3V10.586L12.293 9.293C12.3852 9.19749 12.4956 9.12131 12.6176 9.0689C12.7396 9.01649 12.8708 8.9889 13.0036 8.98775C13.1364 8.9866 13.2681 9.0119 13.391 9.06218C13.5139 9.11246 13.6255 9.18671 13.7194 9.28061C13.8133 9.3745 13.8875 9.48615 13.9378 9.60905C13.9881 9.73194 14.0134 9.86362 14.0123 9.9964C14.0111 10.1292 13.9835 10.2604 13.9311 10.3824C13.8787 10.5044 13.8025 10.6148 13.707 10.707L10.707 13.707C10.5195 13.8945 10.2652 13.9998 10 13.9998C9.73484 13.9998 9.48053 13.8945 9.293 13.707L6.293 10.707C6.10553 10.5195 6.00021 10.2652 6.00021 10C6.00021 9.73484 6.10553 9.48053 6.293 9.293V9.293Z' fill='%23585863'/></svg>");
+                            position: absolute;
+                            // top: 13px;
+                            // left: 13px;
+                            width: 21px;
+                            height: 21px;
+                            right: 15px;
+                        }
+                    }
+                }
+
+                .msgError {
+                    .msg_content {
+                        box-shadow: inset 0px 0px 0px 2px colors.$red-200 !important;
+                        color: colors.$black !important;
+                        background: colors.$red-100 !important;
+                    }
+                }
+
+                .msg_row_host {
+                    justify-content: flex-end;
+
+                    .msg_content {
+                        background-color: colors.$grey-200;
+                    }
+                }
+
+                .msg_row_remote {
+                    justify-content: flex-start;
+
+                    .msg_content {
+                        box-shadow: inset 0px 0px 0px 1px colors.$grey-300;
+                    }
+                }
+            }
+
+            #chatControls {
+                padding: 10px;
+                display: flex;
+                flex-direction: row;
+
+                &>* {
+                    @include utility.spacing-R(10px);
+                }
+
+                #msgInput {
+                    flex: 1;
+                    height: 20px;
+                    /* box-sizing: border-box; */
+                    border: none;
+                    background: colors.$grey-100;
+                    padding: 7px;
+                    border-radius: 14px;
+                    font-size: 14px;
+                    color: colors.$black;
+                    outline: none;
+
+                    &:focus {
+                        box-shadow: inset 0px 0px 0px 1px colors.$grey-400;
+                    }
+                }
+
+                #msgSend {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 5px;
+                    border: none;
+                    background: none;
+                    cursor: pointer;
+
+                    svg {
+                        display: block;
+                        width: 24px;
+                        height: 24px;
+                        transform: rotate(90deg);
+                        color: colors.$accent;
+                    }
+                }
+            }
+
+            .cons_endGame {
+                position: absolute;
+                // width: 300px;
+                width: 100%;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                background: white;
+                border: 1px solid colors.$grey-300;
+                box-sizing: border-box;
+                padding: 10px;
+                border-radius: 10px;
+                top: 77px;
+                color: colors.$black;
+
+                &>* {
+                    width: 100%;
+                    max-width: 500px;
+                }
+
+                .endGame_txt {
+                    margin-bottom: 5px;
+                }
+
+                .endGame_input {
+                    height: 80px;
+                    box-sizing: border-box;
+                    padding: 6px 12px;
+                    font-size: 14px;
+                    border-radius: 6px;
+                    background: white;
+                    border: 1px solid colors.$grey-400;
+                    transition: 150ms ease-in-out;
+                    margin-bottom: 5px;
+
+                    &:focus {
+                        outline: 0;
+                        box-shadow: 0 0 0 3px #a4cafe73;
+                        border-color: #68a6fd73;
+                    }
+
+                }
+
+                .endGame_btn {
+                    margin: 5px 0;
+                    box-sizing: border-box;
+                    padding: 5px;
+                    border: none;
+                    font-weight: 500;
+                }
+
+                #btnEnd {
+                    @include button.main();
+                }
+
+                #btn_dont_End {
+                    @include button.sec();
+                }
+
+                .endGame_desc {
+                    font-size: 12px;
+                    color: colors.$grey-500;
+                }
+
+                // left: 0;
+            }
+
+
+        }
+    }
+}

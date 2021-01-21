@@ -1,0 +1,63 @@
+<div class="nb_container">
+    <div class="nb_inner_container container-custom">
+        <a href="/">
+            <img src="/public/img/logo.svg" alt="conlus logo">
+        </a>
+        <div class="nb_links_container">
+            <a href="/" class="nb_link">
+                <span>Accueil</span>
+            </a>
+            <div class="vertical_sep"></div>
+            <a href="/login" class="nb_link">
+                <span>S'identifier</span>
+            </a>
+            <a href="/v-register" class="nb_link nb_signup">
+                <span>S'inscrire</span>
+            </a>
+        </div>
+        <button class="nb_menu_btn" id="nb_menu_open">
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16">
+                </path>
+            </svg>
+        </button>
+    </div>
+    <!--  -->
+    <div id="nb_mobile" class="nb_mobile_container" data-visible='false'>
+        <div class="nb_mobile_content">
+            <div class="nb_top">
+                <a href="/">
+                    <img src="/public/img/logo_min.svg" alt="conlus logo">
+                </a>
+                <button class="nb_menu_btn" id="nb_menu_close">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+                        </path>
+                    </svg>
+                </button>
+            </div>
+            <div class="nb_content">
+                <a href="/" class="nb_m_link">
+                    <svg viewBox="0 0 20 20" fill="currentColor" class="home w-6 h-6">
+                        <path
+                            d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z">
+                        </path>
+                    </svg>
+                    <span class="nb_m_link_text">Accueil</span>
+                </a>
+                <div class="horizontal_sep"></div>
+                <div class="nb_m_btns_container">
+                    <a href="/v-register" class="nb_m_link_btn nb_signup">
+                        <span>S'inscrire</span>
+                    </a>
+                    <a href="/login" class="nb_m_link_btn nb_login">
+                        <span>S'identifier</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--  -->
+<link rel="stylesheet" href="/public/css/css-prefixed/navbar.css" />
+<script src="/public/js/_navBar.js"></script>

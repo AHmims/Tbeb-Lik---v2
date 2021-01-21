@@ -1,0 +1,34 @@
+<div class="auth_container">
+    <div class="auth_inner_container container-custom">
+        <div class="auth_feedback_cont">
+            <%- include('./partials/feedback') %>
+        </div>
+        <form action="/login" method="POST" class="auth_form">
+            <p class="auth_form_title">Connectez-vous à votre compte</p>
+            <div class="auth_form_row">
+                <label for="auth_email" class="auth_row_label">Adresse email :</label>
+                <div class="auth_row_input_cont">
+                    <input type="text" name="userEmail" class="auth_row_input" id="auth_email" required />
+                </div>
+            </div>
+            <div class="auth_form_row">
+                <label for="auth_pass" class="auth_row_label">Mot de passe :</label>
+                <div class="auth_row_input_cont">
+                    <input type="password" name="userPassword" class="auth_row_input" id="auth_pass" required />
+                </div>
+            </div>
+            <div class="auth_form_row">
+                <button type="submit" class="auth_form_btn auth_form_btn_main">S'identifier</button>
+            </div>
+            <div class="auth_horizontal_sep">
+                <p class="auth_sep_text">Vous n'avez pas un compte?</p>
+            </div>
+            <a href="/v-register" class="auth_form_btn auth_form_btn_alt">S'inscrire</a>
+        </form>
+    </div>
+</div>
+<%- contentFor('css') %>
+<link rel="stylesheet" href="/public/css/css-prefixed/auth.css" />
+<!-- Partials -->
+<%- contentFor('header') %>
+<%- include('./partials/header_standard') %>

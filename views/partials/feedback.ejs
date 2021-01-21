@@ -1,0 +1,41 @@
+<% if(flash_N_msg != ''){ %>
+<div class="feedback_container">
+    <!-- <p>flash_N_msg</p> -->
+    <span><%= flash_N_msg %></span>
+</div>
+<% } %>
+<% if(flash_E_msg != ''){ %>
+<div class="feedback_container  feedback_error">
+    <!-- <p>flash_E_msg</p> -->
+    <span><%= flash_E_msg %></span>
+</div>
+<% } %>
+<% if(flash_W_msg != ''){ %>
+<div class="feedback_container">
+    <!-- <p>flash_W_msg</p> -->
+    <span><%= flash_W_msg %></span>
+</div>
+<% } %>
+<% if(flash_S_msg != ''){ %>
+<div class="feedback_container">
+    <!-- <p>flash_S_msg</p> -->
+    <span><%= flash_S_msg %></span>
+</div>
+<% } %>
+<% if(error != ''){ %>
+<div class="feedback_container  feedback_error">
+    <!-- <p>error</p> -->
+    <span><%= error %></span>
+</div>
+<% } %>
+<!--  -->
+<% if(flash_E_array != ''){ %>
+<!-- <span><%= flash_E_array %></span> -->
+<div class="feedback_container  feedback_error">
+    <% for(var error of flash_E_array){%>
+    <span><%= error %></span>
+    <% } %>
+</div>
+<% } %>
+
+<link rel="stylesheet" href="/public/css/css-prefixed/feedback.css">

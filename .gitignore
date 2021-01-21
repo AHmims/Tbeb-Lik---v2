@@ -3,4 +3,9 @@
 /js/patient_com.js
 ./server-old.js
 /playground
-./env
+./.env
+/data
+/dev.env
+.env
+*.key
+/files

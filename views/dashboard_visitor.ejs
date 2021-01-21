@@ -1,0 +1,94 @@
+<div class="db_container" id="rootElement" data-email="<%= typeof(userEmail) != 'undefined' ? userEmail : '' %>">
+    <div class="db_inner_container container-custom">
+        <% if(extra.ongoing != false){ %>
+        <div class="db_v_state_container" id="db_v_state_container">
+            <% if(extra.ongoing == null){ %>
+            <div id="preConsStatus">
+                <h4>Veuillez patienter, votre demande est en attente d'être prise en charge</h4>
+                <button id="cancelPrecons">
+                    <svg class="animated_loading" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="50" cy="50" r="45" />
+                    </svg>
+                    <span>Annuler</span>
+                </button>
+            </div>
+            <% }else if(extra.ongoing == true){ %>
+            <div class="db_v_preConsForm" id="preConsForm">
+                <h1>Remplir le formulaire pour envoyer un demande de consultation</h1>
+                <div class="db_v_preConsForm_form">
+                    <div class="db_v_preCons_form_col">
+                        <div class="db_v_preCons_form_row">
+                            <label for="conTitle" class="db_v_preCons_form_label">Titre :</label>
+                            <input type="text" class="db_v_preCons_input" id="conTitle" required>
+                        </div>
+                        <div class="db_v_preCons_form_row">
+                            <label for="conFile" class="db_v_preCons_form_label">Ajouter des documents :</label>
+                            <input type="file" class="db_v_preCons_input" multiple name="conFile" id="conFile">
+                        </div>
+                    </div>
+                    <div class="db_v_preCons_form_col">
+                        <div class="db_v_preCons_form_row">
+                            <label for="conDesc" class="db_v_preCons_form_label">Description :</label>
+                            <textarea id="conDesc" class="db_v_preCons_input" cols="30" rows="10" required></textarea>
+                        </div>
+                        <div class="db_v_preCons_form_btnsCont">
+                            <!-- <span>Envoyer votre demande de consultation :</span> -->
+                            <button class="db_v_preCons_form_btn" id="sendForm">
+                                <span>Envoyer votre demande de consultation</span>
+                                <svg viewBox="0 0 20 20" fill="currentColor" class="chevron-right w-6 h-6">
+                                    <path fill-rule="evenodd"
+                                        d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                        clip-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+        </div>
+        <% }%>
+        <div class="db_v_state_container" id="db_v_state_container" style="display: none;"></div>
+        <div class="db_section" id="activeCons">
+            <h4 class="db_section_title">Consultations en cours : </h4>
+            <% if(extra.consul != null){ %>
+            <div id="activeCons_container">
+                <%- include('./partials/consultation_card', {consultation : extra.consul}) %>
+            </div>
+            <% }else{ %>
+            <%- include('./partials/empty') %>
+            <% } %>
+        </div>
+        <div class="db_section" id="pastCons">
+            <h4 class="db_section_title">Consultations précédentes :</h4>
+            <% if(extra.history.length > 0){ %>
+            <div id="pastCons_container">
+                <% for(var i=0;i < extra.history.length ; i++){ %>
+                <%- include('./partials/history', {consultation : extra.history[i]}) %>
+                <% } %>
+            </div>
+            <% }else{ %>
+            <%- include('./partials/empty') %>
+            <% } %>
+        </div>
+    </div>
+</div>
+<div class="body_feedback">
+    <%- include('./partials/feedback') %>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/public/js/jquery.ajax.min.js"></script>
+<script src="/public/js/visitor/dashboard-socket.js"></script>
+<script src="/public/js/visitor/dashboard-controller.js"></script>
+<script src="/public/js/visitor/dashboard-view.js"></script>
+<!--  -->
+<script src="/public/js/utility.js"></script>
+<!--  -->
+<%- contentFor('css') %>
+<link rel="stylesheet" href="/public/css/css-prefixed/dashboard.css" />
+<link rel="stylesheet" href="/public/css/css-prefixed/dashboard_visitor.css" />
+<link rel="stylesheet" href="/public/css/css-prefixed/dashboard_partials.css" />
+<!-- Partials -->
+<%- contentFor('header') %>
+<%- include('./partials/header_visitor') %>

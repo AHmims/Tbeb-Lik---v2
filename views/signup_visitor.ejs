@@ -1,0 +1,97 @@
+<div class="auth_container">
+    <div class="auth_inner_container container-custom">
+        <div class="auth_feedback_cont">
+            <%- include('./partials/feedback') %>
+        </div>
+        <div class="auth_register_switch_cont">
+            <a class="auth_register_option auth_register_option_active">
+                <div class="auth_register_option_icon">
+                    <svg viewBox="0 0 20 20" fill="currentColor" class="user w-6 h-6">
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
+                            clip-rule="evenodd"></path>
+                    </svg>
+                </div>
+                <span class="auth_register_option_text">Client</span>
+            </a>
+            <a href="/c-register" class="auth_register_option">
+                <div class="auth_register_option_icon">
+                    <svg viewBox="0 0 20 20" fill="currentColor" class="briefcase w-6 h-6">
+                        <path fill-rule="evenodd"
+                            d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z"
+                            clip-rule="evenodd"></path>
+                        <path
+                            d="M2 13.692V16a2 2 0 002 2h12a2 2 0 002-2v-2.308A24.974 24.974 0 0110 15c-2.796 0-5.487-.46-8-1.308z">
+                        </path>
+                    </svg>
+                </div>
+                <span class="auth_register_option_text">Entreprise</span>
+            </a>
+        </div>
+        <form action="/v-register" method="POST" class="auth_form">
+            <p class="auth_form_title">Créer votre compte Client</p>
+            <div class="auth_form_row">
+                <label for="auth_name" class="auth_row_label">Nom complet :</label>
+                <div class="auth_row_input_cont">
+                    <input type="text" name="userName" class="auth_row_input" id="auth_name" required
+                        value="<%= typeof userName != 'undefined' ? userName : '' %>">
+                </div>
+            </div>
+            <div class="auth_form_row">
+                <label for="auth_email" class="auth_row_label">Adresse e-mail :</label>
+                <div class="auth_row_input_cont">
+                    <input type="text" name="userEmail" class="auth_row_input" id="auth_email" required
+                        value="<%= typeof userEmail != 'undefined' ? userEmail : '' %>">
+                </div>
+            </div>
+            <div class="auth_form_row">
+                <label for="auth_tel" class="auth_row_label">Numéro de téléphone :</label>
+                <div class="auth_row_input_cont">
+                    <input type="text" name="userTel" class="auth_row_input" id="auth_tel"
+                        value="<%= typeof userTel != 'undefined' ? userTel : '' %>">
+                </div>
+            </div>
+            <div class="auth_form_row">
+                <label for="auth_sexe" class="auth_row_label">Sexe :</label>
+                <div class="auth_row_input_cont">
+                    <select name="userSexe" class="auth_row_input auth_row_select" id="auth_sexe">
+                        <option value="null" selected>Choisire</option>
+                        <option value="male">Homme</option>
+                        <option value="female">Femme</option>
+                        <option value="non-binary">Non binaire</option>
+                    </select>
+                </div>
+            </div>
+            <div class="auth_form_row">
+                <label for="auth_pass" class="auth_row_label">Mot de passe :</label>
+                <div class="auth_row_input_cont">
+                    <input type="password" name="userPass" class="auth_row_input" id="auth_pass" required>
+                </div>
+            </div>
+            <div class="auth_form_row">
+                <label for="auth_conpass" class="auth_row_label">Confirmation de mot de passe :</label>
+                <div class="auth_row_input_cont">
+                    <input type="password" name="userConPass" class="auth_row_input" id="auth_conpass" required>
+                </div>
+            </div>
+            <div class="auth_form_row">
+                <label for="auth_inv" class="auth_row_label">Code d'invitation :</label>
+                <div class="auth_row_input_cont">
+                    <input type="text" name="inviteLink" class="auth_row_input" id="auth_inv" required>
+                </div>
+            </div>
+            <div class="auth_form_row auth_form_btns_cont">
+                <button type="submit" class="auth_form_btn auth_form_btn_main">Créer mon compte !</button>
+                <a href="/" class="auth_form_btn auth_form_btn_sec">Annuler</a>
+            </div>
+            <div class="auth_horizontal_sep">
+                <p class="auth_sep_text">Vous étes déjà inscrit ?</p>
+            </div>
+            <a href="/login" class="auth_form_btn auth_form_btn_alt">S'identifier</a>
+        </form>
+    </div>
+</div>
+<%- contentFor('css') %>
+<link rel="stylesheet" href="/public/css/css-prefixed/auth.css" />
+<!-- Partials -->
+<%- contentFor('header') %>
+<%- include('./partials/header_standard') %>

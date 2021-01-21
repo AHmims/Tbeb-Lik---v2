@@ -1,0 +1,93 @@
+@use 'colors';
+
+@mixin main() {
+    background: colors.$accent;
+    color: white;
+    border-radius: 6px;
+    transition: background 150ms ease-in-out;
+    cursor: pointer;
+    user-select: none;
+
+    &:hover {
+        background: colors.$accent-200;
+    }
+
+    &:active {
+        outline: none;
+        background: colors.$accent-dark;
+        box-shadow: 0px 0px 0px 3px colors.$accent-100;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0px 0px 0px 3px colors.$accent-100, inset 0px 0px 0px 1px colors.$accent-dark;
+    }
+}
+
+@mixin sec() {
+    background: colors.$grey-100;
+    color: colors.$grey-500;
+    border-radius: 6px;
+    transition: background 150ms ease-in-out;
+    user-select: none;
+    cursor: pointer;
+
+    &:hover {
+        background: colors.$grey-50;
+    }
+
+    &:active {
+        outline: none;
+        // background: colors.$grey-400;
+        box-shadow: 0px 0px 0px 3px colors.$grey-200;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0px 0px 0px 3px colors.$grey-200, inset 0px 0px 0px 1px colors.$grey-400;
+    }
+}
+
+@mixin alt() {
+    background: white;
+    color: colors.$black;
+    border: 1px solid colors.$grey-400;
+    border-radius: 6px;
+    transition: all 150ms ease-in-out;
+    user-select: none;
+    cursor: pointer;
+
+    &:hover {
+        border-color: colors.$grey-600;
+    }
+
+    &:active {
+        outline: none;
+        border-color: colors.$grey-600;
+    }
+
+    &:focus {
+        outline: none;
+        border-color: colors.$grey-600;
+    }
+}
+
+@mixin red() {
+    background: colors.$red;
+    color: white;
+    border-radius: 6px;
+    transition: background 150ms ease-in-out;
+    cursor: pointer;
+    user-select: none;
+
+    &:active {
+        outline: none;
+        background: colors.$red-200;
+        box-shadow: 0px 0px 0px 3px colors.$red-100;
+    }
+
+    &:focus {
+        outline: none;
+        box-shadow: 0px 0px 0px 3px colors.$red-100, inset 0px 0px 0px 1px colors.$red-200;
+    }
+}
