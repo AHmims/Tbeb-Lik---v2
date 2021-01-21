@@ -35,7 +35,7 @@
     "passport-local": "^1.0.0",
     "pdfkit": "^0.11.0",
     "referral-code-generator": "^1.0.8",
-    "socket.io": "^2.3.0",
+    "socket.io": "^2.4.0",
     "utf-8-validate": "^5.0.2",
     "validator": "^13.1.1"
   }
