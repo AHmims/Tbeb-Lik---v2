@@ -37,6 +37,6 @@
     "referral-code-generator": "^1.0.8",
     "socket.io": "^2.3.0",
     "utf-8-validate": "^5.0.2",
-    "validator": "^13.1.1"
+    "validator": "^13.7.0"
   }
 }
